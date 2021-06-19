@@ -27,7 +27,7 @@ export const urlImagen = (id, key) => {
 /**
  * Ayuda a crear el título con estilos propios.
  *
- * @param {string} titulo Pasar el nombre general del sitio Ej: "EnFlujo".
+ * @param {string} titulo Pasar el nombre general del sitio Ej: "Arca".
  * @param {string} subtitulo El nombre o título de la página actual, se puede dejar vacío para el Home.
  * @returns Título para el head con estilos personalizados.
  */

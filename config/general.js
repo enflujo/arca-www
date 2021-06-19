@@ -16,4 +16,4 @@ export const colorBase = '#5757f7';
 /**
  * Nombre del sitio para usar como predeterminado si no hay datos.
  */
-export const nombre = 'Laboratorio EnFlujo';
+export const nombre = 'ARCA';
