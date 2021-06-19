@@ -58,7 +58,7 @@ a:link {
   display: none;
 }
 
-.enflujoIcono {
+.arcaIcono {
   width: $anchoMenu;
   height: $anchoMenu;
   padding: 12px;

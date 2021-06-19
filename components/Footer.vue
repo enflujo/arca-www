@@ -1,7 +1,7 @@
 <template>
   <footer>
     <Icono :color="color" />
-    <p class="copy">EnFlujo</p>
+    <p class="copy">Arca</p>
     <p class="copy fecha">{{ fecha }}</p>
   </footer>
 </template>
@@ -47,7 +47,7 @@ footer {
   color: #95989a;
   text-align: center;
 
-  .enflujoIcono {
+  .arcaIcono {
     width: 60px;
     padding: 10px;
   }

@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="enflujoIcono"
+    class="arcaIcono"
     viewBox="0 0 34.58 40"
     :fill="color"
     xmlns="http://www.w3.org/2000/svg"
