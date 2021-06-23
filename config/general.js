@@ -11,7 +11,7 @@ export const urlBase = 'https://enflujo.uniandes.edu.co';
 /**
  * El color principal de identidad.
  */
-export const colorBase = '#5757f7';
+export const colorBase = '#FFFDF8';
 
 /**
  * Nombre del sitio para usar como predeterminado si no hay datos.

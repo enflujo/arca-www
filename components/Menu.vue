@@ -1,6 +1,8 @@
 <template>
   <div :class="`menuPrincipal ${menuAbierto ? 'abierto' : 'cerrado'}`">
-    <nav class="menuContenido" :style="`background-color:${colorFondo}`">
+    <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`">
+    TODO: cambiar de hardcodeado a el CMS -->
+    <nav class="menuContenido">
       <NuxtLink
         v-for="pagina in paginas"
         :key="pagina.slug"
@@ -12,9 +14,11 @@
       </NuxtLink>
     </nav>
 
-    <div class="menuBtn" :style="`background-color:${colorFondo}`" @click="resolverMenu">
+    <!-- <div class="menuBtn" :style="`background-color:${colorFondo}`" @click="resolverMenu">
+    TODO: QUITAR EL HARDCODEO -->
+    <div class="menuBtn" @click="resolverMenu">
       <div class="botonMenu"><span class="menuRaya"></span></div>
-      <span class="lineaVertical"></span>
+      <!-- <span class="lineaVertical"></span> -->
     </div>
   </div>
 </template>
@@ -24,7 +28,7 @@ export default {
   props: {
     colorFondo: {
       type: String,
-      default: '#5757f7',
+      default: '#08173E',
     },
 
     menuAbierto: {
@@ -53,7 +57,7 @@ $menuRayaAncho: 30px;
 $menuRayaAlto: 2px;
 $menuRayaRadio: 2px;
 $menuRayaEspacio: 8px;
-$menuRayaColor: #fff;
+$menuRayaColor: #08173e;
 
 .menuPrincipal {
   z-index: 9999;
@@ -61,11 +65,12 @@ $menuRayaColor: #fff;
 
 .menuBtn {
   position: fixed;
+  background-color: #08173e;
 }
 
 .botonMenu {
-  width: $anchoMenu;
-  height: $anchoMenu;
+  width: $tamanoMenu;
+  height: $tamanoMenu;
   position: relative;
   display: flex;
   justify-content: center;
@@ -82,31 +87,33 @@ $menuRayaColor: #fff;
   top: 0;
   text-align: center;
   font-size: 0;
-  color: white;
+  color: $profundidad;
   transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: $claridad;
 
   a,
   a:link {
-    color: white;
+    color: $profundidad;
+    opacity: 0.4;
     padding: 0.3em 1em 0.7em 0.3em;
     margin-bottom: 0.5em;
-    background-image: url(~/assets/marco.svg);
     background-repeat: no-repeat;
 
     &:hover {
-      color: color.scale($colorPrincipal, $lightness: 70%);
+      color: $profundidad;
+      opacity: 1;
     }
 
     &.nuxt-link-active {
-      opacity: 0.5;
+      color: $profundidad;
+      opacity: 1;
     }
 
     &::before {
-      content: '>>';
-      font-size: 0.8em;
+      font-size: 0.6em;
       padding-right: 0.3em;
     }
   }
@@ -117,6 +124,7 @@ $menuRayaColor: #fff;
     .menuRaya {
       height: 0;
       width: 0;
+      background-color: $claridad;
 
       &::before {
         transform: rotate(45deg) translate(-12px, 12px);
@@ -139,7 +147,7 @@ $menuRayaColor: #fff;
 .menuRaya {
   width: $menuRayaAncho;
   height: $menuRayaAlto;
-  background-color: $menuRayaColor;
+  background-color: $profundidad;
   border-radius: $menuRayaRadio;
   transition: all 0.2s ease-in-out;
 
@@ -170,26 +178,19 @@ $menuRayaColor: #fff;
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   .menuBtn {
-    width: $anchoMenu;
-    height: 100vh;
+    width: $tamanoMenu;
+    height: $tamanoMenu;
     right: 0;
     top: 0;
     cursor: pointer;
-
-    .lineaVertical {
-      width: 2px;
-      height: calc(100vh - #{$anchoMenu});
-      top: $anchoMenu;
-      left: 30px;
-      background-color: white;
-      position: absolute;
-    }
+    background-color: $claridad;
+    border-radius: 100% 0% 0% 100% / 0% 25% 75% 100%;
   }
 
   .abierto {
     .menuContenido {
-      width: 50vw;
-      right: $anchoMenu;
+      width: 15vw;
+      right: 0;
     }
   }
 }
@@ -207,8 +208,11 @@ $menuRayaColor: #fff;
 @media (min-width: $minPantallaGrande) {
   .abierto {
     .menuContenido {
-      width: 600px;
+      width: 30vw;
       font-size: 1.5em;
+      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
+      display: flex;
+      justify-content: center;
     }
   }
 }

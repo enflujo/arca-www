@@ -43,7 +43,7 @@ export default {
 @use "sass:color";
 
 footer {
-  background-color: color.scale($colorPrincipal, $lightness: 90%);
+  background-color: color.scale($profundidad, $lightness: 90%);
   color: #95989a;
   text-align: center;
 
