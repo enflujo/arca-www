@@ -44,15 +44,8 @@ time {
   margin: 0;
 }
 
-<<<<<<< HEAD
 h1 {
   font-family: 'Agraham';
-=======
-h1,
-h2,
-h3 {
-  font-family: $fuentePrincipal;
->>>>>>> 4a14513 (Adelantos minimos del CSS)
 }
 
 h2 {
@@ -121,8 +114,6 @@ a:link {
   background-color: color.scale($claridad, $lightness: 50%);
   color: black;
 }
-
-<<<<<<< HEAD
 .contenedor {
   display: flex;
   width: 100vw;
@@ -141,15 +132,11 @@ a:link {
 .texto-claro {
   color: $claridad;
 }
-=======
-.centrar-contenido{
+.centrar-contenido {
   width: 900px;
   display: flex;
   justify-content: center;
   padding-top: 100px;
 }
-
-.fondo-general{
-
+.fondo-general {
 }
->>>>>>> 4a14513 (Adelantos minimos del CSS)
