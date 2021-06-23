@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tamano-completo">
     <template v-if="$fetchState.pending">
       <div class="contenedor">
         <div class="centrar-contenido">
@@ -114,6 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+<<<<<<< HEAD
 // #mapa {
 //   clip-path: inset(32% 65% 10% 15% round 400px);
 // }
@@ -159,4 +160,10 @@ export default {
 //   top: 0px;
 //   position: absolute;
 // }
+=======
+.tamano-completo {
+  display: block;
+  width: 100%;
+}
+>>>>>>> 4a14513 (Adelantos minimos del CSS)
 </style>
