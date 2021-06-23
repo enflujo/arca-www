@@ -14,7 +14,7 @@
     </nav>
 
     <!-- <div class="menuBtn" :style="`background-color:${colorFondo}`" @click="resolverMenu">
-    TODO: MODIFICAR EL HARDCODEO -->
+    TODO: QUITAR EL HARDCODEO -->
     <div class="menuBtn" @click="resolverMenu">
       <div class="botonMenu"><span class="menuRaya"></span></div>
       <!-- <span class="lineaVertical"></span> -->
