@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tamano-completo">
     <template v-if="$fetchState.pending">
       <h1>Pendiente...</h1>
     </template>
@@ -80,4 +80,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tamano-completo {
+  display: block;
+  width: 100%;
+}
+</style>

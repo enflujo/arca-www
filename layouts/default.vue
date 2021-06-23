@@ -2,8 +2,10 @@
   <div id="contenedor">
     <Navegacion :colorIcono="colorIcono" @cerrarMenu="cerrarMenu" />
     <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
-    <main role="main">
-      <Nuxt keepAlive />
+    <main role="main" class="fondo-general">
+      <div class="centrar-contenido">
+        <Nuxt keepAlive />
+      </div>
     </main>
     <Footer />
   </div>
@@ -46,6 +48,10 @@ export default {
 
 <style lang="scss" scoped>
 @use "sass:color";
+@font-face {
+  font-family: 'Agraham';
+  src: local('Agraham'), local('Agraham Personal Use');
+}
 #contenedor {
   display: flex;
   flex-direction: column;

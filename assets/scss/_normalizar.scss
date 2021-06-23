@@ -37,9 +37,8 @@ time {
 
 h1,
 h2,
-h3,{
-  // font-weight: $fuentePrincipalBold;
-  // font-family: $fuentePrincipal;
+h3 {
+  font-family: $fuentePrincipal;
 }
 
 h4 {
@@ -99,4 +98,15 @@ a:link {
 ::selection {
   background-color: color.scale($claridad, $lightness: 50%);
   color: black;
+}
+
+.centrar-contenido{
+  width: 900px;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.fondo-general{
+
 }
