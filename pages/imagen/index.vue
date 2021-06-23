@@ -13,7 +13,8 @@
         <h1>{{ pagina.titulo }}</h1>
         <p>{{ pagina.descripcion }}</p>
         <div class="descripcion">
-          <img src="#" />
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:100vw md:50vw lg:400px" />
+
           <p>Título. Artista. Año. Lugar</p>
         </div>
       </div>
