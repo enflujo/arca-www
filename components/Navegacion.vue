@@ -26,7 +26,7 @@ export default {
 
     colorFondo: {
       type: String,
-      default: '#5757f7',
+      default: '#08173E',
     },
   },
 
@@ -50,7 +50,7 @@ a:link {
   color: black;
 
   &:hover {
-    color: $colorPrincipal;
+    color: $profundidad;
   }
 }
 
@@ -59,9 +59,9 @@ a:link {
 }
 
 .arcaIcono {
-  width: $anchoMenu;
-  height: $anchoMenu;
-  padding: 12px;
+  // width: $anchoMenu;
+  // height: $anchoMenu;
+  // padding: 12px;
 }
 
 .logoBtn {
@@ -76,12 +76,14 @@ a:link {
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   .navegacion {
-    font-weight: $fuentePrincipalBold;
     position: fixed;
     display: flex;
     align-items: center;
     flex-direction: row;
     background-color: white;
+    font-family: $fuenteMenu;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
 
   .navBtn {
@@ -90,7 +92,7 @@ a:link {
     margin-right: 0.5em;
 
     &.nuxt-link-active {
-      border-bottom: 1px solid $colorPrincipal;
+      border-bottom: 1px solid $profundidad;
     }
   }
 }
