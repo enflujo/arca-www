@@ -53,7 +53,7 @@ export default {
 }
 
 main {
-  margin-top: $anchoMenu;
+  // margin-top: $anchoMenu;
   flex-grow: 1;
   // background-color: color.scale($colorPrincipal, $lightness: 90%);
 }
@@ -65,7 +65,7 @@ main {
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   main {
-    width: calc(100vw - #{$anchoMenu});
+    // width: calc(100vw - #{$anchoMenu});
   }
 }
 
