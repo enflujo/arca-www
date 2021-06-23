@@ -203,10 +203,7 @@ $menuRayaColor: #08173e;
     .menuContenido {
       width: 15vw;
       right: 0;
-<<<<<<< HEAD
       border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
-=======
->>>>>>> 48c445a (🧑🏽‍💻 avances estilo menu)
     }
   }
 }
@@ -225,18 +222,11 @@ $menuRayaColor: #08173e;
   .abierto {
     .menuContenido {
       width: 30vw;
-<<<<<<< HEAD
       font-size: 1.1em;
       display: flex;
       justify-content: center;
       position: fixed;
       border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
-=======
-      font-size: 1.5em;
-      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
-      display: flex;
-      justify-content: center;
->>>>>>> 48c445a (🧑🏽‍💻 avances estilo menu)
     }
   }
 }
