@@ -213,6 +213,7 @@ $menuRayaColor: #08173e;
       border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
       display: flex;
       justify-content: center;
+      position: fixed;
     }
   }
 }
