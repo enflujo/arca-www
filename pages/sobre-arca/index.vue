@@ -9,9 +9,10 @@
     </template>
 
     <template v-else>
-      <h1>{{ pagina.titulo }}</h1>
-      <p>{{ pagina.descripcion }}</p>
-      <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti</p>
+      <main role="main">
+        <h1>{{ pagina.titulo }}</h1>
+        <p>{{ pagina.descripcion }}</p>
+      </main>
     </template>
   </div>
 </template>
@@ -72,13 +73,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.sobre-arca {
-  margin: 3em;
-  max-width: 90%;
-}
-
-.descripcion {
-  padding-top: 1em;
-}
-</style>
+<style lang="scss" scoped></style>

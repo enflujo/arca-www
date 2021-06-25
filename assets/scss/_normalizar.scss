@@ -1,5 +1,10 @@
 @use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700;800;900&display=swap');
+@font-face {
+  font-family: "Agraham";
+  src: local("Agraham"),
+  url(~assets/fuentes/Agraham.ttf) format("truetype");
+}
 
 html {
   box-sizing: border-box;
@@ -38,7 +43,7 @@ time {
 h1,
 h2,
 h3 {
-  font-family: $fuentePrincipal;
+  font-family: 'Agraham';
 }
 
 h4 {
@@ -100,13 +105,14 @@ a:link {
   color: black;
 }
 
-.centrar-contenido{
-  width: 900px;
+
+.contenedor {
   display: flex;
+  width: 100vw;
   justify-content: center;
-  padding-top: 100px;
-}
-
-.fondo-general{
-
+  margin-top: 100px;
+  .centrar-contenido{
+    width: 800px;
+    flex-direction: column;
+  }
 }

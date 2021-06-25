@@ -1,7 +1,5 @@
 <template>
-  <div id="contenedor">
-    <div id="mapa" ref="mapa"></div>
-  </div>
+  <div id="mapa" ref="mapa"></div>
 </template>
 
 <script>
@@ -112,19 +110,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#contenedor {
-  width: 100vw;
-  height: 100vh;
-  display: block;
-  position: relative;
-  z-index: 1;
-}
-
 #mapa {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 100%;
+  display: block;
+  z-index: -1;
 }
 
 .mapboxgl-popup {

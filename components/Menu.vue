@@ -1,7 +1,6 @@
 <template>
   <div :class="`menuPrincipal ${menuAbierto ? 'abierto' : 'cerrado'}`">
-    <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`">
-    TODO: cambiar de hardcodeado a el CMS -->
+    <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
     <nav class="menuContenido">
       <NuxtLink
         v-for="pagina in paginas"
@@ -54,8 +53,8 @@ export default {
 <style lang="scss" scoped>
 @use "sass:color";
 $menuRayaAncho: 30px;
-$menuRayaAlto: 2px;
-$menuRayaRadio: 2px;
+$menuRayaAlto: 4px;
+$menuRayaRadio: 4px;
 $menuRayaEspacio: 8px;
 $menuRayaColor: #08173e;
 
@@ -144,6 +143,14 @@ $menuRayaColor: #08173e;
   }
 }
 
+.abierto {
+  width: 100vw;
+  height: 100vh;
+  background-color: #08173e98;
+  position: absolute;
+  transition: all 0.5s ease-in-out;
+}
+
 .menuRaya {
   width: $menuRayaAncho;
   height: $menuRayaAlto;
@@ -188,9 +195,13 @@ $menuRayaColor: #08173e;
   }
 
   .abierto {
+    .menuBtn {
+      background-color: transparent;
+    }
     .menuContenido {
       width: 15vw;
       right: 0;
+      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
     }
   }
 }
@@ -210,7 +221,6 @@ $menuRayaColor: #08173e;
     .menuContenido {
       width: 30vw;
       font-size: 1.5em;
-      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
       display: flex;
       justify-content: center;
       position: fixed;
