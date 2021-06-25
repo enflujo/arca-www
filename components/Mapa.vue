@@ -104,13 +104,9 @@ export default {
       });
 
       this.mapa.on('click', 'lugares', (e) => {
-        console.dir(e.features[0].properties.id);
+        // TODO - reemplazar id
         this.$router.push({ name: 'imagen', query: { id: `${e.features[0].properties.id}` } });
       });
-    },
-
-    sumar(a, b) {
-      return a + b;
     },
   },
 };

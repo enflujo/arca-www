@@ -77,7 +77,7 @@ export default {
 
     if (artworks) {
       this.obras = artworks[0];
-      console.log(this.obras);
+      // console.log(this.obras);
     }
   },
 
