@@ -4,11 +4,7 @@
     <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
     <main role="main">
-      <div class="contenedor">
-        <div class="centrar-contenido">
-          <Nuxt keepAlive />
-        </div>
-      </div>
+      <Nuxt keepAlive />
     </main>
     <Footer />
   </div>
@@ -56,15 +52,6 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-.division {
-  display: block;
-  background-color: $profundidad;
-  width: 30%;
-  height: 100%;
-  position: absolute;
-  left: 70%;
-  top: 0;
 }
 
 main {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="centrar-contenido">
     <template v-if="$fetchState.pending">
       <h1>Pendiente...</h1>
     </template>

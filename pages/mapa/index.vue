@@ -1,7 +1,11 @@
 <template>
-  <div class="tamano-completo">
+  <div>
     <template v-if="$fetchState.pending">
-      <h1>Pendiente...</h1>
+      <div class="contenedor">
+        <div class="centrar-contenido">
+          <h1>Pendiente...</h1>
+        </div>
+      </div>
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -9,8 +13,12 @@
     </template>
 
     <template v-else>
-      <h1>{{ pagina.titulo }}</h1>
-      <p>{{ pagina.descripcion }}</p>
+      <div class="contenedor">
+        <div class="centrar-contenido">
+          <h1>{{ pagina.titulo }}</h1>
+          <p>{{ pagina.descripcion }}</p>
+        </div>
+      </div>
       <Mapa :datos="obras" />
     </template>
   </div>
@@ -21,6 +29,7 @@ import { gql } from 'nuxt-graphql-request';
 import { crearHead } from '../../utilidades/ayudas';
 
 export default {
+  layout: 'mapa',
   data() {
     return {
       pagina: {},
