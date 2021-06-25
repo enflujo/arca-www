@@ -41,17 +41,17 @@ time {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: 'Agraham';
-  font-size: 2.2em;
-}
-
-h4 {
-
 }
 
 p {
   font-family: $fuenteParrafos;
+}
+
+h4 {
+
 }
 
 a{
@@ -116,7 +116,7 @@ a:link {
   justify-content: center;
   margin-top: 100px;
   position: absolute;
-  top: 0px;
+  top: 0;
   .centrar-contenido{
     width: 800px;
     flex-direction: column;

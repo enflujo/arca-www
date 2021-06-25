@@ -23,9 +23,8 @@
             <p>{{ pagina.descripcion }}</p>
           </div>
         </div>
-        <Mapa :datos="obras" />
       </div>
-      <!-- <nuxt-img src="imgs/mapa01.png" class="transparencia" /> -->
+      <Mapa :datos="obras" />
     </template>
   </div>
 </template>

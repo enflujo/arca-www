@@ -1,7 +1,6 @@
 <template>
   <div :class="`menuPrincipal ${menuAbierto ? 'abierto' : 'cerrado'}`">
     <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
-
     <nav class="menuContenido">
       <NuxtLink
         v-for="pagina in paginas"
@@ -225,6 +224,7 @@ $menuRayaColor: #08173e;
       display: flex;
       justify-content: center;
       position: fixed;
+      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
     }
   }
 }
