@@ -11,6 +11,7 @@ export default {
       type: Array,
       default: () => [],
     },
+    idImagen: {},
   },
 
   data() {
@@ -44,12 +45,13 @@ export default {
       };
 
       geoJson.data.features = this.$props.datos.map((punto) => {
-        const { latitude_current: lat, longitude_current: lon, title, annotation_date: date } = punto;
+        const { latitude_current: lat, longitude_current: lon, title, annotation_date: date, id } = punto;
 
         return {
           type: 'Feature',
           properties: {
-            description: `${title} (${date})`,
+            description: `${title} (${date}) ${id}`,
+            id: `${id}`,
           },
           geometry: {
             type: 'Point',
@@ -99,6 +101,11 @@ export default {
       this.mapa.on('mouseleave', 'lugares', () => {
         this.mapa.getCanvas().style.cursor = '';
         popup.remove();
+      });
+
+      this.mapa.on('click', 'lugares', (e) => {
+        console.dir(e.features[0].properties.id);
+        this.$router.push({ name: 'imagen', query: { id: `${e.features[0].properties.id}` } });
       });
     },
 
