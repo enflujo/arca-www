@@ -9,15 +9,10 @@
     </template>
 
     <template v-else>
-      <div class="sobre-arca">
-        <h1>{{ pagina.titulo }}</h1>
-        <p>{{ pagina.descripcion }}</p>
-        <div class="descripcion">
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:100vw md:50vw lg:400px" />
-
-          <p>Título. Artista. Año. Lugar</p>
-        </div>
-      </div>
+      <h1>{{ pagina.titulo }}</h1>
+      <p>{{ pagina.descripcion }}</p>
+      <nuxt-img src="imgs/4408.jpg" sizes="sm:100vw md:50vw lg:400px" />
+      <p>Título. Artista. Año. Lugar</p>
     </template>
   </div>
 </template>
@@ -78,13 +73,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.sobre-arca {
-  margin: 3em;
-  max-width: 90%;
-}
-
-.descripcion {
-  padding-top: 1em;
-}
-</style>
+<style lang="scss" scoped></style>

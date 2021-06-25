@@ -4,13 +4,14 @@
     <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
     <main role="main">
+      <Fondo />
       <div class="contenedor">
         <div class="centrar-contenido">
           <Nuxt keepAlive />
         </div>
       </div>
     </main>
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 

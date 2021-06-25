@@ -18,7 +18,7 @@
   .division {
     background-color: $claridad;
     width: 75%;
-    height: 100%;
+    height: 100vh;
     display: block;
     top: 0px;
     position: absolute;

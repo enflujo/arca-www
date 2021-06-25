@@ -13,13 +13,19 @@
     </template>
 
     <template v-else>
-      <div class="contenedor">
-        <div class="centrar-contenido">
-          <h1>{{ pagina.titulo }}</h1>
-          <p>{{ pagina.descripcion }}</p>
+      <div class="contenedor-general">
+        <div class="contenedor-derecho">
+          <nuxt-img src="imgs/MapaImagen.jpeg" class="mapaImagen" />
         </div>
+        <div class="contenedor-izquierdo">
+          <div class="contenedor-mitad">
+            <h1>{{ pagina.titulo }}</h1>
+            <p>{{ pagina.descripcion }}</p>
+          </div>
+        </div>
+        <Mapa :datos="obras" />
       </div>
-      <Mapa :datos="obras" />
+      <!-- <nuxt-img src="imgs/mapa01.png" class="transparencia" /> -->
     </template>
   </div>
 </template>
@@ -90,8 +96,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tamano-completo {
+.contenedor-general {
   display: block;
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  .contenedor-derecho {
+    position: absolute;
+    width: 50vw;
+    left: 50vw;
+    height: 100vh;
+    .mapaImagen {
+      right: 0px;
+      height: 100vh;
+    }
+  }
+  .contenedor-izquierdo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50vw;
+    height: 100vh;
+    background-color: $profundidad;
+    .contenedor-mitad {
+      color: $claridad;
+      position: relative;
+      top: 100px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+.transparencia {
+  opacity: 0.4;
+  display: block;
+  top: 0px;
+  position: absolute;
 }
 </style>

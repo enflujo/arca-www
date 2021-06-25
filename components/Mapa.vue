@@ -26,8 +26,8 @@ export default {
     this.mapa = new mapboxgl.Map({
       container: this.$refs.mapa,
       style: this.mapboxStyle,
-      // center: [-77.04, 38.907],
-      // zoom: 2,
+      center: [-25.04, 8.907],
+      zoom: 2,
     });
 
     this.mapa.on('load', this.mapaCargado);
@@ -114,9 +114,11 @@ export default {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   display: block;
-  z-index: -1;
+  position: absolute;
+  clip-path: inset(32% 65% 10% 15% round 400px);
 }
 
 .mapboxgl-popup {

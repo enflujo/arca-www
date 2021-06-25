@@ -6,7 +6,7 @@
     <main role="main">
       <Nuxt keepAlive />
     </main>
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 main {
