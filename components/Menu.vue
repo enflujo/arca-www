@@ -1,6 +1,7 @@
 <template>
   <div :class="`menuPrincipal ${menuAbierto ? 'abierto' : 'cerrado'}`">
     <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
+
     <nav class="menuContenido">
       <NuxtLink
         v-for="pagina in paginas"
