@@ -13,11 +13,6 @@
     </template>
 
     <template v-else>
-      <!-- <MapaUno :pagina="pagina" :obras="obras" /> -->
-      <MapaDos :pagina="pagina" :obras="obras" />
-    </template>
-
-    <!-- <template v-else>
       <div class="contenedor-general">
         <div class="contenedor-derecho">
           <nuxt-img src="imgs/MapaImagen.jpeg" class="mapaImagen" />
@@ -28,9 +23,9 @@
             <p>{{ pagina.descripcion }}</p>
           </div>
         </div>
+        <Mapa :datos="obras" />
       </div>
-      <Mapa :datos="obras" />
-    </template> -->
+    </template>
   </div>
 </template>
 
@@ -101,49 +96,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// #mapa {
-//   clip-path: inset(32% 65% 10% 15% round 400px);
-// }
-// .contenedor-general {
-//   display: block;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100vw;
-//   height: 100vh;
-//   .contenedor-derecho {
-//     position: absolute;
-//     width: 50vw;
-//     left: 50vw;
-//     height: 100vh;
-//     .mapaImagen {
-//       right: 0px;
-//       height: 100vh;
-//     }
-//   }
-//   .contenedor-izquierdo {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 50vw;
-//     height: 100vh;
-//     background-color: $profundidad;
-//     .contenedor-mitad {
-//       color: $claridad;
-//       position: relative;
-//       top: 100px;
-//       display: flex;
-//       justify-content: center;
-//       flex-direction: column;
-//       align-items: center;
-//     }
-//   }
-// }
+#mapa {
+  clip-path: inset(32% 65% 10% 15% round 400px);
+}
+.contenedor-general {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  .contenedor-derecho {
+    position: absolute;
+    width: 50vw;
+    left: 50vw;
+    height: 100vh;
+    .mapaImagen {
+      right: 0px;
+      height: 100vh;
+    }
+  }
+  .contenedor-izquierdo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50vw;
+    height: 100vh;
+    background-color: $profundidad;
+    .contenedor-mitad {
+      color: $claridad;
+      position: relative;
+      top: 100px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
 
-// .transparencia {
-//   opacity: 0.4;
-//   display: block;
-//   top: 0px;
-//   position: absolute;
-// }
+.transparencia {
+  opacity: 0.4;
+  display: block;
+  top: 0px;
+  position: absolute;
+}
 </style>

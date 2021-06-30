@@ -139,7 +139,7 @@ $menuRayaColor: #08173e;
     width: 100vw;
     height: 100vh;
     padding: 60px 2em;
-    font-size: 1.2em;
+    font-size: 1em;
   }
 }
 
@@ -220,7 +220,7 @@ $menuRayaColor: #08173e;
   .abierto {
     .menuContenido {
       width: 30vw;
-      font-size: 1.5em;
+      font-size: 1.1em;
       display: flex;
       justify-content: center;
       position: fixed;

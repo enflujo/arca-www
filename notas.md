@@ -2,6 +2,8 @@
 Guia https://sass-guidelin.es/es/
 KISS & DRY
 
+- Scoped styles: dentro de components. Los relacionados con App.vue deberian ser universales
+
 
 ## TODO List:
 - [ ] Agregar al body un overflow: hidden cuando el menu esta abierto

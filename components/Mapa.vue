@@ -118,7 +118,7 @@ export default {
   height: 100vh;
   display: block;
   position: absolute;
-  clip-path: inset(32% 65% 10% 15% round 400px);
+  // clip-path: inset(32% 65% 10% 15% round 400px);
 }
 
 .mapboxgl-popup {

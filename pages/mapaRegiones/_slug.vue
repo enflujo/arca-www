@@ -10,17 +10,7 @@
 
     <template v-else>
       <h1>{{ pagina.titulo }}</h1>
-      <p>{{ pagina.descripcion }}</p>
-      <nuxt-img src="imgs/4408.jpg" sizes="sm:100vw md:50vw lg:400px" />
-      <p>Título Artista Año Lugar Lorem Ipsum</p>
-      <br />
-      <p>Título Artista Año Lugar Lorem Ipsum</p>
-      <br />
-      <p>Título Artista Año Lugar Lorem Ipsum</p>
-      <br />
-      <p>Título Artista Año Lugar Lorem Ipsum</p>
-      <br />
-      <p>Título Artista Año Lugar Lorem Ipsum</p>
+      <p>{{ pagina.contenido }}</p>
     </template>
   </div>
 </template>
@@ -33,14 +23,15 @@ export default {
   data() {
     return {
       pagina: {},
-      obras: [],
     };
   },
 
   async fetch() {
+    const pagina = this.$route.params.pagina;
+
     const query = gql`
       query {
-        paginas(filter: { slug: { _eq: "sobre-arca" } }, limit: 1) {
+        proyectos(filter: { slug: { _eq: "${this.$route.params.slug}" }, status: {_eq: "published"} }, limit: 1) {
           titulo
           slug
           descripcion
@@ -53,19 +44,15 @@ export default {
       }
     `;
 
-    const { paginas, artworks } = await this.$graphql.principal.request(query);
+    const res = await this.$graphql.principal.request(query);
 
-    if (paginas.length && paginas[0].slug) {
-      this.pagina = paginas[0];
+    if (res && res[pagina] && res[pagina].length) {
+      this.pagina = res[pagina][0];
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
-    }
-
-    if (artworks && artworks.length) {
-      this.obras = artworks;
     }
   },
 
@@ -80,5 +67,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

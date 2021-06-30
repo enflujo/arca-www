@@ -5,6 +5,11 @@
   src: local("Agraham"),
   url(~assets/fuentes/Agraham.ttf) format("truetype");
 }
+@font-face {
+  font-family: "Yeseva";
+  src: local("Yeseva"),
+  url(~assets/fuentes/Yeseva.ttf) format("truetype");
+}
 
 html {
   box-sizing: border-box;
@@ -40,10 +45,13 @@ time {
   margin: 0;
 }
 
-h1,
-h2,
-h3 {
+h1 {
   font-family: 'Agraham';
+}
+
+h2 {
+  font-family: $fuenteSec;
+  color: $claridad;
 }
 
 p {
@@ -114,11 +122,17 @@ a:link {
   display: flex;
   width: 100vw;
   justify-content: center;
-  margin-top: 100px;
   position: absolute;
+  overflow: auto;
+  height: 100vh;
+  padding-top: 100px;
   top: 0;
   .centrar-contenido{
     width: 800px;
     flex-direction: column;
   }
+}
+
+.texto-claro {
+  color: $claridad;
 }
