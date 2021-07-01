@@ -16,7 +16,7 @@
     </nav>
 
     <!-- <div class="menuBtn" :style="`background-color:${colorFondo}`" @click="resolverMenu">
-    TODO: QUITAR EL HARDCODEO -->
+    TODO: MODIFICAR EL HARDCODEO -->
     <div class="menuBtn" @click="resolverMenu">
       <div class="botonMenu"><span class="menuRaya"></span></div>
       <!-- <span class="lineaVertical"></span> -->
@@ -227,11 +227,6 @@ $menuRayaColor: #08173e;
       justify-content: center;
       position: fixed;
       border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
-      font-size: 1.5em;
-      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
-      display: flex;
-      justify-content: center;
-      position: fixed;
     }
   }
 }
