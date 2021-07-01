@@ -18,6 +18,11 @@
         <h2 class="nombre-pais">Pais 7</h2>
         <h2 class="nombre-pais">Pais 8</h2>
         <h2 class="nombre-pais">Pais 9</h2>
+        <h2 class="nombre-pais">Pais 10</h2>
+        <h2 class="nombre-pais">Pais 11</h2>
+        <h2 class="nombre-pais">Pais 12</h2>
+        <h2 class="nombre-pais">Pais 13</h2>
+        <h2 class="nombre-pais">Pais 14</h2>
       </div>
     </div>
   </div>
@@ -73,6 +78,7 @@ export default {
     display: block;
     left: calc(100% - 25%);
     position: relative;
+    overflow-y: auto;
   }
   // .contenedor-derecho {
   //   position: absolute;
@@ -108,6 +114,7 @@ export default {
     flex-direction: column;
     top: 100px;
     position: relative;
+    padding-bottom: 80px;
   }
 
   .nombre-pais {
