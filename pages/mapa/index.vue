@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tamano-completo">
     <template v-if="$fetchState.pending">
       <div class="contenedor">
         <div class="centrar-contenido">
