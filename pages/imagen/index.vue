@@ -33,12 +33,7 @@ export default {
     return {
       pagina: {},
       obras: {},
-      id: this.getId(),
     };
-  },
-
-  mounted() {
-    this.getId();
   },
 
   async fetch() {
@@ -91,11 +86,15 @@ export default {
     );
   },
 
-  methods: {
-    getId() {
+  computed: {
+    id() {
       return this.$route.query.id;
     },
   },
+
+  mounted() {},
+
+  methods: {},
 };
 </script>
 
