@@ -1,7 +1,6 @@
 <template>
   <div id="contenedor">
     <Navegacion :colorIcono="colorIcono" @cerrarMenu="cerrarMenu" />
-<<<<<<< HEAD
     <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
     <main role="main">
@@ -10,12 +9,6 @@
         <div class="centrar-contenido">
           <Nuxt keepAlive />
         </div>
-=======
-    <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
-    <main role="main" class="fondo-general">
-      <div class="centrar-contenido">
-        <Nuxt keepAlive />
->>>>>>> 4a14513 (Adelantos minimos del CSS)
       </div>
     </main>
     <!-- <Footer /> -->
@@ -59,14 +52,12 @@ export default {
 
 <style lang="scss" scoped>
 @use "sass:color";
-<<<<<<< HEAD
 
-=======
 @font-face {
   font-family: 'Agraham';
   src: local('Agraham'), local('Agraham Personal Use');
 }
->>>>>>> 4a14513 (Adelantos minimos del CSS)
+
 #contenedor {
   display: flex;
   flex-direction: column;
