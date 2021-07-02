@@ -22,6 +22,16 @@ export default {
     };
   },
 
+  watch: {
+    datos() {
+      if (this.mapa.getLayer('lugares')) {
+        this.mapa.removeLayer('lugares');
+        this.mapa.removeSource('lugares');
+      }
+      this.mapaCargado();
+    },
+  },
+
   mounted() {
     mapboxgl.accessToken = this.mapboxToken;
     this.mapa = new mapboxgl.Map({

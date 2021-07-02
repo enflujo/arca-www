@@ -14,7 +14,8 @@
 
     <template v-else>
       <!-- <MapaUno :pagina="pagina" :obras="obras" /> -->
-      <MapaDos :pagina="pagina" :obras="obras" />
+      <Filtros />
+      <MapaUno :pagina="pagina" :obras="obras" />
     </template>
 
     <!-- <template v-else>
@@ -86,6 +87,18 @@ export default {
     if (artworks && artworks.length) {
       this.obras = artworks;
     }
+  },
+
+  computed: {
+    obrasSeleccionadas() {
+      return this.$store.state.buscador.seleccionados;
+    },
+  },
+
+  watch: {
+    obrasSeleccionadas(obras) {
+      this.obras = obras;
+    },
   },
 
   head() {

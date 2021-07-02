@@ -6,63 +6,72 @@
     <div class="contenedor-izquierdo">
       <div class="contenedor-mitad"></div>
     </div> -->
-    <Mapa :datos="obras" />
     <div class="barra-derecha">
       <div class="lista-paises">
-        <h2 class="nombre-pais">Pais 1</h2>
-        <h2 class="nombre-pais">Pais 2</h2>
-        <h2 class="nombre-pais">Pais 3</h2>
-        <h2 class="nombre-pais">Pais 4</h2>
-        <h2 class="nombre-pais">Pais 5</h2>
-        <h2 class="nombre-pais">Pais 6</h2>
-        <h2 class="nombre-pais">Pais 7</h2>
-        <h2 class="nombre-pais">Pais 8</h2>
-        <h2 class="nombre-pais">Pais 9</h2>
-        <h2 class="nombre-pais">Pais 10</h2>
-        <h2 class="nombre-pais">Pais 11</h2>
-        <h2 class="nombre-pais">Pais 12</h2>
-        <h2 class="nombre-pais">Pais 13</h2>
-        <h2 class="nombre-pais">Pais 14</h2>
+        <h2 class="nombre-pais" :key="`pais-${i}`" v-for="(pais, i) in paises" @click="buscarPais(pais.id)">
+          {{ pais.name_spanish }}
+        </h2>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import mapboxgl from 'mapbox-gl';
+import { gql } from 'nuxt-graphql-request';
 
 export default {
-  props: {
-    pagina: {
-      type: Object,
-      default: () => {},
-    },
-    obras: {
-      type: Array,
-      default: () => [],
+  data() {
+    return {
+      paises: [],
+    };
+  },
+
+  async fetch() {
+    const query = gql`
+      query {
+        countries {
+          id
+          name_spanish
+        }
+      }
+    `;
+
+    const { countries } = await this.$graphql.principal.request(query);
+
+    if (countries && countries.length) {
+      this.paises = countries.sort((a, b) => {
+        const nombreA = a.name_spanish;
+        const nombreB = b.name_spanish;
+
+        if (nombreA < nombreB) {
+          return -1;
+        }
+        if (nombreA > nombreB) {
+          return 1;
+        }
+
+        return 0;
+      });
+    } else {
+      if (process.server) {
+        this.$nuxt.context.res.statusCode = 404;
+      }
+      throw new Error('La página no existe');
+    }
+  },
+
+  methods: {
+    buscarPais(id) {
+      this.$store.dispatch('buscador/buscar', {
+        campo: 'actual_country_id',
+        comparacion: id,
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-#mapa {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  display: block;
-  position: absolute;
-  z-index: -1;
-}
-
-.mapboxgl-popup {
-  position: absolute;
-  max-width: 400px;
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-}
-
 .contenedor-general {
   display: block;
   position: absolute;
