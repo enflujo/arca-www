@@ -8,7 +8,7 @@
     </div> -->
     <div class="barra-derecha">
       <div class="lista-paises">
-        <h2 class="nombre-pais" :key="`pais-${i}`" v-for="(pais, i) in paises" @click="buscarPais(pais.id)">
+        <h2 v-for="(pais, i) in paises" :key="`pais-${i}`" class="nombre-pais" @click="buscarPais(pais.id)">
           {{ pais.name_spanish }}
         </h2>
       </div>

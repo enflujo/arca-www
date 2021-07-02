@@ -89,6 +89,16 @@ export default {
     }
   },
 
+  head() {
+    return crearHead(
+      this.$store.state.general.datos.nombre,
+      this.pagina.titulo,
+      this.pagina.descripcion,
+      this.pagina.banner,
+      this.$nuxt.$route.path
+    );
+  },
+
   computed: {
     obrasSeleccionadas() {
       return this.$store.state.buscador.seleccionados;
@@ -99,16 +109,6 @@ export default {
     obrasSeleccionadas(obras) {
       this.obras = obras;
     },
-  },
-
-  head() {
-    return crearHead(
-      this.$store.state.general.datos.nombre,
-      this.pagina.titulo,
-      this.pagina.descripcion,
-      this.pagina.banner,
-      this.$nuxt.$route.path
-    );
   },
 };
 </script>
