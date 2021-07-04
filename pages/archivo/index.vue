@@ -9,15 +9,16 @@
     </template>
 
     <template v-else>
-      <div class="sobre-arca">
+      <div class="archivo">
         <h1>{{ pagina.titulo }}</h1>
         <p>{{ pagina.descripcion }}</p>
         <div class="descripcion">
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:100vw md:50vw lg:400px" />
-
-          <p>Título. Artista. Año. Lugar</p>
-          <p>{{ obras.title }}</p>
-          <p>{{ id }}</p>
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
         </div>
       </div>
     </template>
@@ -32,14 +33,14 @@ export default {
   data() {
     return {
       pagina: {},
-      obras: {},
+      obras: [],
     };
   },
 
   async fetch() {
     const query = gql`
       query {
-        paginas(filter: { slug: { _eq: "sobre-arca" } }, limit: 1) {
+        paginas(filter: { slug: { _eq: "archivo" } }, limit: 1) {
           titulo
           slug
           descripcion
@@ -48,13 +49,6 @@ export default {
             id
             title
           }
-        }
-        artworks(filter: { id: { _eq: ${this.id} } }) {
-          id
-          title
-          annotation_date
-          latitude_current
-          longitude_current
         }
       }
     `;
@@ -70,9 +64,8 @@ export default {
       throw new Error('La página no existe');
     }
 
-    if (artworks) {
-      this.obras = artworks[0];
-      // console.log(this.obras);
+    if (artworks && artworks.length) {
+      this.obras = artworks;
     }
   },
 
@@ -85,17 +78,16 @@ export default {
       this.$nuxt.$route.path
     );
   },
-
-  computed: {
-    id() {
-      return this.$route.query.id;
-    },
-  },
-
-  mounted() {},
-
-  methods: {},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.archivo {
+  margin: 3em;
+  max-width: 90%;
+}
+
+.descripcion {
+  padding-top: 1em;
+}
+</style>

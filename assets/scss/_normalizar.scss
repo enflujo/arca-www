@@ -1,14 +1,13 @@
 @use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700;800;900&display=swap');
 @font-face {
-  font-family: "Agraham";
-  src: local("Agraham"),
-  url(~assets/fuentes/Agraham.ttf) format("truetype");
+  font-family: 'Agraham';
+  src: local('Agraham'), url(~assets/fuentes/Agraham.ttf) format('truetype'),
+    url(~assets/fuentes/Agraham.ttf) format('truetype');
 }
 @font-face {
-  font-family: "Yeseva";
-  src: local("Yeseva"),
-  url(~assets/fuentes/Yeseva.ttf) format("truetype");
+  font-family: 'Yeseva';
+  src: local('Yeseva'), url(~assets/fuentes/Yeseva.ttf) format('truetype');
 }
 
 html {
@@ -59,10 +58,9 @@ p {
 }
 
 h4 {
-
 }
 
-a{
+a {
   font-family: $fuenteMenu;
   font-weight: 400;
   text-transform: uppercase;
@@ -117,7 +115,6 @@ a:link {
   color: black;
 }
 
-
 .contenedor {
   display: flex;
   width: 100vw;
@@ -127,7 +124,7 @@ a:link {
   height: 100vh;
   padding-top: 100px;
   top: 0;
-  .centrar-contenido{
+  .centrar-contenido {
     width: 800px;
     flex-direction: column;
   }
