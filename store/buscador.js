@@ -16,6 +16,7 @@ export const actions = {
           synthesis
           latitude_current
           longitude_current
+          author_id
         }
       }
     `;

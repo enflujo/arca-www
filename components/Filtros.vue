@@ -105,7 +105,7 @@ export default {
     },
     actualizarFiltro(filtro) {
       this.filtro = filtro;
-      console.log(this.filtro);
+      // console.log(this.filtro);
     },
   },
 };

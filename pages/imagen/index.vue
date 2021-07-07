@@ -11,13 +11,11 @@
     <template v-else>
       <div class="sobre-arca">
         <h1>{{ pagina.titulo }}</h1>
-        <p>{{ pagina.descripcion }}</p>
         <div class="descripcion">
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:100vw md:50vw lg:400px" />
-
-          <p>Título. Artista. Año. Lugar</p>
+          <img :src="`http://143.110.150.100:8055/assets/${obras.image.id}`" :alt="obras.title" />
           <p>{{ obras.title }}</p>
-          <p>{{ id }}</p>
+          <p>Autor: {{ obras.author_id.id }}</p>
+          <p>{{ obras.annotation_date }}</p>
         </div>
       </div>
     </template>
@@ -33,13 +31,14 @@ export default {
     return {
       pagina: {},
       obras: {},
+      autor: {},
     };
   },
 
   async fetch() {
     const query = gql`
       query {
-        paginas(filter: { slug: { _eq: "sobre-arca" } }, limit: 1) {
+        paginas(filter: { slug: { _eq: "imagen" } }, limit: 1) {
           titulo
           slug
           descripcion
@@ -55,11 +54,23 @@ export default {
           annotation_date
           latitude_current
           longitude_current
+          image {
+            id
+            title
+          }
+          author_id {
+            id
+          }
+        }
+        authors(filter: { id: { _eq: ${this.id} } }) {
+          id
+          lastname
+          name
         }
       }
     `;
 
-    const { paginas, artworks } = await this.$graphql.principal.request(query);
+    const { paginas, artworks, authors } = await this.$graphql.principal.request(query);
 
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
@@ -69,10 +80,13 @@ export default {
       }
       throw new Error('La página no existe');
     }
-
     if (artworks) {
       this.obras = artworks[0];
       // console.log(this.obras);
+    }
+    if (authors) {
+      this.autor = authors[0];
+      // console.log(this.$route.query.title);
     }
   },
 
@@ -89,6 +103,9 @@ export default {
   computed: {
     id() {
       return this.$route.query.id;
+    },
+    authorId() {
+      return this.$store.state.buscador.seleccionados.authorId;
     },
   },
 
