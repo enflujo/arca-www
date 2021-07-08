@@ -10,13 +10,13 @@
     <div class="barra-derecha">
       <button class="boton-filtro" @click="actualizarFiltro('pais')">Filtrar por país</button>
       <button class="boton-filtro" @click="actualizarFiltro('autor')">Filtrar por autor</button>
-      <div class="lista-paises" v-if="filtro === 'pais'">
+      <div v-if="filtro === 'pais'" class="lista-paises">
         <h2 v-for="(pais, i) in paises" :key="`pais-${i}`" class="nombre-pais" @click="buscarPais(pais.id)">
           {{ pais.name_spanish }}
         </h2>
       </div>
 
-      <div class="lista-paises" v-if="filtro === 'autor'">
+      <div v-if="filtro === 'autor'" class="lista-paises">
         <h2 v-for="(autor, i) in autores" :key="`autor-${i}`" class="nombre-pais" @click="buscarAutor(autor.id)">
           {{ autor.lastname }} {{ autor.name }}
         </h2>

@@ -11,7 +11,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    idImagen: {},
   },
 
   data() {
