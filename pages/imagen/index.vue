@@ -12,9 +12,9 @@
       <div class="sobre-arca">
         <h1>{{ pagina.titulo }}</h1>
         <div class="descripcion">
-          <img :src="`http://143.110.150.100:8055/assets/${obras.image.id}`" :alt="obras.title" />
+          <img :src="urlImagen(obras.image)" :alt="obras.title" />
           <p>{{ obras.title }}</p>
-          <p>Autor: {{ obras.author_id.id }}</p>
+          <p>Autor: {{ `${obras.author_id.name} ${obras.author_id.lastname}` }}</p>
           <p>{{ obras.annotation_date }}</p>
         </div>
       </div>
@@ -24,7 +24,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
   data() {
@@ -60,12 +60,9 @@ export default {
           }
           author_id {
             id
+            name
+            lastname
           }
-        }
-        authors(filter: { id: { _eq: ${this.id} } }) {
-          id
-          lastname
-          name
         }
       }
     `;
@@ -111,7 +108,11 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
+  },
 };
 </script>
 

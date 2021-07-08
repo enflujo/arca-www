@@ -13,15 +13,19 @@ export const urlImagen = (id, key) => {
     throw new Error(`Se tiene que usar un ID del archivo pero ahora eparametro es ${JSON.stringify(id)}`);
   }
 
-  // Desde Directus se pueden crear configuraciones predeterminadas para pedir imagenes en diferentes formatos usando un "key"
-  // Si se usa un key, podemos devolver este endpoint sencillo
-  if (typeof key === 'string') {
-    return `${apiBase}/assets/${id}?key=${key}`;
+  if (key) {
+    // Desde Directus se pueden crear configuraciones predeterminadas para pedir imagenes en diferentes formatos usando un "key"
+    // Si se usa un key, podemos devolver este endpoint sencillo
+    if (typeof key === 'string') {
+      return `${apiBase}/assets/${id}?key=${key}`;
+    }
+
+    // Si no se usa un key sino que se pasan las opciones manualmente, debemos construir la URL con sus parametros.
+    const query = new URLSearchParams(key).toString();
+    return `${apiBase}/assets/${id}?${query}`;
   }
 
-  // Si no se usa un key sino que se pasan las opciones manualmente, debemos construir la URL con sus parametros.
-  const query = new URLSearchParams(key).toString();
-  return `${apiBase}/assets/${id}?${query}`;
+  return `${apiBase}/assets/${id}`;
 };
 
 /**
