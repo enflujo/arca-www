@@ -9,7 +9,7 @@ export const actions = {
   async buscar({ commit }, filtro) {
     const query = gql`
       query {
-        artworks(filter: { ${filtro.campo}: { id: { _eq: ${filtro.comparacion} } } } limit: 10000) {
+        artworks(filter: { ${filtro.campo}: { id: { _eq: ${filtro.comparacion} } } } limit: -1) {
           id
           title
           annotation_date
@@ -20,6 +20,10 @@ export const actions = {
             id
             name
             lastname
+          }
+          actual_country_id{
+            id
+            name_spanish
           }
         }
       }

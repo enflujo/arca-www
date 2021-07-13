@@ -84,7 +84,6 @@ export default {
         if (apellidoA > apellidoB) {
           return 1;
         }
-
         return 0;
       });
     }
@@ -104,8 +103,8 @@ export default {
       });
     },
     actualizarFiltro(filtro) {
+      this.$root.filtro = filtro;
       this.filtro = filtro;
-      // console.log(this.filtro);
     },
   },
 };
