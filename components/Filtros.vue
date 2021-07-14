@@ -6,10 +6,19 @@
     <div class="contenedor-izquierdo">
       <div class="contenedor-mitad"></div>
     </div> -->
+
     <div class="barra-derecha">
-      <div class="lista-paises">
+      <button class="boton-filtro" @click="actualizarFiltro('pais')">Filtrar por país</button>
+      <button class="boton-filtro" @click="actualizarFiltro('autor')">Filtrar por autor</button>
+      <div v-if="filtro === 'pais'" class="lista-paises">
         <h2 v-for="(pais, i) in paises" :key="`pais-${i}`" class="nombre-pais" @click="buscarPais(pais.id)">
           {{ pais.name_spanish }}
+        </h2>
+      </div>
+
+      <div v-if="filtro === 'autor'" class="lista-paises">
+        <h2 v-for="(autor, i) in autores" :key="`autor-${i}`" class="nombre-pais" @click="buscarAutor(autor.id)">
+          {{ autor.lastname }} {{ autor.name }}
         </h2>
       </div>
     </div>
@@ -23,6 +32,8 @@ export default {
   data() {
     return {
       paises: [],
+      autores: [],
+      filtro: 'null',
     };
   },
 
@@ -33,10 +44,15 @@ export default {
           id
           name_spanish
         }
+        authors {
+          id
+          lastname
+          name
+        }
       }
     `;
 
-    const { countries } = await this.$graphql.principal.request(query);
+    const { countries, authors } = await this.$graphql.principal.request(query);
 
     if (countries && countries.length) {
       this.paises = countries.sort((a, b) => {
@@ -49,7 +65,6 @@ export default {
         if (nombreA > nombreB) {
           return 1;
         }
-
         return 0;
       });
     } else {
@@ -57,6 +72,20 @@ export default {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
+    }
+    if (authors && authors.length) {
+      this.autores = authors.sort((a, b) => {
+        const apellidoA = a.lastname;
+        const apellidoB = b.lastname;
+
+        if (apellidoA < apellidoB) {
+          return -1;
+        }
+        if (apellidoA > apellidoB) {
+          return 1;
+        }
+        return 0;
+      });
     }
   },
 
@@ -66,6 +95,16 @@ export default {
         campo: 'actual_country_id',
         comparacion: id,
       });
+    },
+    buscarAutor(id) {
+      this.$store.dispatch('buscador/buscar', {
+        campo: 'author_id',
+        comparacion: id,
+      });
+    },
+    actualizarFiltro(filtro) {
+      this.$root.filtro = filtro;
+      this.filtro = filtro;
     },
   },
 };
@@ -116,6 +155,13 @@ export default {
   //     align-items: center;
   //   }
   // }
+  .boton-filtro {
+    display: flex;
+    width: 30%;
+    position: relative;
+    justify-content: space-around;
+    color: aliceblue;
+  }
   .lista-paises {
     display: flex;
     justify-content: space-around;

@@ -14,3 +14,5 @@ KISS & DRY
 Mezclar un branch con otro (y mantener la historia) `git rebase <nombre-de-branch>`
 
 terminar proceso luego de varios commits sueltos `git rebase --continue`
+
+## TODO List:

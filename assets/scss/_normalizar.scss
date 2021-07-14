@@ -114,7 +114,6 @@ a:link {
   background-color: color.scale($claridad, $lightness: 50%);
   color: black;
 }
-
 .contenedor {
   display: flex;
   width: 100vw;
@@ -132,4 +131,12 @@ a:link {
 
 .texto-claro {
   color: $claridad;
+}
+.centrar-contenido {
+  width: 900px;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+}
+.fondo-general {
 }
