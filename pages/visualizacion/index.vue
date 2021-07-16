@@ -13,7 +13,7 @@
     </template>
 
     <template v-else>
-      <Filtros paises="paises" filtro="filtro" />
+      <Filtros paises="paises" />
       <div class="seleccionadas">
         <p>
           Hay {{ this.$store.state.buscador.seleccionados.length }} obras de {{ mostrarAutorOPais() }} en la colección.
@@ -96,8 +96,9 @@ export default {
   methods: {
     mostrarAutorOPais() {
       let obrasSeleccionadas = [];
-      const filtro = this.$root.filtro;
-      if (this.$store.state.buscador.seleccionados.length !== 0) {
+      const filtro = this.$store.state.general.filtro;
+
+      if (this.$store.state.buscador.seleccionados.length) {
         if (filtro === 'autor') {
           obrasSeleccionadas = this.$store.state.buscador.seleccionados[0].author_id.lastname;
         } else if (filtro === 'pais') {

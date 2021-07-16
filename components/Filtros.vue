@@ -33,8 +33,13 @@ export default {
     return {
       paises: [],
       autores: [],
-      filtro: 'null',
     };
+  },
+
+  computed: {
+    filtro() {
+      return this.$store.state.general.filtro;
+    },
   },
 
   async fetch() {
@@ -103,8 +108,7 @@ export default {
       });
     },
     actualizarFiltro(filtro) {
-      this.$root.filtro = filtro;
-      this.filtro = filtro;
+      this.$store.commit('general/actualizarFiltro', filtro);
     },
   },
 };
