@@ -42,3 +42,24 @@ yarn lint
 ```bash
 yarn lint:fix
 ```
+
+## Sobre Vue
+
+```js
+data() {
+  return  {
+    variable1: false,
+    variable2: true
+  }
+}
+
+this.variable1
+this.variable2
+this.variable3
+
+computed: {
+  variable3() {
+    return this.$store....
+  }
+}
+```
