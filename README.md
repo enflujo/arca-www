@@ -97,6 +97,8 @@ watch: {
 </Layout>
 ```
 
+<<<<<<< HEAD
+
 #### Store
 
 ```js
@@ -120,3 +122,7 @@ const mutations = {
 store.dispatch('[nombreDelStore]/[nombreDeAccion]', datos);
 store.commit('[nombreDelStore]/[nombreDeMutacion]', datos);
 ```
+
+=======
+
+> > > > > > > e859fcb (💩)
