@@ -96,3 +96,27 @@ watch: {
   <OtroComponente>
 </Layout>
 ```
+
+#### Store
+
+```js
+const state = {
+  x: null,
+};
+const actions = {
+  hola({ commit, state }, datos) {
+    //...
+    commit('mutarEstadoX', datosConvertidosEnAccion);
+  },
+};
+const mutations = {
+  mutarEstadoX(state, datos) {
+    this.state.x = datos;
+  },
+};
+```
+
+```js
+store.dispatch('[nombreDelStore]/[nombreDeAccion]', datos);
+store.commit('[nombreDelStore]/[nombreDeMutacion]', datos);
+```
