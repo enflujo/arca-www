@@ -63,3 +63,36 @@ computed: {
   }
 }
 ```
+
+```js
+<template>
+
+<template>
+
+<script>
+// En Footer
+props: {
+  algo: {
+    type: Number
+  }
+}
+
+watch: {
+  algo() {
+    hagaAlgo();
+    otraCosaExclusivaDeJS();
+  }
+}
+
+
+</script>
+```
+
+```js
+//Componente en Vue (puede ser de la carpeta componentes, pero tambien los layouts y pages). En resumen, todos los archivos .vue son componentes.
+<Componente prop1="hola" />
+<Pagina :propVariable="algoDeDatos" />
+<Layout>
+  <OtroComponente>
+</Layout>
+```
