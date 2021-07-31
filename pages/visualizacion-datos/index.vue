@@ -26,7 +26,16 @@
       <MapaDashboard :pagina="pagina" :obras="obras" />
       <div class="parte-inferior">
         <div class="imagenes-triangulares">
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" id="arca-mascara" />
+          <img :src="urlImagen(obras[0].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[1].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[2].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[3].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[4].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[5].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[6].image)" :alt="obras.title" width="190" id="arca-mascara" />
+          <img :src="urlImagen(obras[7].image)" :alt="obras.title" width="190" id="arca-mascara" />
+
+          <!-- <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" id="arca-mascara" /> -->
         </div>
       </div>
     </template>
@@ -35,7 +44,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
   layout: 'dashboard',
@@ -114,10 +123,14 @@ export default {
         return obrasSeleccionadas;
       }
     },
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
   },
 
   computed: {
     obrasSeleccionadas() {
+      console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
   },
