@@ -26,16 +26,14 @@
       <MapaDashboard :pagina="pagina" :obras="obras" />
       <div class="parte-inferior">
         <div class="imagenes-triangulares">
-          <img :src="urlImagen(obras[0].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[1].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[2].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[3].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[4].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[5].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[6].image)" :alt="obras.title" width="190" id="arca-mascara" />
-          <img :src="urlImagen(obras[7].image)" :alt="obras.title" width="190" id="arca-mascara" />
-
-          <!-- <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" id="arca-mascara" /> -->
+          <img
+            v-for="(obra, i) in obras"
+            :key="`obra-${i}`"
+            :src="urlImagen(obras[i].image)"
+            :alt="obras.title"
+            width="190"
+            id="arca-mascara"
+          />
         </div>
       </div>
     </template>
@@ -53,6 +51,7 @@ export default {
       pagina: {},
       obras: [],
       paises: {},
+      imagenes: [],
     };
   },
 
@@ -130,7 +129,7 @@ export default {
 
   computed: {
     obrasSeleccionadas() {
-      console.log(this.$store.state.buscador.seleccionados);
+      //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
   },
