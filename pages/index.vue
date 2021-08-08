@@ -95,6 +95,9 @@ section {
   background-size: cover;
   background-position: center;
   padding: 3em 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .lienzo {

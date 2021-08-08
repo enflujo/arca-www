@@ -10,33 +10,27 @@
 
     <template v-else>
       <div class="archivo">
-        <h1>{{ pagina.titulo }}</h1>
-        <p>{{ pagina.descripcion }}</p>
+        <div class="barra-izquierda">
+          <h1>{{ pagina.titulo }}</h1>
+          <p>{{ pagina.descripcion }}</p>
 
-        <div class="descripcion">
-          <div>
-            <Buscador />
-            <Filtros paises="paises" filtro="filtro" />
-          </div>
-          <div class="parte-inferior">
-            <div class="imagenes-triangulares">
-              <img
-                v-for="(obra, i) in obras"
-                :key="`obra-${i}`"
-                :src="urlImagen(obras[i].image)"
-                :alt="obras.title"
-                width="190"
-                id="arca-mascara"
-              />
+          <div class="descripcion">
+            <div>
+              <Buscador />
+              <Filtros paises="paises" filtro="filtro" />
             </div>
           </div>
-          <!-- <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-        --></div>
+        </div>
+        <div class="imagenes">
+          <img
+            v-for="(obra, i) in obras"
+            :key="`obra-${i}`"
+            :src="urlImagen(obras[i].image)"
+            :alt="obras.title"
+            width="190"
+            id="arca-mascara"
+          />
+        </div>
       </div>
     </template>
   </div>
@@ -47,6 +41,7 @@ import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
+  layout: 'archivo',
   data() {
     return {
       pagina: {},
@@ -117,20 +112,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.archivo {
-  margin: 3em;
-  max-width: 90%;
-}
-
-.descripcion {
-  padding-top: 1em;
-}
-.parte-inferior {
-  position: absolute;
-  top: 50vh;
-  .arca-mascara {
-    clip-path: url(#Path_405);
-  }
-}
-</style>
+<style lang="scss" scoped></style>

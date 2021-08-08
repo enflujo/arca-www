@@ -4,8 +4,6 @@
       <!-- <div class="contenedor">
         <div class="centrar-contenido"> -->
       <h1>Pendiente...</h1>
-      <!-- </div>
-      </div> -->
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -190,9 +188,10 @@ export default {
 .parte-inferior {
   position: absolute;
   top: 50vh;
-  .arca-mascara {
-    clip-path: url(#Path_405);
-  }
+}
+
+img {
+  max-width: 200px;
 }
 
 // #mapa {
