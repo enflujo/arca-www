@@ -51,7 +51,6 @@ export default {
       pagina: {},
       obras: [],
       paises: {},
-      imagenes: [],
     };
   },
 

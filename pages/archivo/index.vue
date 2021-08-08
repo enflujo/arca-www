@@ -12,14 +12,31 @@
       <div class="archivo">
         <h1>{{ pagina.titulo }}</h1>
         <p>{{ pagina.descripcion }}</p>
+
         <div class="descripcion">
+          <div>
+            <Buscador />
+            <Filtros paises="paises" filtro="filtro" />
+          </div>
+          <div class="parte-inferior">
+            <div class="imagenes-triangulares">
+              <img
+                v-for="(obra, i) in obras"
+                :key="`obra-${i}`"
+                :src="urlImagen(obras[i].image)"
+                :alt="obras.title"
+                width="190"
+                id="arca-mascara"
+              />
+            </div>
+          </div>
+          <!-- <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
           <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
           <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
           <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
           <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
           <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-        </div>
+        --></div>
       </div>
     </template>
   </div>
@@ -27,7 +44,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
   data() {
@@ -78,6 +95,25 @@ export default {
       this.$nuxt.$route.path
     );
   },
+
+  methods: {
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
+  },
+
+  computed: {
+    obrasSeleccionadas() {
+      //  console.log(this.$store.state.buscador.seleccionados);
+      return this.$store.state.buscador.seleccionados;
+    },
+  },
+
+  watch: {
+    obrasSeleccionadas(obras) {
+      this.obras = obras;
+    },
+  },
 };
 </script>
 
@@ -89,5 +125,12 @@ export default {
 
 .descripcion {
   padding-top: 1em;
+}
+.parte-inferior {
+  position: absolute;
+  top: 50vh;
+  .arca-mascara {
+    clip-path: url(#Path_405);
+  }
 }
 </style>
