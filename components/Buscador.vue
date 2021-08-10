@@ -6,11 +6,11 @@
     <div class="imagenes">
       <img
         v-for="(obra, i) in obras"
+        id="arca-mascara"
         :key="`obra-${i}`"
         :src="urlImagen(obras[i].image)"
         :alt="obras.title"
         width="190"
-        id="arca-mascara"
       />
     </div>
   </div>
