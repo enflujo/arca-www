@@ -14,22 +14,13 @@
           <h1>{{ pagina.titulo }}</h1>
           <p>{{ pagina.descripcion }}</p>
 
-          <div class="descripcion">
-            <div>
-              <Buscador />
-              <Filtros paises="paises" filtro="filtro" />
-            </div>
-          </div>
+          <div class="descripcion"></div>
         </div>
-        <div class="imagenes">
-          <img
-            v-for="(obra, i) in obras"
-            :key="`obra-${i}`"
-            :src="urlImagen(obras[i].image)"
-            :alt="obras.title"
-            width="190"
-            id="arca-mascara"
-          />
+
+        <div class="archivo">
+          <div>
+            <Buscador />
+          </div>
         </div>
       </div>
     </template>
@@ -112,4 +103,21 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.archivo {
+  margin: 3em;
+  max-width: 90%;
+}
+.descripcion {
+  padding-top: 1em;
+  z-index: 99;
+}
+.parte-inferior {
+  position: absolute;
+  top: 50vh;
+}
+
+img {
+  max-width: 200px;
+}
+</style>

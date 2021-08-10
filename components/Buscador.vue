@@ -3,16 +3,28 @@
     <div class="buscador">
       <input v-model="searchQuery" type="search" placeholder="buscar" @keyup="validarBusqueda" />
     </div>
+    <div class="imagenes">
+      <img
+        v-for="(obra, i) in obras"
+        :key="`obra-${i}`"
+        :src="urlImagen(obras[i].image)"
+        :alt="obras.title"
+        width="190"
+        id="arca-mascara"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import { gql } from 'nuxt-graphql-request';
+import { urlImagen } from '../utilidades/ayudas';
+
 export default {
   data() {
     return {
       searchQuery: '',
-      elementos: [],
+      obras: [],
     };
   },
   async fetch() {
@@ -22,16 +34,18 @@ export default {
         query {
           artworks(search: "${queryString}") {
             title
-          }
-          countries(filter: {name: {_eq: "${queryString}"}}) {
+            image {
+            id
             title
           }
+          }
+          
         }
       `;
       const { artworks } = await this.$graphql.principal.request(query);
       if (artworks && artworks.length) {
         console.log(artworks);
-        this.elementos = artworks;
+        this.obras = artworks;
       } else {
         if (process.server) {
           this.$nuxt.context.res.statusCode = 404;
@@ -50,6 +64,9 @@ export default {
       if (evento.keyCode === 13) {
         this.$fetch();
       }
+    },
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
     },
     buscarPais(id) {
       this.$store.dispatch('buscador/buscar', {
