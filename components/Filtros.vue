@@ -166,6 +166,10 @@ export default {
       justify-content: space-around;
     }
   }
+  .buscador {
+    left: 10%;
+    margin: 8%;
+  }
   // .contenedor-derecho {
   //   position: absolute;
   //   width: 50vw;
