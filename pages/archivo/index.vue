@@ -10,16 +10,31 @@
 
     <template v-else>
       <div class="archivo">
-        <div class="barra-izquierda">
+        <div class="titulo">
           <h1>{{ pagina.titulo }}</h1>
           <p>{{ pagina.descripcion }}</p>
-
-          <div class="descripcion"></div>
         </div>
-
-        <div class="archivo">
-          <div>
-            <Buscador />
+        <div class="imagenes">
+          <div class="caja-inicial">
+            <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+            <div class="caja-descripcion">
+              <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+              <div class="descripcion">
+                <h2 class="titulo-obra">Sagrado Corazon</h2>
+                <h3 class="subtitulo-obra">Anonimo</h3>
+                <p class="descripcion-obra">
+                  Nacido en Santa Fe de Bogotá e hijo de un artesano español. Se dedicó también a la arquitectura y la
+                  poesía. Personaje de la novela
+                </p>
+                <button class="boton-ver">VER OBRA</button>
+              </div>
+            </div>
+            <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+          </div>
+          <div class="caja-secundaria">
+            <div>
+              <Buscador />
+            </div>
           </div>
         </div>
       </div>
@@ -105,19 +120,70 @@ export default {
 
 <style lang="scss" scoped>
 .archivo {
-  margin: 3em;
-  max-width: 90%;
-}
-.descripcion {
-  padding-top: 1em;
-  z-index: 99;
-}
-.parte-inferior {
-  position: absolute;
-  top: 50vh;
-}
-
-img {
-  max-width: 200px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  .titulo {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .imagenes {
+    width: 1100px;
+    .caja-inicial {
+      display: flex;
+      justify-content: space-between;
+      .caja-descripcion {
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        text-align: initial;
+        .descripcion {
+          width: 400px;
+          background-color: #af2828;
+          padding: 2em;
+          justify-content: space-around;
+          display: flex;
+          flex-direction: column;
+          .titulo-obra {
+            color: $claridad;
+            font-weight: 300;
+          }
+          .subtitulo-obra {
+            color: $claridad;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+          }
+          .descripcion-obra {
+            color: $claridad;
+            line-height: 1.5;
+            letter-spacing: -0.4px;
+            font-size: 14px;
+          }
+          .boton-ver {
+            border: 1px solid $claridad;
+            padding: 1em;
+            border-radius: 25px;
+            color: $claridad;
+            letter-spacing: 6px;
+            letter-spacing: 6px;
+            font-size: 11px;
+            align-self: center;
+          }
+        }
+      }
+    }
+    .caja-secundaria {
+      display: flex;
+      justify-content: space-between;
+      top: 20px;
+      position: relative;
+    }
+  }
 }
 </style>
