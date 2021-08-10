@@ -1,7 +1,7 @@
 <template>
   <nav class="navegacion">
     <NuxtLink to="/" class="logoBtn">
-      <Icono :color="colorIcono" :fondo="colorFondo" @click.native="cerrarMenu" />
+      <!-- <Icono :color="colorIcono" :fondo="colorFondo" @click.native="cerrarMenu" /> -->
     </NuxtLink>
 
     <NuxtLink

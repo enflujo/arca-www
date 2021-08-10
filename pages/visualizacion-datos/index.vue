@@ -1,11 +1,9 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <div class="contenedor">
-        <div class="centrar-contenido">
-          <h1>Pendiente...</h1>
-        </div>
-      </div>
+      <!-- <div class="contenedor">
+        <div class="centrar-contenido"> -->
+      <h1>Pendiente...</h1>
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -13,24 +11,39 @@
     </template>
 
     <template v-else>
-      <Filtros paises="paises" />
-      <div class="seleccionadas">
-        <p>
-          Hay {{ this.$store.state.buscador.seleccionados.length }} obras de {{ mostrarAutorOPais() }} en la colección.
-        </p>
+      <Filtros paises="paises" filtro="filtro" />
+      <!-- <div class="seleccionadas"> -->
+      <div class="tercer-cuadro">
+        <div class="circulo"></div>
+        <div class="texto-tercer">
+          <span class="resaltar-tamano"> {{ this.$store.state.buscador.seleccionados.length }} </span>
+          obras de <span class="resaltar-color">{{ mostrarAutorOPais() }}</span> en la colección.
+        </div>
       </div>
-      <!-- <MapaUno :pagina="pagina" :obras="obras" /> -->
+      <!-- </div> -->
+      <MapaDashboard :pagina="pagina" :obras="obras" />
+      <div class="parte-inferior">
+        <div class="imagenes-triangulares">
+          <img
+            v-for="(obra, i) in obras"
+            :key="`obra-${i}`"
+            :src="urlImagen(obras[i].image)"
+            :alt="obras.title"
+            width="190"
+            id="arca-mascara"
+          />
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
-  // Crea la pagina tomando como plantilla layouts/mapa.vue
-  layout: 'mapa',
+  layout: 'dashboard',
   data() {
     return {
       pagina: {},
@@ -107,10 +120,14 @@ export default {
         return obrasSeleccionadas;
       }
     },
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
   },
 
   computed: {
     obrasSeleccionadas() {
+      //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
   },
@@ -133,6 +150,51 @@ export default {
   width: 100vw;
   height: 100vh;
 }
+
+.tercer-cuadro {
+  width: 25vw;
+  height: 30vh;
+  z-index: 4;
+  display: flex;
+  position: absolute;
+  top: 10%;
+  left: 50vw;
+  overflow-y: auto;
+  .circulo {
+    width: 80px;
+    height: 80px;
+    background-color: $dolor;
+    border-radius: 200px;
+    align-self: center;
+    position: relative;
+    left: 30px;
+  }
+  .texto-tercer {
+    display: flex;
+    width: 60%;
+    align-self: center;
+    left: 60px;
+    position: relative;
+    flex-direction: column;
+    font-family: $fuenteSec;
+    .resaltar-tamano {
+      font-size: 3em;
+    }
+    .resaltar-color {
+      color: $dolor;
+    }
+  }
+}
+
+.parte-inferior {
+  position: absolute;
+  top: 50vh;
+}
+
+img {
+  max-width: 200px;
+}
+
 // #mapa {
 //   clip-path: inset(32% 65% 10% 15% round 400px);
 // }

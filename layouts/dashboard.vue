@@ -5,13 +5,13 @@
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
     <main role="main">
       <Fondo />
-      <div class="contenedor">
-        <div class="centrar-contenido">
-          <Nuxt keepAlive />
-        </div>
-      </div>
+      <!-- <div class="contenedor">
+        <div class="centrar-contenido"> -->
+      <Nuxt keepAlive />
+      <!-- </div>
+      </div> -->
     </main>
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 

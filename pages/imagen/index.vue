@@ -10,10 +10,10 @@
 
     <template v-else>
       <div class="sobre-arca">
-        <h1>{{ pagina.titulo }}</h1>
+        <h1>{{ obras.title }}</h1>
         <div class="descripcion">
           <img :src="urlImagen(obras.image)" :alt="obras.title" />
-          <p>{{ obras.title }}</p>
+
           <p>Autor: {{ `${obras.author_id.name} ${obras.author_id.lastname}` }}</p>
           <p>{{ obras.annotation_date }}</p>
         </div>

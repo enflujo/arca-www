@@ -10,15 +10,17 @@
 
     <template v-else>
       <div class="archivo">
-        <h1>{{ pagina.titulo }}</h1>
-        <p>{{ pagina.descripcion }}</p>
-        <div class="descripcion">
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-          <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+        <div class="barra-izquierda">
+          <h1>{{ pagina.titulo }}</h1>
+          <p>{{ pagina.descripcion }}</p>
+
+          <div class="descripcion"></div>
+        </div>
+
+        <div class="archivo">
+          <div>
+            <Buscador />
+          </div>
         </div>
       </div>
     </template>
@@ -27,9 +29,10 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
+  layout: 'archivo',
   data() {
     return {
       pagina: {},
@@ -78,6 +81,25 @@ export default {
       this.$nuxt.$route.path
     );
   },
+
+  methods: {
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
+  },
+
+  computed: {
+    obrasSeleccionadas() {
+      //  console.log(this.$store.state.buscador.seleccionados);
+      return this.$store.state.buscador.seleccionados;
+    },
+  },
+
+  watch: {
+    obrasSeleccionadas(obras) {
+      this.obras = obras;
+    },
+  },
 };
 </script>
 
@@ -86,8 +108,16 @@ export default {
   margin: 3em;
   max-width: 90%;
 }
-
 .descripcion {
   padding-top: 1em;
+  z-index: 99;
+}
+.parte-inferior {
+  position: absolute;
+  top: 50vh;
+}
+
+img {
+  max-width: 200px;
 }
 </style>

@@ -45,12 +45,13 @@ time {
 }
 
 h1 {
-  font-family: 'Agraham';
+  font-family: $fuenteSec;
 }
 
 h2 {
   font-family: $fuenteSec;
-  color: $claridad;
+  color: $profundidad;
+  
 }
 
 p {

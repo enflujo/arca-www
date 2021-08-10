@@ -4,11 +4,8 @@
     <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
     <main role="main">
-      <Fondo />
       <div class="contenedor">
-        <div class="centrar-contenido">
-          <Nuxt keepAlive />
-        </div>
+        <Nuxt keepAlive />
       </div>
     </main>
     <Footer />
@@ -53,25 +50,11 @@ export default {
 <style lang="scss" scoped>
 @use "sass:color";
 
-@font-face {
-  font-family: 'Agraham';
-  src: local('Agraham'), local('Agraham Personal Use');
-}
-
 #contenedor {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   color: $profundidad;
-}
-.division {
-  display: block;
-  background-color: $profundidad;
-  width: 30%;
-  height: 100%;
-  position: absolute;
-  left: 70%;
-  top: 0;
 }
 
 main {

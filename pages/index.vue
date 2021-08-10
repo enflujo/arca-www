@@ -2,7 +2,7 @@
   <div id="inicio">
     <section id="portada" ref="seccionPortada" :style="estiloPortada">
       <Logo :color="general.project_color" />
-      <h1 class="titulo">{{ general.nombre }}</h1>
+      <h1 class="titulo logo-texto">{{ general.nombre }}</h1>
       <h2 class="subtitulo" :style="`background-color:${general.project_color}`">{{ general.descripcion }}</h2>
       <canvas ref="lienzo" class="lienzo"></canvas>
     </section>
@@ -95,6 +95,9 @@ section {
   background-size: cover;
   background-position: center;
   padding: 3em 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .lienzo {
@@ -106,15 +109,27 @@ section {
   pointer-events: none;
 }
 
-.enflujoLogo {
+.logoArca {
   width: 100px;
   margin-top: 10px;
   display: block;
 }
 
+#logoArca {
+  width: 125px;
+  margin-top: 10px;
+  display: block;
+  position: relative;
+}
+
 .titulo {
   font-size: 3em;
   margin: 0;
+}
+
+.logo-texto {
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .subtitulo {

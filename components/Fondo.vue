@@ -13,12 +13,12 @@
   width: 100vw;
   height: 100vh;
   display: block;
-  background-color: $profundidad;
+  background-color: $mediana;
   z-index: -1;
   .division {
     background-color: $claridad;
-    width: 75%;
-    height: 100vh;
+    width: 100vw;
+    height: 50vh;
     display: block;
     top: 0px;
     position: absolute;

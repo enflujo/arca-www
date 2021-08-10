@@ -1,8 +1,13 @@
 <template>
   <footer>
-    <Icono :color="color" />
-    <p class="copy">Arca</p>
-    <p class="copy fecha">{{ fecha }}</p>
+    <div class="logo-completo">
+      <Icono :fill="color" />
+      <h2 class="logo-texto">Arca</h2>
+    </div>
+    <p class="copy">
+      Proyecto de Jaime H. Borja Gómez (jborja@uniandes.edu.co) Departamento de Historia, Universidad de los Andes
+    </p>
+    <p class="copy">Bibliografía general Recursos Derivados Contacto</p>
   </footer>
 </template>
 
@@ -10,7 +15,7 @@
 export default {
   data() {
     return {
-      color: '#95989a',
+      color: '#c9c1b3',
       fecha: '',
     };
   },
@@ -43,18 +48,29 @@ export default {
 @use "sass:color";
 
 footer {
-  background-color: color.scale($profundidad, $lightness: 90%);
-  color: #95989a;
-  text-align: center;
+  background-color: $mediana;
+  color: #c9c1b3;
+  height: 168px;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 6em;
+  .logo-completo {
+    justify-content: center;
+    align-items: center;
+    .arcaIcono {
+      width: 60px;
+    }
 
-  .arcaIcono {
-    width: 60px;
-    padding: 10px;
+    .logo-texto {
+      color: #c9c1b3;
+      text-transform: uppercase;
+    }
   }
 
   .copy {
-    font-size: 0.6em;
-    padding-bottom: 2em;
+    font-size: 0.9em;
   }
 }
 </style>

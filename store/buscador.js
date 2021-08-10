@@ -25,6 +25,10 @@ export const actions = {
           synthesis
           latitude_current
           longitude_current
+          image {
+            id
+            title
+          }
           author_id {
             id
             name

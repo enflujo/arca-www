@@ -15,12 +15,11 @@
       </NuxtLink>
     </nav>
 
-    <!-- <div class="menuBtn" :style="`background-color:${colorFondo}`" @click="resolverMenu">
-    TODO: QUITAR EL HARDCODEO -->
     <div class="menuBtn" @click="resolverMenu">
       <div class="botonMenu"><span class="menuRaya"></span></div>
       <!-- <span class="lineaVertical"></span> -->
     </div>
+    <div class="logo-texto"><h2>ARCA</h2></div>
   </div>
 </template>
 
@@ -66,7 +65,7 @@ $menuRayaColor: #08173e;
 
 .menuBtn {
   position: fixed;
-  background-color: #08173e;
+  background-color: $claridad;
 }
 
 .botonMenu {
@@ -77,6 +76,14 @@ $menuRayaColor: #08173e;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.logo-texto {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  letter-spacing: 1px;
+  width: 250px;
 }
 
 .menuContenido {
@@ -93,23 +100,23 @@ $menuRayaColor: #08173e;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: $claridad;
+  background-color: $profundidad;
 
   a,
   a:link {
-    color: $profundidad;
+    color: $claridad;
     opacity: 0.4;
     padding: 0.3em 1em 0.7em 0.3em;
     margin-bottom: 0.5em;
     background-repeat: no-repeat;
 
     &:hover {
-      color: $profundidad;
+      color: $claridad;
       opacity: 1;
     }
 
     &.nuxt-link-active {
-      color: $profundidad;
+      color: $claridad;
       opacity: 1;
     }
 
@@ -125,7 +132,6 @@ $menuRayaColor: #08173e;
     .menuRaya {
       height: 0;
       width: 0;
-      background-color: $claridad;
 
       &::before {
         transform: rotate(45deg) translate(-12px, 12px);
@@ -156,7 +162,7 @@ $menuRayaColor: #08173e;
 .menuRaya {
   width: $menuRayaAncho;
   height: $menuRayaAlto;
-  background-color: $profundidad;
+  background-color: $claridad;
   border-radius: $menuRayaRadio;
   transition: all 0.2s ease-in-out;
 
@@ -166,7 +172,7 @@ $menuRayaColor: #08173e;
     position: absolute;
     width: $menuRayaAncho;
     height: $menuRayaAlto;
-    background-color: $menuRayaColor;
+    background-color: $claridad;
     border-radius: $menuRayaRadio;
     transition: all 0.5s ease-in-out;
   }
@@ -192,7 +198,7 @@ $menuRayaColor: #08173e;
     right: 0;
     top: 0;
     cursor: pointer;
-    background-color: $claridad;
+    background-color: $profundidad;
     border-radius: 100% 0% 0% 100% / 0% 25% 75% 100%;
   }
 

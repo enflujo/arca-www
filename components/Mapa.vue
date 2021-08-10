@@ -37,7 +37,7 @@ export default {
       container: this.$refs.mapa,
       style: this.mapboxStyle,
       center: [-25.04, 8.907],
-      zoom: 2,
+      zoom: -0.4,
     });
 
     this.mapa.on('load', this.mapaCargado);
@@ -123,11 +123,10 @@ export default {
 
 <style lang="scss" scoped>
 #mapa {
-  position: absolute;
-  top: 0;
+  top: 10%;
   bottom: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 25vw;
+  height: 30vh;
   display: block;
   position: absolute;
   // clip-path: inset(32% 65% 10% 15% round 400px);
