@@ -66,12 +66,6 @@ export default {
     };
   },
 
-  computed: {
-    filtro() {
-      return this.$store.state.general.filtro;
-    },
-  },
-
   async fetch() {
     const query = gql`
       query {
@@ -122,6 +116,12 @@ export default {
         return 0;
       });
     }
+  },
+
+  computed: {
+    filtro() {
+      return this.$store.state.general.filtro;
+    },
   },
 
   methods: {

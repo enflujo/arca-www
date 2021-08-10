@@ -82,12 +82,6 @@ export default {
     );
   },
 
-  methods: {
-    urlImagen(objImg, key) {
-      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-    },
-  },
-
   computed: {
     obrasSeleccionadas() {
       //  console.log(this.$store.state.buscador.seleccionados);
@@ -98,6 +92,12 @@ export default {
   watch: {
     obrasSeleccionadas(obras) {
       this.obras = obras;
+    },
+  },
+
+  methods: {
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
     },
   },
 };
