@@ -34,7 +34,7 @@ export const actions = {
             name
             lastname
           }
-          actual_country_id{
+          actual_country_id {
             id
             name_spanish
           }
