@@ -3,6 +3,7 @@ import { gql } from 'nuxt-graphql-request';
 export const state = () => ({
   datos: {},
   menus: {},
+  filtro: '',
 });
 
 export const actions = {
@@ -69,5 +70,9 @@ export const mutations = {
     menus.forEach((menu) => {
       state.menus[menu.nombre] = menu.paginas.map((pagina) => pagina.paginas_id);
     });
+  },
+
+  actualizarFiltro(state, filtro) {
+    state.filtro = filtro;
   },
 };

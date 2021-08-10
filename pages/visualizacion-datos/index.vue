@@ -109,8 +109,9 @@ export default {
   methods: {
     mostrarAutorOPais() {
       let obrasSeleccionadas = [];
-      const filtro = this.$root.filtro;
-      if (this.$store.state.buscador.seleccionados.length !== 0) {
+      const filtro = this.$store.state.general.filtro;
+
+      if (this.$store.state.buscador.seleccionados.length) {
         if (filtro === 'autor') {
           obrasSeleccionadas = this.$store.state.buscador.seleccionados[0].author_id.lastname;
         } else if (filtro === 'pais') {
