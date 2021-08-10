@@ -11,13 +11,12 @@
     </template>
 
     <template v-else>
-<<<<<<< HEAD:pages/visualizacion-datos/index.vue
       <Filtros paises="paises" filtro="filtro" />
       <!-- <div class="seleccionadas"> -->
       <div class="tercer-cuadro">
         <div class="circulo"></div>
         <div class="texto-tercer">
-          <span class="resaltar-tamano"> {{ $store.state.buscador.seleccionados.length }} </span>
+          <span class="resaltar-tamano"> {{ this.$store.state.buscador.seleccionados.length }} </span>
           obras de <span class="resaltar-color">{{ mostrarAutorOPais() }}</span> en la colección.
         </div>
       </div>
@@ -34,11 +33,6 @@
             width="190"
           />
         </div>
-=======
-      <Filtros paises="paises" />
-      <div class="seleccionadas">
-        <p>Hay {{ $store.state.buscador.seleccionados.length }} obras de {{ mostrarAutorOPais() }} en la colección.</p>
->>>>>>> a2d0fec (🩹 borrador del buscador):pages/visualizacion/index.vue
       </div>
     </template>
   </div>
@@ -114,10 +108,6 @@ export default {
 
   computed: {
     obrasSeleccionadas() {
-<<<<<<< HEAD:pages/visualizacion-datos/index.vue
-      //  console.log(this.$store.state.buscador.seleccionados);
-=======
->>>>>>> a2d0fec (🩹 borrador del buscador):pages/visualizacion/index.vue
       return this.$store.state.buscador.seleccionados;
     },
   },
@@ -142,12 +132,6 @@ export default {
         return obrasSeleccionadas;
       }
     },
-<<<<<<< HEAD:pages/visualizacion-datos/index.vue
-    urlImagen(objImg, key) {
-      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-    },
-=======
->>>>>>> a2d0fec (🩹 borrador del buscador):pages/visualizacion/index.vue
   },
 };
 </script>
