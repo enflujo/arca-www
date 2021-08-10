@@ -16,9 +16,9 @@
         </div>
         <div class="imagenes">
           <div class="caja-inicial">
-            <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+            <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
             <div class="caja-descripcion">
-              <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+              <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
               <div class="descripcion">
                 <h2 class="titulo-obra">Sagrado Corazon</h2>
                 <h3 class="subtitulo-obra">Anonimo</h3>
@@ -29,7 +29,7 @@
                 <button class="boton-ver">VER OBRA</button>
               </div>
             </div>
-            <nuxt-img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+            <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
           </div>
           <div class="caja-secundaria">
             <div>

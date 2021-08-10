@@ -21,7 +21,7 @@
     <!-- <template v-else>
       <div class="contenedor-general">
         <div class="contenedor-derecho">
-          <nuxt-img src="imgs/MapaImagen.jpeg" class="mapaImagen" />
+          <img src="imgs/MapaImagen.jpeg" class="mapaImagen" />
         </div>
         <div class="contenedor-izquierdo">
           <div class="contenedor-mitad">
