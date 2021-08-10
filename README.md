@@ -98,7 +98,10 @@ watch: {
 ```
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5a7c54f (📝 sobre el Store)
 #### Store
 
 ```js
@@ -122,7 +125,10 @@ const mutations = {
 store.dispatch('[nombreDelStore]/[nombreDeAccion]', datos);
 store.commit('[nombreDelStore]/[nombreDeMutacion]', datos);
 ```
+<<<<<<< HEAD
 
 =======
 
 > > > > > > > e859fcb (💩)
+=======
+>>>>>>> 5a7c54f (📝 sobre el Store)
