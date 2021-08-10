@@ -27,6 +27,24 @@ export default {
       obras: [],
     };
   },
+
+  computed: {
+    filtro() {
+      return this.$store.state.general.filtro;
+    },
+  },
+
+  watch: {
+    searchQuery(searchQuery) {
+      if (!searchQuery) {
+        this.autores = [];
+        return;
+      }
+      this.buscarAutor(searchQuery);
+      console.log(this.autores);
+    },
+  },
+
   async fetch() {
     if (this.searchQuery.length) {
       const queryString = this.searchQuery;
