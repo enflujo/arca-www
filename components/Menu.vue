@@ -7,7 +7,7 @@
       <NuxtLink
         v-for="pagina in paginas"
         :key="pagina.slug"
-        :to="`/${pagina.slug}`"
+        :to="pagina.slug ? `/${pagina.slug}` : '/'"
         class="navBtn"
         @click.native="resolverMenu"
       >
