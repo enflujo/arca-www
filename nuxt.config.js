@@ -22,8 +22,6 @@ export default {
     'nuxt-graphql-request',
     // https://github.com/nuxt-community/style-resources-module
     '@nuxtjs/style-resources',
-    // https://image.nuxtjs.org/getting-started/installation
-    '@nuxt/image',
   ],
   head,
   css,
