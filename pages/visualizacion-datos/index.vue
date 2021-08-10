@@ -26,11 +26,11 @@
         <div class="imagenes-triangulares">
           <img
             v-for="(obra, i) in obras"
-            id="arca-mascara"
             :key="`obra-${i}`"
             :src="urlImagen(obras[i].image)"
             :alt="obras.title"
             width="190"
+            id="arca-mascara"
           />
         </div>
       </div>
@@ -41,7 +41,6 @@
 <script>
 import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
-
 export default {
   layout: 'dashboard',
   data() {
@@ -51,7 +50,6 @@ export default {
       paises: {},
     };
   },
-
   async fetch() {
     const query = gql`
       query {
@@ -65,7 +63,6 @@ export default {
             title
           }
         }
-
         artworks {
           id
           title
@@ -79,9 +76,7 @@ export default {
         }
       }
     `;
-
     const { paginas, artworks } = await this.$graphql.principal.request(query);
-
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
     } else {
@@ -90,12 +85,10 @@ export default {
       }
       throw new Error('La página no existe');
     }
-
     if (artworks && artworks.length) {
       this.obras = artworks;
     }
   },
-
   head() {
     return crearHead(
       this.$store.state.general.datos.nombre,
@@ -105,24 +98,10 @@ export default {
       this.$nuxt.$route.path
     );
   },
-
-  computed: {
-    obrasSeleccionadas() {
-      return this.$store.state.buscador.seleccionados;
-    },
-  },
-
-  watch: {
-    obrasSeleccionadas(obras) {
-      this.obras = obras;
-    },
-  },
-
   methods: {
     mostrarAutorOPais() {
       let obrasSeleccionadas = [];
       const filtro = this.$store.state.general.filtro;
-
       if (this.$store.state.buscador.seleccionados.length) {
         if (filtro === 'autor') {
           obrasSeleccionadas = this.$store.state.buscador.seleccionados[0].author_id.lastname;
@@ -131,6 +110,20 @@ export default {
         }
         return obrasSeleccionadas;
       }
+    },
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
+  },
+  computed: {
+    obrasSeleccionadas() {
+      //  console.log(this.$store.state.buscador.seleccionados);
+      return this.$store.state.buscador.seleccionados;
+    },
+  },
+  watch: {
+    obrasSeleccionadas(obras) {
+      this.obras = obras;
     },
   },
 };
@@ -146,7 +139,6 @@ export default {
   width: 100vw;
   height: 100vh;
 }
-
 .tercer-cuadro {
   width: 25vw;
   height: 30vh;
@@ -181,16 +173,13 @@ export default {
     }
   }
 }
-
 .parte-inferior {
   position: absolute;
   top: 50vh;
 }
-
 img {
   max-width: 200px;
 }
-
 // #mapa {
 //   clip-path: inset(32% 65% 10% 15% round 400px);
 // }
@@ -229,7 +218,6 @@ img {
 //     }
 //   }
 // }
-
 // .transparencia {
 //   opacity: 0.4;
 //   display: block;
