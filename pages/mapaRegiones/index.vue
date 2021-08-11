@@ -14,16 +14,39 @@
 
     <template v-else>
       <div class="contenedor-general">
-        <div class="contenedor-derecho">
-          <nuxt-img src="imgs/MapaImagen.jpeg" class="mapaImagen" />
-        </div>
-        <div class="contenedor-izquierdo">
-          <div class="contenedor-mitad">
-            <h1>{{ pagina.titulo }}</h1>
-            <p>{{ pagina.descripcion }}</p>
-          </div>
-        </div>
-        <Mapa :datos="obras" />
+        <ul class="menuCategorias">
+          <li v-for="cat1 in Object.keys(menu).sort()" :key="cat1" class="cat categoria1">
+            {{ cat1 }}
+
+            <ul v-if="Object.keys(menu[cat1]).length">
+              <li v-for="cat2 in Object.keys(menu[cat1]).sort()" :key="cat2" class="cat categoria2">
+                {{ cat2 }}
+
+                <ul v-if="Object.keys(menu[cat1][cat2]).length">
+                  <li v-for="cat3 in Object.keys(menu[cat1][cat2]).sort()" :key="cat3" class="cat categoria3">
+                    {{ cat3 }}
+
+                    <ul v-if="Object.keys(menu[cat1][cat2][cat3]).length">
+                      <li v-for="cat4 in Object.keys(menu[cat1][cat2][cat3]).sort()" :key="cat4" class="cat categoria4">
+                        {{ cat4 }}
+
+                        <ul v-if="Object.keys(menu[cat1][cat2][cat3][cat4]).length">
+                          <li
+                            v-for="cat5 in Object.keys(menu[cat1][cat2][cat3][cat4]).sort()"
+                            :key="cat5"
+                            class="cat categoria5"
+                          >
+                            {{ cat5 }}
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </template>
   </div>
@@ -39,14 +62,14 @@ export default {
   data() {
     return {
       pagina: {},
-      obras: [],
+      menu: {},
     };
   },
 
   async fetch() {
     const query = gql`
       query {
-        paginas(filter: { slug: { _eq: "mapa" } }, limit: 1) {
+        paginas(filter: { slug: { _eq: "${this.$route.name}" } }, limit: 1) {
           titulo
           slug
           descripcion
@@ -57,12 +80,24 @@ export default {
           }
         }
 
-        artworks {
+        artworks(limit: -1) {
           id
           title
-          annotation_date
-          latitude_current
-          longitude_current
+          category_1_id {
+            name
+          }
+          category_2_id {
+            name
+          }
+          category_3_id {
+            name
+          }
+          category_4_id {
+            name
+          }
+          category_5_id {
+            name
+          }
         }
       }
     `;
@@ -77,9 +112,54 @@ export default {
       }
       throw new Error('La página no existe');
     }
-
+    /**
+     * menu = {
+     *    Gato = {}
+     * }
+     *
+     * work = {
+     *    cat1 = 'Gato',
+     *    cat2 = 'Gatito'
+     * }
+     *
+     */
     if (artworks && artworks.length) {
-      this.obras = artworks;
+      artworks.forEach((work) => {
+        const cat1 = work.category_1_id ? work.category_1_id.name : null;
+        const cat2 = work.category_2_id ? work.category_2_id.name : null;
+        const cat3 = work.category_3_id ? work.category_3_id.name : null;
+        const cat4 = work.category_4_id ? work.category_4_id.name : null;
+        const cat5 = work.category_5_id ? work.category_5_id.name : null;
+
+        if (cat1) {
+          if (!this.menu[cat1]) {
+            this.menu[cat1] = {};
+          }
+
+          if (cat2) {
+            if (!this.menu[cat1][cat2]) {
+              this.menu[cat1][cat2] = {};
+            }
+
+            if (cat3) {
+              if (!this.menu[cat1][cat2][cat3]) {
+                this.menu[cat1][cat2][cat3] = {};
+              }
+
+              if (cat4) {
+                if (!this.menu[cat1][cat2][cat3][cat4]) {
+                  this.menu[cat1][cat2][cat3][cat4] = {};
+                }
+                if (cat5) {
+                  if (!this.menu[cat1][cat2][cat3][cat4][cat5]) {
+                    this.menu[cat1][cat2][cat3][cat4][cat5] = {};
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
     }
   },
 
@@ -96,49 +176,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#mapa {
-  clip-path: inset(32% 65% 10% 15% round 400px);
-}
-.contenedor-general {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  .contenedor-derecho {
-    position: absolute;
-    width: 50vw;
-    left: 50vw;
-    height: 100vh;
-    .mapaImagen {
-      right: 0px;
-      height: 100vh;
-    }
-  }
-  .contenedor-izquierdo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50vw;
-    height: 100vh;
-    background-color: $profundidad;
-    .contenedor-mitad {
-      color: $claridad;
-      position: relative;
-      top: 100px;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
+ul {
+  margin: 0 1em;
+  list-style: disc;
 }
 
-.transparencia {
-  opacity: 0.4;
-  display: block;
-  top: 0px;
-  position: absolute;
+.categoria1 {
+  font-size: 14px;
+}
+
+.categoria2 {
+  font-size: 0.6em;
 }
 </style>

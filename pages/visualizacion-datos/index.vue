@@ -16,7 +16,7 @@
       <div class="tercer-cuadro">
         <div class="circulo"></div>
         <div class="texto-tercer">
-          <span class="resaltar-tamano"> {{ this.$store.state.buscador.seleccionados.length }} </span>
+          <span class="resaltar-tamano"> {{ $store.state.buscador.seleccionados.length }} </span>
           obras de <span class="resaltar-color">{{ mostrarAutorOPais() }}</span> en la colección.
         </div>
       </div>
@@ -26,11 +26,11 @@
         <div class="imagenes-triangulares">
           <img
             v-for="(obra, i) in obras"
+            id="arca-mascara"
             :key="`obra-${i}`"
             :src="urlImagen(obras[i].image)"
             :alt="obras.title"
             width="190"
-            id="arca-mascara"
           />
         </div>
       </div>
@@ -98,6 +98,17 @@ export default {
       this.$nuxt.$route.path
     );
   },
+  computed: {
+    obrasSeleccionadas() {
+      //  console.log(this.$store.state.buscador.seleccionados);
+      return this.$store.state.buscador.seleccionados;
+    },
+  },
+  watch: {
+    obrasSeleccionadas(obras) {
+      this.obras = obras;
+    },
+  },
   methods: {
     mostrarAutorOPais() {
       let obrasSeleccionadas = [];
@@ -113,17 +124,6 @@ export default {
     },
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-    },
-  },
-  computed: {
-    obrasSeleccionadas() {
-      //  console.log(this.$store.state.buscador.seleccionados);
-      return this.$store.state.buscador.seleccionados;
-    },
-  },
-  watch: {
-    obrasSeleccionadas(obras) {
-      this.obras = obras;
     },
   },
 };
