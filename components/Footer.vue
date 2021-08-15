@@ -4,10 +4,14 @@
       <Icono :fill="color" />
       <h2 class="logo-texto">Arca</h2>
     </div>
-    <p class="copy">
-      Proyecto de Jaime H. Borja Gómez (jborja@uniandes.edu.co) Departamento de Historia, Universidad de los Andes
-    </p>
-    <p class="copy">Bibliografía general Recursos Derivados Contacto</p>
+    <div class="texto-f-uno">
+      <p class="copy">
+        Proyecto de Jaime H. Borja Gómez (jborja@uniandes.edu.co) Departamento de Historia, Universidad de los Andes
+      </p>
+    </div>
+    <div class="texto-f-dos">
+      <p class="copy">Bibliografía general Recursos Derivados Contacto</p>
+    </div>
   </footer>
 </template>
 
@@ -50,15 +54,16 @@ export default {
 footer {
   background-color: $mediana;
   color: #c9c1b3;
-  height: 168px;
+  height: 120px;
   width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 6em;
+  justify-content: space-evenly;
   .logo-completo {
+    display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     .arcaIcono {
       width: 60px;
     }
@@ -68,7 +73,16 @@ footer {
       text-transform: uppercase;
     }
   }
-
+  .texto-f-uno {
+    display: flex;
+    width: 300px;
+    text-align: center;
+  }
+  .texto-f-dos {
+    display: flex;
+    width: 150px;
+    text-align: center;
+  }
   .copy {
     font-size: 0.9em;
   }
