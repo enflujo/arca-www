@@ -6,7 +6,6 @@
     <div class="imagenes">
       <img
         v-for="(obra, i) in obras"
-        id="arca-mascara"
         :key="`obra-${i}`"
         :src="urlImagen(obras[i].image)"
         :alt="obras.title"
@@ -89,48 +88,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.contenedor-general {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  // .contenedor-derecho {
-  //   position: absolute;
-  //   width: 50vw;
-  //   left: 50vw;
-  //   height: 100vh;
-  //   .mapaImagen {
-  //     right: 0px;
-  //     height: 100vh;
-  //   }
-  // }
-  // .contenedor-izquierdo {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   width: 50vw;
-  //   height: 100vh;
-  //   background-color: $profundidad;
-  //   .contenedor-mitad {
-  //     color: $claridad;
-  //     position: relative;
-  //     top: 100px;
-  //     display: flex;
-  //     justify-content: center;
-  //     flex-direction: column;
-  //     align-items: center;
-  //   }
-  // }
-  .buscador {
-    margin: 0.5em;
-  }
+input {
+  border: 2px solid #08173e;
+  border-radius: 25px;
+  width: 18vw;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  background-color: #faf5ec;
+  font-family: 'Work Sans';
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
 }
-.transparencia {
-  opacity: 0.4;
+.imagenes {
   display: block;
-  top: 0px;
   position: absolute;
+  top: 100px;
+  left: 25vw;
 }
 </style>

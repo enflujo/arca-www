@@ -59,6 +59,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  position: relative;
   .logo-completo {
     display: flex;
     justify-content: center;

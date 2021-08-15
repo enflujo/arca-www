@@ -6,9 +6,9 @@
     <main role="main">
       <div class="contenedor">
         <Nuxt keepAlive />
+        <Footer />
       </div>
     </main>
-    <Footer />
   </div>
 </template>
 
@@ -55,11 +55,14 @@ export default {
   flex-direction: column;
   min-height: 100vh;
   color: $profundidad;
+  .contenedor {
+    flex-direction: column;
+  }
 }
 
 main {
   // margin-top: $anchoMenu;
-  flex-grow: 1;
+  // flex-grow: 1;
   // background-color: color.scale($colorPrincipal, $lightness: 90%);
 }
 

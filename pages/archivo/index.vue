@@ -9,17 +9,22 @@
     </template>
 
     <template v-else>
+      <div class="barra-izquierda">
+        <div>
+          <Buscador />
+        </div>
+      </div>
       <div class="archivo">
         <div class="titulo">
           <h1>{{ pagina.titulo }}</h1>
           <p>{{ pagina.descripcion }}</p>
         </div>
-        <div class="imagenes">
+        <!-- <div class="imagenes">
           <div class="caja-inicial">
-            <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
-            <div class="caja-descripcion">
-              <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
-              <div class="descripcion">
+            <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+        <div class="caja-descripcion">
+        <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
+        <div class="descripcion">
                 <h2 class="titulo-obra">Sagrado Corazon</h2>
                 <h3 class="subtitulo-obra">Anonimo</h3>
                 <p class="descripcion-obra">
@@ -28,15 +33,10 @@
                 </p>
                 <button class="boton-ver">VER OBRA</button>
               </div>
-            </div>
-            <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
-          </div>
-          <div class="caja-secundaria">
-            <div>
-              <Buscador />
-            </div>
-          </div>
-        </div>
+            </div> -->
+        <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
+        <!-- </div>
+      </div> -->
       </div>
     </template>
   </div>
@@ -119,12 +119,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.contenedor {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  position: absolute;
+  overflow: auto;
+  top: 0;
+}
+.barra-izquierda {
+  background-color: $mediana;
+  height: 100vh;
+  width: 20vw;
+  display: flex;
+  padding-top: 4em;
+  justify-content: center;
+}
 .archivo {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 80vw;
+  left: 20vw;
+  top: 0;
+  position: absolute;
+  overflow-y: auto;
   .titulo {
     display: flex;
     flex-direction: column;
