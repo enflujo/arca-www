@@ -102,9 +102,12 @@ input {
   position: relative;
 }
 .imagenes {
-  display: block;
+  display: flex;
   position: absolute;
   top: 100px;
   left: 25vw;
+}
+img {
+  margin: 10px;
 }
 </style>

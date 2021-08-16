@@ -13,6 +13,53 @@
         <div>
           <Buscador />
         </div>
+        <div class="barra-texto">
+          <ul>
+            <div class="pantalla">
+              <h3 class="seccion">Categorias</h3>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+              <li>Categoría Numero X</li>
+            </div>
+            <div class="pantalla">
+              <h3 class="seccion">Autores</h3>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+              <li>Autor numero X</li>
+            </div>
+            <div class="pantalla">
+              <h3 class="seccion">Regiones</h3>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+              <li>Regiones numero X</li>
+            </div>
+          </ul>
+        </div>
       </div>
       <div class="archivo">
         <div class="titulo">
@@ -121,11 +168,13 @@ export default {
 <style lang="scss" scoped>
 .contenedor {
   display: flex;
-  width: 100vw;
   justify-content: center;
   position: absolute;
   overflow: auto;
   top: 0;
+}
+li {
+  margin-bottom: 10px;
 }
 .barra-izquierda {
   background-color: $mediana;
@@ -133,7 +182,14 @@ export default {
   width: 20vw;
   display: flex;
   padding-top: 4em;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  align-items: center;
+  overflow-x: auto;
+}
+.barra-texto {
+  width: 20vw;
+  padding-left: 20px;
 }
 .archivo {
   display: flex;
@@ -206,5 +262,17 @@ export default {
       position: relative;
     }
   }
+}
+.pantalla {
+  margin-top: 10px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  font-family: $fuenteMenu;
+}
+.seccion {
+  margin-bottom: 10px;
+  font-family: $fuenteSec;
 }
 </style>
