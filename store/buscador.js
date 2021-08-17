@@ -3,9 +3,36 @@ import { gql } from 'nuxt-graphql-request';
 export const state = () => ({
   seleccionados: [],
   guardados: {},
+  guardados2: {},
 });
 
 export const actions = {
+  async buscarDirectus({ commit, state }, queryString) {
+    if (state.guardados2[queryString]) {
+      commit('usarGuardados', state.guardados2[queryString]);
+    } else {
+      const query = gql`
+        query {
+          artworks(search: "${queryString}") {
+            title
+            image {
+              id
+              title
+            }
+          }
+
+        }
+      `;
+
+      const { artworks } = await this.$graphql.principal.request(query);
+      if (artworks && artworks.length) {
+        commit('guardarSeleccionados2', {
+          artworks,
+          llave: queryString,
+        });
+      }
+    }
+  },
   //
   async buscar({ commit, state }, filtro) {
     /**
@@ -63,6 +90,15 @@ export const mutations = {
     state.guardados = guardados;
     state.seleccionados = datos.artworks;
   },
+
+  guardarSeleccionados2(state, datos) {
+    const guardados2 = state.guardados2;
+    guardados2[datos.llave] = datos.artworks;
+
+    state.guardados2 = guardados2;
+    state.seleccionados = datos.artworks2;
+  },
+
   usarGuardados(state, artworks) {
     state.seleccionados = artworks;
   },

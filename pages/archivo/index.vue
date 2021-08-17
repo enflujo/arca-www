@@ -1,89 +1,107 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <h1>Pendiente...</h1>
+      <div>
+        <h1>Pendiente...</h1>
+      </div>
     </template>
 
     <template v-else-if="$fetchState.error">
-      <h1 class="error">{{ $fetchState.error.message }}</h1>
+      <div>
+        <h1 class="error">{{ $fetchState.error.message }}</h1>
+      </div>
     </template>
 
     <template v-else>
-      <div class="barra-izquierda">
-        <div>
-          <Buscador />
-        </div>
-        <div class="barra-texto">
-          <ul>
-            <div class="pantalla">
-              <h3 class="seccion">Categorias</h3>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-              <li>Categoría Numero X</li>
-            </div>
+      <div class="contenedor-pagina">
+        <nav class="barra-izquierda">
+          <div>
+            <Buscador />
+          </div>
+          <div class="barra-texto">
+            <h3 class="seccion">Categorias</h3>
+            <ul>
+              <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1">
+                {{ cat1 }}
+
+                <ul v-if="Object.keys(categorias[cat1]).length">
+                  <li
+                    v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
+                    :key="`cat2${i2}`"
+                    class="cat categoria2"
+                  >
+                    {{ cat2 }}
+
+                    <ul v-if="Object.keys(categorias[cat1][cat2]).length">
+                      <li
+                        v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
+                        :key="`cat3${i3}`"
+                        class="cat categoria3"
+                      >
+                        {{ cat3 }}
+
+                        <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
+                          <li
+                            v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
+                            :key="`cat4${i4}`"
+                            class="cat categoria4"
+                          >
+                            {{ cat4 }}
+
+                            <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
+                              <li
+                                v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
+                                :key="`cat5${i5}`"
+                                class="cat categoria5"
+                              >
+                                {{ cat5 }}
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
             <div class="pantalla">
               <h3 class="seccion">Autores</h3>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
-              <li>Autor numero X</li>
+              <ul>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+                <li>Autor numero X</li>
+              </ul>
             </div>
             <div class="pantalla">
               <h3 class="seccion">Regiones</h3>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
-              <li>Regiones numero X</li>
+              <ul>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+                <li>Regiones numero X</li>
+              </ul>
             </div>
-          </ul>
-        </div>
-      </div>
-      <div class="archivo">
-        <div class="titulo">
-          <h1>{{ pagina.titulo }}</h1>
-          <p>{{ pagina.descripcion }}</p>
-        </div>
-        <!-- <div class="imagenes">
-          <div class="caja-inicial">
-            <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-        <div class="caja-descripcion">
-        <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" />
-        <div class="descripcion">
-                <h2 class="titulo-obra">Sagrado Corazon</h2>
-                <h3 class="subtitulo-obra">Anonimo</h3>
-                <p class="descripcion-obra">
-                  Nacido en Santa Fe de Bogotá e hijo de un artesano español. Se dedicó también a la arquitectura y la
-                  poesía. Personaje de la novela
-                </p>
-                <button class="boton-ver">VER OBRA</button>
-              </div>
-            </div> -->
-        <!-- <img src="imgs/4408.jpg" sizes="sm:50vw md:250vw lg:200px" /> -->
-        <!-- </div>
-      </div> -->
+          </div>
+        </nav>
+
+        <section class="imagenes">
+          <img v-for="(obra, i) in obras" :key="`obra-${i}`" :src="urlImagen(obras[i].image)" :alt="obras.title" />
+        </section>
       </div>
     </template>
   </div>
@@ -98,6 +116,7 @@ export default {
   data() {
     return {
       pagina: {},
+      categorias: [],
       obras: [],
     };
   },
@@ -115,6 +134,26 @@ export default {
             title
           }
         }
+
+        artworks(limit: -1) {
+          id
+          title
+          category_1_id {
+            name
+          }
+          category_2_id {
+            name
+          }
+          category_3_id {
+            name
+          }
+          category_4_id {
+            name
+          }
+          category_5_id {
+            name
+          }
+        }
       }
     `;
 
@@ -130,7 +169,46 @@ export default {
     }
 
     if (artworks && artworks.length) {
-      this.obras = artworks;
+      const categorias = [];
+
+      artworks.forEach((work) => {
+        const cat1 = work.category_1_id ? work.category_1_id.name : null;
+        const cat2 = work.category_2_id ? work.category_2_id.name : null;
+        const cat3 = work.category_3_id ? work.category_3_id.name : null;
+        const cat4 = work.category_4_id ? work.category_4_id.name : null;
+        const cat5 = work.category_5_id ? work.category_5_id.name : null;
+
+        if (cat1) {
+          if (!categorias[cat1]) {
+            categorias[cat1] = {};
+          }
+
+          if (cat2) {
+            if (!categorias[cat1][cat2]) {
+              categorias[cat1][cat2] = {};
+            }
+
+            if (cat3) {
+              if (!categorias[cat1][cat2][cat3]) {
+                categorias[cat1][cat2][cat3] = {};
+              }
+
+              if (cat4) {
+                if (!categorias[cat1][cat2][cat3][cat4]) {
+                  categorias[cat1][cat2][cat3][cat4] = {};
+                }
+                if (cat5) {
+                  if (!categorias[cat1][cat2][cat3][cat4][cat5]) {
+                    categorias[cat1][cat2][cat3][cat4][cat5] = {};
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+
+      this.categorias = categorias;
     }
   },
 
@@ -173,6 +251,11 @@ export default {
   overflow: auto;
   top: 0;
 }
+
+.contenedor-pagina {
+  display: flex;
+}
+
 li {
   margin-bottom: 10px;
 }
@@ -202,6 +285,7 @@ li {
   top: 0;
   position: absolute;
   overflow-y: auto;
+
   .titulo {
     display: flex;
     flex-direction: column;
@@ -209,66 +293,74 @@ li {
     justify-content: space-around;
     margin-bottom: 20px;
   }
-  .imagenes {
-    width: 1100px;
-    .caja-inicial {
+}
+
+.imagenes {
+  width: 80vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: start;
+
+  .caja-inicial {
+    display: flex;
+    justify-content: space-between;
+    .caja-descripcion {
+      height: auto;
       display: flex;
-      justify-content: space-between;
-      .caja-descripcion {
-        height: auto;
+      flex-direction: row;
+      text-align: initial;
+      .descripcion {
+        width: 400px;
+        background-color: #af2828;
+        padding: 2em;
+        justify-content: space-around;
         display: flex;
-        flex-direction: row;
-        text-align: initial;
-        .descripcion {
-          width: 400px;
-          background-color: #af2828;
-          padding: 2em;
-          justify-content: space-around;
-          display: flex;
-          flex-direction: column;
-          .titulo-obra {
-            color: $claridad;
-            font-weight: 300;
-          }
-          .subtitulo-obra {
-            color: $claridad;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-          }
-          .descripcion-obra {
-            color: $claridad;
-            line-height: 1.5;
-            letter-spacing: -0.4px;
-            font-size: 14px;
-          }
-          .boton-ver {
-            border: 1px solid $claridad;
-            padding: 1em;
-            border-radius: 25px;
-            color: $claridad;
-            letter-spacing: 6px;
-            letter-spacing: 6px;
-            font-size: 11px;
-            align-self: center;
-          }
+        flex-direction: column;
+        .titulo-obra {
+          color: $claridad;
+          font-weight: 300;
+        }
+        .subtitulo-obra {
+          color: $claridad;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 5px;
+        }
+        .descripcion-obra {
+          color: $claridad;
+          line-height: 1.5;
+          letter-spacing: -0.4px;
+          font-size: 14px;
+        }
+        .boton-ver {
+          border: 1px solid $claridad;
+          padding: 1em;
+          border-radius: 25px;
+          color: $claridad;
+          letter-spacing: 6px;
+          letter-spacing: 6px;
+          font-size: 11px;
+          align-self: center;
         }
       }
     }
-    .caja-secundaria {
-      display: flex;
-      justify-content: space-between;
-      top: 20px;
-      position: relative;
-    }
+  }
+  .caja-secundaria {
+    display: flex;
+    justify-content: space-between;
+    top: 20px;
+    position: relative;
   }
 }
+
 .pantalla {
   margin-top: 10px;
 }
 ul {
   list-style: none;
-  padding: 0;
+  margin: 0.5em 1em;
   font-family: $fuenteMenu;
 }
 .seccion {
