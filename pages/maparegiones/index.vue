@@ -67,6 +67,7 @@ export default {
   },
 
   async fetch() {
+    console.log(this.$route.name);
     const query = gql`
       query {
         paginas(filter: { slug: { _eq: "${this.$route.name}" } }, limit: 1) {
