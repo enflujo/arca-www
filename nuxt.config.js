@@ -23,6 +23,7 @@ export default {
     // https://github.com/nuxt-community/style-resources-module
     '@nuxtjs/style-resources',
   ],
+  plugins: ['~/plugins/clickOutside.js'],
   head,
   css,
   graphql,

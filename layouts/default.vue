@@ -2,7 +2,7 @@
   <div id="contenedor">
     <Navegacion :colorIcono="colorIcono" @cerrarMenu="cerrarMenu" />
     <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
-    <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
+    <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
     <main role="main">
       <Fondo />
       <div class="contenedor">

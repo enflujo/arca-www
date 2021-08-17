@@ -1,25 +1,28 @@
 <template>
-  <div :class="`menuPrincipal ${menuAbierto ? 'abierto' : 'cerrado'}`">
-    <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
-    <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`">
+  <div :class="`contenedorMenu ${menuAbierto ? 'abierto' : 'cerrado'}`">
+    <div v-click-outside="cerrarMenu" class="menuPrincipal">
+      <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
+      <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`">
     TODO: cambiar de hardcodeado a el CMS -->
-    <nav class="menuContenido">
-      <NuxtLink
-        v-for="pagina in paginas"
-        :key="pagina.slug"
-        :to="pagina.slug ? `/${pagina.slug}` : '/'"
-        class="navBtn"
-        @click.native="resolverMenu"
-      >
-        {{ pagina.titulo }}
-      </NuxtLink>
-    </nav>
+      <nav class="menuContenido">
+        <NuxtLink
+          v-for="pagina in paginas"
+          :key="pagina.slug"
+          :to="pagina.slug ? `/${pagina.slug}` : '/'"
+          class="navBtn"
+          @click.native="resolverMenu"
+        >
+          {{ pagina.titulo }}
+        </NuxtLink>
+      </nav>
 
-    <div class="menuBtn" @click="resolverMenu">
-      <div class="botonMenu"><span class="menuRaya"></span></div>
-      <!-- <span class="lineaVertical"></span> -->
+      <div class="menuBtn" @click="resolverMenu">
+        <div class="botonMenu"><span class="menuRaya"></span></div>
+        <!-- <span class="lineaVertical"></span> -->
+      </div>
+      <div class="logo-texto"><h2>ARCA</h2></div>
     </div>
-    <div class="logo-texto"><h2>ARCA</h2></div>
+    <div class="fondo"></div>
   </div>
 </template>
 
@@ -47,6 +50,10 @@ export default {
     resolverMenu() {
       this.$emit('resolverMenu');
     },
+
+    cerrarMenu() {
+      this.$emit('cerrarMenu');
+    },
   },
 };
 </script>
@@ -59,7 +66,7 @@ $menuRayaRadio: 4px;
 $menuRayaEspacio: 8px;
 $menuRayaColor: #08173e;
 
-.menuPrincipal {
+.contenedorMenu {
   z-index: 9999;
 }
 
@@ -127,36 +134,55 @@ $menuRayaColor: #08173e;
   }
 }
 
-.abierto {
-  .botonMenu {
-    .menuRaya {
-      height: 0;
-      width: 0;
-
-      &::before {
-        transform: rotate(45deg) translate(-12px, 12px);
-      }
-
-      &::after {
-        transform: rotate(-45deg) translate(-12px, -12px);
-      }
-    }
-  }
-
-  .menuContenido {
-    width: 100vw;
-    height: 100vh;
-    padding: 60px 2em;
-    font-size: 1em;
-  }
+.menuPrincipal {
+  z-index: 2;
+  position: relative;
 }
 
-.abierto {
+.fondo {
+  pointer-events: none;
+  z-index: 1;
   width: 100vw;
   height: 100vh;
   background-color: #08173e98;
   position: absolute;
   transition: all 0.5s ease-in-out;
+}
+
+.cerrado {
+  .fondo {
+    opacity: 0;
+  }
+}
+
+.abierto {
+  .menuPrincipal {
+    .botonMenu {
+      .menuRaya {
+        height: 0;
+        width: 0;
+
+        &::before {
+          transform: rotate(45deg) translate(-12px, 12px);
+        }
+
+        &::after {
+          transform: rotate(-45deg) translate(-12px, -12px);
+        }
+      }
+    }
+
+    .menuContenido {
+      width: 100vw;
+      height: 100vh;
+      padding: 60px 2em;
+      font-size: 1em;
+    }
+  }
+
+  .fondo {
+    opacity: 1;
+  }
 }
 
 .menuRaya {
@@ -203,13 +229,15 @@ $menuRayaColor: #08173e;
   }
 
   .abierto {
-    .menuBtn {
-      background-color: transparent;
-    }
-    .menuContenido {
-      width: 15vw;
-      right: 0;
-      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
+    .menuPrincipal {
+      .menuBtn {
+        background-color: transparent;
+      }
+      .menuContenido {
+        width: 15vw;
+        right: 0;
+        border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
+      }
     }
   }
 }
@@ -217,8 +245,10 @@ $menuRayaColor: #08173e;
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
   .abierto {
-    .menuContenido {
-      width: 400px;
+    .menuPrincipal {
+      .menuContenido {
+        width: 400px;
+      }
     }
   }
 }
@@ -226,13 +256,15 @@ $menuRayaColor: #08173e;
 // Pantallas grandes
 @media (min-width: $minPantallaGrande) {
   .abierto {
-    .menuContenido {
-      width: 30vw;
-      font-size: 1.1em;
-      display: flex;
-      justify-content: center;
-      position: fixed;
-      border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
+    .menuPrincipal {
+      .menuContenido {
+        width: 30vw;
+        font-size: 1.1em;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
+      }
     }
   }
 }
