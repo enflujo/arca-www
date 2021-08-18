@@ -19,8 +19,8 @@
             <Buscador />
           </div>
           <div class="barra-texto">
-            <h3 class="seccion">Categorías</h3>
-            <ul>
+            <h3 class="seccion" v-on:click="colapsarCategorias">Categorías</h3>
+            <ul v-if="this.categoriasVisible">
               <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1">
                 {{ cat1 }}
 
@@ -67,33 +67,24 @@
             </ul>
 
             <div class="pantalla">
-              <h3 class="seccion">Autores</h3>
-              <ul>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
-                <li>Autor numero X</li>
+              <h3 class="seccion" v-on:click="colapsarAutores">Autores</h3>
+              <ul v-if="this.autoresVisible">
+                <li
+                  v-for="(autor, i) in autores"
+                  :key="`autor${i}`"
+                  class="lista-autores"
+                  @click="buscarAutor(autor.id)"
+                >
+                  {{ autor.lastname }} {{ autor.name }}
+                </li>
               </ul>
             </div>
             <div class="pantalla">
-              <h3 class="seccion">Regiones</h3>
-              <ul>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
-                <li>Regiones numero X</li>
+              <h3 class="seccion" v-on:click="colapsarPaises">Países</h3>
+              <ul v-if="this.paisesVisible">
+                <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores" @click="buscarAutor(pais.id)">
+                  {{ pais.name_spanish }}
+                </li>
               </ul>
             </div>
           </div>
@@ -118,6 +109,12 @@ export default {
       pagina: {},
       categorias: [],
       obras: [],
+      autores: [],
+      paises: [],
+      categoriasVisible: true,
+      subcategoriasVisible: true,
+      autoresVisible: true,
+      paisesVisible: true,
     };
   },
 
@@ -154,10 +151,21 @@ export default {
             name
           }
         }
+
+        countries {
+          id
+          name_spanish
+        }
+
+        authors {
+          id
+          lastname
+          name
+        }
       }
     `;
 
-    const { paginas, artworks } = await this.$graphql.principal.request(query);
+    const { paginas, artworks, countries, authors } = await this.$graphql.principal.request(query);
 
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
@@ -166,6 +174,40 @@ export default {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
+    }
+
+    if (countries && countries.length) {
+      this.paises = countries.sort((a, b) => {
+        const nombreA = a.name_spanish;
+        const nombreB = b.name_spanish;
+
+        if (nombreA < nombreB) {
+          return -1;
+        }
+        if (nombreA > nombreB) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      if (process.server) {
+        this.$nuxt.context.res.statusCode = 404;
+      }
+      throw new Error('La página no existe');
+    }
+    if (authors && authors.length) {
+      this.autores = authors.sort((a, b) => {
+        const apellidoA = a.lastname;
+        const apellidoB = b.lastname;
+
+        if (apellidoA < apellidoB) {
+          return -1;
+        }
+        if (apellidoA > apellidoB) {
+          return 1;
+        }
+        return 0;
+      });
     }
 
     if (artworks && artworks.length) {
@@ -238,6 +280,50 @@ export default {
   methods: {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
+    // TODO: Volver una sola función con parámetros
+    colapsarCategorias() {
+      if (this.categoriasVisible === true) {
+        this.categoriasVisible = false;
+      } else {
+        this.categoriasVisible = true;
+      }
+    },
+    colapsarSubcategorias() {
+      if (this.subcategoriasVisible === true) {
+        this.subcategoriasVisible = false;
+      } else {
+        this.subcategoriasVisible = true;
+      }
+    },
+    colapsarAutores() {
+      if (this.autoresVisible === true) {
+        this.autoresVisible = false;
+      } else {
+        this.autoresVisible = true;
+      }
+    },
+    colapsarPaises() {
+      if (this.paisesVisible === true) {
+        this.paisesVisible = false;
+      } else {
+        this.paisesVisible = true;
+      }
+    },
+    buscarPais(id) {
+      this.$store.dispatch('buscador/buscar', {
+        campo: 'actual_country_id',
+        comparacion: id,
+      });
+    },
+    buscarAutor(id) {
+      this.$store.dispatch('buscador/buscar', {
+        campo: 'author_id',
+        comparacion: id,
+      });
+    },
+    actualizarFiltro(filtro) {
+      this.$store.commit('general/actualizarFiltro', filtro);
     },
   },
 };
