@@ -297,11 +297,6 @@ li {
 
 .imagenes {
   width: 80vw;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: start;
 
   .caja-inicial {
     display: flex;
