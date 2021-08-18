@@ -64,7 +64,7 @@ $menuRayaAncho: 30px;
 $menuRayaAlto: 4px;
 $menuRayaRadio: 4px;
 $menuRayaEspacio: 8px;
-$menuRayaColor: #08173e;
+$menuRayaColor: $claridad;
 
 .contenedorMenu {
   z-index: 9999;
@@ -72,7 +72,7 @@ $menuRayaColor: #08173e;
 
 .menuBtn {
   position: fixed;
-  background-color: $claridad;
+  // background-color: $claridad;
 }
 
 .botonMenu {
@@ -107,7 +107,7 @@ $menuRayaColor: #08173e;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: $profundidad;
+  background-color: $dolor;
 
   a,
   a:link {
@@ -144,7 +144,7 @@ $menuRayaColor: #08173e;
   z-index: 1;
   width: 100vw;
   height: 100vh;
-  background-color: #08173e98;
+  background-color: #00000098;
   position: absolute;
   transition: all 0.5s ease-in-out;
 }
@@ -219,13 +219,14 @@ $menuRayaColor: #08173e;
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   .menuBtn {
-    width: $tamanoMenu;
-    height: $tamanoMenu;
+    width: 0;
+    height: 0;
     right: 0;
     top: 0;
     cursor: pointer;
-    background-color: $profundidad;
-    border-radius: 100% 0% 0% 100% / 0% 25% 75% 100%;
+    // background-color: $dolor;
+    border-top: 80px solid $dolor;
+    border-left: 80px solid transparent;
   }
 
   .abierto {
@@ -236,7 +237,6 @@ $menuRayaColor: #08173e;
       .menuContenido {
         width: 15vw;
         right: 0;
-        border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
       }
     }
   }
@@ -263,7 +263,6 @@ $menuRayaColor: #08173e;
         display: flex;
         justify-content: center;
         position: fixed;
-        border-radius: 100% 0% 0% 100% / 50% 0% 100% 50%;
       }
     }
   }

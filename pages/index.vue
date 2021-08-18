@@ -1,9 +1,10 @@
 <template>
   <div id="inicio">
+    <Background />
     <section id="portada" ref="seccionPortada" :style="estiloPortada">
-      <Logo :color="general.project_color" />
-      <h1 class="titulo logo-texto">{{ general.nombre }}</h1>
-      <h2 class="subtitulo" :style="`background-color:${general.project_color}`">{{ general.descripcion }}</h2>
+      <Logo class="svgClaro" />
+      <h1 class="titulo logo-texto claridad">{{ general.nombre }}</h1>
+      <h2 class="subtitulo">{{ general.descripcion }}</h2>
       <canvas ref="lienzo" class="lienzo"></canvas>
     </section>
   </div>
@@ -87,14 +88,12 @@ section {
   min-height: 50vh;
   position: relative;
   z-index: 1;
-  padding: 0.8em;
 }
 
 #portada {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  padding: 3em 5em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,6 +119,7 @@ section {
   margin-top: 10px;
   display: block;
   position: relative;
+  color: $claridad;
 }
 
 .titulo {
@@ -127,17 +127,36 @@ section {
   margin: 0;
 }
 
+.claridad {
+  color: $claridad;
+}
+
 .logo-texto {
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
+.bg-img {
+  display: block;
+  width: 100vw;
+  height: auto;
+  top: 0;
+  left: 0;
+}
+
+.svgClaro {
+  fill: $claridad;
+}
+
 .subtitulo {
-  font-size: 0.9em;
-  color: white;
-  font-weight: $fuentePrincipalPeso;
-  padding: 0.5em;
-  margin: 0.5em;
+  font-size: 1.4em;
+  color: $claridad;
+  font-weight: 400;
+  text-transform: uppercase;
+  width: 400px;
+  text-align: center;
+  font-family: $fuenteMenu;
+  letter-spacing: 5px;
 }
 
 // Teléfonos horizontal
