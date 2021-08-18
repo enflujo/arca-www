@@ -19,7 +19,7 @@
             <Buscador />
           </div>
           <div class="barra-texto">
-            <h3 class="seccion">Categorias</h3>
+            <h3 class="seccion">Categorías</h3>
             <ul>
               <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1">
                 {{ cat1 }}
