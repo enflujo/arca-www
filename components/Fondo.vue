@@ -10,7 +10,6 @@
 @use "sass:color";
 
 .completo {
-  width: 100vw;
   height: 100vh;
   display: block;
   background-color: $mediana;

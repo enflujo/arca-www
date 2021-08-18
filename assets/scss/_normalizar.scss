@@ -20,6 +20,7 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
+  overflow-x: hidden;
 }
 
 html,
@@ -120,7 +121,7 @@ a:link {
   width: 100vw;
   justify-content: center;
   position: absolute;
-  overflow: auto;
+  overflow: hidden;
   height: 100vh;
   padding-top: 100px;
   top: 0;

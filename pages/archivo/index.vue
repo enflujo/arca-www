@@ -100,9 +100,7 @@
         </nav>
 
         <section class="imagenes">
-          <NuxtLink v-for="(obra, i) in obras" :key="`obra-${i}`" :to="`/imagen/${obra.id}`">
-            <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
-          </NuxtLink>
+          <img v-for="(obra, i) in obras" :key="`obra-${i}`" :src="urlImagen(obras[i].image)" :alt="obras.title" />
         </section>
       </div>
     </template>
@@ -226,6 +224,7 @@ export default {
 
   computed: {
     obrasSeleccionadas() {
+      //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
   },
