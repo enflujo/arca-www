@@ -14,6 +14,7 @@ export const actions = {
       const query = gql`
         query {
           artworks(search: "${queryString}") {
+            id
             title
             image {
               id

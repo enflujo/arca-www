@@ -10,13 +10,7 @@
 
     <template v-else>
       <div class="sobre-arca">
-        <h1>{{ obras.title }}</h1>
-        <div class="descripcion">
-          <img :src="urlImagen(obras.image)" :alt="obras.title" />
-
-          <p>Autor: {{ `${obras.author_id.name} ${obras.author_id.lastname}` }}</p>
-          <p>{{ obras.annotation_date }}</p>
-        </div>
+        <h1>{{ pagina.titulo }}</h1>
       </div>
     </template>
   </div>
@@ -24,14 +18,12 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead, urlImagen } from '../../utilidades/ayudas';
+import { crearHead } from '../../utilidades/ayudas';
 
 export default {
   data() {
     return {
       pagina: {},
-      obras: {},
-      autor: {},
     };
   },
 
@@ -48,26 +40,10 @@ export default {
             title
           }
         }
-        artworks(filter: { id: { _eq: ${this.id} } }) {
-          id
-          title
-          annotation_date
-          latitude_current
-          longitude_current
-          image {
-            id
-            title
-          }
-          author_id {
-            id
-            name
-            lastname
-          }
-        }
       }
     `;
 
-    const { paginas, artworks, authors } = await this.$graphql.principal.request(query);
+    const { paginas } = await this.$graphql.principal.request(query);
 
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
@@ -76,14 +52,6 @@ export default {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
-    }
-    if (artworks) {
-      this.obras = artworks[0];
-      // console.log(this.obras);
-    }
-    if (authors) {
-      this.autor = authors[0];
-      // console.log(this.$route.query.title);
     }
   },
 
@@ -95,23 +63,6 @@ export default {
       this.pagina.banner,
       this.$nuxt.$route.path
     );
-  },
-
-  computed: {
-    id() {
-      return this.$route.query.id;
-    },
-    authorId() {
-      return this.$store.state.buscador.seleccionados.authorId;
-    },
-  },
-
-  mounted() {},
-
-  methods: {
-    urlImagen(objImg, key) {
-      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-    },
   },
 };
 </script>
