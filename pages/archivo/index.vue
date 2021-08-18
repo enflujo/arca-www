@@ -82,7 +82,7 @@
             <div class="pantalla">
               <h3 class="seccion" v-on:click="colapsarPaises">Países</h3>
               <ul v-if="this.paisesVisible">
-                <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores" @click="buscarAutor(pais.id)">
+                <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores" @click="buscarPais(pais.id)">
                   {{ pais.name_spanish }}
                 </li>
               </ul>
