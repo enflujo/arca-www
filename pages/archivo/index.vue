@@ -357,15 +357,18 @@ li {
   height: 100vh;
   width: 20vw;
   display: flex;
-  padding-top: 4em;
+  padding-top: 6em;
   flex-direction: column;
   align-items: center;
   align-items: center;
   overflow-x: auto;
+  position: relative;
 }
 .barra-texto {
-  width: 20vw;
+  width: 17vw;
   padding-left: 20px;
+  position: relative;
+  top: 25px;
 }
 .archivo {
   display: flex;
