@@ -12,6 +12,10 @@
       <main role="main">
         <h1>{{ pagina.titulo }}</h1>
         <p>{{ pagina.descripcion }}</p>
+        <br />
+        <div class="descripcion">
+          <span v-html="pagina.contenido">{{ pagina.contenido }}</span>
+        </div>
       </main>
     </template>
   </div>
@@ -73,4 +77,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.descripcion {
+  font-family: 'Work Sans';
+  text-align: justify;
+  text-justify: inter-word;
+  width: 90%;
+}
+</style>
