@@ -91,7 +91,14 @@
         </nav>
 
         <section class="imagenes">
-          <img v-for="(obra, i) in obras" :key="`obra-${i}`" :src="urlImagen(obras[i].image)" :alt="obras.title" />
+          <NuxtLink
+            v-for="(obra, i) in obras"
+            :key="`obra-${i}`.id"
+            :to="obras[i].id ? `/imagen/${obras[i].id}` : `/imagen/index.vue`"
+            class="navBtn"
+          >
+            <img :key="`obra-${i}`" :src="urlImagen(obras[i].image)" :alt="obras.title" />
+          </NuxtLink>
         </section>
       </div>
     </template>
