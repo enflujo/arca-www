@@ -6,7 +6,7 @@
 
 <script></script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use "sass:color";
 
 .contenedor-completo {
@@ -14,7 +14,7 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: auto;
+  height: 99vh;
   position: absolute;
 }
 </style>

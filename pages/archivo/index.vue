@@ -132,7 +132,7 @@ export default {
           }
         }
 
-        artworks(limit: -1) {
+        artworks(limit: 50) {
           id
           title
           category_1_id {
@@ -386,6 +386,7 @@ li {
 
 .imagenes {
   width: 80vw;
+  // height: calc(100vh - 120px);
 
   .caja-inicial {
     display: flex;

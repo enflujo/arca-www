@@ -146,7 +146,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 main {
-  flex-grow: initial;
+  // flex-grow: initial;
 }
 .completo-archivo {
   padding-top: 100px;

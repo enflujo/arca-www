@@ -99,8 +99,8 @@ ul {
 
 img,
 video {
-  max-width: 100%;
-  height: auto;
+  width: 100vw;
+  height: 99vh;
 }
 
 body {
@@ -133,11 +133,11 @@ a:link {
 .texto-claro {
   color: $claridad;
 }
-.centrar-contenido {
-  width: 900px;
-  display: flex;
-  justify-content: center;
-  padding-top: 100px;
-}
+// .centrar-contenido {
+//   width: 900px;
+//   display: flex;
+//   justify-content: center;
+//   padding-top: 100px;
+// }
 .fondo-general {
 }

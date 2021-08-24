@@ -4,12 +4,7 @@
     <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
     <main role="main">
-      <Fondo />
-      <div class="contenedor">
-        <div class="centrar-contenido">
-          <Nuxt keepAlive />
-        </div>
-      </div>
+      <Nuxt keepAlive />
     </main>
     <Footer />
   </div>
@@ -76,7 +71,7 @@ export default {
 
 main {
   // margin-top: $anchoMenu;
-  flex-grow: 1;
+  // flex-grow: 1;
   // background-color: color.scale($colorPrincipal, $lightness: 90%);
 }
 
