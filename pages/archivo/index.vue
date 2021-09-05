@@ -14,7 +14,9 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <div class="fondo-izquierda"></div>
+        <div class="fondo-izquierda">
+          <h2 class="logo-texto">ARCA</h2>
+        </div>
         <nav class="barra-izquierda">
           <div class="busqueda">
             <Buscador />
@@ -340,7 +342,11 @@ export default {
 .contenedor-pagina {
   display: flex;
 }
-
+.logo-texto {
+  top: 20px;
+  position: relative;
+  left: 20px;
+}
 li {
   margin-bottom: 10px;
 }
@@ -353,6 +359,7 @@ li {
   // align-items: center;
   overflow-x: auto;
   position: absolute;
+  border-right: 2px solid $dolor;
 }
 .barra-izquierda {
   z-index: 3;

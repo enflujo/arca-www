@@ -57,7 +57,7 @@ export default {
 }
 
 input {
-  border: 2px solid #08173e;
+  border: 2px solid $dolor;
   border-radius: 25px;
   width: 90%;
   display: flex;
