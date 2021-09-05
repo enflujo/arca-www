@@ -80,11 +80,8 @@ main {
 }
 
 // Pantallas medianas (Tablets)
-@media (min-width: $minTablet) {
-  main {
-    // width: calc(100vw - #{$anchoMenu});
-  }
-}
+// @media (min-width: $minTablet) {
+// }
 
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {

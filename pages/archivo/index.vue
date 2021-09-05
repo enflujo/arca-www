@@ -14,8 +14,9 @@
 
     <template v-else>
       <div class="contenedor-pagina">
+        <div class="fondo-izquierda"></div>
         <nav class="barra-izquierda">
-          <div>
+          <div class="busqueda">
             <Buscador />
           </div>
           <div class="barra-texto">
@@ -330,14 +331,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.contenedor {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  overflow: auto;
-  top: 0;
+.busqueda {
+  display: block;
+  position: relative;
+  top: 80px;
+  left: 10px;
 }
-
 .contenedor-pagina {
   display: flex;
 }
@@ -345,23 +344,25 @@ export default {
 li {
   margin-bottom: 10px;
 }
-.barra-izquierda {
+.fondo-izquierda {
   background-color: $mediana;
   height: 100vh;
   width: 20vw;
-  display: flex;
-  padding-top: 6em;
-  flex-direction: column;
-  align-items: center;
-  align-items: center;
+  // flex-direction: column;
+  // align-items: center;
+  // align-items: center;
   overflow-x: auto;
-  position: relative;
+  position: absolute;
+}
+.barra-izquierda {
+  z-index: 3;
 }
 .barra-texto {
-  width: 17vw;
+  width: 20vw;
   padding-left: 20px;
-  position: relative;
-  top: 25px;
+  margin-top: 120px;
+  z-index: 2;
+  height: calc(100vh - 165px);
 }
 .archivo {
   display: flex;
@@ -451,5 +452,6 @@ ul {
 .seccion {
   margin-bottom: 10px;
   font-family: $fuenteSec;
+  cursor: pointer;
 }
 </style>
