@@ -94,6 +94,39 @@
         </nav>
 
         <section class="imagenes">
+          <div class="descripcion-datos">
+            <h4>500 obras en la coleccion representan la categoria Cristologico</h4>
+          </div>
+          <div class="agrupar-elementos">
+            <div class="todas-images">
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+              <div class="imagen"></div>
+            </div>
+            <div class="barra-detalles">
+              <div class="descripcion-categoria">
+                <h3>Cristologico</h3>
+                <p class="descripcion">Cristologico lorem ipsum dolor sit amet</p>
+              </div>
+              <Mapa />
+            </div>
+          </div>
           <img v-for="(obra, i) in obras" :key="`obra-${i}`" :src="urlImagen(obras[i].image)" :alt="obras.title" />
         </section>
       </div>
@@ -333,6 +366,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.descripcion-datos {
+  height: 40px;
+  border-bottom: 1px solid $mediana;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.barra-detalles {
+  display: flex;
+}
+.agrupar-elementos {
+  display: flex;
+}
+.todas-images {
+  display: grid;
+  width: 70%;
+  height: calc(100vh - 40px);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  .imagen {
+    background-color: $dolor;
+  }
+}
+.descripcion-categoria {
+  background-color: $dolor;
+  width: 350px;
+  height: 200px;
+  color: $claridad;
+  padding: 10px;
+  position: relative;
+}
 .busqueda {
   display: block;
   position: relative;
@@ -349,6 +415,9 @@ export default {
 }
 li {
   margin-bottom: 10px;
+}
+.descripcion {
+  margin-top: 10px;
 }
 .fondo-izquierda {
   background-color: $mediana;
