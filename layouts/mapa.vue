@@ -57,7 +57,7 @@ export default {
 
 main {
   // margin-top: $anchoMenu;
-  flex-grow: 1;
+  // flex-grow: 1;
   // background-color: color.scale($colorPrincipal, $lightness: 90%);
 }
 

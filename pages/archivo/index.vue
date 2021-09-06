@@ -14,8 +14,11 @@
 
     <template v-else>
       <div class="contenedor-pagina">
+        <div class="fondo-izquierda">
+          <h2 class="logo-texto">ARCA</h2>
+        </div>
         <nav class="barra-izquierda">
-          <div>
+          <div class="busqueda">
             <Buscador />
           </div>
           <div class="barra-texto">
@@ -139,7 +142,7 @@ export default {
           }
         }
 
-        artworks(limit: -1) {
+        artworks(limit: 50) {
           id
           title
           category_1_id {
@@ -337,38 +340,79 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.contenedor {
+.descripcion-datos {
+  height: 40px;
+  border-bottom: 1px solid $mediana;
   display: flex;
   justify-content: center;
-  position: absolute;
-  overflow: auto;
-  top: 0;
+  align-items: center;
 }
-
+.barra-detalles {
+  display: flex;
+}
+.agrupar-elementos {
+  display: flex;
+}
+.todas-images {
+  display: grid;
+  width: 70%;
+  height: calc(100vh - 40px);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  .imagen {
+    background-color: $dolor;
+  }
+}
+.descripcion-categoria {
+  background-color: $dolor;
+  width: 350px;
+  height: 200px;
+  color: $claridad;
+  padding: 10px;
+  position: relative;
+}
+.busqueda {
+  display: block;
+  position: relative;
+  top: 80px;
+  left: 10px;
+}
 .contenedor-pagina {
   display: flex;
 }
-
+.logo-texto {
+  top: 20px;
+  position: relative;
+  left: 20px;
+}
 li {
   margin-bottom: 10px;
 }
-.barra-izquierda {
+.descripcion {
+  margin-top: 10px;
+}
+.fondo-izquierda {
   background-color: $mediana;
   height: 100vh;
   width: 20vw;
-  display: flex;
-  padding-top: 6em;
-  flex-direction: column;
-  align-items: center;
-  align-items: center;
+  // flex-direction: column;
+  // align-items: center;
+  // align-items: center;
   overflow-x: auto;
-  position: relative;
+  position: absolute;
+  border-right: 2px solid $dolor;
+}
+.barra-izquierda {
+  z-index: 3;
 }
 .barra-texto {
   width: 17vw;
   padding-left: 20px;
-  position: relative;
-  top: 25px;
+  margin-top: 120px;
+  z-index: 2;
+  height: calc(100vh - 165px);
 }
 .archivo {
   display: flex;
@@ -393,6 +437,7 @@ li {
 
 .imagenes {
   width: 80vw;
+  // height: calc(100vh - 120px);
 
   .caja-inicial {
     display: flex;
@@ -457,5 +502,6 @@ ul {
 .seccion {
   margin-bottom: 10px;
   font-family: $fuenteSec;
+  cursor: pointer;
 }
 </style>

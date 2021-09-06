@@ -146,11 +146,21 @@ export default {
 </script>
 <style lang="scss" scoped>
 main {
-  flex-grow: initial;
+  // flex-grow: initial;
 }
-.completo-archivo {
-  padding-top: 100px;
+
+.contenedor-centrado {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  .completo-archivo {
+    padding-top: 100px;
+    overflow: hidden;
+    width: 1100px;
+    padding-bottom: 100px;
+  }
 }
+
 h5 {
   font-family: $fuenteMenu;
   font-weight: 300;
@@ -177,6 +187,7 @@ img {
   width: 40%;
   display: flex;
   align-self: center;
+  height: auto;
 }
 .botonera {
   display: flex;
@@ -184,10 +195,15 @@ img {
   .botones-imagen {
     letter-spacing: 3px;
     text-transform: uppercase;
-    font-family: $fuenteMenu;
+    font-family: 'Work Sans', sans-serif;
     font-weight: 400;
     font-size: 12px;
     margin-top: 30px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    height: 110px;
+    justify-content: space-evenly;
   }
 }
 .informacion-general {
@@ -219,6 +235,8 @@ img {
   position: relative;
   top: 40px;
   .titulo {
+    align-self: center;
+    top: 30px;
   }
   .galeria-mapas {
     display: flex;
@@ -235,5 +253,14 @@ img {
       }
     }
   }
+}
+
+.clasificacion {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  top: 60px;
+  align-self: center;
 }
 </style>

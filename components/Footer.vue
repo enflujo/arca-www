@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      color: '#c9c1b3',
+      color: '#fffdf8',
       fecha: '',
     };
   },
@@ -52,8 +52,8 @@ export default {
 @use "sass:color";
 
 footer {
-  background-color: $mediana;
-  color: #c9c1b3;
+  background-color: $dolor;
+  color: $claridad;
   height: 120px;
   width: 100vw;
   display: flex;
@@ -70,7 +70,7 @@ footer {
     }
 
     .logo-texto {
-      color: #c9c1b3;
+      color: $claridad;
       text-transform: uppercase;
     }
   }
