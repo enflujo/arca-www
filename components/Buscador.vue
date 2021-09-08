@@ -50,10 +50,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+*,
+*::before,
+*::after {
+  box-sizing: content-box;
+}
+
 input {
-  border: 2px solid #08173e;
+  border: 2px solid $dolor;
   border-radius: 25px;
-  width: 18vw;
+  width: 90%;
   display: flex;
   height: 40px;
   justify-content: center;
@@ -61,7 +67,9 @@ input {
   font-family: 'Work Sans';
   text-align: center;
   text-transform: uppercase;
-  position: relative;
+  // position: fixed;
+  // top: 90px;
+  // left: 10px;
 }
 .imagenes {
   display: flex;

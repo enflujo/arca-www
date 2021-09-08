@@ -1,6 +1,7 @@
 import { gql } from 'nuxt-graphql-request';
 // simil a data
 export const state = () => ({
+  busquedaActual: '',
   seleccionados: [],
   guardados: {},
   guardados2: {},
@@ -44,9 +45,12 @@ export const actions = {
     if (state.guardados[filtro.campo] && state.guardados[filtro.campo][filtro.comparacion]) {
       commit('usarGuardados', state.guardados[filtro.campo][filtro.comparacion]);
     } else {
+      const campo2 = filtro.campo2 || 'id';
+      const busqueda = campo2 === 'id' ? +filtro.comparacion : `"${filtro.comparacion}"`;
+
       const query = gql`
       query {
-        artworks(filter: { ${filtro.campo}: { id: { _eq: ${filtro.comparacion} } } } limit: -1) {
+        artworks(filter: { ${filtro.campo}: { ${campo2}: { _eq: ${busqueda} } } }, limit: -1) {
           id
           title
           annotation_date
@@ -90,6 +94,7 @@ export const mutations = {
 
     state.guardados = guardados;
     state.seleccionados = datos.artworks;
+    state.busquedaActual = datos.filtro.comparacion;
   },
 
   guardarSeleccionados2(state, datos) {

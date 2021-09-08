@@ -52,7 +52,6 @@ h1 {
 h2 {
   font-family: $fuenteSec;
   color: $profundidad;
-  
 }
 
 p {
@@ -99,8 +98,8 @@ ul {
 
 img,
 video {
-  max-width: 100%;
-  height: auto;
+  width: 100vw;
+  height: 99vh;
 }
 
 body {
@@ -122,8 +121,7 @@ a:link {
   justify-content: center;
   position: absolute;
   overflow: hidden;
-  height: 100vh;
-  padding-top: 100px;
+  // height: 100vh;
   top: 0;
   .centrar-contenido {
     width: 800px;
@@ -134,11 +132,11 @@ a:link {
 .texto-claro {
   color: $claridad;
 }
-.centrar-contenido {
-  width: 900px;
-  display: flex;
-  justify-content: center;
-  padding-top: 100px;
-}
+// .centrar-contenido {
+//   width: 900px;
+//   display: flex;
+//   justify-content: center;
+//   padding-top: 100px;
+// }
 .fondo-general {
 }
