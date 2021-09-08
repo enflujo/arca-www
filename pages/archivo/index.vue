@@ -24,40 +24,49 @@
           <div class="barra-texto">
             <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
             <ul v-if="categoriasVisible">
-              <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1">
-                <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
+              <li
+                v-for="(cat1, i) in Object.keys(categorias).sort()"
+                :key="`cat1${i}`"
+                class="cat categoria1"
+                @click="buscar('category_1_id', cat1, 'name')"
+              >
+                {{ cat1 }}
 
                 <ul v-if="Object.keys(categorias[cat1]).length">
                   <li
                     v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
                     :key="`cat2${i2}`"
                     class="cat categoria2"
+                    @click="buscar('category_2_id', cat2, 'name')"
                   >
-                    <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
+                    {{ cat2 }}
 
                     <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                       <li
                         v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
                         :key="`cat3${i3}`"
                         class="cat categoria3"
+                        @click="buscar('category_3_id', cat3, 'name')"
                       >
-                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
+                        {{ cat3 }}
 
                         <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
                           <li
                             v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
                             :key="`cat4${i4}`"
                             class="cat categoria4"
+                            @click="buscar('category_4_id', cat4, 'name')"
                           >
-                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
+                            {{ cat4 }}
 
                             <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                               <li
                                 v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
                                 :key="`cat5${i5}`"
                                 class="cat categoria5"
+                                @click="buscar('category_5_id', cat5, 'name')"
                               >
-                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
+                                {{ cat5 }}
                               </li>
                             </ul>
                           </li>
@@ -76,7 +85,7 @@
                   v-for="(autor, i) in autores"
                   :key="`autor${i}`"
                   class="lista-autores"
-                  @click="buscarAutor(autor.id)"
+                  @click="buscar('author_id', autor.id)"
                 >
                   {{ autor.lastname }} {{ autor.name }}
                 </li>
@@ -85,7 +94,12 @@
             <div class="pantalla">
               <h3 class="seccion" @click="colapsarPaises">Países</h3>
               <ul v-if="paisesVisible">
-                <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores" @click="buscarPais(pais.id)">
+                <li
+                  v-for="(pais, i) in paises"
+                  :key="`autor${i}`"
+                  class="lista-autores"
+                  @click="buscar('actual_country_id', pais.id)"
+                >
                   {{ pais.name_spanish }}
                 </li>
               </ul>
@@ -99,7 +113,7 @@
           </div>
           <div class="agrupar-elementos">
             <div class="todas-images">
-              <div class="imagen" v-for="(obra, i) in obras" :key="`obra-${i}`">
+              <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
                 <nuxt-link :to="`/imagen/${obra.id}`"
                   ><img :src="urlImagen(obras[i].image)" :alt="obras.title"
                 /></nuxt-link>
@@ -538,6 +552,10 @@ ul {
 .seccion {
   margin-bottom: 10px;
   font-family: $fuenteSec;
+  cursor: pointer;
+}
+
+nav li {
   cursor: pointer;
 }
 </style>
