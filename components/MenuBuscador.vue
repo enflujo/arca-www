@@ -17,29 +17,99 @@
         <div class="fondo-izquierda">
           <h2 class="logo-texto">ARCA</h2>
         </div>
-        <nav class="barra-izquierda"></nav>
-        <MenuBuscador />
-        <section class="imagenes">
-          <div class="descripcion-datos">
-            <h4>{{ obras.length }} obras en {{ busquedaActual }}</h4>
+        <nav class="barra-izquierda">
+          <div class="busqueda">
+            <Buscador />
           </div>
-          <div class="agrupar-elementos">
-            <div class="todas-images">
-              <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
-                <nuxt-link :to="`/imagen/${obra.id}`"
-                  ><img :src="urlImagen(obras[i].image)" :alt="obras.title"
-                /></nuxt-link>
-              </div>
+          <div class="barra-texto">
+            <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
+            <ul v-if="categoriasVisible">
+              <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
+                <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
+                <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
+
+                <ul v-if="Object.keys(categorias[cat1]).length">
+                  <li
+                    v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
+                    :key="`cat2${i2}`"
+                    class="cat categoria2 cerrado"
+                  >
+                    <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
+                    <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
+
+                    <ul v-if="Object.keys(categorias[cat1][cat2]).length">
+                      <li
+                        v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
+                        :key="`cat3${i3}`"
+                        class="cat categoria3 cerrado"
+                      >
+                        <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir"
+                          >+</span
+                        >
+                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat2 }}</span>
+                        {{ cat3 }}
+
+                        <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
+                          <li
+                            v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
+                            :key="`cat4${i4}`"
+                            class="cat categoria4 cerrado"
+                          >
+                            <span
+                              v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length"
+                              class="abrir"
+                              @click="abrir"
+                              >+</span
+                            >
+                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat2 }}</span>
+                            {{ cat4 }}
+
+                            <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
+                              <li
+                                v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
+                                :key="`cat5${i5}`"
+                                class="cat categoria5 cerrado"
+                              >
+                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat2 }}</span>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="pantalla">
+              <h3 class="seccion" @click="colapsarAutores">Autores</h3>
+              <ul v-if="autoresVisible">
+                <li
+                  v-for="(autor, i) in autores"
+                  :key="`autor${i}`"
+                  class="lista-autores"
+                  @click="buscar('author_id', autor.id)"
+                >
+                  {{ autor.lastname }} {{ autor.name }}
+                </li>
+              </ul>
             </div>
-            <div class="barra-detalles">
-              <div class="descripcion-categoria">
-                <h3>{{ busquedaActual }}</h3>
-                <p class="descripcion">{{ busquedaActual }} lorem ipsum dolor sit amet</p>
-              </div>
-              <Mapa />
+            <div class="pantalla">
+              <h3 class="seccion" @click="colapsarPaises">Países</h3>
+              <ul v-if="paisesVisible">
+                <li
+                  v-for="(pais, i) in paises"
+                  :key="`autor${i}`"
+                  class="lista-autores"
+                  @click="buscar('actual_country_id', pais.id)"
+                >
+                  {{ pais.name_spanish }}
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
+        </nav>
       </div>
     </template>
   </div>
@@ -47,7 +117,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead, urlImagen } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../utilidades/ayudas';
 
 export default {
   layout: 'archivo',
@@ -265,18 +335,6 @@ export default {
       } else {
         this.paisesVisible = true;
       }
-    },
-    buscarPais(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'actual_country_id',
-        comparacion: id,
-      });
-    },
-    buscarAutor(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'author_id',
-        comparacion: id,
-      });
     },
     actualizarFiltro(filtro) {
       this.$store.commit('general/actualizarFiltro', filtro);
