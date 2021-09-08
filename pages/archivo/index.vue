@@ -100,28 +100,10 @@
           <div class="agrupar-elementos">
             <div class="todas-images">
               <div class="imagen" v-for="(obra, i) in obras" :key="`obra-${i}`">
-                <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
+                <nuxt-link :to="`/imagen/${obra.id}`"
+                  ><img :src="urlImagen(obras[i].image)" :alt="obras.title"
+                /></nuxt-link>
               </div>
-
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
-              <div class="imagen"></div>
             </div>
             <div class="barra-detalles">
               <div class="descripcion-categoria">
