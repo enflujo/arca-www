@@ -24,49 +24,53 @@
           <div class="barra-texto">
             <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
             <ul v-if="categoriasVisible">
-              <li
-                v-for="(cat1, i) in Object.keys(categorias).sort()"
-                :key="`cat1${i}`"
-                class="cat categoria1"
-                @click="buscar('category_1_id', cat1, 'name')"
-              >
-                {{ cat1 }}
+              <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
+                <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
+                <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
 
                 <ul v-if="Object.keys(categorias[cat1]).length">
                   <li
                     v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
                     :key="`cat2${i2}`"
-                    class="cat categoria2"
-                    @click="buscar('category_2_id', cat2, 'name')"
+                    class="cat categoria2 cerrado"
                   >
-                    {{ cat2 }}
+                    <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
+                    <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
 
                     <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                       <li
                         v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
                         :key="`cat3${i3}`"
-                        class="cat categoria3"
-                        @click="buscar('category_3_id', cat3, 'name')"
+                        class="cat categoria3 cerrado"
                       >
+                        <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir"
+                          >+</span
+                        >
+                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat2 }}</span>
                         {{ cat3 }}
 
                         <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
                           <li
                             v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
                             :key="`cat4${i4}`"
-                            class="cat categoria4"
-                            @click="buscar('category_4_id', cat4, 'name')"
+                            class="cat categoria4 cerrado"
                           >
+                            <span
+                              v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length"
+                              class="abrir"
+                              @click="abrir"
+                              >+</span
+                            >
+                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat2 }}</span>
                             {{ cat4 }}
 
                             <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                               <li
                                 v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
                                 :key="`cat5${i5}`"
-                                class="cat categoria5"
-                                @click="buscar('category_5_id', cat5, 'name')"
+                                class="cat categoria5 cerrado"
                               >
-                                {{ cat5 }}
+                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat2 }}</span>
                               </li>
                             </ul>
                           </li>
@@ -372,6 +376,11 @@ export default {
         campo2,
       });
     },
+
+    abrir(evento) {
+      const contenedor = evento.target.parentElement;
+      contenedor.classList.toggle('cerrado');
+    },
   },
 };
 </script>
@@ -557,5 +566,11 @@ ul {
 
 nav li {
   cursor: pointer;
+}
+
+.cat {
+  &.cerrado {
+    height: 1.2em;
+  }
 }
 </style>
