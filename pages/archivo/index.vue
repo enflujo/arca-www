@@ -76,7 +76,7 @@
                   v-for="(autor, i) in autores"
                   :key="`autor${i}`"
                   class="lista-autores"
-                  @click="buscarAutor(autor.id)"
+                  @click="buscar('author_id', autor.id)"
                 >
                   {{ autor.lastname }} {{ autor.name }}
                 </li>
@@ -94,14 +94,25 @@
         </nav>
 
         <section class="imagenes">
-          <NuxtLink
-            v-for="(obra, i) in obras"
-            :key="`obra-${i}`.id"
-            :to="obras[i].id ? `/imagen/${obras[i].id}` : `/imagen/index.vue`"
-            class="navBtn"
-          >
-            <img :key="`obra-${i}`" :src="urlImagen(obras[i].image)" :alt="obras.title" />
-          </NuxtLink>
+          <div class="descripcion-datos">
+            <h4>500 obras en la coleccion representan la categoria Cristologico</h4>
+          </div>
+          <div class="agrupar-elementos">
+            <div class="todas-images">
+              <div class="imagen" v-for="(obra, i) in obras" :key="`obra-${i}`">
+                <nuxt-link :to="`/imagen/${obra.id}`"
+                  ><img :src="urlImagen(obras[i].image)" :alt="obras.title"
+                /></nuxt-link>
+              </div>
+            </div>
+            <div class="barra-detalles">
+              <div class="descripcion-categoria">
+                <h3>Cristologico</h3>
+                <p class="descripcion">Cristologico lorem ipsum dolor sit amet</p>
+              </div>
+              <Mapa />
+            </div>
+          </div>
         </section>
       </div>
     </template>
