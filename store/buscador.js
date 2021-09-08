@@ -45,10 +45,11 @@ export const actions = {
       commit('usarGuardados', state.guardados[filtro.campo][filtro.comparacion]);
     } else {
       const campo2 = filtro.campo2 || 'id';
+      const busqueda = campo2 === 'id' ? +filtro.comparacion : `"${filtro.comparacion}"`;
 
       const query = gql`
       query {
-        artworks(filter: { ${filtro.campo}: { ${campo2}: { _eq: ${`"${filtro.comparacion}"`} } } }, limit: -1) {
+        artworks(filter: { ${filtro.campo}: { ${campo2}: { _eq: ${busqueda} } } }, limit: -1) {
           id
           title
           annotation_date
