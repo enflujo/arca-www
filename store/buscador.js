@@ -1,6 +1,7 @@
 import { gql } from 'nuxt-graphql-request';
 // simil a data
 export const state = () => ({
+  busquedaActual: '',
   seleccionados: [],
   guardados: {},
   guardados2: {},
@@ -93,6 +94,7 @@ export const mutations = {
 
     state.guardados = guardados;
     state.seleccionados = datos.artworks;
+    state.busquedaActual = datos.filtro.comparacion;
   },
 
   guardarSeleccionados2(state, datos) {

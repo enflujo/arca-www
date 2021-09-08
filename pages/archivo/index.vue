@@ -113,7 +113,7 @@
 
         <section class="imagenes">
           <div class="descripcion-datos">
-            <h4>500 obras en la coleccion representan la categoria Cristologico</h4>
+            <h4>{{ obras.length }} obras en {{ busquedaActual }}</h4>
           </div>
           <div class="agrupar-elementos">
             <div class="todas-images">
@@ -125,8 +125,8 @@
             </div>
             <div class="barra-detalles">
               <div class="descripcion-categoria">
-                <h3>Cristologico</h3>
-                <p class="descripcion">Cristologico lorem ipsum dolor sit amet</p>
+                <h3>{{ busquedaActual }}</h3>
+                <p class="descripcion">{{ busquedaActual }} lorem ipsum dolor sit amet</p>
               </div>
               <Mapa />
             </div>
@@ -312,6 +312,10 @@ export default {
     obrasSeleccionadas() {
       //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
+    },
+
+    busquedaActual() {
+      return this.$store.state.buscador.busquedaActual;
     },
   },
 
