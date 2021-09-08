@@ -22,10 +22,10 @@
             <Buscador />
           </div>
           <div class="barra-texto">
-            <h3 class="seccion" v-on:click="colapsarCategorias">Categorías</h3>
-            <ul v-if="this.categoriasVisible">
+            <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
+            <ul v-if="categoriasVisible">
               <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1">
-                {{ cat1 }}
+                <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
 
                 <ul v-if="Object.keys(categorias[cat1]).length">
                   <li
@@ -33,7 +33,7 @@
                     :key="`cat2${i2}`"
                     class="cat categoria2"
                   >
-                    {{ cat2 }}
+                    <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
 
                     <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                       <li
@@ -41,7 +41,7 @@
                         :key="`cat3${i3}`"
                         class="cat categoria3"
                       >
-                        {{ cat3 }}
+                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
 
                         <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
                           <li
@@ -49,7 +49,7 @@
                             :key="`cat4${i4}`"
                             class="cat categoria4"
                           >
-                            {{ cat4 }}
+                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
 
                             <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                               <li
@@ -57,7 +57,7 @@
                                 :key="`cat5${i5}`"
                                 class="cat categoria5"
                               >
-                                {{ cat5 }}
+                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
                               </li>
                             </ul>
                           </li>
@@ -70,8 +70,8 @@
             </ul>
 
             <div class="pantalla">
-              <h3 class="seccion" v-on:click="colapsarAutores">Autores</h3>
-              <ul v-if="this.autoresVisible">
+              <h3 class="seccion" @click="colapsarAutores">Autores</h3>
+              <ul v-if="autoresVisible">
                 <li
                   v-for="(autor, i) in autores"
                   :key="`autor${i}`"
@@ -83,8 +83,8 @@
               </ul>
             </div>
             <div class="pantalla">
-              <h3 class="seccion" v-on:click="colapsarPaises">Países</h3>
-              <ul v-if="this.paisesVisible">
+              <h3 class="seccion" @click="colapsarPaises">Países</h3>
+              <ul v-if="paisesVisible">
                 <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores" @click="buscarPais(pais.id)">
                   {{ pais.name_spanish }}
                 </li>
@@ -117,7 +117,7 @@ export default {
   data() {
     return {
       pagina: {},
-      categorias: [],
+      categorias: {},
       obras: [],
       autores: [],
       paises: [],
@@ -146,18 +146,23 @@ export default {
           id
           title
           category_1_id {
+            id
             name
           }
           category_2_id {
+            id
             name
           }
           category_3_id {
+            id
             name
           }
           category_4_id {
+            id
             name
           }
           category_5_id {
+            id
             name
           }
         }
@@ -221,37 +226,37 @@ export default {
     }
 
     if (artworks && artworks.length) {
-      const categorias = [];
+      const categorias = {};
 
       artworks.forEach((work) => {
-        const cat1 = work.category_1_id ? work.category_1_id.name : null;
+        const cat1 = work.category_1_id ? work.category_1_id : null;
         const cat2 = work.category_2_id ? work.category_2_id.name : null;
         const cat3 = work.category_3_id ? work.category_3_id.name : null;
         const cat4 = work.category_4_id ? work.category_4_id.name : null;
         const cat5 = work.category_5_id ? work.category_5_id.name : null;
 
         if (cat1) {
-          if (!categorias[cat1]) {
-            categorias[cat1] = {};
+          if (!categorias[cat1.name]) {
+            categorias[cat1.name] = {};
           }
 
           if (cat2) {
-            if (!categorias[cat1][cat2]) {
-              categorias[cat1][cat2] = {};
+            if (!categorias[cat1.name][cat2]) {
+              categorias[cat1.name][cat2] = {};
             }
 
             if (cat3) {
-              if (!categorias[cat1][cat2][cat3]) {
-                categorias[cat1][cat2][cat3] = {};
+              if (!categorias[cat1.name][cat2][cat3]) {
+                categorias[cat1.name][cat2][cat3] = {};
               }
 
               if (cat4) {
-                if (!categorias[cat1][cat2][cat3][cat4]) {
-                  categorias[cat1][cat2][cat3][cat4] = {};
+                if (!categorias[cat1.name][cat2][cat3][cat4]) {
+                  categorias[cat1.name][cat2][cat3][cat4] = {};
                 }
                 if (cat5) {
-                  if (!categorias[cat1][cat2][cat3][cat4][cat5]) {
-                    categorias[cat1][cat2][cat3][cat4][cat5] = {};
+                  if (!categorias[cat1.name][cat2][cat3][cat4][cat5]) {
+                    categorias[cat1.name][cat2][cat3][cat4][cat5] = {};
                   }
                 }
               }
@@ -335,11 +340,25 @@ export default {
     actualizarFiltro(filtro) {
       this.$store.commit('general/actualizarFiltro', filtro);
     },
+    buscar(campo, comparacion, campo2) {
+      this.$store.dispatch('buscador/buscar', {
+        campo,
+        comparacion,
+        campo2,
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+#mapa {
+  top: 0 !important;
+  display: flex !important;
+  width: 25vw !important;
+  height: 30vh !important;
+  position: relative !important;
+}
 .descripcion-datos {
   height: 40px;
   border-bottom: 1px solid $mediana;
@@ -349,6 +368,8 @@ export default {
 }
 .barra-detalles {
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .agrupar-elementos {
   display: flex;
@@ -437,6 +458,10 @@ li {
 
 .imagenes {
   width: 80vw;
+  img {
+    width: 100%;
+    height: auto;
+  }
   // height: calc(100vh - 120px);
 
   .caja-inicial {
