@@ -366,6 +366,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#mapa {
+  top: 0 !important;
+  display: flex !important;
+  width: 25vw !important;
+  height: 30vh !important;
+  position: relative !important;
+}
 .descripcion-datos {
   height: 40px;
   border-bottom: 1px solid $mediana;
@@ -375,6 +382,8 @@ export default {
 }
 .barra-detalles {
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .agrupar-elementos {
   display: flex;
