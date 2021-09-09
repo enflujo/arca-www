@@ -60,15 +60,15 @@
                               @click="abrir"
                               >+</span
                             >
-                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
+                            <span class="abierta" @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
 
                             <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                               <li
                                 v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
                                 :key="`cat5${i5}`"
-                                class="cat categoria5 cerrado"
+                                class="cat categoria5"
                               >
-                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
+                                <span class="abierta" @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
                               </li>
                             </ul>
                           </li>
@@ -441,6 +441,9 @@ nav li {
   overflow: hidden;
   &.cerrado {
     height: 1.5em;
+  }
+  &.categoria5 {
+    height: fit-content;
   }
 }
 </style>
