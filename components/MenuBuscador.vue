@@ -417,26 +417,6 @@ li {
   z-index: 2;
   height: calc(100vh - 165px);
 }
-.archivo {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 80vw;
-  left: 20vw;
-  top: 0;
-  position: absolute;
-  overflow-y: auto;
-
-  .titulo {
-    display: flex;
-    flex-direction: column;
-    height: 80px;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-}
 
 .pantalla {
   margin-top: 10px;
