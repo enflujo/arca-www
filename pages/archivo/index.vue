@@ -14,10 +14,6 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <div class="fondo-izquierda">
-          <h2 class="logo-texto">ARCA</h2>
-        </div>
-        <nav class="barra-izquierda"></nav>
         <MenuBuscador />
         <section class="imagenes">
           <div class="descripcion-datos">
@@ -360,27 +356,7 @@ li {
 .descripcion {
   margin-top: 10px;
 }
-.fondo-izquierda {
-  background-color: $mediana;
-  height: 100vh;
-  width: 20vw;
-  // flex-direction: column;
-  // align-items: center;
-  // align-items: center;
-  overflow-x: auto;
-  position: absolute;
-  border-right: 2px solid $dolor;
-}
-.barra-izquierda {
-  z-index: 3;
-}
-.barra-texto {
-  width: 17vw;
-  padding-left: 20px;
-  margin-top: 120px;
-  z-index: 2;
-  height: calc(100vh - 165px);
-}
+
 .archivo {
   display: flex;
   justify-content: center;
@@ -465,24 +441,10 @@ li {
 .pantalla {
   margin-top: 10px;
 }
-ul {
-  list-style: none;
-  margin: 0.5em 1em;
-  font-family: $fuenteMenu;
-}
+
 .seccion {
   margin-bottom: 10px;
   font-family: $fuenteSec;
   cursor: pointer;
-}
-
-nav li {
-  cursor: pointer;
-}
-
-.cat {
-  &.cerrado {
-    height: 1.2em;
-  }
 }
 </style>

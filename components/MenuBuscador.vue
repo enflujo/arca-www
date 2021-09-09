@@ -46,8 +46,7 @@
                         <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir"
                           >+</span
                         >
-                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat2 }}</span>
-                        {{ cat3 }}
+                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
 
                         <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
                           <li
@@ -61,8 +60,7 @@
                               @click="abrir"
                               >+</span
                             >
-                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat2 }}</span>
-                            {{ cat4 }}
+                            <span @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
 
                             <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                               <li
@@ -70,7 +68,7 @@
                                 :key="`cat5${i5}`"
                                 class="cat categoria5 cerrado"
                               >
-                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat2 }}</span>
+                                <span @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
                               </li>
                             </ul>
                           </li>
@@ -378,26 +376,6 @@ export default {
 .agrupar-elementos {
   display: flex;
 }
-.todas-images {
-  display: grid;
-  width: 70%;
-  height: calc(100vh - 40px);
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
-  grid-auto-rows: minmax(100px, auto);
-  .imagen {
-    background-color: $dolor;
-  }
-}
-.descripcion-categoria {
-  background-color: $dolor;
-  width: 350px;
-  height: 200px;
-  color: $claridad;
-  padding: 10px;
-  position: relative;
-}
 .busqueda {
   display: block;
   position: relative;
@@ -433,7 +411,7 @@ li {
   z-index: 3;
 }
 .barra-texto {
-  width: 17vw;
+  width: 19vw;
   padding-left: 20px;
   margin-top: 120px;
   z-index: 2;
@@ -460,66 +438,6 @@ li {
   }
 }
 
-.imagenes {
-  width: 80vw;
-  img {
-    width: 100%;
-    height: auto;
-  }
-  // height: calc(100vh - 120px);
-
-  .caja-inicial {
-    display: flex;
-    justify-content: space-between;
-    .caja-descripcion {
-      height: auto;
-      display: flex;
-      flex-direction: row;
-      text-align: initial;
-      .descripcion {
-        width: 400px;
-        background-color: #af2828;
-        padding: 2em;
-        justify-content: space-around;
-        display: flex;
-        flex-direction: column;
-        .titulo-obra {
-          color: $claridad;
-          font-weight: 300;
-        }
-        .subtitulo-obra {
-          color: $claridad;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 5px;
-        }
-        .descripcion-obra {
-          color: $claridad;
-          line-height: 1.5;
-          letter-spacing: -0.4px;
-          font-size: 14px;
-        }
-        .boton-ver {
-          border: 1px solid $claridad;
-          padding: 1em;
-          border-radius: 25px;
-          color: $claridad;
-          letter-spacing: 6px;
-          letter-spacing: 6px;
-          font-size: 11px;
-          align-self: center;
-        }
-      }
-    }
-  }
-  .caja-secundaria {
-    display: flex;
-    justify-content: space-between;
-    top: 20px;
-    position: relative;
-  }
-}
-
 .pantalla {
   margin-top: 10px;
 }
@@ -539,8 +457,10 @@ nav li {
 }
 
 .cat {
+  width: auto;
+  overflow: hidden;
   &.cerrado {
-    height: 1.2em;
+    height: 1.5em;
   }
 }
 </style>
