@@ -128,7 +128,7 @@ export default {
   width: 25vw;
   height: 30vh;
   display: block;
-  position: absolute;
+  // position: absolute;
   // clip-path: inset(32% 65% 10% 15% round 400px);
 }
 
