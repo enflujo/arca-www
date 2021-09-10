@@ -93,7 +93,7 @@
                     v-for="(autor, i) in autores"
                     :key="`autor${i}`"
                     class="lista-autores"
-                    @click="buscar('author_id', autor.id)"
+                    @click="buscar('author_id', autor.lastname, 'lastname')"
                   >
                     <span class="autores" v-if="autor.lastname[0] == inicial">
                       {{ autor.lastname }} {{ autor.name }}
@@ -109,7 +109,7 @@
                   v-for="(pais, i) in paises"
                   :key="`autor${i}`"
                   class="lista-autores"
-                  @click="buscar('actual_country_id', pais.id)"
+                  @click="buscar('actual_country_id', pais.name_spanish, 'name_spanish')"
                 >
                   {{ pais.name_spanish }}
                 </li>
