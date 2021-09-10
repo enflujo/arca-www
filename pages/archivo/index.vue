@@ -50,14 +50,7 @@ export default {
   data() {
     return {
       pagina: {},
-      categorias: {},
       obras: [],
-      autores: [],
-      paises: [],
-      categoriasVisible: true,
-      subcategoriasVisible: true,
-      autoresVisible: true,
-      paisesVisible: true,
     };
   },
 
@@ -74,46 +67,10 @@ export default {
             title
           }
         }
-
-        artworks(limit: 50) {
-          id
-          title
-          category_1_id {
-            id
-            name
-          }
-          category_2_id {
-            id
-            name
-          }
-          category_3_id {
-            id
-            name
-          }
-          category_4_id {
-            id
-            name
-          }
-          category_5_id {
-            id
-            name
-          }
-        }
-
-        countries {
-          id
-          name_spanish
-        }
-
-        authors {
-          id
-          lastname
-          name
-        }
       }
     `;
 
-    const { paginas, artworks, countries, authors } = await this.$graphql.principal.request(query);
+    const { paginas } = await this.$graphql.principal.request(query);
 
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
@@ -122,83 +79,6 @@ export default {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
-    }
-
-    if (countries && countries.length) {
-      this.paises = countries.sort((a, b) => {
-        const nombreA = a.name_spanish;
-        const nombreB = b.name_spanish;
-
-        if (nombreA < nombreB) {
-          return -1;
-        }
-        if (nombreA > nombreB) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('La página no existe');
-    }
-    if (authors && authors.length) {
-      this.autores = authors.sort((a, b) => {
-        const apellidoA = a.lastname;
-        const apellidoB = b.lastname;
-
-        if (apellidoA < apellidoB) {
-          return -1;
-        }
-        if (apellidoA > apellidoB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-
-    if (artworks && artworks.length) {
-      const categorias = {};
-
-      artworks.forEach((work) => {
-        const cat1 = work.category_1_id ? work.category_1_id : null;
-        const cat2 = work.category_2_id ? work.category_2_id.name : null;
-        const cat3 = work.category_3_id ? work.category_3_id.name : null;
-        const cat4 = work.category_4_id ? work.category_4_id.name : null;
-        const cat5 = work.category_5_id ? work.category_5_id.name : null;
-
-        if (cat1) {
-          if (!categorias[cat1.name]) {
-            categorias[cat1.name] = {};
-          }
-
-          if (cat2) {
-            if (!categorias[cat1.name][cat2]) {
-              categorias[cat1.name][cat2] = {};
-            }
-
-            if (cat3) {
-              if (!categorias[cat1.name][cat2][cat3]) {
-                categorias[cat1.name][cat2][cat3] = {};
-              }
-
-              if (cat4) {
-                if (!categorias[cat1.name][cat2][cat3][cat4]) {
-                  categorias[cat1.name][cat2][cat3][cat4] = {};
-                }
-                if (cat5) {
-                  if (!categorias[cat1.name][cat2][cat3][cat4][cat5]) {
-                    categorias[cat1.name][cat2][cat3][cat4][cat5] = {};
-                  }
-                }
-              }
-            }
-          }
-        }
-      });
-
-      this.categorias = categorias;
     }
   },
 
@@ -214,7 +94,6 @@ export default {
 
   computed: {
     obrasSeleccionadas() {
-      //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
 
@@ -232,62 +111,6 @@ export default {
   methods: {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-    },
-    // TODO: Volver una sola función con parámetros
-    colapsarCategorias() {
-      if (this.categoriasVisible === true) {
-        this.categoriasVisible = false;
-      } else {
-        this.categoriasVisible = true;
-      }
-    },
-    colapsarSubcategorias() {
-      if (this.subcategoriasVisible === true) {
-        this.subcategoriasVisible = false;
-      } else {
-        this.subcategoriasVisible = true;
-      }
-    },
-    colapsarAutores() {
-      if (this.autoresVisible === true) {
-        this.autoresVisible = false;
-      } else {
-        this.autoresVisible = true;
-      }
-    },
-    colapsarPaises() {
-      if (this.paisesVisible === true) {
-        this.paisesVisible = false;
-      } else {
-        this.paisesVisible = true;
-      }
-    },
-    buscarPais(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'actual_country_id',
-        comparacion: id,
-      });
-    },
-    buscarAutor(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'author_id',
-        comparacion: id,
-      });
-    },
-    actualizarFiltro(filtro) {
-      this.$store.commit('general/actualizarFiltro', filtro);
-    },
-    buscar(campo, comparacion, campo2) {
-      this.$store.dispatch('buscador/buscar', {
-        campo,
-        comparacion,
-        campo2,
-      });
-    },
-
-    abrir(evento) {
-      const contenedor = evento.target.parentElement;
-      contenedor.classList.toggle('cerrado');
     },
   },
 };
@@ -435,27 +258,6 @@ li {
     justify-content: space-between;
     top: 20px;
     position: relative;
-  }
-}
-
-.pantalla {
-  margin-top: 10px;
-}
-
-.seccion {
-  margin-bottom: 10px;
-  font-family: $fuenteSec;
-  cursor: pointer;
-}
-
-nav li {
-  cursor: pointer;
-}
-
-.cat {
-  &.cerrado {
-    height: 1.2em;
-    overflow: hidden;
   }
 }
 </style>
