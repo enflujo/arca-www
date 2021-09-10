@@ -471,6 +471,7 @@ nav li {
   margin-bottom: 0.2em;
   &.cerrado {
     height: 1.2em;
+    overflow: hidden;
   }
   &.categoria5 {
     height: fit-content;

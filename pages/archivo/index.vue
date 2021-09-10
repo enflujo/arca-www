@@ -447,4 +447,15 @@ li {
   font-family: $fuenteSec;
   cursor: pointer;
 }
+
+nav li {
+  cursor: pointer;
+}
+
+.cat {
+  &.cerrado {
+    height: 1.2em;
+    overflow: hidden;
+  }
+}
 </style>

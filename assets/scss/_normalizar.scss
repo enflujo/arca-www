@@ -112,8 +112,8 @@ a:link {
 }
 
 ::selection {
-  background-color: color.scale($claridad, $lightness: 50%);
-  color: black;
+  background-color: color.scale($profundidad, $lightness: 80%);
+  color: $claridad;
 }
 .contenedor {
   display: flex;
