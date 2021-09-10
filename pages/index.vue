@@ -2,7 +2,6 @@
   <div>
     <Background />
     <Portada />
-    <div class="descripcion"></div>
   </div>
 </template>
 

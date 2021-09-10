@@ -1,11 +1,11 @@
 <template>
   <div id="contenedor">
-    <Navegacion :colorIcono="colorIcono" @cerrarMenu="cerrarMenu" />
-    <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
+
     <main role="main">
       <Nuxt keepAlive />
     </main>
+
     <Footer />
   </div>
 </template>
@@ -17,12 +17,6 @@ export default {
       colorIcono: '#FFF',
       menuAbierto: false,
     };
-  },
-
-  computed: {
-    general() {
-      return this.$store.state.general.datos;
-    },
   },
 
   methods: {
@@ -45,12 +39,16 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use "sass:color";
 
 @font-face {
   font-family: 'Agraham';
   src: local('Agraham'), local('Agraham Personal Use');
+}
+
+main {
+  display: flex;
 }
 
 #contenedor {
@@ -59,20 +57,9 @@ export default {
   min-height: 100vh;
   color: $profundidad;
 }
-.division {
-  display: block;
-  background-color: $profundidad;
-  width: 30%;
-  height: 100%;
-  position: absolute;
-  left: 70%;
-  top: 0;
-}
 
-main {
-  // margin-top: $anchoMenu;
-  // flex-grow: 1;
-  // background-color: color.scale($colorPrincipal, $lightness: 90%);
+.contenedor {
+  display: flex;
 }
 
 // Teléfonos horizontal
