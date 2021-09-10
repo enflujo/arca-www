@@ -23,13 +23,14 @@
           <button class="botones-imagen">proyectos</button>
         </div>
         <section class="informacion-general">
+          <!-- Los títulos deberian venir de las bases de datos tambien. -->
           <div class="linea">
-            <div class="titulo">titulo ejemplo</div>
-            <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+            <div class="titulo">Título</div>
+            <div class="descripcion">{{ obra.title }}</div>
           </div>
           <div class="linea">
-            <div class="titulo">titulo ejemplo</div>
-            <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+            <div class="titulo">Autor</div>
+            <div class="descripcion">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</div>
           </div>
           <div class="linea">
             <div class="titulo">titulo ejemplo</div>
