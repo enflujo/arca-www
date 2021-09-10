@@ -12,9 +12,11 @@
       <main role="main">
         <h1>{{ pagina.titulo }}</h1>
         <p>{{ pagina.descripcion }}</p>
-        <br />
+
         <div class="descripcion">
+          <!-- eslint-disable vue/no-v-html -->
           <span v-html="pagina.contenido">{{ pagina.contenido }}</span>
+          <!--eslint-enable-->
         </div>
       </main>
     </template>
