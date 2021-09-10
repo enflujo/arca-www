@@ -17,7 +17,7 @@
         <MenuBuscador />
         <section class="imagenes">
           <div class="descripcion-datos">
-            <h4>{{ obras.length }} obras en {{ busquedaActual }}</h4>
+            <h4>{{ obras.length }} obras de {{ busquedaActual }} en la colección.</h4>
           </div>
           <div class="agrupar-elementos">
             <div class="todas-images">
