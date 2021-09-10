@@ -83,14 +83,23 @@
             <div class="pantalla">
               <h3 class="seccion" @click="colapsarAutores">Autores</h3>
               <ul v-if="autoresVisible">
-                <li
-                  v-for="(autor, i) in autores"
-                  :key="`autor${i}`"
-                  class="lista-autores"
-                  @click="buscar('author_id', autor.id)"
-                >
-                  {{ autor.lastname }} {{ autor.name }}
+                <li class="iniciales" v-for="(inicial, i) in iniciales" :key="`inicial${i}`">
+                  <span @click="elegirInicial(inicial)">
+                    {{ inicial }}
+                  </span>
                 </li>
+                <span v-if="inicial != ''">
+                  <li
+                    v-for="(autor, i) in autores"
+                    :key="`autor${i}`"
+                    class="lista-autores"
+                    @click="buscar('author_id', autor.id)"
+                  >
+                    <span class="autores" v-if="autor.lastname[0] == inicial">
+                      {{ autor.lastname }} {{ autor.name }}
+                    </span>
+                  </li>
+                </span>
               </ul>
             </div>
             <div class="pantalla">
@@ -130,6 +139,8 @@ export default {
       subcategoriasVisible: true,
       autoresVisible: true,
       paisesVisible: true,
+      iniciales: new Set(),
+      inicial: '',
     };
   },
 
@@ -272,6 +283,8 @@ export default {
 
       this.categorias = categorias;
     }
+
+    this.cargarIniciales();
   },
 
   head() {
@@ -344,10 +357,19 @@ export default {
         campo2,
       });
     },
-
     abrir(evento) {
       const contenedor = evento.target.parentElement;
       contenedor.classList.toggle('cerrado');
+    },
+    cargarIniciales() {
+      const iniciales = [];
+      for (const autor in this.autores) {
+        iniciales.push(this.autores[autor].lastname.charAt(0));
+      }
+      this.iniciales = new Set(iniciales);
+    },
+    elegirInicial(inicial) {
+      this.inicial = inicial;
     },
   },
 };
@@ -391,7 +413,7 @@ export default {
   left: 20px;
 }
 li {
-  margin-bottom: 10px;
+  margin-bottom: 0.2em;
 }
 .descripcion {
   margin-top: 10px;
@@ -431,7 +453,14 @@ ul {
   font-family: $fuenteSec;
   cursor: pointer;
 }
-
+.iniciales {
+  display: inline;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.autores {
+  height: auto;
+}
 nav li {
   cursor: pointer;
 }
@@ -439,8 +468,9 @@ nav li {
 .cat {
   width: auto;
   overflow: hidden;
+  margin-bottom: 0.2em;
   &.cerrado {
-    height: 1.5em;
+    height: 1.2em;
   }
   &.categoria5 {
     height: fit-content;
