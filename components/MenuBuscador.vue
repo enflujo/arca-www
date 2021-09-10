@@ -1,134 +1,112 @@
 <template>
-  <div>
-    <template v-if="$fetchState.pending">
-      <div>
-        <h1>Pendiente...</h1>
-      </div>
-    </template>
+  <nav class="barra-izquierda">
+    <h2 class="logo-texto">ARCA</h2>
+    <Buscador />
 
-    <template v-else-if="$fetchState.error">
-      <div>
-        <h1 class="error">{{ $fetchState.error.message }}</h1>
-      </div>
-    </template>
+    <div class="barra-texto">
+      <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
+      <ul v-if="categoriasVisible">
+        <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
+          <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
+          <nuxt-link :to="`/archivo`">
+            <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
+          </nuxt-link>
 
-    <template v-else>
-      <div class="contenedor-pagina">
-        <div class="fondo-izquierda">
-          <h2 class="logo-texto">ARCA</h2>
-        </div>
-        <nav class="barra-izquierda">
-          <div class="busqueda">
-            <Buscador />
-          </div>
-          <div class="barra-texto">
-            <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
-            <ul v-if="categoriasVisible">
-              <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
-                <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
-                <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
-
-                <ul v-if="Object.keys(categorias[cat1]).length">
-                  <li
-                    v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
-                    :key="`cat2${i2}`"
-                    class="cat categoria2 cerrado"
-                  >
-                    <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
-                    <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
-
-                    <ul v-if="Object.keys(categorias[cat1][cat2]).length">
-                      <li
-                        v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
-                        :key="`cat3${i3}`"
-                        class="cat categoria3 cerrado"
-                      >
-                        <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir"
-                          >+</span
-                        >
-                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
-
-                        <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
-                          <li
-                            v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
-                            :key="`cat4${i4}`"
-                            class="cat categoria4 cerrado"
-                          >
-                            <span
-                              v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length"
-                              class="abrir"
-                              @click="abrir"
-                              >+</span
-                            >
-                            <span class="abierta" @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
-
-                            <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
-                              <li
-                                v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
-                                :key="`cat5${i5}`"
-                                class="cat categoria5"
-                              >
-                                <span class="abierta" @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-
-            <div class="pantalla">
-              <h3 class="seccion" @click="colapsarAutores">Autores</h3>
-              <ul v-if="autoresVisible">
-                <div class="iniciales">
-                  <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="inicial">
-                    <span @click="elegirInicial(inicial)">
-                      {{ inicial }}
-                    </span>
-                  </li>
-                </div>
-                <span v-if="inicialSeleccionada != ''">
-                  <li
-                    v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)"
-                    :key="`autor${i}`"
-                    class="lista-autores"
-                    @click="buscar('author_id', autor.lastname, 'lastname')"
-                  >
-                    <span v-if="autor.lastname[0] == inicialSeleccionada" class="autores">
-                      {{ autor.lastname }} {{ autor.name }}
-                    </span>
-                  </li>
-                </span>
-              </ul>
-            </div>
-            <div class="pantalla">
-              <h3 class="seccion" @click="colapsarPaises">Países</h3>
-              <ul v-if="paisesVisible">
+          <ul v-if="Object.keys(categorias[cat1]).length">
+            <li
+              v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
+              :key="`cat2${i2}`"
+              class="cat categoria2 cerrado"
+            >
+              <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
+              <nuxt-link :to="`/archivo`">
+                <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
+              </nuxt-link>
+              <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                 <li
-                  v-for="(pais, i) in paises"
-                  :key="`autor${i}`"
-                  class="lista-autores"
-                  @click="buscar('actual_country_id', pais.name_spanish, 'name_spanish')"
+                  v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
+                  :key="`cat3${i3}`"
+                  class="cat categoria3 cerrado"
                 >
-                  {{ pais.name_spanish }}
+                  <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir">+</span>
+                  <nuxt-link :to="`/archivo`">
+                    <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
+                  </nuxt-link>
+                  <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
+                    <li
+                      v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
+                      :key="`cat4${i4}`"
+                      class="cat categoria4 cerrado"
+                    >
+                      <span v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length" class="abrir" @click="abrir"
+                        >+</span
+                      >
+                      <nuxt-link :to="`/archivo`">
+                        <span class="abierta" @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
+                      </nuxt-link>
+                      <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
+                        <li
+                          v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
+                          :key="`cat5${i5}`"
+                          class="cat categoria5"
+                        >
+                          <nuxt-link :to="`/archivo`">
+                            <span class="abierta" @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
+                          </nuxt-link>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
               </ul>
-            </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="colapsarAutores">Autores</h3>
+        <ul v-if="autoresVisible">
+          <div class="iniciales">
+            <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="inicial">
+              <span @click="elegirInicial(inicial)">
+                {{ inicial }}
+              </span>
+            </li>
           </div>
-        </nav>
+          <span v-if="inicialSeleccionada != ''">
+            <li
+              v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)"
+              :key="`autor${i}`"
+              class="lista-autores"
+              @click="buscar('author_id', autor.lastname, 'lastname')"
+            >
+              <nuxt-link :to="`/archivo`">
+                <span v-if="autor.lastname[0] == inicialSeleccionada" class="autores">
+                  {{ autor.lastname }} {{ autor.name }}
+                </span>
+              </nuxt-link>
+            </li>
+          </span>
+        </ul>
       </div>
-    </template>
-  </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="colapsarPaises">Países</h3>
+        <ul v-if="paisesVisible">
+          <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores">
+            <nuxt-link :to="`/mapa/${pais.name_spanish}`">{{ pais.name_spanish }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead, urlImagen } from '../utilidades/ayudas';
+import { urlImagen } from '../utilidades/ayudas';
 export default {
-  layout: 'archivo',
   data() {
     return {
       pagina: {},
@@ -270,15 +248,6 @@ export default {
     }
     this.cargarIniciales();
   },
-  head() {
-    return crearHead(
-      this.$store.state.general.datos.nombre,
-      this.pagina.titulo,
-      this.pagina.descripcion,
-      this.pagina.banner,
-      this.$nuxt.$route.path
-    );
-  },
   computed: {
     obrasSeleccionadas() {
       //  console.log(this.$store.state.buscador.seleccionados);
@@ -381,19 +350,11 @@ export default {
 .agrupar-elementos {
   display: flex;
 }
-.busqueda {
-  display: block;
-  position: relative;
-  top: 80px;
-  left: 10px;
-}
 .contenedor-pagina {
   display: flex;
 }
 .logo-texto {
-  top: 20px;
-  position: relative;
-  left: 20px;
+  margin: 20px;
 }
 li {
   margin-bottom: 0.2em;
@@ -401,24 +362,14 @@ li {
 .descripcion {
   margin-top: 10px;
 }
-.fondo-izquierda {
-  background-color: $mediana;
-  height: 100vh;
-  width: 20vw;
-  // flex-direction: column;
-  // align-items: center;
-  // align-items: center;
-  position: absolute;
-  border-right: 2px solid $dolor;
-}
 .barra-izquierda {
-  z-index: 3;
-  overflow-y: auto;
+  background-color: $mediana;
+  border-right: 2px solid $dolor;
 }
 .barra-texto {
   width: 19vw;
   padding-left: 20px;
-  margin-top: 120px;
+  margin-top: 2em;
   z-index: 2;
   height: calc(100vh - 165px);
 }
