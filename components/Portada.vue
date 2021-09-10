@@ -7,21 +7,7 @@
 </template>
 
 <script>
-import { crearHead } from '../utilidades/ayudas';
-
 export default {
-  data() {
-    return {
-      estiloPortada: null,
-      ctx: null,
-      animReq: null,
-    };
-  },
-
-  head() {
-    return crearHead(this.general.nombre, null, this.general.descripcion, this.general.banner, this.$nuxt.$route.path);
-  },
-
   computed: {
     general() {
       return this.$store.state.general.datos;
@@ -38,6 +24,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 99vh;
+  width: 100vw;
   z-index: 1;
 }
 
