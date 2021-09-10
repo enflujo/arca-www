@@ -18,7 +18,6 @@
 
       <div class="menuBtn" @click="resolverMenu">
         <div class="botonMenu"><span class="menuRaya"></span></div>
-        <!-- <span class="lineaVertical"></span> -->
       </div>
       <div class="logo-texto"><h2>ARCA</h2></div>
     </div>
@@ -60,10 +59,10 @@ export default {
 
 <style lang="scss" scoped>
 @use "sass:color";
-$menuRayaAncho: 30px;
-$menuRayaAlto: 4px;
+$menuRayaAncho: 25px;
+$menuRayaAlto: 3px;
 $menuRayaRadio: 4px;
-$menuRayaEspacio: 8px;
+$menuRayaEspacio: 6px;
 $menuRayaColor: $claridad;
 
 .contenedorMenu {
@@ -72,7 +71,7 @@ $menuRayaColor: $claridad;
 
 .menuBtn {
   position: fixed;
-  // background-color: $claridad;
+  cursor: pointer;
 }
 
 .botonMenu {
@@ -219,14 +218,22 @@ $menuRayaColor: $claridad;
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   .menuBtn {
-    width: 0;
-    height: 0;
     right: 0;
     top: 0;
-    cursor: pointer;
-    // background-color: $dolor;
-    border-top: 80px solid $dolor;
-    border-left: 80px solid transparent;
+    width: 80px;
+    height: 80px;
+
+    &::before {
+      content: '';
+      border-top: 80px solid $dolor;
+      border-left: 80px solid transparent;
+      display: block;
+      position: absolute;
+    }
+
+    .botonMenu {
+      margin: -21px 0 0 14px;
+    }
   }
 
   .abierto {
