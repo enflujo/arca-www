@@ -14,7 +14,6 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <MenuBuscador />
         <section class="imagenes">
           <div class="descripcion-datos">
             <h4>{{ obras.length }} obras de {{ busquedaActual }} en la colección.</h4>
@@ -46,7 +45,7 @@ import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
-  layout: 'archivo',
+  layout: 'conBuscador',
   data() {
     return {
       pagina: {},
