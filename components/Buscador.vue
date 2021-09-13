@@ -26,25 +26,6 @@ export default {
         this.$store.dispatch('buscador/buscarDirectus', this.searchQuery);
       }
     },
-    // Esta parte es del buscador viejo
-    buscarPais(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'actual_country_id',
-        comparacion: id,
-      });
-    },
-
-    buscarAutor(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'author_id',
-        comparacion: id,
-      });
-    },
-
-    actualizarFiltro(filtro) {
-      this.$store.commit('general/actualizarFiltro', filtro);
-    },
-    // -- FIN buscador viejo
   },
 };
 </script>
