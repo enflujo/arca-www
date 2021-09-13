@@ -39,6 +39,9 @@ export default {
   justify-content: center;
   height: 99vh;
   z-index: 1;
+  background-attachment: fixed;
+  background-image: url(./static/imgs/background-image.png);
+  background-position: 50%, 50%;
 }
 
 .logoArca {
@@ -68,14 +71,6 @@ export default {
 .logo-texto {
   letter-spacing: 1px;
   text-transform: uppercase;
-}
-
-.bg-img {
-  display: block;
-  width: 99vw;
-  height: auto;
-  top: 0;
-  left: 0;
 }
 
 .svgClaro {
