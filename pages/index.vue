@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Background />
     <Portada />
   </div>
 </template>
