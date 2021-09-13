@@ -206,7 +206,6 @@ li {
     width: 100%;
     height: auto;
   }
-  // height: calc(100vh - 120px);
 
   .caja-inicial {
     display: flex;

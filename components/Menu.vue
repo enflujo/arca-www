@@ -1,7 +1,6 @@
 <template>
   <div :class="`contenedorMenu ${menuAbierto ? 'abierto' : 'cerrado'}`">
     <div v-click-outside="cerrarMenu" class="menuPrincipal">
-      <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
       <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`">
     TODO: cambiar de hardcodeado a el CMS -->
       <nav class="menuContenido">
@@ -19,7 +18,6 @@
       <div class="menuBtn" @click="resolverMenu">
         <div class="botonMenu"><span class="menuRaya"></span></div>
       </div>
-      <div class="logo-texto"><h2>ARCA</h2></div>
     </div>
     <div class="fondo"></div>
   </div>

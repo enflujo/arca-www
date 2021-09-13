@@ -1,25 +1,112 @@
 <template>
-  <nav class="barra-izquierda">
-    <h2 class="logo-texto">ARCA</h2>
-    <Buscador />
+  <div>
+    <template v-if="$fetchState.pending">
+      <div>
+        <h1>Pendiente...</h1>
+      </div>
+    </template>
 
-    <div class="barra-texto">
-      <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
-      <ul v-if="categoriasVisible">
-        <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
-          <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
-          <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
+    <template v-else-if="$fetchState.error">
+      <div>
+        <h1 class="error">{{ $fetchState.error.message }}</h1>
+      </div>
+    </template>
 
-          <ul v-if="Object.keys(categorias[cat1]).length">
-            <li
-              v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
-              :key="`cat2${i2}`"
-              class="cat categoria2 cerrado"
-            >
-              <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
-              <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
+    <template v-else>
+      <div class="contenedor-pagina">
+        <div class="fondo-izquierda">
+          <h2 class="logo-texto">ARCA</h2>
+        </div>
+        <nav class="barra-izquierda">
+          <div class="busqueda">
+            <Buscador />
+          </div>
+          <div class="barra-texto">
+            <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
+            <ul v-if="categoriasVisible">
+              <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
+                <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
+                <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
 
-              <ul v-if="Object.keys(categorias[cat1][cat2]).length">
+                <ul v-if="Object.keys(categorias[cat1]).length">
+                  <li
+                    v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
+                    :key="`cat2${i2}`"
+                    class="cat categoria2 cerrado"
+                  >
+                    <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
+                    <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
+
+                    <ul v-if="Object.keys(categorias[cat1][cat2]).length">
+                      <li
+                        v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
+                        :key="`cat3${i3}`"
+                        class="cat categoria3 cerrado"
+                      >
+                        <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir"
+                          >+</span
+                        >
+                        <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
+
+                        <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
+                          <li
+                            v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
+                            :key="`cat4${i4}`"
+                            class="cat categoria4 cerrado"
+                          >
+                            <span
+                              v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length"
+                              class="abrir"
+                              @click="abrir"
+                              >+</span
+                            >
+                            <span class="abierta" @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
+
+                            <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
+                              <li
+                                v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
+                                :key="`cat5${i5}`"
+                                class="cat categoria5"
+                              >
+                                <span class="abierta" @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="pantalla">
+              <h3 class="seccion" @click="colapsarAutores">Autores</h3>
+              <ul v-if="autoresVisible">
+                <div class="iniciales">
+                  <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="inicial">
+                    <span @click="elegirInicial(inicial)">
+                      {{ inicial }}
+                    </span>
+                  </li>
+                </div>
+                <span v-if="inicialSeleccionada != ''">
+                  <li
+                    v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)"
+                    :key="`autor${i}`"
+                    class="lista-autores"
+                    @click="buscar('author_id', autor.lastname, 'lastname')"
+                  >
+                    <span v-if="autor.lastname[0] == inicialSeleccionada" class="autores">
+                      {{ autor.lastname }} {{ autor.name }}
+                    </span>
+                  </li>
+                </span>
+              </ul>
+            </div>
+            <div class="pantalla">
+              <h3 class="seccion" @click="colapsarPaises">Países</h3>
+              <ul v-if="paisesVisible">
                 <li
                   v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
                   :key="`cat3${i3}`"
@@ -330,6 +417,10 @@ export default {
     elegirInicial(inicial) {
       this.inicialSeleccionada = inicial;
     },
+    autoresPorInicial(inicial) {
+      const autores = this.autores.filter((autor) => autor.lastname.charAt(0) === inicial);
+      return autores;
+    },
   },
 };
 </script>
@@ -376,9 +467,14 @@ li {
   margin-top: 10px;
 }
 
-.barra-izquierda {
+.barra-izquierda { 
+  height: 100vh;
+  width: 20vw;
+  position: absolute;
   background-color: $mediana;
   border-right: 2px solid $dolor;
+  z-index: 3;
+  overflow-y: auto;
 }
 
 .barra-texto {
@@ -403,9 +499,13 @@ ul {
   cursor: pointer;
 }
 .iniciales {
+  margin-bottom: 1em;
+}
+.inicial {
   display: inline;
   padding-left: 3px;
   padding-right: 3px;
+  margin-bottom: 1em;
 }
 .autores {
   height: auto;
