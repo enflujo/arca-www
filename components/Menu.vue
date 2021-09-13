@@ -19,7 +19,6 @@
       <div class="menuBtn" @click="resolverMenu">
         <div class="botonMenu"><span class="menuRaya"></span></div>
       </div>
-      <div class="logo-texto"><h2>ARCA</h2></div>
     </div>
     <div class="fondo"></div>
   </div>

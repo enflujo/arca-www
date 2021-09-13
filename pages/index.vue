@@ -2,9 +2,7 @@
   <div>
     <Background />
     <Portada />
-    <div class="descripcion">
-      <h1>HOLA</h1>
-    </div>
+    <div class="descripcion"></div>
   </div>
 </template>
 
