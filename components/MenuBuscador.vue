@@ -83,14 +83,16 @@
             <div class="pantalla">
               <h3 class="seccion" @click="colapsarAutores">Autores</h3>
               <ul v-if="autoresVisible">
-                <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="iniciales">
-                  <span @click="elegirInicial(inicial)">
-                    {{ inicial }}
-                  </span>
-                </li>
+                <div class="iniciales">
+                  <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="inicial">
+                    <span @click="elegirInicial(inicial)">
+                      {{ inicial }}
+                    </span>
+                  </li>
+                </div>
                 <span v-if="inicialSeleccionada != ''">
                   <li
-                    v-for="(autor, i) in autores"
+                    v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)"
                     :key="`autor${i}`"
                     class="lista-autores"
                     @click="buscar('author_id', autor.lastname, 'lastname')"
@@ -371,6 +373,10 @@ export default {
     elegirInicial(inicial) {
       this.inicialSeleccionada = inicial;
     },
+    autoresPorInicial(inicial) {
+      const autores = this.autores.filter((autor) => autor.lastname.charAt(0) === inicial);
+      return autores;
+    },
   },
 };
 </script>
@@ -454,9 +460,13 @@ ul {
   cursor: pointer;
 }
 .iniciales {
+  margin-bottom: 1em;
+}
+.inicial {
   display: inline;
   padding-left: 3px;
   padding-right: 3px;
+  margin-bottom: 1em;
 }
 .autores {
   height: auto;
