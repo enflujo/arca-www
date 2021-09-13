@@ -20,13 +20,14 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
-  overflow-x: hidden;
+  overflow-x: inherit;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 blockquote,
@@ -115,28 +116,20 @@ a:link {
   background-color: color.scale($profundidad, $lightness: 80%);
   color: $claridad;
 }
-.contenedor {
-  display: flex;
-  width: 100vw;
-  justify-content: center;
-  position: absolute;
-  overflow: hidden;
-  // height: 100vh;
-  top: 0;
-  .centrar-contenido {
-    width: 800px;
-    flex-direction: column;
-  }
-}
+// .contenedor {
+//   display: flex;
+//   width: 100vw;
+//   justify-content: center;
+//   position: absolute;
+//   overflow: hidden;
+//   // height: 100vh;
+//   top: 0;
+//   .centrar-contenido {
+//     width: 800px;
+//     flex-direction: column;
+//   }
+// }
 
 .texto-claro {
   color: $claridad;
-}
-// .centrar-contenido {
-//   width: 900px;
-//   display: flex;
-//   justify-content: center;
-//   padding-top: 100px;
-// }
-.fondo-general {
 }

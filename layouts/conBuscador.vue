@@ -1,12 +1,13 @@
 <template>
   <div id="contenedor">
-    <Navegacion :colorIcono="colorIcono" @cerrarMenu="cerrarMenu" />
-    <!-- <Menu :colorFondo="general.project_color" :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" /> -->
-    <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" />
+    <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
+
     <main role="main">
+      <MenuBuscador />
       <Nuxt keepAlive />
     </main>
-    <!-- <Footer /> -->
+
+    <Footer />
   </div>
 </template>
 
@@ -17,12 +18,6 @@ export default {
       colorIcono: '#FFF',
       menuAbierto: false,
     };
-  },
-
-  computed: {
-    general() {
-      return this.$store.state.general.datos;
-    },
   },
 
   methods: {
@@ -45,20 +40,27 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use "sass:color";
+
+@font-face {
+  font-family: 'Agraham';
+  src: local('Agraham'), local('Agraham Personal Use');
+}
+
+main {
+  display: flex;
+}
 
 #contenedor {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow: hidden;
+  color: $profundidad;
 }
 
-main {
-  // margin-top: $anchoMenu;
-  // flex-grow: 1;
-  // background-color: color.scale($colorPrincipal, $lightness: 90%);
+.contenedor {
+  display: flex;
 }
 
 // Teléfonos horizontal
@@ -66,11 +68,8 @@ main {
 }
 
 // Pantallas medianas (Tablets)
-@media (min-width: $minTablet) {
-  main {
-    // width: calc(100vw - #{$anchoMenu});
-  }
-}
+// @media (min-width: $minTablet) {
+// }
 
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
