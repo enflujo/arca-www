@@ -425,12 +425,12 @@ li {
   // flex-direction: column;
   // align-items: center;
   // align-items: center;
-  overflow-x: auto;
   position: absolute;
   border-right: 2px solid $dolor;
 }
 .barra-izquierda {
   z-index: 3;
+  overflow-y: auto;
 }
 .barra-texto {
   width: 19vw;

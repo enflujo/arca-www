@@ -1,7 +1,6 @@
 <template>
   <div :class="`contenedorMenu ${menuAbierto ? 'abierto' : 'cerrado'}`">
     <div v-click-outside="cerrarMenu" class="menuPrincipal">
-      <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`"> -->
       <!-- <nav class="menuContenido" :style="`background-color:${colorFondo}`">
     TODO: cambiar de hardcodeado a el CMS -->
       <nav class="menuContenido">
