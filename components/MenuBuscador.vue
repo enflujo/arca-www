@@ -1,6 +1,9 @@
 <template>
   <nav class="barra-izquierda">
-    <h2 class="logo-texto">ARCA</h2>
+    <nuxt-link :to="'/'">
+      <h2 class="logo-texto">ARCA</h2>
+    </nuxt-link>
+
     <Buscador />
 
     <div class="barra-texto">
