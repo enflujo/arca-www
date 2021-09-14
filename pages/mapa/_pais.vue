@@ -9,6 +9,7 @@
     </template>
 
     <template v-else>
+      <h4>Hay {{ obras.length }} obras de {{ this.obras[0].actual_country_id.name_spanish }} en la colección.</h4>
       <div v-for="obra in obras" :key="`obra-${obra.id}`">{{ obra.title }}</div>
     </template>
   </div>
@@ -22,7 +23,7 @@ export default {
   layout: 'conBuscador',
   data() {
     return {
-      obrsas: [],
+      obras: [],
     };
   },
 
@@ -65,6 +66,12 @@ export default {
       }
       throw new Error('La página no existe');
     }
+  },
+
+  watch: {
+    obrasSeleccionadas(obras) {
+      this.obras = obras;
+    },
   },
   /**
    * TODO: ver como construir el head con datos del pais.
