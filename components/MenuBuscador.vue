@@ -86,7 +86,7 @@
             >
               <nuxt-link :to="`/archivo`">
                 <span v-if="autor.lastname[0] == inicialSeleccionada" class="autores">
-                  {{ autor.lastname }} {{ autor.name }}
+                  <nuxt-link :to="`/archivo/${autor.lastname}`"> {{ autor.lastname }} {{ autor.name }}</nuxt-link>
                 </span>
               </nuxt-link>
             </li>
