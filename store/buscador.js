@@ -22,7 +22,6 @@ export const actions = {
               title
             }
           }
-
         }
       `;
 
@@ -65,6 +64,7 @@ export const actions = {
             id
             name
             lastname
+            biography
           }
           actual_country_id {
             id

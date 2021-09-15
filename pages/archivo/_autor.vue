@@ -29,7 +29,7 @@
             <div class="barra-detalles">
               <div class="descripcion-categoria">
                 <h3>{{ busquedaActual }}</h3>
-                <p class="descripcion">{{ busquedaActual }} lorem ipsum dolor sit amet</p>
+                <p class="descripcion">{{ obrasSeleccionadas[0].author_id.biography }}</p>
               </div>
               <Mapa />
             </div>
@@ -74,6 +74,7 @@ export default {
             id
             name
             lastname
+            biography
           }
           actual_country_id {
             id
@@ -170,7 +171,7 @@ export default {
 .descripcion-categoria {
   background-color: $dolor;
   width: 350px;
-  height: 200px;
+  height: 250px;
   color: $claridad;
   padding: 10px;
   position: relative;
@@ -194,6 +195,7 @@ li {
 }
 .descripcion {
   margin-top: 10px;
+  font-size: 0.8em;
 }
 
 .archivo {
