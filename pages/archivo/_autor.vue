@@ -29,7 +29,9 @@
             <div class="barra-detalles">
               <div class="descripcion-categoria">
                 <h3>{{ busquedaActual }}</h3>
+                <!-- TODO: Hay un bug 
                 <p class="descripcion">{{ obrasSeleccionadas[0].author_id.biography }}</p>
+                -->
               </div>
               <Mapa />
             </div>
