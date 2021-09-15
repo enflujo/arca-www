@@ -10,10 +10,9 @@
 
     <template v-else>
       <main role="main">
-        <h1>{{ pagina.titulo }}</h1>
-        <p>{{ pagina.descripcion }}</p>
-
         <div class="descripcion">
+          <h1>{{ pagina.titulo }}</h1>
+          <br />
           <!-- eslint-disable vue/no-v-html -->
           <span v-html="pagina.contenido">{{ pagina.contenido }}</span>
           <!--eslint-enable-->
@@ -80,10 +79,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main {
+}
 .descripcion {
   font-family: 'Work Sans';
   text-align: justify;
   text-justify: inter-word;
-  width: 90%;
+  width: 60%;
+  margin-top: 4em;
+  margin-bottom: 4em;
+  margin-left: 15%;
 }
 </style>
