@@ -20,59 +20,101 @@
             <!-- <p>{{ obra.annotation_date }}</p> -->
           </div>
           <div class="botonera">
-            <button class="botones-imagen">datos</button>
-            <button class="botones-imagen">descripcion</button>
-            <button class="botones-imagen">personajes y gestos</button>
-            <button class="botones-imagen">proyectos</button>
+            <button class="botones-imagen" @click="cambiarPestana('datos')">datos</button>
+            <button class="botones-imagen" @click="cambiarPestana('descripcion')">descripcion</button>
+            <button class="botones-imagen" @click="cambiarPestana('personajes')">personajes y gestos</button>
+            <button class="botones-imagen" @click="cambiarPestana('proyectos')">proyectos</button>
           </div>
           <section class="informacion-general">
-            <!-- Los títulos deberian venir de las bases de datos tambien. -->
-            <div class="linea">
-              <div class="titulo">Título</div>
-              <div class="descripcion">{{ obra.title }}</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">Autor</div>
-              <div class="descripcion">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">titulo ejemplo</div>
-              <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">titulo ejemplo</div>
-              <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">titulo ejemplo</div>
-              <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">titulo ejemplo</div>
-              <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">titulo ejemplo</div>
-              <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
-            </div>
-            <div class="linea">
-              <div class="titulo">titulo ejemplo</div>
-              <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
-            </div>
+            <span v-if="this.pestana == 'datos'">
+              <!-- Los títulos deberian venir de las bases de datos tambien. -->
+              <div class="linea">
+                <div class="titulo">Título</div>
+                <div class="descripcion">{{ obra.title }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Autor</div>
+                <nuxt-link :to="`/archivo/${obra.author_id.lastname}`">
+                  <div class="descripcion">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</div>
+                </nuxt-link>
+              </div>
+              <div class="linea">
+                <div class="titulo">Fecha</div>
+                <div class="descripcion">{{ obra.annotation_date }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Tipo</div>
+                <div class="descripcion">{{ obra.type_id.name }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Fuente de la imagen</div>
+                <div class="descripcion">{{ obra.source_id.name }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Categorías</div>
+                <ul>
+                  <div v-for="(nombre, i) in categorias" :key="`categoria-${i}`" class="categorias">
+                    <li>{{ categorias[i] }}</li>
+                  </div>
+                </ul>
+              </div>
+            </span>
+            <span v-else-if="this.pestana == 'descripcion'">
+              Descripción
+              <div class="linea">
+                <div class="titulo">titulo ejemplo</div>
+                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">titulo ejemplo</div>
+                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+              </div>
+            </span>
+
+            <span v-else-if="this.pestana == 'personajes'">
+              Personajes y gestos
+              <div class="linea">
+                <div class="titulo">titulo ejemplo</div>
+                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">titulo ejemplo</div>
+                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+              </div>
+            </span>
+
+            <span v-else-if="this.pestana == 'proyectos'">
+              Proyectos
+              <div class="linea">
+                <div class="titulo">titulo ejemplo</div>
+                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">titulo ejemplo</div>
+                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+              </div>
+            </span>
           </section>
+          <!-- TODO: Revisar la lógica y no buscar en el objeto para optimizar ¿?-->
           <section class="informacion-geografica">
             <h3 class="titulo">Ubicación</h3>
-            <div class="galeria-mapas">
+            <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
                 <h5 class="subtitulo">País de origen</h5>
                 <div class="ubicacion"></div>
-                <h5 class="pais">{{ obra.actual_country_id.name_spanish }}</h5>
+                <nuxt-link :to="`/mapa/${obra.origin_country_id.name_spanish}`">
+                  <h5 class="pais">{{ obra.origin_country_id.name_spanish }}</h5>
+                </nuxt-link>
               </div>
-              <div class="mapa">
-                <h5 class="subtitulo">País actual</h5>
-                <div class="ubicacion"></div>
-                <h5 class="pais">{{ obra.actual_country_id.name_spanish }}</h5>
-              </div>
+              <span v-if="obra.actual_country_id != null && obra.origin_country_id != null">
+                <div class="mapa" v-if="obra.origin_country_id.name_spanish != obra.actual_country_id.name_spanish">
+                  <h5 class="subtitulo">País actual</h5>
+                  <div class="ubicacion"></div>
+                  <nuxt-link :to="`/mapa/${obra.actual_country_id.name_spanish}`">
+                    <h5 class="pais">{{ obra.actual_country_id.name_spanish }}</h5>
+                  </nuxt-link>
+                </div>
+              </span>
             </div>
           </section>
         </div>
@@ -89,6 +131,8 @@ export default {
   data() {
     return {
       obra: {},
+      pestana: 'datos',
+      categorias: [],
     };
   },
 
@@ -111,9 +155,41 @@ export default {
             name
             lastname
           }
+          origin_country_id {
+            id
+            name_spanish
+          }
           actual_country_id {
             id
             name_spanish
+          }
+          category_1_id {
+            id
+            name
+          }
+          category_2_id {
+            id
+            name
+          }
+          category_3_id {
+            id
+            name
+          }
+          category_4_id {
+            id
+            name
+          }
+          category_5_id {
+            id
+            name
+          }
+          type_id {
+            id
+            name
+          }
+          source_id {
+            id
+            name
           }
         }
       }
@@ -129,6 +205,8 @@ export default {
       }
       throw new Error('La página no existe');
     }
+
+    this.agregarCategorias();
   },
 
   head() {
@@ -144,6 +222,21 @@ export default {
   methods: {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
+    cambiarPestana(pestana) {
+      console.log(pestana);
+      this.pestana = pestana;
+    },
+    agregarCategorias() {
+      const categorias = [];
+      const cantidad = 5;
+      for (let i = 0; i <= cantidad; i++) {
+        const categoria = this.obra[`category_${i}_id`];
+        if (categoria) {
+          categorias.push(categoria.name);
+        }
+      }
+      this.categorias = categorias;
     },
   },
 };
@@ -195,6 +288,7 @@ h5 {
   justify-content: center;
   flex-direction: column;
 }
+
 img {
   width: 40%;
   display: flex;
@@ -222,6 +316,8 @@ img {
   .linea {
     display: flex;
     align-items: flex-end;
+    height: fit-content;
+    margin-top: 0.8em;
     .titulo {
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -230,6 +326,8 @@ img {
       font-size: 12px;
       margin-top: 30px;
       color: $profundidad;
+      text-align: center;
+      width: 10vw;
     }
     .descripcion {
       position: relative;
@@ -237,6 +335,15 @@ img {
       font-family: $fuenteSec;
       font-size: 18px;
       text-transform: capitalize;
+      width: 90vw;
+    }
+    .categorias {
+      position: relative;
+      left: 80px;
+      font-family: $fuenteSec;
+      font-size: 18px;
+      text-transform: capitalize;
+      width: 90vw;
     }
   }
 }
