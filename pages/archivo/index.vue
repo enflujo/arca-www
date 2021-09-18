@@ -21,9 +21,13 @@
           <div class="agrupar-elementos">
             <div class="todas-images">
               <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
-                <nuxt-link :to="`/imagen/${obra.id}`"
-                  ><img :src="urlImagen(obras[i].image)" :alt="obras.title"
-                /></nuxt-link>
+                <nuxt-link :to="`/imagen/${obra.id}`">
+                  <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
+                  <div class="informacion-hover">
+                    <h2 class="nombre-hover">Jerónimo Acero</h2>
+                    <p class="descripcion-hover">Descripcion especifica de la obra x y z</p>
+                  </div>
+                </nuxt-link>
               </div>
             </div>
             <div class="barra-detalles">
@@ -131,7 +135,7 @@ export default {
   align-items: center;
 }
 .barra-detalles {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-around;
 }
@@ -140,16 +144,44 @@ export default {
 }
 .todas-images {
   display: grid;
-  width: 70%;
+  width: 96%;
   height: calc(100vh - 40px);
-  grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
   padding: 10px;
-  grid-auto-rows: minmax(100px, auto);
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-auto-rows: minmax(180px, auto);
+  grid-auto-flow: dense;
   .imagen {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .informacion-hover {
+    color: $claridad !important;
+    padding: 20px;
+    opacity: 0;
     background-color: $dolor;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-transform: capitalize;
+    z-index: 999999;
+    .nombre-hover {
+      color: $claridad;
+      letter-spacing: 0;
+    }
+    .descripcion-hover {
+      letter-spacing: 0;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+  }
+  .informacion-hover:hover {
+    opacity: 0.8;
+    transition: 0.5s;
   }
 }
+
 .descripcion-categoria {
   background-color: $dolor;
   width: 350px;
