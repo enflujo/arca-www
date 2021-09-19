@@ -62,10 +62,6 @@
                   </ul>
                 </li>
               </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
 
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarAutores">Autores</h3>
