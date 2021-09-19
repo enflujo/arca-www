@@ -24,8 +24,9 @@
                 <nuxt-link :to="`/imagen/${obra.id}`">
                   <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
                   <div class="informacion-hover">
-                    <h2 class="nombre-hover">Jerónimo Acero</h2>
-                    <p class="descripcion-hover">Descripcion especifica de la obra x y z</p>
+                    <h2 class="nombre-hover">{{ obra.title }}</h2>
+                    <h3 class="nombre-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
+                    <p class="descripcion-hover">{{ obra.synthesis }}</p>
                   </div>
                 </nuxt-link>
               </div>
@@ -227,7 +228,7 @@ export default {
     height: 100%;
     top: 0;
     left: 0;
-    text-transform: capitalize;
+    text-transform: none;
     z-index: 999999;
     .nombre-hover {
       color: $claridad;
