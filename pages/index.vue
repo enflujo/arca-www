@@ -1,6 +1,7 @@
 <template>
   <div>
     <Portada />
+    <div class="descripcion"></div>
   </div>
 </template>
 
