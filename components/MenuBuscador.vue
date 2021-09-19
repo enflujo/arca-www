@@ -338,6 +338,7 @@ export default {
   height: 30vh !important;
   position: relative !important;
 }
+
 .descripcion-datos {
   height: 40px;
   border-bottom: 1px solid $mediana;
@@ -345,20 +346,24 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .barra-detalles {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
+
 .agrupar-elementos {
   display: flex;
 }
 .contenedor-pagina {
   display: flex;
 }
+
 .logo-texto {
   margin: 20px;
 }
+
 li {
   margin-bottom: 0.2em;
 }

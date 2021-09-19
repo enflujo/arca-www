@@ -67,12 +67,15 @@ export default {
       throw new Error('La página no existe');
     }
   },
+<<<<<<< HEAD
 
   watch: {
     obrasSeleccionadas(obras) {
       this.obras = obras;
     },
   },
+=======
+>>>>>>> 17ce0be (🚀 Primer borrador usando buscador como modulo en paginas)
   /**
    * TODO: ver como construir el head con datos del pais.
    */
