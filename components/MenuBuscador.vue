@@ -27,9 +27,10 @@
               </nuxt-link>
               <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                 <li
-                  v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
-                  :key="`cat3${i3}`"
-                  class="cat categoria3 cerrado"
+                  v-for="(pais, i) in paises"
+                  :key="`autor${i}`"
+                  class="lista-autores"
+                  @click="buscar('actual_country_id', pais.name_spanish, 'name_spanish')"
                 >
                   <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir">+</span>
                   <nuxt-link :to="`/archivo`">
@@ -89,23 +90,15 @@
           </span>
         </ul>
       </div>
-
-      <div class="pantalla">
-        <h3 class="seccion" @click="colapsarPaises">Países</h3>
-        <ul v-if="paisesVisible">
-          <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores">
-            <nuxt-link :to="`/mapa/${pais.name_spanish}`">{{ pais.name_spanish }}</nuxt-link>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+    </template>
+  </div>
 </template>
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { urlImagen } from '../utilidades/ayudas';
+import { crearHead, urlImagen } from '../utilidades/ayudas';
 export default {
+  layout: 'archivo',
   data() {
     return {
       pagina: {},
@@ -247,6 +240,15 @@ export default {
     }
     this.cargarIniciales();
   },
+  head() {
+    return crearHead(
+      this.$store.state.general.datos.nombre,
+      this.pagina.titulo,
+      this.pagina.descripcion,
+      this.pagina.banner,
+      this.$nuxt.$route.path
+    );
+  },
   computed: {
     obrasSeleccionadas() {
       //  console.log(this.$store.state.buscador.seleccionados);
@@ -334,7 +336,6 @@ export default {
   height: 30vh !important;
   position: relative !important;
 }
-
 .descripcion-datos {
   height: 40px;
   border-bottom: 1px solid $mediana;
@@ -342,38 +343,42 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .barra-detalles {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
-
 .agrupar-elementos {
   display: flex;
+}
+.busqueda {
+  display: block;
+  position: relative;
+  top: 80px;
+  left: 10px;
 }
 .contenedor-pagina {
   display: flex;
 }
-
 .logo-texto {
-  margin: 20px;
+  top: 20px;
+  position: relative;
+  left: 20px;
 }
-
 li {
   margin-bottom: 0.2em;
 }
 .descripcion {
   margin-top: 10px;
 }
-.barra-izquierda {
+.fondo-izquierda {
   background-color: $mediana;
   border-right: 2px solid $dolor;
 }
 .barra-texto {
   width: 19vw;
   padding-left: 20px;
-  margin-top: 2em;
+  margin-top: 120px;
   z-index: 2;
   height: calc(100vh - 165px);
 }
