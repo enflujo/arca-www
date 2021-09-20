@@ -26,8 +26,7 @@
             <button class="botones-imagen" @click="cambiarPestana('proyectos')">proyectos</button>
           </div>
           <section class="informacion-general">
-            <span v-if="this.pestana == 'datos'">
-              <!-- Los títulos deberian venir de las bases de datos tambien. -->
+            <span v-if="pestana == 'datos'">
               <div class="linea">
                 <div class="titulo">Título</div>
                 <div class="descripcion">{{ obra.title }}</div>
@@ -59,7 +58,7 @@
                 </ul>
               </div>
             </span>
-            <span v-else-if="this.pestana == 'descripcion'">
+            <span v-else-if="pestana == 'descripcion'">
               Descripción
               <div class="linea">
                 <div class="titulo">titulo ejemplo</div>
@@ -71,7 +70,7 @@
               </div>
             </span>
 
-            <span v-else-if="this.pestana == 'personajes'">
+            <span v-else-if="pestana == 'personajes'">
               Personajes y gestos
               <div class="linea">
                 <div class="titulo">titulo ejemplo</div>
@@ -83,7 +82,7 @@
               </div>
             </span>
 
-            <span v-else-if="this.pestana == 'proyectos'">
+            <span v-else-if="pestana == 'proyectos'">
               Proyectos
               <div class="linea">
                 <div class="titulo">titulo ejemplo</div>
@@ -107,7 +106,7 @@
                 </nuxt-link>
               </div>
               <span v-if="obra.actual_country_id != null && obra.origin_country_id != null">
-                <div class="mapa" v-if="obra.origin_country_id.name_spanish != obra.actual_country_id.name_spanish">
+                <div v-if="obra.origin_country_id.name_spanish != obra.actual_country_id.name_spanish" class="mapa">
                   <h5 class="subtitulo">País actual</h5>
                   <div class="ubicacion"></div>
                   <nuxt-link :to="`/mapa/${obra.actual_country_id.name_spanish}`">

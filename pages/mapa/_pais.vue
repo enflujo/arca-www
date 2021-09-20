@@ -9,7 +9,7 @@
     </template>
 
     <template v-else>
-      <h4>Hay {{ obras.length }} obras de {{ this.obras[0].actual_country_id.name_spanish }} en la colección.</h4>
+      <h4>Hay {{ obras.length }} obras de {{ obras[0].actual_country_id.name_spanish }} en la colección.</h4>
       <div v-for="obra in obras" :key="`obra-${obra.id}`">{{ obra.title }}</div>
     </template>
   </div>
