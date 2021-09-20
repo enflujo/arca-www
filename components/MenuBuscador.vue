@@ -11,9 +11,7 @@
       <ul v-if="categoriasVisible">
         <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
           <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
-          <nuxt-link :to="`/archivo`">
-            <span @click="buscar('category_1_id', cat1, 'name')">{{ cat1 }}</span>
-          </nuxt-link>
+          <nuxt-link :to="`/categoria/${cat1}`">{{ cat1 }}</nuxt-link>
 
           <ul v-if="Object.keys(categorias[cat1]).length">
             <li
@@ -22,9 +20,9 @@
               class="cat categoria2 cerrado"
             >
               <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
-              <nuxt-link :to="`/archivo`">
-                <span @click="buscar('category_2_id', cat2, 'name')">{{ cat2 }}</span>
-              </nuxt-link>
+
+              <nuxt-link :to="`/categoria/${cat2}`">{{ cat2 }}</nuxt-link>
+
               <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                 <li
                   v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
@@ -32,9 +30,8 @@
                   class="cat categoria3 cerrado"
                 >
                   <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir">+</span>
-                  <nuxt-link :to="`/archivo`">
-                    <span @click="buscar('category_3_id', cat3, 'name')">{{ cat3 }}</span>
-                  </nuxt-link>
+                  <nuxt-link :to="`/categoria/${cat3}`">{{ cat3 }}</nuxt-link>
+
                   <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
                     <li
                       v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
@@ -44,18 +41,15 @@
                       <span v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length" class="abrir" @click="abrir"
                         >+</span
                       >
-                      <nuxt-link :to="`/archivo`">
-                        <span class="abierta" @click="buscar('category_4_id', cat4, 'name')">{{ cat4 }}</span>
-                      </nuxt-link>
+
+                      <nuxt-link :to="`/categoria/${cat4}`">{{ cat4 }}</nuxt-link>
                       <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                         <li
                           v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
                           :key="`cat5${i5}`"
                           class="cat categoria5"
                         >
-                          <nuxt-link :to="`/archivo`">
-                            <span class="abierta" @click="buscar('category_5_id', cat5, 'name')">{{ cat5 }}</span>
-                          </nuxt-link>
+                          <nuxt-link :to="`/categoria/${cat5}`">{{ cat5 }}</nuxt-link>
                         </li>
                       </ul>
                     </li>

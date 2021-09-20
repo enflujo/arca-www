@@ -15,8 +15,8 @@ export default {
 
   methods: {
     validarBusqueda(evento) {
-      if (evento.keyCode === 13) {
-        this.$store.dispatch('buscador/buscarDirectus', this.searchQuery);
+      if (evento.key === 'Enter') {
+        this.$router.push(`/archivo/${this.searchQuery}`);
       }
     },
   },
