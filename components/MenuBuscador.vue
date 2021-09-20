@@ -141,6 +141,11 @@ export default {
         artworks(limit: 50) {
           id
           title
+          author_id {
+            id
+            name
+            lastname
+          }
           category_1_id {
             id
             name

@@ -21,6 +21,11 @@ export const actions = {
               id
               title
             }
+            author_id {
+              id
+              name
+              lastname
+            }
           }
         }
       `;

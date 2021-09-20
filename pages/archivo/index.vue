@@ -16,8 +16,8 @@
       <div class="contenedor-pagina">
         <section class="imagenes">
           <div class="descripcion-datos">
-            <h4>{{ obras.length }} obras de {{ busquedaActual }} en la colección.</h4>
-          </div>
+            <!-- <h4>{{ obras.length }} obras de {{ busquedaActual }} en la colección.</h4>
+          --></div>
           <div class="agrupar-elementos">
             <div class="todas-images">
               <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
