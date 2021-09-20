@@ -62,6 +62,10 @@
                   </ul>
                 </li>
               </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
 
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarAutores">Autores</h3>
@@ -406,7 +410,6 @@ nav li {
   margin-bottom: 0.2em;
   &.cerrado {
     height: 1.2em;
-    overflow: hidden;
   }
   &.categoria5 {
     height: fit-content;
