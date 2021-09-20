@@ -310,6 +310,7 @@ img {
     align-items: center;
     height: 110px;
     justify-content: space-evenly;
+    cursor: pointer;
   }
 }
 .informacion-general {
