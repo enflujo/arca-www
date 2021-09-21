@@ -78,11 +78,7 @@
               class="lista-autores"
               @click="buscar('author_id', autor.lastname, 'lastname')"
             >
-              <nuxt-link :to="`/archivo`">
-                <span v-if="autor.lastname[0] == inicialSeleccionada" class="autores">
-                  <nuxt-link :to="`/archivo/${autor.lastname}`"> {{ autor.lastname }} {{ autor.name }}</nuxt-link>
-                </span>
-              </nuxt-link>
+              <nuxt-link :to="`/autor/${autor.lastname}`">{{ autor.lastname }} {{ autor.name }}</nuxt-link>
             </li>
           </span>
         </ul>

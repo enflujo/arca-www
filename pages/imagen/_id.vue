@@ -223,7 +223,6 @@ export default {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
     },
     cambiarPestana(pestana) {
-      console.log(pestana);
       this.pestana = pestana;
     },
     agregarCategorias() {

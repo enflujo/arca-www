@@ -14,29 +14,9 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <section class="imagenes">
-          <div class="descripcion-datos">
-            <h4>{{ obras.length }} obras de {{ $route.params.categoria }} en la colección.</h4>
-          </div>
-          <div class="agrupar-elementos">
-            <div class="todas-images">
-              <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
-                <nuxt-link :to="`/imagen/${obra.id}`"
-                  ><img :src="urlImagen(obras[i].image)" :alt="obras.title"
-                /></nuxt-link>
-              </div>
-            </div>
-            <div class="barra-detalles">
-              <div class="descripcion-categoria">
-                <h3>{{ $route.params.categoria }}</h3>
-                <!-- TODO: Hay un bug
-                <p class="descripcion">{{ obrasSeleccionadas[0].author_id.biography }}</p>
-                -->
-              </div>
-              <Mapa />
-            </div>
-          </div>
-        </section>
+        <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.categoria" />
+        <Galeria :obras="obras" />
+        <MenuVistas :busqueda="$route.params.categoria" />
       </div>
     </template>
   </div>
@@ -45,7 +25,6 @@
 <script>
 import { gql } from 'nuxt-graphql-request';
 // import { crearHead, urlImagen } from '../../utilidades/ayudas';
-import { urlImagen } from '../../utilidades/ayudas';
 
 export default {
   layout: 'conBuscador',
@@ -74,6 +53,12 @@ export default {
           synthesis
           latitude_current
           longitude_current
+          author_id {
+            id
+            name
+            lastname
+            biography
+          }
           image {
             id
             title
@@ -102,10 +87,10 @@ export default {
       }
     `;
 
-    const res = await this.$graphql.principal.request(query);
+    const { artworks } = await this.$graphql.principal.request(query);
 
-    if (res.artworks && res.artworks.length) {
-      this.obras = res.artworks;
+    if (artworks && artworks.length) {
+      this.obras = artworks;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
@@ -126,157 +111,7 @@ export default {
   //     this.$nuxt.$route.path
   //   );
   // },
-
-  methods: {
-    urlImagen(objImg, key) {
-      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-    },
-  },
 };
 </script>
 
-<style lang="scss" scoped>
-#mapa {
-  top: 0 !important;
-  display: flex !important;
-  width: 25vw !important;
-  height: 30vh !important;
-  position: relative !important;
-}
-.descripcion-datos {
-  height: 40px;
-  border-bottom: 1px solid $mediana;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.barra-detalles {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.agrupar-elementos {
-  display: flex;
-}
-.todas-images {
-  display: grid;
-  width: 70%;
-  height: calc(100vh - 40px);
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
-  grid-auto-rows: minmax(100px, auto);
-  .imagen {
-    background-color: $dolor;
-  }
-}
-.descripcion-categoria {
-  background-color: $dolor;
-  width: 350px;
-  height: 250px;
-  color: $claridad;
-  padding: 10px;
-  position: relative;
-}
-.busqueda {
-  display: block;
-  position: relative;
-  top: 80px;
-  left: 10px;
-}
-.contenedor-pagina {
-  display: flex;
-}
-.logo-texto {
-  top: 20px;
-  position: relative;
-  left: 20px;
-}
-li {
-  margin-bottom: 10px;
-}
-.descripcion {
-  margin-top: 10px;
-  font-size: 0.8em;
-}
-
-.archivo {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 80vw;
-  left: 20vw;
-  top: 0;
-  position: absolute;
-  overflow-y: auto;
-
-  .titulo {
-    display: flex;
-    flex-direction: column;
-    height: 80px;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-}
-
-.imagenes {
-  width: 80vw;
-  img {
-    width: 100%;
-    height: auto;
-  }
-
-  .caja-inicial {
-    display: flex;
-    justify-content: space-between;
-    .caja-descripcion {
-      height: auto;
-      display: flex;
-      flex-direction: row;
-      text-align: initial;
-      .descripcion {
-        width: 400px;
-        background-color: #af2828;
-        padding: 2em;
-        justify-content: space-around;
-        display: flex;
-        flex-direction: column;
-        .titulo-obra {
-          color: $claridad;
-          font-weight: 300;
-        }
-        .subtitulo-obra {
-          color: $claridad;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 5px;
-        }
-        .descripcion-obra {
-          color: $claridad;
-          line-height: 1.5;
-          letter-spacing: -0.4px;
-          font-size: 14px;
-        }
-        .boton-ver {
-          border: 1px solid $claridad;
-          padding: 1em;
-          border-radius: 25px;
-          color: $claridad;
-          letter-spacing: 6px;
-          letter-spacing: 6px;
-          font-size: 11px;
-          align-self: center;
-        }
-      }
-    }
-  }
-  .caja-secundaria {
-    display: flex;
-    justify-content: space-between;
-    top: 20px;
-    position: relative;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

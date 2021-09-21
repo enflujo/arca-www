@@ -9,8 +9,11 @@
     </template>
 
     <template v-else>
-      <h4>Hay {{ obras.length }} obras de {{ obras[0].actual_country_id.name_spanish }} en la colección.</h4>
-      <div v-for="obra in obras" :key="`obra-${obra.id}`">{{ obra.title }}</div>
+      <div class="contenedor-pagina">
+        <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.pais" />
+        <Galeria :obras="obras" />
+        <MenuVistas :busqueda="$route.params.pais" />
+      </div>
     </template>
   </div>
 </template>
@@ -56,10 +59,10 @@ export default {
       }
     `;
 
-    const res = await this.$graphql.principal.request(query);
+    const { artworks } = await this.$graphql.principal.request(query);
 
-    if (res.artworks && res.artworks.length) {
-      this.obras = res.artworks;
+    if (artworks && artworks.length) {
+      this.obras = artworks;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;

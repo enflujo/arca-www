@@ -99,8 +99,8 @@ ul {
 
 img,
 video {
-  width: 100vw;
-  height: 99vh;
+  width: 100%;
+  height: auto;
 }
 
 body {
@@ -132,4 +132,9 @@ a:link {
 
 .texto-claro {
   color: $claridad;
+}
+
+.contenedor-pagina {
+  display: flex;
+  flex-wrap: wrap;
 }
