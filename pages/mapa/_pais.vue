@@ -11,6 +11,7 @@
     <template v-else>
       <div class="contenedor-pagina">
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.pais" />
+        <EtiquetasGaleria />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.pais" />
       </div>
