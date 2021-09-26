@@ -15,6 +15,7 @@
     <template v-else>
       <div class="contenedor-pagina">
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.autor" />
+        <EtiquetasGaleria />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.autor" />
       </div>
