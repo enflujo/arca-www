@@ -33,7 +33,7 @@
               </div>
               <div class="linea">
                 <div class="titulo">Autor</div>
-                <nuxt-link :to="`/archivo/${obra.author_id.lastname}`">
+                <nuxt-link :to="`/autor/${obra.author_id.lastname}`">
                   <div class="descripcion">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</div>
                 </nuxt-link>
               </div>
@@ -53,7 +53,9 @@
                 <div class="titulo">Categorías</div>
                 <ul>
                   <div v-for="(nombre, i) in categorias" :key="`categoria-${i}`" class="categorias">
-                    <li>{{ categorias[i] }}</li>
+                    <nuxt-link :to="`/categoria/${categorias[i]}`"
+                      ><li>{{ categorias[i] }}</li></nuxt-link
+                    >
                   </div>
                 </ul>
               </div>
@@ -333,8 +335,8 @@ img {
       left: 80px;
       font-family: $fuenteSec;
       font-size: 18px;
-      text-transform: capitalize;
       width: 90vw;
+      margin-right: 100px;
     }
     .categorias {
       position: relative;
