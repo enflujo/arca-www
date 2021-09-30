@@ -20,7 +20,7 @@
           </div>
         </span>
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.categoria" />
-        <!-- <EtiquetasGaleria /> -->
+        <EtiquetasGaleria :busqueda="$route.params.categoria" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.categoria" />
       </div>

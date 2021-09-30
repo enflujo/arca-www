@@ -1,10 +1,10 @@
 <template>
   <div class="categorias-seleccionadas">
     <div class="categoria">{{ busqueda }} X</div>
-    <div class="categoria">Historia X</div>
+    <!-- <div class="categoria">Historia X</div>
     <div class="categoria">Ciclo Pasion X</div>
     <div class="categoria">Viacrucis X</div>
-    <div class="categoria">Eclesiastico X</div>
+    <div class="categoria">Eclesiastico X</div> -->
   </div>
 </template>
 

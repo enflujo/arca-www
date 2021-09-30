@@ -20,7 +20,7 @@
           </div>
         </span>
         <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.autor" />
-        <!-- <EtiquetasGaleria /> -->
+        <EtiquetasGaleria :busqueda="$route.params.autor" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.autor" />
       </div>
