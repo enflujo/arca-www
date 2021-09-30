@@ -72,13 +72,8 @@
             </li>
           </div>
           <span v-if="inicialSeleccionada != ''">
-            <li
-              v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)"
-              :key="`autor${i}`"
-              class="lista-autores"
-              @click="buscar('author_id', autor.lastname, 'lastname')"
-            >
-              <nuxt-link :to="`/autor/${autor.lastname}`">{{ autor.lastname }} {{ autor.name }}</nuxt-link>
+            <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="lista-autores">
+              <nuxt-link :to="`/autor/${autor.lastname}?page=1`">{{ autor.lastname }} {{ autor.name }}</nuxt-link>
             </li>
           </span>
         </ul>
@@ -248,7 +243,6 @@ export default {
   },
   computed: {
     obrasSeleccionadas() {
-      //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
     busquedaActual() {
@@ -292,16 +286,6 @@ export default {
       } else {
         this.paisesVisible = true;
       }
-    },
-    actualizarFiltro(filtro) {
-      this.$store.commit('general/actualizarFiltro', filtro);
-    },
-    buscar(campo, comparacion, campo2) {
-      this.$store.dispatch('buscador/buscar', {
-        campo,
-        comparacion,
-        campo2,
-      });
     },
     abrir(evento) {
       const contenedor = evento.target.parentElement;

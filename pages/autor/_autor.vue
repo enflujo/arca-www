@@ -14,7 +14,12 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.autor" />
+        <span class="paginas">
+          <div v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+            <nuxt-link v-if="obras.length == 100" :to="`/autor/${autor}?page=${page}`"> {{ page }} </nuxt-link>
+          </div>
+        </span>
+        <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.autor" />
         <!-- <EtiquetasGaleria /> -->
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.autor" />
@@ -32,15 +37,18 @@ export default {
     return {
       pagina: {},
       obras: [],
+      pages: [...Array(11).keys()].splice(1),
+      autor: {},
     };
   },
 
   async fetch() {
-    const autor = this.$route.params.autor;
+    const autor = (this.autor = this.$route.params.autor);
+    const page = this.$route.query.page;
 
     const query = gql`
       query {
-        artworks(filter: { author_id: { lastname: { _eq: "${autor}" } } }, limit: -1) {
+        artworks(filter: { author_id: { lastname: { _eq: "${autor}" } } }, page: ${page} ) {
           id
           title
           annotation_date
@@ -53,6 +61,9 @@ export default {
           }
           author_id {
             id
+            artworkso2m {
+              id
+            }
             name
             lastname
             biography
@@ -62,7 +73,7 @@ export default {
             name_spanish
           }
         }
-      }
+        }
     `;
 
     const { artworks } = await this.$graphql.principal.request(query);
@@ -92,4 +103,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.paginas {
+  display: flex;
+  width: 100vh;
+  margin-left: 1em;
+  margin-top: 1em;
+}
+</style>

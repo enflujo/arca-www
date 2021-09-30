@@ -100,7 +100,6 @@ export default {
   },
   computed: {
     obrasSeleccionadas() {
-      //  console.log(this.$store.state.buscador.seleccionados);
       return this.$store.state.buscador.seleccionados;
     },
   },
