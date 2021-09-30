@@ -14,6 +14,11 @@
 
     <template v-else>
       <div class="contenedor-pagina">
+        <span class="paginas">
+          <div v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+            <nuxt-link v-if="obras.length == 100" :to="`/categoria/${categoria}?page=${page}`"> {{ page }} </nuxt-link>
+          </div>
+        </span>
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.categoria" />
         <!-- <EtiquetasGaleria /> -->
         <Galeria :obras="obras" />
@@ -32,11 +37,14 @@ export default {
   data() {
     return {
       obras: [],
+      pages: [...Array(11).keys()].splice(1),
+      categoria: '',
     };
   },
 
   async fetch() {
     const categoria = this.$route.params.categoria;
+    const page = this.$route.query.page;
 
     const query = gql`
 
@@ -47,7 +55,7 @@ export default {
             {category_3_id: { name: { _eq: "${categoria}" } }},
             {category_4_id: { name: { _eq: "${categoria}" } }},
             {category_5_id: { name: { _eq: "${categoria}" } }},
-        ] }, limit: -1) {
+        ] }, page: ${page}) {
           id
           title
           annotation_date
@@ -115,4 +123,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.paginas {
+  display: flex;
+  width: 100vh;
+  margin-left: 1em;
+  margin-top: 1em;
+}
+</style>

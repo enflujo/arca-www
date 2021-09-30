@@ -10,8 +10,13 @@
 
     <template v-else>
       <div class="contenedor-pagina">
+        <span class="paginas">
+          <div v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+            <nuxt-link v-if="obras.length == 100" :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
+          </div>
+        </span>
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.pais" />
-        <EtiquetasGaleria />
+        <EtiquetasGaleria :busqueda="$route.params.pais" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.pais" />
       </div>
@@ -28,15 +33,18 @@ export default {
   data() {
     return {
       obras: [],
+      pages: [...Array(11).keys()].splice(1),
+      pais: '',
     };
   },
 
   async fetch() {
-    const pais = this.$route.params.pais;
+    const pais = (this.pais = this.$route.params.pais);
+    const page = this.$route.query.page;
 
     const query = gql`
       query {
-        artworks(filter: { actual_country_id: { name_spanish: { _eq: "${pais}" } } }, limit: -1) {
+        artworks(filter: { actual_country_id: { name_spanish: { _eq: "${pais}" } } }, page: ${page}) {
           id
           title
           annotation_date
@@ -91,3 +99,12 @@ export default {
   // },
 };
 </script>
+
+<style lang="scss" scoped>
+.paginas {
+  display: flex;
+  width: 100vh;
+  margin-left: 1em;
+  margin-top: 1em;
+}
+</style>

@@ -11,7 +11,7 @@
       <ul v-if="categoriasVisible">
         <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
           <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
-          <nuxt-link :to="`/categoria/${cat1}`">{{ cat1 }}</nuxt-link>
+          <nuxt-link :to="`/categoria/${cat1}?page=1`">{{ cat1 }}</nuxt-link>
 
           <ul v-if="Object.keys(categorias[cat1]).length">
             <li
@@ -21,7 +21,7 @@
             >
               <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
 
-              <nuxt-link :to="`/categoria/${cat2}`">{{ cat2 }}</nuxt-link>
+              <nuxt-link :to="`/categoria/${cat2}?page=1`">{{ cat2 }}</nuxt-link>
 
               <ul v-if="Object.keys(categorias[cat1][cat2]).length">
                 <li
@@ -30,7 +30,7 @@
                   class="cat categoria3 cerrado"
                 >
                   <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir">+</span>
-                  <nuxt-link :to="`/categoria/${cat3}`">{{ cat3 }}</nuxt-link>
+                  <nuxt-link :to="`/categoria/${cat3}?page=1`">{{ cat3 }}</nuxt-link>
 
                   <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
                     <li
@@ -42,14 +42,14 @@
                         >+</span
                       >
 
-                      <nuxt-link :to="`/categoria/${cat4}`">{{ cat4 }}</nuxt-link>
+                      <nuxt-link :to="`/categoria/${cat4}?page=1`">{{ cat4 }}</nuxt-link>
                       <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
                         <li
                           v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
                           :key="`cat5${i5}`"
                           class="cat categoria5"
                         >
-                          <nuxt-link :to="`/categoria/${cat5}`">{{ cat5 }}</nuxt-link>
+                          <nuxt-link :to="`/categoria/${cat5}?page=1`">{{ cat5 }}</nuxt-link>
                         </li>
                       </ul>
                     </li>
@@ -83,7 +83,7 @@
         <h3 class="seccion" @click="colapsarPaises">Países</h3>
         <ul v-if="paisesVisible">
           <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores">
-            <nuxt-link :to="`/mapa/${pais.name_spanish}`">{{ pais.name_spanish }}</nuxt-link>
+            <nuxt-link :to="`/mapa/${pais.name_spanish}?page=1`">{{ pais.name_spanish }}</nuxt-link>
           </li>
         </ul>
       </div>

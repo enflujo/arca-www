@@ -38,7 +38,7 @@ export default {
       pagina: {},
       obras: [],
       pages: [...Array(11).keys()].splice(1),
-      autor: {},
+      autor: '',
     };
   },
 
