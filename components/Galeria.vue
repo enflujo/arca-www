@@ -131,11 +131,13 @@ export default {
     .nombre-hover {
       color: $claridad;
       letter-spacing: 0;
+      font-size: large;
     }
     .descripcion-hover {
       letter-spacing: 0;
       margin-top: 10px;
       line-height: 1.5;
+      font-size: small;
     }
   }
   .informacion-hover:hover {

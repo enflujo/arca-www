@@ -1,6 +1,10 @@
 <template>
   <div class="categorias-seleccionadas">
-    <div class="categoria">{{ busqueda }} X</div>
+    <span v-if="mostrarEtiqueta">
+      <nuxt-link :to="`/archivo`">
+        <div class="categoria" @click="borrarEtiqueta">{{ busqueda }} X</div>
+      </nuxt-link>
+    </span>
     <!-- <div class="categoria">Historia X</div>
     <div class="categoria">Ciclo Pasion X</div>
     <div class="categoria">Viacrucis X</div>
@@ -19,6 +23,16 @@ export default {
     busqueda: {
       type: String,
       default: '',
+    },
+  },
+  data() {
+    return {
+      mostrarEtiqueta: true,
+    };
+  },
+  methods: {
+    borrarEtiqueta() {
+      this.mostrarEtiqueta = false;
     },
   },
 };
