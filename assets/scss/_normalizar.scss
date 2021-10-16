@@ -110,6 +110,13 @@ body {
 a,
 a:link {
   text-decoration: none;
+  color: $profundidad;
+}
+
+a:hover {
+  font-weight: 600;
+  letter-spacing: 4px;
+  transition: 1s;
 }
 
 ::selection {
