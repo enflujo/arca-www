@@ -99,7 +99,6 @@ export default {
   justify-content: space-around;
   align-content: center;
 }
-
 .cambio-vista {
   height: 150px;
   justify-content: space-around;
@@ -107,11 +106,9 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 .descripcion {
   margin-top: 10px;
 }
-
 .descripcion-categoria {
   background-color: $dolor;
   width: 350px;
@@ -120,7 +117,6 @@ export default {
   padding: 10px;
   position: relative;
 }
-
 input[type='checkbox'] {
   height: 0;
   width: 0;
@@ -129,7 +125,6 @@ input[type='checkbox'] {
   top: 0;
   left: 0;
 }
-
 label {
   cursor: pointer;
   text-indent: -9999px;
@@ -142,7 +137,6 @@ label {
   position: relative;
   transform: rotate(90deg);
 }
-
 label:after {
   content: '';
   position: absolute;
@@ -154,20 +148,16 @@ label:after {
   border-radius: 90px;
   transition: 0.3s;
 }
-
 input:checked + label {
   background: transparent;
 }
-
 input:checked + label:after {
   left: calc(100% - 5px);
   transform: translateX(-100%);
 }
-
 label:active:after {
   width: 15px;
 }
-
 .Group_581 {
   display: flex;
 }
