@@ -205,11 +205,12 @@ export default {
 }
 .agrupar-elementos {
   display: flex;
+  height: calc(100vh - 40px);
 }
 .todas-images {
   display: grid;
-  width: 96%;
-  height: calc(100vh - 40px);
+  width: 95%;
+  height: calc(100vh - 120px);
   grid-gap: 10px;
   padding: 10px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

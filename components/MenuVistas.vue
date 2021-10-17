@@ -61,12 +61,12 @@
         </g>
       </svg>
     </div>
-    <div class="descripcion-categoria">
+    <!-- <div class="descripcion-categoria">
       <h3>{{ busqueda }}</h3>
 
       <p class="descripcion">{{ descripcion }}</p>
     </div>
-    <Mapa :datos="obras" />
+    <Mapa :datos="obras" /> -->
   </div>
 </template>
 
@@ -93,7 +93,11 @@ export default {
 
 <style lang="scss" scoped>
 .barra-detalles {
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  width: 5%;
+  justify-content: space-around;
+  align-content: center;
 }
 
 .cambio-vista {

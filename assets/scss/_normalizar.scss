@@ -144,4 +144,6 @@ a:hover {
 .contenedor-pagina {
   display: flex;
   flex-wrap: wrap;
+  width: calc(100vw - 275px) !important;
+  height: 100vh;
 }

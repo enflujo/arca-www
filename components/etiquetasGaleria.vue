@@ -44,8 +44,8 @@ export default {
   border-bottom: 1px solid $mediana;
   flex: 0 0 100%;
   text-align: center;
-  padding-top: 10px;
   display: flex;
+  align-items: center;
   .categoria {
     background-color: $dolor;
     color: $mediana;
