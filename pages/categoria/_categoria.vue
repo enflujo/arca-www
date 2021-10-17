@@ -45,7 +45,7 @@ export default {
   },
 
   async fetch() {
-    const categoria = this.$route.params.categoria;
+    const categoria = (this.categoria = this.$route.params.categoria);
     const page = this.$route.query.page;
 
     const query = gql`
