@@ -4,9 +4,10 @@
       <nuxt-link :to="`/imagen/${obra.id}`"
         ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
         <div class="informacion-hover">
-          <h2 class="nombre-hover">{{ obra.title }}</h2>
-          <h3 class="nombre-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
+          <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
+          <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
           <p class="descripcion-hover">{{ obra.synthesis }}</p>
+          <h3 class="boton-detalles">DETALLES -></h3>
         </div>
       </nuxt-link>
     </div>
@@ -37,7 +38,7 @@ export default {
   width: 80vw;
 
   img {
-    width: 100%;
+    width: 160%;
     height: auto;
   }
 
@@ -96,17 +97,16 @@ export default {
 .todas-images {
   display: grid;
   width: 95%;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 140px);
   grid-gap: 10px;
   padding: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  grid-auto-rows: minmax(180px, auto);
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  grid-auto-rows: minmax(32.8%, auto);
   grid-auto-flow: dense;
-
+  overflow: hidden;
   .imagen {
     border-radius: 10px;
     overflow: hidden;
-
     a {
       position: relative;
       display: block;
@@ -123,26 +123,44 @@ export default {
     background-color: $dolor;
     width: 100%;
     height: 100%;
-    top: 0;
     left: 0;
+    top: 0;
     text-transform: none;
     z-index: 999999;
 
-    .nombre-hover {
+    .nombre-obra-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: large;
+      font-size: 1.4em;
+    }
+    .nombre-autor-hover {
+      color: $claridad;
+      letter-spacing: 0;
+      font-size: 1.1em;
+      font-weight: 400;
+      position: relative;
+      top: 8px;
     }
     .descripcion-hover {
       letter-spacing: 0;
       margin-top: 10px;
       line-height: 1.5;
-      font-size: small;
+      font-size: 0.8em;
+      font-weight: 200;
+      position: relative;
+      top: 10px;
     }
   }
   .informacion-hover:hover {
-    opacity: 0.8;
+    opacity: 0.95;
     transition: 0.5s;
+  }
+  .boton-detalles {
+    font-weight: 400;
+    font-size: 1em;
+    position: relative;
+    top: 20px;
+    text-align: end;
   }
 }
 </style>

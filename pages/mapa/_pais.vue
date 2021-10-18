@@ -10,15 +10,17 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <span class="paginas">
-          <div v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
-            <nuxt-link v-if="obras.length == 100" :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
-          </div>
-        </span>
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.pais" />
         <EtiquetasGaleria :busqueda="$route.params.pais" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.pais" />
+        <span class="paginas">
+          <div class="pag-cont">
+            <div class="num-pag" v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+              <nuxt-link v-if="obras.length == 100" :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
+            </div>
+          </div>
+        </span>
       </div>
     </template>
   </div>
@@ -103,8 +105,24 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 100vh;
-  margin-left: 1em;
-  margin-top: 1em;
+  width: 100%;
+  justify-self: center;
+  align-self: center;
+  margin: 10px;
+  justify-content: center;
+  .pag-cont {
+    width: 350px;
+    background-color: $dolor;
+    display: flex;
+    border-radius: 200px;
+    justify-content: center;
+    .num-pag {
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      text-align: center;
+      padding: 10px;
+    }
+  }
 }
 </style>

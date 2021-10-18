@@ -54,6 +54,9 @@ export default {
     padding: 5px 15px 5px 15px;
     font-family: $fuenteMenu;
     cursor: pointer;
+    font-size: 0.8em;
+    text-transform: capitalize;
+    letter-spacing: 1px;
   }
   .categoria-sinselec {
     background-color: $mediana;

@@ -24,9 +24,10 @@
                 <nuxt-link :to="`/imagen/${obra.id}`">
                   <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
                   <div class="informacion-hover">
-                    <h2 class="nombre-hover">{{ obra.title }}</h2>
-                    <h3 class="nombre-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
+                    <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
+                    <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
                     <p class="descripcion-hover">{{ obra.synthesis }}</p>
+                    <h3 class="boton-detalles">DETALLES -></h3>
                   </div>
                 </nuxt-link>
               </div>
@@ -210,25 +211,28 @@ export default {
 .todas-images {
   display: grid;
   width: 95%;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 140px);
   grid-gap: 10px;
   padding: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  grid-auto-rows: minmax(180px, auto);
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  grid-auto-rows: minmax(32.8%, auto);
   grid-auto-flow: dense;
+  overflow: hidden;
   .imagen {
     border-radius: 10px;
     overflow: hidden;
+    background-size: cover;
   }
   .informacion-hover {
+    position: absolute;
     color: $claridad !important;
     padding: 20px;
     opacity: 0;
     background-color: $dolor;
     width: 100%;
     height: 100%;
-    top: 0;
     left: 0;
+    top: 0;
     text-transform: none;
     z-index: 999999;
     .nombre-hover {

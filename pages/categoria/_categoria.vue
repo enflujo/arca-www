@@ -19,8 +19,12 @@
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.categoria" />
         <span class="paginas">
-          <div v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
-            <nuxt-link v-if="obras.length == 100" :to="`/categoria/${categoria}?page=${page}`"> {{ page }} </nuxt-link>
+          <div class="pag-cont">
+            <div class="num-pag" v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+              <nuxt-link v-if="obras.length == 100" :to="`/categoria/${categoria}?page=${page}`">
+                {{ page }}
+              </nuxt-link>
+            </div>
           </div>
         </span>
       </div>
@@ -126,7 +130,24 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 95%;
-  justify-content: space-evenly;
+  width: 100%;
+  justify-self: center;
+  align-self: center;
+  margin: 10px;
+  justify-content: center;
+  .pag-cont {
+    width: 350px;
+    display: flex;
+    border: 2px solid $profundidad;
+    border-radius: 200px;
+    justify-content: center;
+    .num-pag {
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      text-align: center;
+      padding: 10px;
+    }
+  }
 }
 </style>

@@ -347,11 +347,11 @@ li {
 .barra-izquierda {
   background-color: $mediana;
   border-right: 2px solid $dolor;
-  width: 275px;
+  width: 280px;
   height: 100vh;
 }
 .barra-texto {
-  width: 19vw;
+  width: 275px;
   padding-left: 20px;
   margin-top: 2em;
   z-index: 2;

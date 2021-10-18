@@ -99,7 +99,7 @@ ul {
 
 img,
 video {
-  width: 100%;
+  width: 150%;
   height: auto;
 }
 
@@ -115,8 +115,7 @@ a:link {
 
 a:hover {
   font-weight: 600;
-  letter-spacing: 4px;
-  transition: 1s;
+  transition: 0.6s;
 }
 
 ::selection {
@@ -144,6 +143,6 @@ a:hover {
 .contenedor-pagina {
   display: flex;
   flex-wrap: wrap;
-  width: calc(100vw - 275px) !important;
+  width: calc(100vw - 280px) !important;
   height: 100vh;
 }
