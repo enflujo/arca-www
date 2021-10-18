@@ -6,7 +6,7 @@
         <div class="informacion-hover">
           <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
           <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
-          <p class="descripcion-hover">{{ obra.synthesis }}</p>
+          <p class="descripcion-hover">{{ obra.synthesis.substr(0, 70) + '\u2026' }}</p>
           <h3 class="boton-detalles">DETALLES -></h3>
         </div>
       </nuxt-link>

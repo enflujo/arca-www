@@ -9,14 +9,34 @@
     </template>
 
     <template v-else>
+      <div class="mediana"></div>
       <div class="contenedor-centrado">
+        <div class="logo-ar">
+          <nuxt-link :to="'/'">
+            <h2 class="logo-texto">ARCA</h2>
+          </nuxt-link>
+        </div>
         <div class="completo-archivo">
           <div class="titulo">
             <h1>{{ obra.title }}</h1>
             <h3 class="nombre-autor">{{ `${obra.author_id.name} ${obra.author_id.lastname}` }}</h3>
           </div>
           <div class="descripcion">
-            <img :src="urlImagen(obra.image)" :alt="obra.title" />
+            <img class="imagen-des" :src="urlImagen(obra.image)" :alt="obra.title" />
+            <div class="triangulo-des"></div>
+            <p class="mas">+</p>
+            <div class="hover-info">
+              <div class="textos-hover">
+                <h1 class="descripcion-tit">Informacion basica de la imagen</h1>
+                <p class="descripcion-des">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
+                  porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
+                  sapien. Duis vitae hendrerit lacus. Vivamus accumsan imperdiet sem eget fringilla. Ut vulputate diam
+                  augue, in egestas sem consectetur ut. Nam suscipit, justo id pharetra pharetra, ligula ligula auctor
+                  velit, at imperdiet dui ante sit amet libero. Cras rhoncus dignissim.
+                </p>
+              </div>
+            </div>
             <!-- <p>{{ obra.annotation_date }}</p> -->
           </div>
           <div class="botonera">
@@ -61,7 +81,7 @@
               </div>
             </span>
             <span v-else-if="pestana == 'descripcion'">
-              Descripción
+              <h2 class="sub-pestana">Descripción</h2>
               <div class="linea">
                 <div class="titulo">titulo ejemplo</div>
                 <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
@@ -73,7 +93,7 @@
             </span>
 
             <span v-else-if="pestana == 'personajes'">
-              Personajes y gestos
+              <h2 class="sub-pestana">Personajes y gestos</h2>
               <div class="linea">
                 <div class="titulo">titulo ejemplo</div>
                 <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
@@ -85,7 +105,7 @@
             </span>
 
             <span v-else-if="pestana == 'proyectos'">
-              Proyectos
+              <h2 class="sub-pestana">Proyectos</h2>
               <div class="linea">
                 <div class="titulo">titulo ejemplo</div>
                 <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
@@ -245,6 +265,69 @@ export default {
 main {
   justify-content: center;
 }
+.sub-pestana {
+}
+
+.triangulo-des {
+  width: 0;
+  height: 0;
+  border-right: 45px solid transparent;
+  border-top: 45px solid $claridad;
+  border-left: 45px solid $claridad;
+  border-bottom: 45px solid transparent;
+  position: absolute;
+  top: 179px;
+  left: 228px;
+  opacity: 0.6;
+}
+.mas {
+  font-weight: 800;
+  color: $dolor;
+  position: absolute;
+  font-size: 2em;
+  top: 189px;
+  left: 248px;
+}
+.hover-info {
+  background-color: $mediana;
+  width: 400px;
+  height: 1000px;
+  position: absolute;
+  top: 179px;
+  left: 228px;
+  opacity: 0;
+  cursor: pointer;
+  .textos-hover {
+    padding: 40px;
+    .descripcion-tit {
+      color: $dolor;
+      padding-bottom: 20px;
+    }
+    .descripcion-des {
+      line-height: 1.6;
+    }
+  }
+}
+.hover-info:hover {
+  opacity: 0.9;
+  transition: 0.5s;
+}
+.logo-ar {
+  margin: 20px;
+}
+
+.imagen-des {
+  width: auto;
+  height: 1000px;
+}
+
+.mediana {
+  width: 100%;
+  height: 1120px;
+  position: absolute;
+  background-color: $mediana;
+  z-index: -99;
+}
 
 .contenedor-centrado {
   display: flex;
@@ -259,9 +342,10 @@ main {
     padding-bottom: 100px;
   }
   .titulo {
-    justify-content: center;
-    display: grid;
-    text-align: center;
+    justify-content: start;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
   }
 }
 
@@ -309,7 +393,7 @@ img {
     display: flex;
     align-items: center;
     height: 110px;
-    justify-content: space-evenly;
+    justify-content: end;
     cursor: pointer;
   }
 }
