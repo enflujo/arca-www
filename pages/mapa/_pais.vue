@@ -16,7 +16,7 @@
         <MenuVistas :busqueda="$route.params.pais" />
         <span class="paginas">
           <div class="pag-cont">
-            <div class="num-pag" v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+            <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
               <nuxt-link v-if="obras.length == 100" :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
             </div>
           </div>

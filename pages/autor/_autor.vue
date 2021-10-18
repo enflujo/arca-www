@@ -20,7 +20,7 @@
         <MenuVistas :busqueda="$route.params.autor" />
         <span class="paginas">
           <div class="pag-cont">
-            <div class="num-pag" v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
+            <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
               <nuxt-link v-if="obras.length == 100" :to="`/autor/${autor}?page=${page}`"> {{ page }} </nuxt-link>
             </div>
           </div>

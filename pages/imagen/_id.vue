@@ -27,7 +27,7 @@
             <p class="mas">+</p>
             <div class="hover-info">
               <div class="textos-hover">
-                <h1 class="descripcion-tit">Informacion basica de la imagen</h1>
+                <h1 class="descripcion-tit">Información básica de la imagen</h1>
                 <p class="descripcion-des">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
                   porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
@@ -267,7 +267,6 @@ main {
 }
 .sub-pestana {
 }
-
 .triangulo-des {
   width: 0;
   height: 0;
@@ -342,7 +341,7 @@ main {
     padding-bottom: 100px;
   }
   .titulo {
-    justify-content: start;
+    justify-content: flex-end;
     display: flex;
     flex-direction: column;
     text-align: start;
@@ -393,7 +392,7 @@ img {
     display: flex;
     align-items: center;
     height: 110px;
-    justify-content: end;
+    justify-content: flex-end;
     cursor: pointer;
   }
 }
