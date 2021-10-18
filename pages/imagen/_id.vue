@@ -25,7 +25,8 @@
             <img class="imagen-des" :src="urlImagen(obra.image)" :alt="obra.title" />
             <div class="hover-info">
               <div class="textos-hover">
-                <h2 class="descripcion-tit">Información básica de la imagen</h2>
+                <h1 class="descripcion-tit">Información básica de la imagen</h1>
+
                 <p class="descripcion-des">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
                   porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
@@ -331,7 +332,6 @@ main {
   display: grid;
   width: 90vw;
 }
-
 .triangulo-des {
   width: 0;
   height: 0;
@@ -448,8 +448,8 @@ img {
     flex-direction: column;
     display: flex;
     align-items: center;
-    height: 80px;
-    justify-content: space-evenly;
+    height: 110px;
+    justify-content: flex-end;
     cursor: pointer;
     color: #9a9da7;
   }
