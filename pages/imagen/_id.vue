@@ -27,7 +27,7 @@
             <p class="mas">+</p>
             <div class="hover-info">
               <div class="textos-hover">
-                <h1 class="descripcion-tit">Informacion basica de la imagen</h1>
+                <h1 class="descripcion-tit">Información básica de la imagen</h1>
                 <p class="descripcion-des">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
                   porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
@@ -52,7 +52,7 @@
               :class="{ botonActivo: pestana == 'descripcion' }"
               @click="cambiarPestana('descripcion')"
             >
-              descripcion
+              descripción
             </button>
             <button
               class="botones-imagen"
@@ -113,36 +113,36 @@
             <span v-else-if="pestana == 'descripcion'">
               <h2 class="sub-pestana">Descripción</h2>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
             </span>
 
             <span v-else-if="pestana == 'personajes'">
               <h2 class="sub-pestana">Personajes y gestos</h2>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
             </span>
 
             <span v-else-if="pestana == 'proyectos'">
               <h2 class="sub-pestana">Proyectos</h2>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
             </span>
           </section>
@@ -372,7 +372,7 @@ main {
     padding-bottom: 100px;
   }
   .titulo {
-    justify-content: start;
+    justify-content: flex-end;
     display: flex;
     flex-direction: column;
     text-align: start;
@@ -423,7 +423,7 @@ img {
     display: flex;
     align-items: center;
     height: 110px;
-    justify-content: end;
+    justify-content: flex-end;
     cursor: pointer;
   }
   .botonActivo {

@@ -10,14 +10,14 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.pais" />
+        <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.pais" />
         <EtiquetasGaleria :busqueda="$route.params.pais" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.pais" />
         <span class="paginas">
-          <div class="pag-cont">
-            <div class="num-pag" v-for="(page, i) in pages" :key="`page-${i}`" @click="$fetch">
-              <nuxt-link v-if="obras.length == 100" :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
+          <div v-if="obras.length == 100" class="pag-cont">
+            <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
+              <nuxt-link :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
             </div>
           </div>
         </span>
@@ -112,8 +112,8 @@ export default {
   justify-content: center;
   .pag-cont {
     width: 350px;
-    background-color: $dolor;
     display: flex;
+    border: 2px solid $profundidad;
     border-radius: 200px;
     justify-content: center;
     .num-pag {
