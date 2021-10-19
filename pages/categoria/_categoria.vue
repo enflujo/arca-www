@@ -12,14 +12,14 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.categoria" />
+        <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.categoria" />
         <EtiquetasGaleria :busqueda="$route.params.categoria" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.categoria" />
         <span class="paginas">
-          <div class="pag-cont">
+          <div v-if="obras.length == 100" class="pag-cont">
             <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
-              <nuxt-link v-if="obras.length == 100" :to="`/categoria/${categoria}?page=${page}`">
+              <nuxt-link :to="`/categoria/${categoria}?page=${page}`">
                 {{ page }}
               </nuxt-link>
             </div>
