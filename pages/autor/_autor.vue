@@ -115,8 +115,8 @@ export default {
   justify-content: center;
   .pag-cont {
     width: 350px;
-    background-color: $dolor;
     display: flex;
+    border: 2px solid $profundidad;
     border-radius: 200px;
     justify-content: center;
     .num-pag {

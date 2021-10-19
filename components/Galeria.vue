@@ -156,11 +156,11 @@ export default {
     transition: 0.5s;
   }
   .boton-detalles {
-    font-weight: 400;
-    font-size: 1em;
+    font-weight: 500;
+    font-size: 0.75em;
     position: relative;
     top: 20px;
-    text-align: end;
+    text-align: flex-end;
   }
 }
 </style>

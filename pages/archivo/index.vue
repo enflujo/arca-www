@@ -430,4 +430,12 @@ label:active:after {
 .Group_581 {
   display: flex;
 }
+
+.boton-detalles {
+  font-weight: 500;
+  font-size: 0.75em;
+  position: relative;
+  top: 20px;
+  text-align: flex-end;
+}
 </style>
