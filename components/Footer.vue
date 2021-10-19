@@ -6,11 +6,12 @@
     </div>
     <div class="texto-f-uno">
       <p class="copy">
-        Proyecto de Jaime H. Borja Gómez (jborja@uniandes.edu.co) Departamento de Historia, Universidad de los Andes
+        Proyecto de Jaime H. Borja Gómez (jborja@uniandes.edu.co) <br />
+        Departamento de Historia, Universidad de los Andes <br />Bogotá, Colombia
       </p>
     </div>
     <div class="texto-f-dos">
-      <p class="copy">Bibliografía general Recursos Derivados Contacto</p>
+      <p class="copy">Bibliografía general <br />Recursos derivados <br />Contacto</p>
     </div>
   </footer>
 </template>
@@ -76,7 +77,7 @@ footer {
   }
   .texto-f-uno {
     display: flex;
-    width: 300px;
+    width: 350px;
     text-align: center;
   }
   .texto-f-dos {
