@@ -9,13 +9,13 @@
     </template>
 
     <template v-else>
-      <div class="mediana"></div>
+      <!-- <div class="mediana"></div> -->
+      <div class="logo-ar">
+        <nuxt-link :to="'/'">
+          <h2 class="logo-texto">ARCA</h2>
+        </nuxt-link>
+      </div>
       <div class="contenedor-centrado">
-        <div class="logo-ar">
-          <nuxt-link :to="'/'">
-            <h2 class="logo-texto">ARCA</h2>
-          </nuxt-link>
-        </div>
         <div class="completo-archivo">
           <div class="titulo">
             <h1>{{ obra.title }}</h1>
@@ -23,8 +23,6 @@
           </div>
           <div class="descripcion">
             <img class="imagen-des" :src="urlImagen(obra.image)" :alt="obra.title" />
-            <div class="triangulo-des"></div>
-            <p class="mas">+</p>
             <div class="hover-info">
               <div class="textos-hover">
                 <h1 class="descripcion-tit">Información básica de la imagen</h1>
@@ -45,6 +43,15 @@
               :class="{ botonActivo: pestana == 'datos' }"
               @click="cambiarPestana('datos')"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  transform="translate(40.392 38.168) rotate(180)"
+                  fill="#9A9DA7"
+                />
+              </svg>
               datos
             </button>
             <button
@@ -52,6 +59,15 @@
               :class="{ botonActivo: pestana == 'descripcion' }"
               @click="cambiarPestana('descripcion')"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  fill="#af2828"
+                />
+              </svg>
+
               descripción
             </button>
             <button
@@ -59,6 +75,15 @@
               :class="{ botonActivo: pestana == 'personajes' }"
               @click="cambiarPestana('personajes')"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  transform="translate(40.392 38.168) rotate(180)"
+                  fill="#9A9DA7"
+                />
+              </svg>
               personajes y gestos
             </button>
             <button
@@ -66,15 +91,17 @@
               :class="{ botonActivo: pestana == 'proyectos' }"
               @click="cambiarPestana('proyectos')"
             >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  fill="#af2828"
+                />
+              </svg>
               proyectos
             </button>
           </div>
-          <!-- <div class="botonera">
-            <button class="botones-imagen" @click="cambiarPestana('datos')">datos</button>
-            <button class="botones-imagen" @click="cambiarPestana('descripcion')">descripcion</button>
-            <button class="botones-imagen" @click="cambiarPestana('personajes')">personajes y gestos</button>
-            <button class="botones-imagen" @click="cambiarPestana('proyectos')">proyectos</button>
-          </div> -->
           <section class="informacion-general">
             <span v-if="pestana == 'datos'">
               <div class="linea">
@@ -308,52 +335,39 @@ main {
   position: absolute;
   top: 179px;
   left: 228px;
-  opacity: 0.6;
-}
-.mas {
-  font-weight: 800;
-  color: $dolor;
-  position: absolute;
-  font-size: 2em;
-  top: 189px;
-  left: 248px;
+  opacity: 0;
 }
 .hover-info {
-  background-color: $mediana;
-  width: 400px;
-  height: 1000px;
-  position: absolute;
+  background-color: $dolor;
+  width: 40%;
+  height: 100%;
   top: 179px;
   left: 228px;
-  opacity: 0;
   cursor: pointer;
   .textos-hover {
     padding: 40px;
     .descripcion-tit {
-      color: $dolor;
+      color: $claridad;
       padding-bottom: 20px;
     }
     .descripcion-des {
       line-height: 1.6;
+      color: $claridad;
     }
   }
-}
-.hover-info:hover {
-  opacity: 0.9;
-  transition: 0.5s;
 }
 .logo-ar {
   margin: 20px;
 }
 
 .imagen-des {
-  width: auto;
-  height: 1000px;
+  max-width: 60%;
+  height: auto;
 }
 
 .mediana {
   width: 100%;
-  height: 1120px;
+  height: 100vh;
   position: absolute;
   background-color: $mediana;
   z-index: -99;
@@ -366,10 +380,10 @@ main {
   overflow: hidden;
 
   .completo-archivo {
-    padding-top: 100px;
+    padding-top: 50px;
     overflow: hidden;
-    width: 1100px;
-    padding-bottom: 100px;
+    width: 900px;
+    padding-bottom: 50px;
   }
   .titulo {
     justify-content: flex-end;
@@ -390,8 +404,8 @@ h5 {
   font-family: $fuenteMenu;
   font-weight: 400;
   letter-spacing: 3px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 25px;
   text-transform: uppercase;
 }
 .centrar-contenido {
@@ -399,14 +413,13 @@ h5 {
 }
 .descripcion {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: start;
+  flex-direction: row;
 }
 
 img {
-  width: 40%;
   display: flex;
-  align-self: center;
+  align-self: start;
   height: auto;
 }
 .botonera {
@@ -422,9 +435,10 @@ img {
     flex-direction: column;
     display: flex;
     align-items: center;
-    height: 110px;
-    justify-content: flex-end;
+    height: 80px;
+    justify-content: space-evenly;
     cursor: pointer;
+    color: #9a9da7;
   }
   .botonActivo {
     color: $dolor;
