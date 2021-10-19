@@ -25,13 +25,13 @@
             <img class="imagen-des" :src="urlImagen(obra.image)" :alt="obra.title" />
             <div class="hover-info">
               <div class="textos-hover">
-                <h1 class="descripcion-tit">Información básica de la imagen</h1>
+                <h2 class="descripcion-tit">Información básica de la imagen</h2>
                 <p class="descripcion-des">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
                   porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
                   sapien. Duis vitae hendrerit lacus. Vivamus accumsan imperdiet sem eget fringilla. Ut vulputate diam
                   augue, in egestas sem consectetur ut. Nam suscipit, justo id pharetra pharetra, ligula ligula auctor
-                  velit, at imperdiet dui ante sit amet libero. Cras rhoncus dignissim.
+                  velit.
                 </p>
               </div>
             </div>
@@ -102,8 +102,10 @@
               proyectos
             </button>
           </div>
+          <hr class="linea-red" />
           <section class="informacion-general">
             <span v-if="pestana == 'datos'">
+              <h2 class="sub-pestana">Datos</h2>
               <div class="linea">
                 <div class="titulo">Título</div>
                 <div class="descripcion">{{ obra.title }}</div>
@@ -128,7 +130,7 @@
               </div>
               <div class="linea">
                 <div class="titulo">Categorías</div>
-                <ul>
+                <ul class="nube-categorias">
                   <div v-for="(nombre, i) in categorias" :key="`categoria-${i}`" class="categorias">
                     <nuxt-link :to="`/categoria/${categorias[i]}?page=1`"
                       ><li>{{ categorias[i] }}</li></nuxt-link
@@ -173,9 +175,8 @@
               </div>
             </span>
           </section>
-          <!-- TODO: Revisar la lógica y no buscar en el objeto para optimizar ¿?-->
+          <h2 class="sub-pestana">Ubicacion</h2>
           <section class="informacion-geografica">
-            <h3 class="titulo">Ubicación</h3>
             <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
                 <h5 class="subtitulo">País de origen</h5>
@@ -323,6 +324,12 @@ main {
   justify-content: center;
 }
 .sub-pestana {
+  padding-top: 1.5em;
+}
+
+.nube-categorias {
+  display: grid;
+  width: 90vw;
 }
 
 .triangulo-des {
@@ -338,21 +345,23 @@ main {
   opacity: 0;
 }
 .hover-info {
-  background-color: $dolor;
+  display: flex;
+  background-color: transparent;
   width: 40%;
   height: 100%;
   top: 179px;
   left: 228px;
   cursor: pointer;
   .textos-hover {
-    padding: 40px;
+    padding-top: 5px;
+    padding-left: 20px;
     .descripcion-tit {
-      color: $claridad;
+      color: $profundidad;
       padding-bottom: 20px;
     }
     .descripcion-des {
       line-height: 1.6;
-      color: $claridad;
+      color: $profundidad;
     }
   }
 }
@@ -391,6 +400,10 @@ main {
     flex-direction: column;
     text-align: start;
   }
+}
+
+hr.linea-red {
+  border-top: 2px solid $dolor;
 }
 
 h5 {
@@ -450,9 +463,9 @@ button:focus {
 .informacion-general {
   .linea {
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     height: fit-content;
-    margin-top: 0.8em;
+    margin-top: 1.2em;
     .titulo {
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -461,7 +474,7 @@ button:focus {
       font-size: 12px;
       margin-top: 30px;
       color: $profundidad;
-      text-align: center;
+      text-align: start;
       width: 10vw;
     }
     .descripcion {
@@ -488,6 +501,7 @@ button:focus {
   align-items: center;
   position: relative;
   top: 40px;
+  padding-bottom: 40px;
   .titulo {
     align-self: center;
     top: 30px;
