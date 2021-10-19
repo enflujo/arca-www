@@ -2,7 +2,7 @@
   <div>
     <template v-if="$fetchState.pending">
       <div>
-        <h1>Pendiente...</h1>
+        <Logo />
       </div>
     </template>
 
@@ -435,7 +435,7 @@ label:active:after {
   font-weight: 500;
   font-size: 0.75em;
   position: relative;
-  top: 20px;
+  top: 30px;
   text-align: flex-end;
 }
 </style>

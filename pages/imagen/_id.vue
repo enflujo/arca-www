@@ -40,11 +40,41 @@
             <!-- <p>{{ obra.annotation_date }}</p> -->
           </div>
           <div class="botonera">
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'datos' }"
+              @click="cambiarPestana('datos')"
+            >
+              datos
+            </button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'descripcion' }"
+              @click="cambiarPestana('descripcion')"
+            >
+              descripcion
+            </button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'personajes' }"
+              @click="cambiarPestana('personajes')"
+            >
+              personajes y gestos
+            </button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'proyectos' }"
+              @click="cambiarPestana('proyectos')"
+            >
+              proyectos
+            </button>
+          </div>
+          <!-- <div class="botonera">
             <button class="botones-imagen" @click="cambiarPestana('datos')">datos</button>
             <button class="botones-imagen" @click="cambiarPestana('descripcion')">descripcion</button>
             <button class="botones-imagen" @click="cambiarPestana('personajes')">personajes y gestos</button>
             <button class="botones-imagen" @click="cambiarPestana('proyectos')">proyectos</button>
-          </div>
+          </div> -->
           <section class="informacion-general">
             <span v-if="pestana == 'datos'">
               <div class="linea">
@@ -396,6 +426,12 @@ img {
     justify-content: end;
     cursor: pointer;
   }
+  .botonActivo {
+    color: $dolor;
+  }
+}
+button:focus {
+  outline: none;
 }
 .informacion-general {
   .linea {

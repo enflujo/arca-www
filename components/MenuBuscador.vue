@@ -362,7 +362,10 @@ li {
 }
 ul {
   list-style: none;
-  margin: 0.5em 1em;
+  // margin: 0.5em 1em;
+  margin-right: 0.2em;
+  margin-left: 0.8em;
+  padding-top: 0.5em;
   font-family: $fuenteMenu;
 }
 .seccion {

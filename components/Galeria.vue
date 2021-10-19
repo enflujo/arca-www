@@ -4,9 +4,9 @@
       <nuxt-link :to="`/imagen/${obra.id}`"
         ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
         <div class="informacion-hover">
-          <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
+          <h2 class="nombre-obra-hover">{{ obra.title.substr(0, 40) + '\u2026' }}</h2>
           <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
-          <p class="descripcion-hover">{{ obra.synthesis.substr(0, 70) + '\u2026' }}</p>
+          <p class="descripcion-hover">{{ obra.synthesis.substr(0, 60) + '\u2026' }}</p>
           <h3 class="boton-detalles">DETALLES -></h3>
         </div>
       </nuxt-link>
@@ -126,7 +126,7 @@ export default {
     left: 0;
     top: 0;
     text-transform: none;
-    z-index: 999999;
+    z-index: 9;
 
     .nombre-obra-hover {
       color: $claridad;
