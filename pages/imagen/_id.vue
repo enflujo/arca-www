@@ -176,7 +176,7 @@
               </div>
             </span>
           </section>
-          <h2 class="sub-pestana">Ubicacion</h2>
+          <h2 class="sub-pestana">Ubicación</h2>
           <section class="informacion-geografica">
             <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
