@@ -493,6 +493,12 @@ button:focus {
       text-transform: capitalize;
       width: 90vw;
     }
+    .enlace,
+    ul {
+      position: relative;
+      left: 0px;
+      margin-right: 100px;
+    }
   }
 }
 .informacion-geografica {
