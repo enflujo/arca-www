@@ -4,7 +4,7 @@
       <nuxt-link :to="`/imagen/${obra.id}`"
         ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
         <div class="informacion-hover">
-          <h2 v-if="obra.title.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 40) + '\u2026' }}</h2>
+          <h2 v-if="obra.title.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 30) + '\u2026' }}</h2>
           <h2 v-else class="nombre-obra-hover">{{ obra.title }}</h2>
           <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
           <div class="pais-hover">
