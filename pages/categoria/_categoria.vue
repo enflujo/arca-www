@@ -64,6 +64,14 @@ export default {
           synthesis
           latitude_current
           longitude_current
+          actual_country_id {
+            id
+            name_spanish
+          }
+          origin_country_id {
+            id
+            name_spanish
+          }
           author_id {
             id
             name

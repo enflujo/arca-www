@@ -9,13 +9,13 @@
     </template>
 
     <template v-else>
-      <div class="mediana"></div>
+      <!-- <div class="mediana"></div> -->
+      <div class="logo-ar">
+        <nuxt-link :to="'/'">
+          <h2 class="logo-texto">ARCA</h2>
+        </nuxt-link>
+      </div>
       <div class="contenedor-centrado">
-        <div class="logo-ar">
-          <nuxt-link :to="'/'">
-            <h2 class="logo-texto">ARCA</h2>
-          </nuxt-link>
-        </div>
         <div class="completo-archivo">
           <div class="titulo">
             <h1>{{ obra.title }}</h1>
@@ -23,8 +23,6 @@
           </div>
           <div class="descripcion">
             <img class="imagen-des" :src="urlImagen(obra.image)" :alt="obra.title" />
-            <div class="triangulo-des"></div>
-            <p class="mas">+</p>
             <div class="hover-info">
               <div class="textos-hover">
                 <h1 class="descripcion-tit">Información básica de la imagen</h1>
@@ -33,20 +31,81 @@
                   porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
                   sapien. Duis vitae hendrerit lacus. Vivamus accumsan imperdiet sem eget fringilla. Ut vulputate diam
                   augue, in egestas sem consectetur ut. Nam suscipit, justo id pharetra pharetra, ligula ligula auctor
-                  velit, at imperdiet dui ante sit amet libero. Cras rhoncus dignissim.
+                  velit.
                 </p>
               </div>
             </div>
             <!-- <p>{{ obra.annotation_date }}</p> -->
           </div>
           <div class="botonera">
-            <button class="botones-imagen" @click="cambiarPestana('datos')">datos</button>
-            <button class="botones-imagen" @click="cambiarPestana('descripcion')">descripcion</button>
-            <button class="botones-imagen" @click="cambiarPestana('personajes')">personajes y gestos</button>
-            <button class="botones-imagen" @click="cambiarPestana('proyectos')">proyectos</button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'datos' }"
+              @click="cambiarPestana('datos')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  transform="translate(40.392 38.168) rotate(180)"
+                  fill="#9A9DA7"
+                />
+              </svg>
+              datos
+            </button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'descripcion' }"
+              @click="cambiarPestana('descripcion')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  fill="#af2828"
+                />
+              </svg>
+
+              descripción
+            </button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'personajes' }"
+              @click="cambiarPestana('personajes')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  transform="translate(40.392 38.168) rotate(180)"
+                  fill="#9A9DA7"
+                />
+              </svg>
+              personajes y gestos
+            </button>
+            <button
+              class="botones-imagen"
+              :class="{ botonActivo: pestana == 'proyectos' }"
+              @click="cambiarPestana('proyectos')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="40.392" height="38.168" viewBox="0 0 40.392 38.168">
+                <path
+                  id="Path_401"
+                  data-name="Path 401"
+                  d="M3.78,1.3a4.375,4.375,0,0,1,.533.97L18.188,35.388l.017.032.017.058a2.535,2.535,0,0,0,.48.756,2.071,2.071,0,0,0,2.989,0,2.536,2.536,0,0,0,.479-.755l.008-.028,13.9-33.184a4.378,4.378,0,0,1,.533-.97H3.78M.327,0H40.065a.327.327,0,0,1,.326.327.329.329,0,0,1-.3.324,3.384,3.384,0,0,0-2.806,2.09L23.4,35.889a3.392,3.392,0,0,1-6.409,0L3.106,2.742A3.383,3.383,0,0,0,.3.651.33.33,0,0,1,0,.327.327.327,0,0,1,.327,0Z"
+                  fill="#af2828"
+                />
+              </svg>
+              proyectos
+            </button>
           </div>
+          <hr class="linea-red" />
           <section class="informacion-general">
             <span v-if="pestana == 'datos'">
+              <h2 class="sub-pestana">Datos</h2>
               <div class="linea">
                 <div class="titulo">Título</div>
                 <div class="descripcion">{{ obra.title }}</div>
@@ -71,7 +130,7 @@
               </div>
               <div class="linea">
                 <div class="titulo">Categorías</div>
-                <ul>
+                <ul class="nube-categorias">
                   <div v-for="(nombre, i) in categorias" :key="`categoria-${i}`" class="categorias">
                     <nuxt-link :to="`/categoria/${categorias[i]}?page=1`"
                       ><li>{{ categorias[i] }}</li></nuxt-link
@@ -83,42 +142,41 @@
             <span v-else-if="pestana == 'descripcion'">
               <h2 class="sub-pestana">Descripción</h2>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
             </span>
 
             <span v-else-if="pestana == 'personajes'">
               <h2 class="sub-pestana">Personajes y gestos</h2>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
             </span>
 
             <span v-else-if="pestana == 'proyectos'">
               <h2 class="sub-pestana">Proyectos</h2>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
               <div class="linea">
-                <div class="titulo">titulo ejemplo</div>
-                <div class="descripcion">ejemplo de descripcion lorem ipsum</div>
+                <div class="titulo">título ejemplo</div>
+                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
               </div>
             </span>
           </section>
-          <!-- TODO: Revisar la lógica y no buscar en el objeto para optimizar ¿?-->
+          <h2 class="sub-pestana">Ubicación</h2>
           <section class="informacion-geografica">
-            <h3 class="titulo">Ubicación</h3>
             <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
                 <h5 class="subtitulo">País de origen</h5>
@@ -266,6 +324,12 @@ main {
   justify-content: center;
 }
 .sub-pestana {
+  padding-top: 1.5em;
+}
+
+.nube-categorias {
+  display: grid;
+  width: 90vw;
 }
 .triangulo-des {
   width: 0;
@@ -277,52 +341,41 @@ main {
   position: absolute;
   top: 179px;
   left: 228px;
-  opacity: 0.6;
-}
-.mas {
-  font-weight: 800;
-  color: $dolor;
-  position: absolute;
-  font-size: 2em;
-  top: 189px;
-  left: 248px;
+  opacity: 0;
 }
 .hover-info {
-  background-color: $mediana;
-  width: 400px;
-  height: 1000px;
-  position: absolute;
+  display: flex;
+  background-color: transparent;
+  width: 40%;
+  height: 100%;
   top: 179px;
   left: 228px;
-  opacity: 0;
   cursor: pointer;
   .textos-hover {
-    padding: 40px;
+    padding-top: 5px;
+    padding-left: 20px;
     .descripcion-tit {
-      color: $dolor;
+      color: $profundidad;
       padding-bottom: 20px;
     }
     .descripcion-des {
       line-height: 1.6;
+      color: $profundidad;
     }
   }
-}
-.hover-info:hover {
-  opacity: 0.9;
-  transition: 0.5s;
 }
 .logo-ar {
   margin: 20px;
 }
 
 .imagen-des {
-  width: auto;
-  height: 1000px;
+  max-width: 60%;
+  height: auto;
 }
 
 .mediana {
   width: 100%;
-  height: 1120px;
+  height: 100vh;
   position: absolute;
   background-color: $mediana;
   z-index: -99;
@@ -335,10 +388,10 @@ main {
   overflow: hidden;
 
   .completo-archivo {
-    padding-top: 100px;
+    padding-top: 50px;
     overflow: hidden;
-    width: 1100px;
-    padding-bottom: 100px;
+    width: 900px;
+    padding-bottom: 50px;
   }
   .titulo {
     justify-content: flex-end;
@@ -346,6 +399,10 @@ main {
     flex-direction: column;
     text-align: start;
   }
+}
+
+hr.linea-red {
+  border-top: 2px solid $dolor;
 }
 
 h5 {
@@ -359,8 +416,8 @@ h5 {
   font-family: $fuenteMenu;
   font-weight: 400;
   letter-spacing: 3px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 25px;
   text-transform: uppercase;
 }
 .centrar-contenido {
@@ -368,14 +425,13 @@ h5 {
 }
 .descripcion {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: start;
+  flex-direction: row;
 }
 
 img {
-  width: 40%;
   display: flex;
-  align-self: center;
+  align-self: start;
   height: auto;
 }
 .botonera {
@@ -394,14 +450,21 @@ img {
     height: 110px;
     justify-content: flex-end;
     cursor: pointer;
+    color: #9a9da7;
   }
+  .botonActivo {
+    color: $dolor;
+  }
+}
+button:focus {
+  outline: none;
 }
 .informacion-general {
   .linea {
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     height: fit-content;
-    margin-top: 0.8em;
+    margin-top: 1.2em;
     .titulo {
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -410,7 +473,7 @@ img {
       font-size: 12px;
       margin-top: 30px;
       color: $profundidad;
-      text-align: center;
+      text-align: start;
       width: 10vw;
     }
     .descripcion {
@@ -429,6 +492,12 @@ img {
       text-transform: capitalize;
       width: 90vw;
     }
+    .enlace,
+    ul {
+      position: relative;
+      left: 0px;
+      margin-right: 100px;
+    }
   }
 }
 .informacion-geografica {
@@ -437,6 +506,7 @@ img {
   align-items: center;
   position: relative;
   top: 40px;
+  padding-bottom: 40px;
   .titulo {
     align-self: center;
     top: 30px;

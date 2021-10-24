@@ -74,6 +74,10 @@ export default {
             id
             name_spanish
           }
+          origin_country_id {
+            id
+            name_spanish
+          }
         }
         }
     `;

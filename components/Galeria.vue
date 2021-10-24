@@ -4,10 +4,24 @@
       <nuxt-link :to="`/imagen/${obra.id}`"
         ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
         <div class="informacion-hover">
-          <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
+          <h2 v-if="obra.title.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 40) + '\u2026' }}</h2>
+          <h2 v-else class="nombre-obra-hover">{{ obra.title }}</h2>
           <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
-          <p class="descripcion-hover">{{ obra.synthesis.substr(0, 70) + '\u2026' }}</p>
-          <h3 class="boton-detalles">DETALLES -></h3>
+          <div class="pais-hover">
+            <p v-if="obra.actual_country_id != null">País actual: {{ obra.actual_country_id.name_spanish }}</p>
+            <div v-if="obra.origin_country_id != null && obra.actual_country_id != null">
+              <p v-if="obra.origin_country_id.id != obra.actual_country_id.id">
+                País de origen: {{ obra.origin_country_id.name_spanish }}
+              </p>
+            </div>
+            <div v-if="obra.origin_country_id != null && obra.actual_country_id == null">
+              País de origen: {{ obra.origin_country_id.name_spanish }}
+            </div>
+            <span class="fecha-hover">
+              {{ obra.annotation_date }}
+            </span>
+          </div>
+          <!-- <h3 class="boton-detalles">DETALLES -></h3> -->
         </div>
       </nuxt-link>
     </div>
@@ -50,6 +64,7 @@ export default {
       display: flex;
       flex-direction: row;
       text-align: initial;
+      overflow: scroll;
       .descripcion {
         width: 400px;
         background-color: #af2828;
@@ -71,7 +86,7 @@ export default {
           color: $claridad;
           line-height: 1.5;
           letter-spacing: -0.4px;
-          font-size: 14px;
+          font-size: 12px;
         }
         .boton-ver {
           border: 1px solid $claridad;
@@ -126,29 +141,37 @@ export default {
     left: 0;
     top: 0;
     text-transform: none;
-    z-index: 999999;
+    z-index: 9;
 
     .nombre-obra-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 1.4em;
+      font-size: 1.3em;
     }
     .nombre-autor-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 1.1em;
-      font-weight: 400;
+      font-size: 1em;
+      font-weight: 350;
       position: relative;
       top: 8px;
     }
-    .descripcion-hover {
+    .pais-hover {
       letter-spacing: 0;
       margin-top: 10px;
-      line-height: 1.5;
+      line-height: 1.6;
       font-size: 0.8em;
-      font-weight: 200;
+      font-weight: 100;
       position: relative;
-      top: 10px;
+      top: 0px;
+    }
+    .fecha-hover {
+      letter-spacing: 0;
+      margin-top: 10px;
+      line-height: 1.7;
+      font-weight: 100;
+      position: relative;
+      top: 0px;
     }
   }
   .informacion-hover:hover {

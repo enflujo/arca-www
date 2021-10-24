@@ -9,7 +9,12 @@
     <div class="barra-texto">
       <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
       <ul v-if="categoriasVisible">
-        <li v-for="(cat1, i) in Object.keys(categorias).sort()" :key="`cat1${i}`" class="cat categoria1 cerrado">
+        <li
+          v-for="(cat1, i) in Object.keys(categorias).sort()"
+          :key="`cat1${i}`"
+          class="cat categoria1 cerrado"
+          :class="{ categoriaLarga: cat1.length > 12 }"
+        >
           <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
           <nuxt-link :to="`/categoria/${cat1}?page=1`">{{ cat1 }}</nuxt-link>
 
@@ -18,6 +23,7 @@
               v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
               :key="`cat2${i2}`"
               class="cat categoria2 cerrado"
+              :class="{ categoriaLarga: cat2.length > 12 }"
             >
               <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
 
@@ -28,6 +34,7 @@
                   v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
                   :key="`cat3${i3}`"
                   class="cat categoria3 cerrado"
+                  :class="{ categoriaLarga: cat3.length > 12 }"
                 >
                   <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir">+</span>
                   <nuxt-link :to="`/categoria/${cat3}?page=1`">{{ cat3 }}</nuxt-link>
@@ -37,6 +44,7 @@
                       v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
                       :key="`cat4${i4}`"
                       class="cat categoria4 cerrado"
+                      :class="{ categoriaLarga: cat4.length > 12 }"
                     >
                       <span v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length" class="abrir" @click="abrir"
                         >+</span
@@ -48,6 +56,7 @@
                           v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
                           :key="`cat5${i5}`"
                           class="cat categoria5"
+                          :class="{ categoriaLarga: cat5.length > 12 }"
                         >
                           <nuxt-link :to="`/categoria/${cat5}?page=1`">{{ cat5 }}</nuxt-link>
                         </li>
@@ -290,6 +299,7 @@ export default {
     abrir(evento) {
       const contenedor = evento.target.parentElement;
       contenedor.classList.toggle('cerrado');
+      // contenedor.classList.toggle('categoriaLarga');
     },
     cargarIniciales() {
       const iniciales = [];
@@ -362,7 +372,10 @@ li {
 }
 ul {
   list-style: none;
-  margin: 0.5em 1em;
+  // margin: 0.5em 1em;
+  margin-right: 0.2em;
+  margin-left: 0.8em;
+  padding-top: 0.5em;
   font-family: $fuenteMenu;
 }
 .seccion {
@@ -391,6 +404,9 @@ nav li {
   margin-bottom: 0.2em;
   &.cerrado {
     height: 1.2em;
+  }
+  &.categoriaLarga {
+    height: 3em;
   }
   &.categoria5 {
     height: fit-content;
