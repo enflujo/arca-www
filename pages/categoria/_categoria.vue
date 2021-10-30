@@ -49,7 +49,6 @@ export default {
     const page = this.$route.query.page;
 
     const query = gql`
-
       query {
         artworks(filter: { _or: [
             {category_1_id: { name: { _eq: "${categoria}" } }},
