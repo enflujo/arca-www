@@ -452,7 +452,7 @@ h5 {
 }
 .descripcion {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   flex-direction: row;
 }
 
