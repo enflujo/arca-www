@@ -202,10 +202,8 @@
               </span>
             </div>
           </section>
+          <Galeria :obras="obras" />
         </div>
-      </div>
-      <div class="galeria">
-        <Galeria :obras="obras" />
       </div>
     </template>
   </div>
