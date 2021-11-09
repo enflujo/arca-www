@@ -598,6 +598,7 @@ button:focus {
   display: flex;
   position: relative;
   justify-content: space-around;
-  align-items: center;
+  height: 100vh;
+  left: -140px;
 }
 </style>
