@@ -316,7 +316,6 @@
         <DescripcionGaleria :numero="obras.length" :busqueda="$route.params.query" />
         <!-- <EtiquetasGaleria /> -->
         <Galeria :obras="obras" />
-        <MenuVistas :busqueda="$route.params.query" />
       </div>
     </template>
   </div>

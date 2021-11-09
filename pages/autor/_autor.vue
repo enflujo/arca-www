@@ -17,7 +17,6 @@
         <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.autor" />
         <EtiquetasGaleria :busqueda="$route.params.autor" />
         <Galeria :obras="obras" />
-        <MenuVistas :busqueda="$route.params.autor" />
         <span class="paginas">
           <div v-if="obras.length == 100" class="pag-cont">
             <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">

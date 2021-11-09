@@ -61,12 +61,6 @@
         </g>
       </svg>
     </div>
-    <!-- <div class="descripcion-categoria">
-      <h3>{{ busqueda }}</h3>
-
-      <p class="descripcion">{{ descripcion }}</p>
-    </div>
-    <Mapa :datos="obras" /> -->
   </div>
 </template>
 
@@ -93,9 +87,8 @@ export default {
 
 <style lang="scss" scoped>
 .barra-detalles {
-  display: none;
+  display: flex;
   flex-direction: column;
-  width: 5%;
   justify-content: space-around;
   align-content: center;
 }
@@ -104,7 +97,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 .descripcion {
   margin-top: 10px;

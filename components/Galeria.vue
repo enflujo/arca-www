@@ -1,31 +1,33 @@
 <template>
-  <div class="todas-images">
-    <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
-      <nuxt-link :to="`/imagen/${obra.id}`"
-        ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
-        <div class="informacion-hover">
-          <h2 v-if="obra.title.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 30) + '\u2026' }}</h2>
-          <h2 v-else class="nombre-obra-hover">{{ obra.title }}</h2>
-          <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
-          <div class="pais-hover">
-            <p v-if="obra.actual_country_id != null">País actual: {{ obra.actual_country_id.name_spanish }}</p>
-            <div v-if="obra.origin_country_id != null && obra.actual_country_id != null">
-              <p v-if="obra.origin_country_id.id != obra.actual_country_id.id">
+  <span>
+    <div class="todas-images">
+      <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
+        <nuxt-link :to="`/imagen/${obra.id}`"
+          ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
+          <div class="informacion-hover">
+            <h2 v-if="obra.title.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 30) + '\u2026' }}</h2>
+            <h2 v-else class="nombre-obra-hover">{{ obra.title }}</h2>
+            <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
+            <div class="pais-hover">
+              <p v-if="obra.actual_country_id != null">País actual: {{ obra.actual_country_id.name_spanish }}</p>
+              <div v-if="obra.origin_country_id != null && obra.actual_country_id != null">
+                <p v-if="obra.origin_country_id.id != obra.actual_country_id.id">
+                  País de origen: {{ obra.origin_country_id.name_spanish }}
+                </p>
+              </div>
+              <div v-if="obra.origin_country_id != null && obra.actual_country_id == null">
                 País de origen: {{ obra.origin_country_id.name_spanish }}
-              </p>
+              </div>
+              <span class="fecha-hover">
+                {{ obra.annotation_date }}
+              </span>
             </div>
-            <div v-if="obra.origin_country_id != null && obra.actual_country_id == null">
-              País de origen: {{ obra.origin_country_id.name_spanish }}
-            </div>
-            <span class="fecha-hover">
-              {{ obra.annotation_date }}
-            </span>
+            <!-- <h3 class="boton-detalles">DETALLES -></h3> -->
           </div>
-          <!-- <h3 class="boton-detalles">DETALLES -></h3> -->
-        </div>
-      </nuxt-link>
+        </nuxt-link>
+      </div>
     </div>
-  </div>
+  </span>
 </template>
 
 <script>
@@ -111,8 +113,8 @@ export default {
 }
 .todas-images {
   display: grid;
-  width: calc(100% - 280px);
-  left: 280px;
+  width: 100%;
+
   position: absolute;
   height: calc(100vh - 140px);
   grid-gap: 10px;
@@ -120,7 +122,7 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
   grid-auto-rows: minmax(32.8%, auto);
   grid-auto-flow: dense;
-  overflow: hidden;
+  overflow-y: scroll;
   .imagen {
     border-radius: 10px;
     overflow: hidden;

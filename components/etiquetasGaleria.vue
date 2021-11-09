@@ -5,10 +5,7 @@
         <div class="categoria" @click="borrarEtiqueta">{{ busqueda }} X</div>
       </nuxt-link>
     </span>
-    <!-- <div class="categoria">Historia X</div>
-    <div class="categoria">Ciclo Pasion X</div>
-    <div class="categoria">Viacrucis X</div>
-    <div class="categoria">Eclesiastico X</div> -->
+    <MenuVistas :busqueda="busqueda" />
   </div>
 </template>
 
@@ -40,12 +37,17 @@ export default {
 
 <style lang="scss" scoped>
 .categorias-seleccionadas {
-  height: 40px;
+  height: 70px;
   border-bottom: 1px solid $mediana;
   flex: 0 0 100%;
   text-align: center;
   display: flex;
   align-items: center;
+  width: auto;
+  justify-content: space-between;
+  margin-right: 6%;
+  margin-left: 2%;
+  overflow: hidden;
   .categoria {
     background-color: $dolor;
     color: $mediana;

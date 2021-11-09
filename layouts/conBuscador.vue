@@ -4,10 +4,10 @@
 
     <main role="main">
       <MenuBuscador />
-      <Nuxt keepAlive />
-    </main>
 
-    <FooterPequeno />
+      <Nuxt keepAlive />
+      <FooterPequeno />
+    </main>
   </div>
 </template>
 
@@ -50,6 +50,7 @@ export default {
 
 main {
   display: flex;
+  flex-direction: column;
 }
 
 #contenedor {

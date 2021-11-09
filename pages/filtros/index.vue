@@ -29,7 +29,6 @@
         <!-- <DescripcionGaleria :numero="obras.length" :busqueda="$route.query.autor" /> -->
         <EtiquetasGaleria :busqueda="$route.query.categoria1" />
         <Galeria :obras="obras" />
-        <MenuVistas :busqueda="$route.query.autor" />
       </div>
     </template>
   </div>

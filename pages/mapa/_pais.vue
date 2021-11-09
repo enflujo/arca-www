@@ -13,7 +13,6 @@
         <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.pais" />
         <EtiquetasGaleria :busqueda="$route.params.pais" />
         <Galeria :obras="obras" />
-        <MenuVistas :busqueda="$route.params.pais" />
         <span class="paginas">
           <div v-if="obras.length == 100" class="pag-cont">
             <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
