@@ -12,11 +12,13 @@
       <main id="main2" role="main">
         <div class="descripcion">
           <h1 class="titulo-informacion">{{ pagina.titulo }}</h1>
+          <<<<<<< HEAD
           <div class="linea">
             <div class="parte"></div>
             <embed src="assets/flor.svg" />
             <div class="parte"></div>
           </div>
+          ======= >>>>>>> bd99e6e (cherry pick sobre arca y otros css)
           <br />
           <!-- eslint-disable vue/no-v-html -->
           <div class="primera-parte">
