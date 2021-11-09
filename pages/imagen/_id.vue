@@ -198,6 +198,7 @@
           </section>
         </div>
       </div>
+      <Galeria :obras="obras" />
     </template>
   </div>
 </template>
@@ -212,6 +213,7 @@ export default {
       obra: {},
       pestana: 'datos',
       categorias: [],
+      obras: [],
     };
   },
 
@@ -271,13 +273,38 @@ export default {
             name
           }
         }
+
+    categories(filter: { artworks_category_1_r: { _or: [
+        { id: { _eq: ${this.$route.params.id} } }
+        ]} }, limit: 100) {
+          name
+          artworks_category_1_r {
+            id
+            title
+            annotation_date
+            image {
+              id
+              title
+            }
+            author_id {
+              id
+              name
+              lastname
+            }
+          }
+        }
       }
     `;
 
-    const { artworks } = await this.$graphql.principal.request(query);
+    const { categories, artworks } = await this.$graphql.principal.request(query);
 
     if (artworks && artworks.length) {
       this.obra = artworks[0];
+    }
+    if (categories && categories.length) {
+      categories.forEach((category) => {
+        this.obras = category.artworks_category_1_r;
+      });
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
