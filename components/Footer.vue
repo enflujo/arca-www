@@ -73,6 +73,7 @@ footer {
     .logo-texto {
       color: $claridad;
       text-transform: uppercase;
+      font-family: $fuentePrincipal;
     }
   }
   .texto-f-uno {

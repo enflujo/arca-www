@@ -347,6 +347,7 @@ export default {
 }
 .logo-texto {
   margin: 20px;
+  font-family: $fuentePrincipal;
 }
 li {
   margin-bottom: 0.2em;
@@ -380,7 +381,7 @@ ul {
 }
 .seccion {
   margin-bottom: 10px;
-  font-family: $fuenteSec;
+  font-family: $fuentePrincipal;
   cursor: pointer;
 }
 .iniciales {

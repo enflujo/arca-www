@@ -163,7 +163,7 @@ export default {
     left: 60px;
     position: relative;
     flex-direction: column;
-    font-family: $fuenteSec;
+    font-family: $fuentePrincipal;
     .resaltar-tamano {
       font-size: 3em;
     }
