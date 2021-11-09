@@ -479,7 +479,7 @@ button:focus {
     .descripcion {
       position: relative;
       left: 80px;
-      font-family: $fuenteSec;
+      font-family: $fuentePrincipal;
       font-size: 18px;
       width: 90vw;
       margin-right: 100px;
@@ -487,7 +487,7 @@ button:focus {
     .categorias {
       position: relative;
       left: 80px;
-      font-family: $fuenteSec;
+      font-family: $fuentePrincipal;
       font-size: 18px;
       text-transform: capitalize;
       width: 90vw;
