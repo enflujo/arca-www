@@ -384,7 +384,6 @@ main {
 .texto-cat {
   margin-top: 8px;
 }
-
 .hover-info {
   display: flex;
   background-color: transparent;
@@ -496,6 +495,7 @@ img {
     opacity: 0.4;
   }
   .botones-imagen:hover {
+    color: darkgray;
     opacity: 1;
     transition: 0.7s;
   }
