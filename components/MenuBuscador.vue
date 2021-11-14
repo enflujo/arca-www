@@ -335,7 +335,7 @@ export default {
   align-items: center;
 }
 .barra-detalles {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-around;
 }
@@ -360,6 +360,7 @@ li {
   border-right: 2px solid $dolor;
   width: 280px;
   height: 100vh;
+  position: fixed;
 }
 .barra-texto {
   width: 275px;

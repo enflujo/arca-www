@@ -93,7 +93,7 @@ export default {
 
 <style lang="scss" scoped>
 .barra-detalles {
-  display: flex;
+  display: none;
   flex-direction: column;
   width: 5%;
   justify-content: space-around;
