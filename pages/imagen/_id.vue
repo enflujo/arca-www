@@ -22,7 +22,14 @@
             <h3 class="nombre-autor">{{ `${obra.author_id.name} ${obra.author_id.lastname}` }}</h3>
           </div>
           <div class="descripcion">
-            <img class="imagen-des" :src="urlImagen(obra.image)" :alt="obra.title" />
+            <vue-magnifier
+              class="imagen-des"
+              :src="urlImagen(obra.image)"
+              :srcLarge="urlImagen(obra.image)"
+              :alt="obra.title"
+            >
+            </vue-magnifier>
+
             <div class="hover-info">
               <div class="textos-hover">
                 <h1 class="descripcion-tit">Información básica de la imagen</h1>
@@ -199,7 +206,9 @@
           </section>
         </div>
       </div>
-      <Galeria :obras="obras" />
+      <div class="galeria">
+        <Galeria :obras="obras" />
+      </div>
     </template>
   </div>
 </template>
@@ -207,8 +216,10 @@
 <script>
 import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
+import VueMagnifier from '~/components/Vue-magnifier.vue';
 
 export default {
+  components: { VueMagnifier },
   data() {
     return {
       obra: {},
@@ -581,5 +592,12 @@ button:focus {
   position: relative;
   top: 60px;
   align-self: center;
+}
+
+.galeria {
+  display: flex;
+  position: relative;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>
