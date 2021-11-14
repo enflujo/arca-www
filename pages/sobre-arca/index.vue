@@ -12,6 +12,11 @@
       <main id="main2" role="main">
         <div class="descripcion">
           <h1 class="titulo-informacion">{{ pagina.titulo }}</h1>
+          <div class="linea">
+            <div class="parte"></div>
+            <embed src="assets/flor.svg" />
+            <div class="parte"></div>
+          </div>
           <br />
           <!-- eslint-disable vue/no-v-html -->
           <div class="primera-parte">
@@ -145,12 +150,26 @@ export default {
   display: flex;
 }
 
+.linea {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  .parte {
+    background-color: $dolor;
+    height: 2px;
+    width: 15%;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
+  }
+}
+
 .titulo-informacion {
   display: flex;
   justify-content: center;
   text-align: center;
   color: $dolor;
-  border-bottom: 1px solid $dolor;
+  // border-bottom: 1px solid $dolor;
   padding-bottom: 15px;
 }
 
