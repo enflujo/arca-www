@@ -223,7 +223,7 @@ export default {
 }
 .todas-images {
   display: grid;
-  width: 95%;
+  width: 100%;
   height: calc(100vh - 140px);
   grid-gap: 10px;
   padding: 10px;

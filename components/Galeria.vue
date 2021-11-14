@@ -111,7 +111,9 @@ export default {
 }
 .todas-images {
   display: grid;
-  width: 95%;
+  width: calc(100% - 280px);
+  left: 280px;
+  position: absolute;
   height: calc(100vh - 140px);
   grid-gap: 10px;
   padding: 10px;
