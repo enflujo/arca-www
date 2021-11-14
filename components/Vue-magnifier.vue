@@ -13,9 +13,16 @@
 <script>
 export default {
   props: {
-    src: String,
-    srcLarge: String,
+    src: {
+      type: String,
+      default: '',
+    },
+    srcLarge: {
+      type: String,
+      default: '',
+    },
   },
+
   data() {
     return {
       img: null,
