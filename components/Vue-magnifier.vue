@@ -33,6 +33,9 @@ export default {
       cursorY: 0,
       thumbPos: { x: 0, y: 0 },
       backgroundPos: '0 0',
+      zoom: 5,
+      tamanioLupa: 125,
+      bordeLupa: 10,
     };
   },
   computed: {
@@ -41,14 +44,19 @@ export default {
         backgroundImage: `url(${this.srcLarge})`,
         backgroundPosition: this.backgroundPos,
         left: `${this.cursorX}px`,
-        top: this.cursorY + 'px',
-        transform: `scale(1.8)`,
+        top: `${this.cursorY}px`,
+        // transform: `scale(${this.zoom})`,
+        width: `${this.tamanioLupa}px`,
+        height: `${this.tamanioLupa}px`,
+        borderWidth: '1px',
+        backgroundSize: `calc(100% * ${this.zoom})`,
       };
     },
   },
   mounted() {
     this.$nextTick(function () {
       this.$refs.magnificationElement.addEventListener('mousemove', this.moveMagnifier);
+      this.$refs.magnificationElement.addEventListener('click', this.changeZoom);
     });
   },
   methods: {
@@ -91,6 +99,14 @@ export default {
       this.getCursorPos(e);
       this.backgroundPos = `${(this.cursorX * 100) / this.bounds.width}% ${(this.cursorY * 100) / this.bounds.height}%`;
     },
+    changeZoom(e) {
+      if (this.zoom < 15) {
+        this.zoom += 3;
+      } else if (this.zoom >= 13) {
+        this.zoom = 5;
+      }
+      console.log(this.zoom);
+    },
     getTransform(el) {
       const transform = window.getComputedStyle(el, null).getPropertyValue('-webkit-transform');
       function rotateDegree(matrix) {
@@ -127,8 +143,7 @@ export default {
 
 <style lang="scss">
 // Magnifying glass options
-$border-size: 2px; // Modify the border width of the magnifying glass component
-// $border-color: #242424; // Modify the border color of the magnifying glass component
+$border-size: 1px; // Modify the border width of the magnifying glass component
 $magnifier-width: 80px; // Modify the width of the magnifying glass component
 $magnifier-height: 80px; // Modify the height of the magnifying glass component
 // Define your responsive sizes of
@@ -155,13 +170,12 @@ $sizes: (
 
     .magnifying-glass {
       position: absolute;
-      border: $border-size solid $dolor;
+      border-style: solid;
+      border-color: $dolor;
       border-radius: 50%;
       cursor: none;
-      width: $magnifier-width;
-      height: $magnifier-height;
       transform: translate((-1 * $magnifier-width/2), (-1 * $magnifier-width/2));
-      background: transparent;
+
       display: none;
       pointer-events: none;
     }
