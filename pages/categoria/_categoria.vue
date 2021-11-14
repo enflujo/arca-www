@@ -135,11 +135,12 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 110vw;
-  justify-self: center;
-  align-self: center;
+  width: 100%;
+  align-self: end;
   margin: 10px;
   justify-content: center;
+  position: relative;
+  left: 280px;
   .pag-cont {
     width: 350px;
     display: flex;
