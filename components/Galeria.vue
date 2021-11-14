@@ -52,8 +52,8 @@ export default {
   width: 80vw;
 
   img {
-    width: 160%;
-    height: auto;
+    // width: 160%;
+    // height: auto;
   }
 
   .caja-inicial {

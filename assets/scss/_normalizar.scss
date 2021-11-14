@@ -96,8 +96,11 @@ ul {
 
 img,
 video {
-  width: 150%;
+  width: 100%;
+  -o-object-position: center top;
+  object-position: top;
   height: auto;
+  object-fit: none;
 }
 
 body {

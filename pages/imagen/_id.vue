@@ -386,6 +386,7 @@ main {
 .texto-cat {
   margin-top: 8px;
 }
+
 .hover-info {
   display: flex;
   background-color: transparent;
@@ -473,9 +474,9 @@ h5 {
 }
 
 img {
-  display: flex;
-  align-self: start;
-  height: auto;
+  // display: flex;
+  // align-self: start;
+  // height: auto;
 }
 .botonera {
   display: flex;
@@ -497,7 +498,6 @@ img {
     opacity: 0.4;
   }
   .botones-imagen:hover {
-    color: darkgray;
     opacity: 1;
     transition: 0.7s;
   }

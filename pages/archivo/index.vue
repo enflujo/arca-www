@@ -371,8 +371,8 @@ label:active:after {
 .imagenes {
   width: 80vw;
   img {
-    width: 100%;
-    height: auto;
+    // width: 100%;
+    // height: auto;
   }
 
   .caja-inicial {
