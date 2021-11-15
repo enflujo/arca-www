@@ -159,8 +159,10 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 100vh;
-  margin-left: 1em;
-  margin-top: 1em;
+  width: 100%;
+  justify-self: center;
+  align-self: center;
+  margin: 10px;
+  justify-content: center;
 }
 </style>

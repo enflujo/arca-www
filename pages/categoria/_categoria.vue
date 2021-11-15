@@ -136,11 +136,10 @@ export default {
 .paginas {
   display: flex;
   width: 100%;
-  align-self: end;
+  justify-self: center;
+  align-self: center;
   margin: 10px;
   justify-content: center;
-  position: relative;
-  left: 280px;
   .pag-cont {
     width: 350px;
     display: flex;

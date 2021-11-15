@@ -7,7 +7,7 @@
       <Nuxt keepAlive />
     </main>
 
-    <Footer />
+    <FooterPequeno />
   </div>
 </template>
 
