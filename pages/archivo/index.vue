@@ -195,6 +195,7 @@ export default {
   letter-spacing: 0;
   font-size: 1.4em;
 }
+
 .nombre-autor-hover {
   color: $claridad;
   letter-spacing: 0;

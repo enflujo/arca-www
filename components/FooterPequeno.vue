@@ -24,11 +24,9 @@ export default {
       fecha: '',
     };
   },
-
   mounted() {
     this.actualizarFecha();
   },
-
   methods: {
     actualizarFecha() {
       setInterval(() => {
@@ -51,13 +49,11 @@ export default {
 
 <style lang="scss">
 @use "sass:color";
-
 #pequeno {
   width: calc(100% - 280px);
   position: relative;
   left: 280px;
 }
-
 footer {
   background-color: $dolor;
   color: $claridad;
@@ -75,7 +71,6 @@ footer {
     .arcaIcono {
       width: 60px;
     }
-
     .logo-texto {
       color: $claridad;
       text-transform: uppercase;

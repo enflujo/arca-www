@@ -15,17 +15,17 @@
         <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.categoria" />
         <EtiquetasGaleria :busqueda="$route.params.categoria" />
         <Galeria :obras="obras" />
-
-        <span class="paginas">
-          <div v-if="obras.length == 100" class="pag-cont">
-            <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
-              <nuxt-link :to="`/categoria/${categoria}?page=${page}`">
-                {{ page }}
-              </nuxt-link>
-            </div>
-          </div>
-        </span>
+        <MenuVistas :busqueda="$route.params.categoria" />
       </div>
+      <span class="paginas">
+        <div v-if="obras.length == 100" class="pag-cont">
+          <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
+            <nuxt-link :to="`/categoria/${categoria}?page=${page}`">
+              {{ page }}
+            </nuxt-link>
+          </div>
+        </div>
+      </span>
     </template>
   </div>
 </template>
@@ -135,7 +135,7 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 100%;
+  width: 110vw;
   justify-self: center;
   align-self: center;
   margin: 10px;
