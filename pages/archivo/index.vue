@@ -195,6 +195,7 @@ export default {
   letter-spacing: 0;
   font-size: 1.4em;
 }
+
 .nombre-autor-hover {
   color: $claridad;
   letter-spacing: 0;
@@ -211,7 +212,7 @@ export default {
   align-items: center;
 }
 .barra-detalles {
-  display: flex;
+  display: none;
   flex-direction: column;
   width: 5%;
   justify-content: space-around;

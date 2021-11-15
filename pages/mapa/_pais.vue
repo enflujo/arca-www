@@ -21,6 +21,13 @@
           </div>
         </span>
       </div>
+      <span class="paginas">
+        <div v-if="obras.length == 100" class="pag-cont">
+          <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
+            <nuxt-link :to="`/mapa/${pais}?page=${page}`"> {{ page }} </nuxt-link>
+          </div>
+        </div>
+      </span>
     </template>
   </div>
 </template>
@@ -104,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 100%;
+  width: 110vw;
   justify-self: center;
   align-self: center;
   margin: 10px;
