@@ -335,7 +335,7 @@ export default {
   align-items: center;
 }
 .barra-detalles {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
