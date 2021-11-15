@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer id="pequeno">
     <div class="logo-completo">
       <Icono :fill="color" />
       <h2 class="logo-texto">Arca</h2>
@@ -49,11 +49,15 @@ export default {
 
 <style lang="scss">
 @use "sass:color";
+#pequeno {
+  width: calc(100% - 280px);
+  position: relative;
+  left: 280px;
+}
 footer {
   background-color: $dolor;
   color: $claridad;
   height: 120px;
-  width: 100%;
   position: absolute;
   display: flex;
   align-items: center;
