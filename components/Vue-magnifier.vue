@@ -105,7 +105,6 @@ export default {
       } else if (this.zoom >= 13) {
         this.zoom = 5;
       }
-      console.log(this.zoom);
     },
     getTransform(el) {
       const transform = window.getComputedStyle(el, null).getPropertyValue('-webkit-transform');

@@ -29,12 +29,16 @@
               </p>
             </div>
             <div class="pequena-galeria">
-              <div class="imagen-horizontal"></div>
+              <div class="imagen-horizontal">
+                <img :src="urlImagen(obras[0].image)" :alt="obras.title" />
+              </div>
             </div>
           </div>
           <div class="primera-parte">
             <div class="pequena-galeria">
-              <div class="imagen-horizontal"></div>
+              <div class="imagen-horizontal">
+                <img :src="urlImagen(obras[1].image)" :alt="obras.title" />
+              </div>
             </div>
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante izquierda">Propósito</h2>
@@ -59,12 +63,16 @@
               </p>
             </div>
             <div class="pequena-galeria">
-              <div class="imagen-horizontal"></div>
+              <div class="imagen-horizontal">
+                <img :src="urlImagen(obras[2].image)" :alt="obras.title" />
+              </div>
             </div>
           </div>
           <div class="primera-parte">
             <div class="pequena-galeria">
-              <div class="imagen-horizontal"></div>
+              <div class="imagen-horizontal">
+                <img :src="urlImagen(obras[3].image)" :alt="obras.title" />
+              </div>
             </div>
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante izquierda">El conjunto</h2>
@@ -86,7 +94,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { crearHead } from '../../utilidades/ayudas';
+import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
 export default {
   data() {
@@ -105,6 +113,15 @@ export default {
           descripcion
           contenido
           banner {
+            id
+            title
+          }
+        }
+
+        artworks(filter: { category_1_id: { name: { _eq: "Mariología" } } }, limit: 4) {
+          id
+          title
+          image {
             id
             title
           }
@@ -136,6 +153,12 @@ export default {
       this.pagina.banner,
       this.$nuxt.$route.path
     );
+  },
+
+  methods: {
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
+    },
   },
 };
 </script>
@@ -206,12 +229,18 @@ export default {
 }
 
 .pequena-galeria {
-  display: flex;
   background-color: $dolor;
   width: 50%;
   height: 450px;
   border-radius: 10px;
   align-self: center;
+  overflow: hidden;
+
+  .imagen-horizontal {
+    img {
+      object-fit: contain !important;
+    }
+  }
 }
 
 .descripcion {
