@@ -45,7 +45,6 @@ export default {
         backgroundPosition: this.backgroundPos,
         left: `${this.cursorX}px`,
         top: `${this.cursorY}px`,
-        // transform: `scale(${this.zoom})`,
         width: `${this.tamanioLupa}px`,
         height: `${this.tamanioLupa}px`,
         borderWidth: '1px',
@@ -141,10 +140,10 @@ export default {
 </script>
 
 <style lang="scss">
-// Magnifying glass options
-$border-size: 1px; // Modify the border width of the magnifying glass component
-$magnifier-width: 80px; // Modify the width of the magnifying glass component
-$magnifier-height: 80px; // Modify the height of the magnifying glass component
+// Configurar aspecto de la lupa
+$border-size: 1px;
+$magnifier-width: 80px;
+$magnifier-height: 80px;
 // Define your responsive sizes of
 $sizes: (
   '(max-width: 320px)' 250px 250px,

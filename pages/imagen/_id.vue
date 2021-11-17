@@ -9,7 +9,6 @@
     </template>
 
     <template v-else>
-      <!-- <div class="mediana"></div> -->
       <div class="logo-ar">
         <nuxt-link :to="'/'">
           <h2 class="logo-texto">ARCA</h2>
@@ -42,7 +41,6 @@
                 </p>
               </div>
             </div>
-            <!-- <p>{{ obra.annotation_date }}</p> -->
           </div>
           <div class="botonera">
             <button
