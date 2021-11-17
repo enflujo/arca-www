@@ -117,8 +117,8 @@ export default {
 
   position: absolute;
   height: calc(100vh - 140px);
-  grid-gap: 10px;
-  padding: 10px;
+  grid-gap: 1.4%;
+  padding: 0.5% 1.1% 0.5% 1.1%;
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
   grid-auto-rows: minmax(32.8%, auto);
   grid-auto-flow: dense;
@@ -137,7 +137,7 @@ export default {
   .informacion-hover {
     position: absolute;
     color: $claridad !important;
-    padding: 20px;
+    padding: 6%;
     opacity: 0;
     background-color: $dolor;
     width: 100%;
@@ -146,17 +146,18 @@ export default {
     top: 0;
     text-transform: none;
     z-index: 9;
+    overflow: clip;
 
     .nombre-obra-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 1.4em;
+      font-size: 100%;
       font-family: $fuentePrincipal;
     }
     .nombre-autor-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 1em;
+      font-size: 100%;
       font-weight: 350;
       position: relative;
       top: 8px;
