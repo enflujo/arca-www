@@ -34,7 +34,7 @@ export default {
       thumbPos: { x: 0, y: 0 },
       backgroundPos: '0 0',
       zoom: 5,
-      tamanioLupa: 125,
+      tamanioLupa: 135,
       bordeLupa: 10,
     };
   },
@@ -142,18 +142,21 @@ export default {
 <style lang="scss">
 // Configurar aspecto de la lupa
 $border-size: 1px;
-$magnifier-width: 80px;
-$magnifier-height: 80px;
+$magnifier-width: 135px;
+$magnifier-height: 135px;
 // Define your responsive sizes of
 $sizes: (
   '(max-width: 320px)' 250px 250px,
   '(max-width: 480px)' 350px 350px,
   '(min-width: 481px)' 450px 450px,
   '(min-width: 1024px)' 550px 550px,
-  '(min-width: 1280px)' 600px 600px
+  '(min-width: 1280px)' 900px 900px
 );
 .vue-magnifier-container {
-  position: relative;
+  display: flex;
+  overflow-y: hidden;
+  height: 65%;
+  flex-direction: column;
   .preview {
     position: relative;
     background: {
@@ -165,6 +168,7 @@ $sizes: (
     clear: both;
     margin: 0 auto;
     cursor: none;
+    overflow-y: hidden;
 
     .magnifying-glass {
       position: absolute;

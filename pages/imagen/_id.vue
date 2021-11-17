@@ -20,14 +20,10 @@
             <h1>{{ obra.title }}</h1>
             <h3 class="nombre-autor">{{ `${obra.author_id.name} ${obra.author_id.lastname}` }}</h3>
           </div>
-          <div class="descripcion">
-            <vue-magnifier
-              class="imagen-des"
-              :src="urlImagen(obra.image)"
-              :srcLarge="urlImagen(obra.image)"
-              :alt="obra.title"
-            >
-            </vue-magnifier>
+          <div v-if="!imagenAbierta" class="descripcion">
+            <div class="imagenCerrada" @click="imagenAbierta = true">
+              <img :src="urlImagen(obra.image)" :alt="obra.title" />
+            </div>
 
             <div class="hover-info">
               <div class="textos-hover">
@@ -41,6 +37,18 @@
                 </p>
               </div>
             </div>
+          </div>
+          <div v-if="imagenAbierta" class="imagenAbierta">
+            <vue-magnifier
+              class="imagen-des"
+              :src="urlImagen(obra.image)"
+              :srcLarge="urlImagen(obra.image)"
+              :alt="obra.title"
+            >
+            </vue-magnifier>
+            <span class="cerrar" @click="imagenAbierta = false">
+              <p>X</p>
+            </span>
           </div>
           <div class="botonera">
             <button
@@ -224,6 +232,7 @@ export default {
       pestana: 'datos',
       categorias: [],
       obras: [],
+      imagenAbierta: false,
     };
   },
 
@@ -411,8 +420,7 @@ main {
 }
 
 .imagen-des {
-  max-width: 60%;
-  height: auto;
+  overflow-y: hidden;
 }
 
 .mediana {
@@ -432,7 +440,7 @@ main {
   .completo-archivo {
     padding-top: 50px;
     overflow: hidden;
-    width: 900px;
+    width: 60vw;
     padding-bottom: 50px;
   }
   .titulo {
@@ -440,6 +448,21 @@ main {
     display: flex;
     flex-direction: column;
     text-align: start;
+  }
+  .imagenCerrada {
+    cursor: pointer;
+  }
+  .imagenAbierta {
+    display: flex;
+    overflow: hidden;
+    // background-color: $dolor;
+    // border: 15px solid $dolor;
+    border-radius: 10px;
+    width: fit-content;
+    .cerrar {
+      cursor: pointer;
+      color: $dolor;
+    }
   }
 }
 
