@@ -151,7 +151,7 @@ export default {
     .nombre-obra-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 100%;
+      font-size: 1.4em;
       font-family: $fuentePrincipal;
     }
     .nombre-autor-hover {
