@@ -137,13 +137,14 @@ $menuRayaColor: $claridad;
 }
 
 .fondo {
-  pointer-events: none;
+  /*  pointer-events: none;
   z-index: 1;
   width: 100vw;
   height: 100vh;
   background-color: #00000098;
   position: absolute;
   transition: all 0.5s ease-in-out;
+  opacity: 0; */
 }
 
 .cerrado {
@@ -172,8 +173,8 @@ $menuRayaColor: $claridad;
     .menuContenido {
       width: 100vw;
       height: 100vh;
-      padding: 60px 2em;
-      font-size: 1em;
+      padding: 2%;
+      font-size: 90%;
     }
   }
 
@@ -263,7 +264,7 @@ $menuRayaColor: $claridad;
   .abierto {
     .menuPrincipal {
       .menuContenido {
-        width: 30vw;
+        width: 20vw;
         font-size: 1.1em;
         display: flex;
         justify-content: center;
