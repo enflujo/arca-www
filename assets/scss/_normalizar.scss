@@ -96,11 +96,11 @@ ul {
 
 img,
 video {
-  width: 100%;
+  width: 25vw;
   -o-object-position: center top;
   object-position: top;
   height: auto;
-  object-fit: none;
+  // object-fit: none;
 }
 
 body {
@@ -141,6 +141,7 @@ a:hover {
 }
 
 .contenedor-pagina {
+  display: flex;
   flex-wrap: wrap;
   width: calc(100vw - 280px) !important;
   height: 100vh;

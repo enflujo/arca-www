@@ -195,7 +195,6 @@ export default {
   letter-spacing: 0;
   font-size: 1.4em;
 }
-
 .nombre-autor-hover {
   color: $claridad;
   letter-spacing: 0;
@@ -212,7 +211,7 @@ export default {
   align-items: center;
 }
 .barra-detalles {
-  display: none;
+  display: flex;
   flex-direction: column;
   width: 5%;
   justify-content: space-around;
@@ -225,7 +224,7 @@ export default {
 .todas-images {
   display: grid;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 140px);
   grid-gap: 10px;
   padding: 10px;
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));

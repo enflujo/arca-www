@@ -12,9 +12,7 @@
 </template>
 
 <script>
-import FooterPequeno from '~/components/FooterPequeno.vue';
 export default {
-  components: { FooterPequeno },
   data() {
     return {
       colorIcono: '#FFF',
