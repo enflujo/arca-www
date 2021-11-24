@@ -5,7 +5,6 @@
     <main role="main">
       <Nuxt keepAlive />
     </main>
-
     <Footer />
   </div>
 </template>
@@ -49,6 +48,7 @@ export default {
 
 main {
   display: flex;
+  flex-direction: column;
 }
 
 #contenedor {

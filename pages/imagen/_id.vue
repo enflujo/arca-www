@@ -202,7 +202,9 @@
               </span>
             </div>
           </section>
-          <Galeria :obras="obras" />
+          <div class="galeria">
+            <Galeria :obras="obras" />
+          </div>
         </div>
       </div>
     </template>
@@ -357,6 +359,8 @@ export default {
 <style lang="scss" scoped>
 main {
   justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 .sub-pestana {
   padding-top: 1.5em;
@@ -591,9 +595,9 @@ button:focus {
 }
 
 .galeria {
-  display: flex;
   position: relative;
-  justify-content: space-around;
-  align-items: center;
+  height: 70vh;
+  margin-top: 13px;
+  overflow-y: hidden;
 }
 </style>

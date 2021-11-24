@@ -54,7 +54,6 @@ footer {
   color: $claridad;
   height: 120px;
   width: 100%;
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
