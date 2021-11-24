@@ -12,13 +12,11 @@
       <main id="main2" role="main">
         <div class="descripcion">
           <h1 class="titulo-informacion">{{ pagina.titulo }}</h1>
-          <<<<<<< HEAD
           <div class="linea">
             <div class="parte"></div>
             <embed src="assets/flor.svg" />
             <div class="parte"></div>
           </div>
-          ======= >>>>>>> bd99e6e (cherry pick sobre arca y otros css)
           <br />
           <!-- eslint-disable vue/no-v-html -->
           <div class="primera-parte">
@@ -97,7 +95,6 @@
 <script>
 import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
-
 export default {
   data() {
     return {
@@ -105,7 +102,6 @@ export default {
       obras: [],
     };
   },
-
   async fetch() {
     const query = gql`
       query {
@@ -119,7 +115,6 @@ export default {
             title
           }
         }
-
         artworks(filter: { category_1_id: { name: { _eq: "Mariología" } } }, limit: 4) {
           id
           title
@@ -130,9 +125,7 @@ export default {
         }
       }
     `;
-
     const { paginas, artworks } = await this.$graphql.principal.request(query);
-
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
     } else {
@@ -141,12 +134,10 @@ export default {
       }
       throw new Error('La página no existe');
     }
-
     if (artworks && artworks.length) {
       this.obras = artworks;
     }
   },
-
   head() {
     return crearHead(
       this.$store.state.general.datos.nombre,
@@ -156,7 +147,6 @@ export default {
       this.$nuxt.$route.path
     );
   },
-
   methods: {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
@@ -170,11 +160,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-
 .main {
   display: flex;
 }
-
 .linea {
   display: flex;
   justify-content: center;
@@ -188,7 +176,6 @@ export default {
     margin-top: 20px;
   }
 }
-
 .titulo-informacion {
   display: flex;
   justify-content: center;
@@ -197,7 +184,6 @@ export default {
   // border-bottom: 1px solid $dolor;
   padding-bottom: 15px;
 }
-
 .plantilla-texto {
   height: calc(100vh - 120px);
   display: flex;
@@ -205,17 +191,14 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-
 .primera-parte {
   display: flex;
   flex-direction: row;
 }
-
 .izquierda {
   position: relative;
   left: 20%;
 }
-
 .subtitulo-importante {
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -223,13 +206,11 @@ export default {
   color: $dolor;
   font-size: 20px;
 }
-
 .descripcion-importante {
   padding-top: 10px;
   width: 80%;
   line-height: 26px;
 }
-
 .pequena-galeria {
   background-color: $dolor;
   width: 50%;
@@ -237,19 +218,20 @@ export default {
   border-radius: 10px;
   align-self: center;
   overflow: hidden;
-
   .imagen-horizontal {
     img {
       object-fit: contain !important;
+      width: 100%;
     }
   }
 }
-
 .descripcion {
   font-family: 'Work Sans';
   text-align: left;
   width: 80%;
   margin-top: 4em;
   margin-bottom: 4em;
+  left: 10%;
+  position: relative;
 }
 </style>

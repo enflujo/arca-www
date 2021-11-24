@@ -15,8 +15,7 @@
         <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.categoria" />
         <EtiquetasGaleria :busqueda="$route.params.categoria" />
         <Galeria :obras="obras" />
-        <MenuVistas :busqueda="$route.params.categoria" />
-        <span class="paginas">
+        <!--  <span class="paginas">
           <div v-if="obras.length == 100" class="pag-cont">
             <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
               <nuxt-link :to="`/categoria/${categoria}?page=${page}`">
@@ -24,7 +23,7 @@
               </nuxt-link>
             </div>
           </div>
-        </span>
+        </span> -->
       </div>
     </template>
   </div>
