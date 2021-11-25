@@ -128,7 +128,8 @@ label {
   display: block;
   border-radius: 100px;
   position: relative;
-  transform: rotate(90deg);
+  margin-left: 10px;
+  margin-right: 10px;
 }
 label:after {
   content: '';

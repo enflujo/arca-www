@@ -224,13 +224,13 @@ export default {
 .todas-images {
   display: grid;
   width: 100%;
-  height: calc(100vh - 140px);
+  // height: calc(100vh - 140px);
   grid-gap: 10px;
   padding: 10px;
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
   grid-auto-rows: minmax(32.8%, auto);
   grid-auto-flow: dense;
-  overflow: hidden;
+  // overflow: hidden;
   .imagen {
     border-radius: 10px;
     overflow: hidden;
