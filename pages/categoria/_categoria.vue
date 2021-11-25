@@ -138,8 +138,8 @@ export default {
   align-self: end;
   margin: 10px;
   justify-content: center;
-  position: relative;
-  left: 280px;
+  position: absolute;
+  bottom: 20px;
   .pag-cont {
     width: 350px;
     display: flex;

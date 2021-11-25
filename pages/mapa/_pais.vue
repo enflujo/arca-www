@@ -109,6 +109,8 @@ export default {
   align-self: center;
   margin: 10px;
   justify-content: center;
+  position: absolute;
+  bottom: 20px;
   .pag-cont {
     width: 350px;
     display: flex;
