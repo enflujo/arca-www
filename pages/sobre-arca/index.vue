@@ -14,7 +14,6 @@
           <h1 class="titulo-informacion">{{ pagina.titulo }}</h1>
           <div class="linea">
             <div class="parte"></div>
-            <embed src="assets/flor.svg" />
             <div class="parte"></div>
           </div>
           <br />
