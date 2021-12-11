@@ -33,8 +33,8 @@ export default {
       cursorY: 0,
       thumbPos: { x: 0, y: 0 },
       backgroundPos: '0 0',
-      zoom: 5,
-      tamanioLupa: 135,
+      zoom: 10,
+      tamanioLupa: 125,
       bordeLupa: 10,
     };
   },
@@ -149,13 +149,13 @@ $sizes: (
   '(max-width: 320px)' 250px 250px,
   '(max-width: 480px)' 350px 350px,
   '(min-width: 481px)' 450px 450px,
-  '(min-width: 1024px)' 550px 550px,
+  '(min-width: 1024px)' 700px 700px,
   '(min-width: 1280px)' 900px 900px
 );
 .vue-magnifier-container {
   display: flex;
   overflow-y: hidden;
-  height: 65%;
+  height: 90%;
   flex-direction: column;
   .preview {
     position: relative;

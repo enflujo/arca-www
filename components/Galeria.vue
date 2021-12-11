@@ -32,7 +32,6 @@
 
 <script>
 import { urlImagen } from '../utilidades/ayudas';
-
 export default {
   props: {
     obras: {
@@ -40,7 +39,6 @@ export default {
       default: () => [],
     },
   },
-
   methods: {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
@@ -52,12 +50,10 @@ export default {
 <style lang="scss" scoped>
 .imagenes {
   width: 80vw;
-
   img {
     // width: 160%;
     // height: auto;
   }
-
   .caja-inicial {
     display: flex;
     justify-content: space-between;
@@ -103,7 +99,6 @@ export default {
       }
     }
   }
-
   .caja-secundaria {
     display: flex;
     justify-content: space-between;
@@ -114,11 +109,10 @@ export default {
 .todas-images {
   display: grid;
   width: 100%;
-
   position: absolute;
   height: calc(100vh - 140px);
-  grid-gap: 1.4%;
-  padding: 0.5% 1.1% 0.5% 1.1%;
+  grid-gap: 10px;
+  padding: 10px;
   grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
   grid-auto-rows: minmax(32.8%, auto);
   grid-auto-flow: dense;
@@ -133,11 +127,10 @@ export default {
       min-height: 100%;
     }
   }
-
   .informacion-hover {
     position: absolute;
     color: $claridad !important;
-    padding: 6%;
+    padding: 20px;
     opacity: 0;
     background-color: $dolor;
     width: 100%;
@@ -146,18 +139,16 @@ export default {
     top: 0;
     text-transform: none;
     z-index: 9;
-    overflow: clip;
-
     .nombre-obra-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 100%;
+      font-size: 1.4em;
       font-family: $fuentePrincipal;
     }
     .nombre-autor-hover {
       color: $claridad;
       letter-spacing: 0;
-      font-size: 100%;
+      font-size: 1em;
       font-weight: 350;
       position: relative;
       top: 8px;
