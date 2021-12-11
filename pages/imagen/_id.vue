@@ -111,7 +111,7 @@
           <hr class="linea-red" />
           <section class="informacion-general">
             <span v-if="pestana == 'datos'">
-              <h2 class="sub-pestana">Datos</h2>
+              <h1 class="sub-pestana">Datos</h1>
               <div class="linea">
                 <div class="titulo">Título</div>
                 <div class="descripcion">{{ obra.title }}</div>
@@ -146,7 +146,7 @@
               </div>
             </span>
             <span v-else-if="pestana == 'descripcion'">
-              <h2 class="sub-pestana">Descripción</h2>
+              <h1 class="sub-pestana">Descripción</h1>
               <div class="linea">
                 <div class="titulo">título ejemplo</div>
                 <div class="descripcion">ejemplo de descripción lorem ipsum</div>
@@ -158,7 +158,7 @@
             </span>
 
             <span v-else-if="pestana == 'personajes'">
-              <h2 class="sub-pestana">Personajes y gestos</h2>
+              <h1 class="sub-pestana">Personajes y gestos</h1>
               <div class="linea">
                 <div class="titulo">título ejemplo</div>
                 <div class="descripcion">ejemplo de descripción lorem ipsum</div>
@@ -170,7 +170,7 @@
             </span>
 
             <span v-else-if="pestana == 'proyectos'">
-              <h2 class="sub-pestana">Proyectos</h2>
+              <h1 class="sub-pestana">Proyectos</h1>
               <div class="linea">
                 <div class="titulo">título ejemplo</div>
                 <div class="descripcion">ejemplo de descripción lorem ipsum</div>
@@ -181,12 +181,20 @@
               </div>
             </span>
           </section>
-          <h2 class="sub-pestana">Ubicación</h2>
+          <h1 class="sub-pestana">Ubicación</h1>
           <section class="informacion-geografica">
             <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
-                <h5 class="subtitulo">País de origen</h5>
+                <h5 class="subtitulo sinpad">País de origen</h5>
                 <div class="ubicacion"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="96.785" height="91.458" viewBox="0 0 96.785 91.458">
+                  <path
+                    id="Path_438"
+                    data-name="Path 438"
+                    d="M10.62,3.957a7.95,7.95,0,0,1,.472,1.083L44.455,84.7a4.19,4.19,0,0,0,3.937,2.8,4.29,4.29,0,0,0,4.029-3.032L85.6,5.274a9.318,9.318,0,0,1,.583-1.317H10.62M.784,0H96a.783.783,0,0,1,.781.783.789.789,0,0,1-.719.778,8.109,8.109,0,0,0-6.723,5.009L56.071,86a8.128,8.128,0,0,1-15.356,0L7.442,6.569A8.107,8.107,0,0,0,.718,1.561.79.79,0,0,1,0,.783.784.784,0,0,1,.784,0Z"
+                    fill="#08173e"
+                  />
+                </svg>
                 <nuxt-link :to="`/mapa/${obra.origin_country_id.name_spanish}?page=1`">
                   <h5 class="pais">{{ obra.origin_country_id.name_spanish }}</h5>
                 </nuxt-link>
@@ -364,6 +372,7 @@ main {
 }
 .sub-pestana {
   padding-top: 1.5em;
+  font-size: 24px;
 }
 
 .nube-categorias {
@@ -574,12 +583,15 @@ button:focus {
       display: flex;
       align-items: center;
       flex-direction: column;
-      margin-top: 1em;
+      height: 160px;
+      justify-content: space-evenly;
       .subtitulo {
+        padding: 0;
       }
       .ubicacion {
       }
       .pais {
+        padding: 0;
       }
     }
   }
