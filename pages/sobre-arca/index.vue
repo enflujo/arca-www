@@ -114,10 +114,6 @@ export default {
             title
           }
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 7cc010f22d06b605a9fc08cd4a1f4a34b03736c6
         artworks(filter: { category_1_id: { name: { _eq: "Mariología" } } }, limit: 4) {
           id
           title
@@ -228,28 +224,6 @@ export default {
     }
   }
 }
-
-.descripcion-importante {
-  padding-top: 10px;
-  width: 80%;
-  line-height: 26px;
-}
-
-.pequena-galeria {
-  background-color: $dolor;
-  width: 50%;
-  height: 450px;
-  border-radius: 10px;
-  align-self: center;
-  overflow: hidden;
-
-  .imagen-horizontal {
-    img {
-      object-fit: contain !important;
-    }
-  }
-}
-
 .descripcion {
   font-family: 'Work Sans';
   text-align: left;

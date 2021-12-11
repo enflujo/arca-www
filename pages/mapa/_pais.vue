@@ -10,7 +10,7 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.pais" />
+        <!-- <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.pais" /> -->
         <EtiquetasGaleria :busqueda="$route.params.pais" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.pais" />
