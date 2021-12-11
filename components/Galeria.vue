@@ -32,7 +32,6 @@
 
 <script>
 import { urlImagen } from '../utilidades/ayudas';
-
 export default {
   props: {
     obras: {
@@ -40,7 +39,6 @@ export default {
       default: () => [],
     },
   },
-
   methods: {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
@@ -52,12 +50,10 @@ export default {
 <style lang="scss" scoped>
 .imagenes {
   width: 80vw;
-
   img {
     // width: 160%;
     // height: auto;
   }
-
   .caja-inicial {
     display: flex;
     justify-content: space-between;
@@ -103,7 +99,6 @@ export default {
       }
     }
   }
-
   .caja-secundaria {
     display: flex;
     justify-content: space-between;
@@ -114,7 +109,6 @@ export default {
 .todas-images {
   display: grid;
   width: 100%;
-
   position: absolute;
   height: calc(100vh - 140px);
   grid-gap: 10px;
@@ -133,7 +127,6 @@ export default {
       min-height: 100%;
     }
   }
-
   .informacion-hover {
     position: absolute;
     color: $claridad !important;
@@ -146,7 +139,6 @@ export default {
     top: 0;
     text-transform: none;
     z-index: 9;
-
     .nombre-obra-hover {
       color: $claridad;
       letter-spacing: 0;

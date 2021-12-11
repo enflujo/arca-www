@@ -20,14 +20,10 @@
             <h1>{{ obra.title }}</h1>
             <h3 class="nombre-autor">{{ `${obra.author_id.name} ${obra.author_id.lastname}` }}</h3>
           </div>
-          <div class="descripcion">
-            <vue-magnifier
-              class="imagen-des"
-              :src="urlImagen(obra.image)"
-              :srcLarge="urlImagen(obra.image)"
-              :alt="obra.title"
-            >
-            </vue-magnifier>
+          <div v-if="!imagenAbierta" class="descripcion">
+            <div class="imagenCerrada" @click="imagenAbierta = true">
+              <img :src="urlImagen(obra.image)" :alt="obra.title" />
+            </div>
 
             <div class="hover-info">
               <div class="textos-hover">
@@ -41,6 +37,18 @@
                 </p>
               </div>
             </div>
+          </div>
+          <div v-if="imagenAbierta" class="imagenAbierta">
+            <vue-magnifier
+              class="imagen-des"
+              :src="urlImagen(obra.image)"
+              :srcLarge="urlImagen(obra.image)"
+              :alt="obra.title"
+            >
+            </vue-magnifier>
+            <span class="cerrar" @click="imagenAbierta = false">
+              <p>X</p>
+            </span>
           </div>
           <div class="botonera">
             <button
@@ -232,6 +240,7 @@ export default {
       pestana: 'datos',
       categorias: [],
       obras: [],
+      imagenAbierta: false,
     };
   },
 
@@ -374,7 +383,6 @@ main {
   padding-top: 1.5em;
   font-size: 24px;
 }
-
 .nube-categorias {
   display: grid;
   width: 90vw;
@@ -391,11 +399,9 @@ main {
   left: 228px;
   opacity: 0;
 }
-
 .texto-cat {
   margin-top: 8px;
 }
-
 .hover-info {
   display: flex;
   background-color: transparent;
@@ -420,12 +426,10 @@ main {
 .logo-ar {
   margin: 20px;
 }
-
 .imagen-des {
-  max-width: 60%;
+  max-width: 100%;
   height: auto;
 }
-
 .mediana {
   width: 100%;
   height: 100vh;
@@ -433,13 +437,11 @@ main {
   background-color: $mediana;
   z-index: -99;
 }
-
 .contenedor-centrado {
   display: flex;
   width: 100vw;
   justify-content: center;
   overflow: hidden;
-
   .completo-archivo {
     padding-top: 50px;
     overflow: hidden;
@@ -452,12 +454,21 @@ main {
     flex-direction: column;
     text-align: start;
   }
+  .imagenAbierta {
+    display: flex;
+    border-radius: 10px;
+    .cerrar {
+      cursor: pointer;
+      color: $dolor;
+    }
+  }
+  .imagenCerrada {
+    cursor: pointer;
+  }
 }
-
 hr.linea-red {
   border-top: 2px solid $dolor;
 }
-
 h5 {
   font-family: $fuenteMenu;
   font-weight: 300;
@@ -481,7 +492,6 @@ h5 {
   justify-content: flex-start;
   flex-direction: row;
 }
-
 img {
   // display: flex;
   // align-self: start;
@@ -596,7 +606,6 @@ button:focus {
     }
   }
 }
-
 .clasificacion {
   display: flex;
   flex-direction: column;
@@ -605,7 +614,6 @@ button:focus {
   top: 60px;
   align-self: center;
 }
-
 .galeria {
   position: relative;
   height: 70vh;

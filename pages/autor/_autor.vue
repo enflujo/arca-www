@@ -14,17 +14,18 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.autor" />
+        <!-- <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.autor" /> -->
         <EtiquetasGaleria :busqueda="$route.params.autor" />
         <Galeria :obras="obras" />
-        <span class="paginas">
-          <div v-if="obras.length == 100" class="pag-cont">
-            <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
-              <nuxt-link :to="`/autor/${autor}?page=${page}`"> {{ page }} </nuxt-link>
-            </div>
-          </div>
-        </span>
+        <MenuVistas :busqueda="$route.params.autor" />
       </div>
+      <span class="paginas">
+        <div v-if="obras.length == 100" class="pag-cont">
+          <div v-for="(page, i) in pages" :key="`page-${i}`" class="num-pag" @click="$fetch">
+            <nuxt-link :to="`/autor/${autor}?page=${page}`"> {{ page }} </nuxt-link>
+          </div>
+        </div>
+      </span>
     </template>
   </div>
 </template>
@@ -111,7 +112,7 @@ export default {
 <style lang="scss" scoped>
 .paginas {
   display: flex;
-  width: 100%;
+  width: 110vw;
   justify-self: center;
   align-self: center;
   margin: 10px;
