@@ -1,7 +1,9 @@
 /**
  * La URL donde esta el API (Directus en nuestro caso).
  */
-export const apiBase = 'http://143.110.150.100:8055';
+// TODO: Borrar
+// export const apiBase = 'http://143.110.150.100:8055';
+export const apiBase = 'http://arca.solucionesinmateriales.com';
 
 /**
  * La URL del frontend.

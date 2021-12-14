@@ -29,14 +29,14 @@
             </div>
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[0].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[0].imagen)" :alt="obras.title" />
               </div>
             </div>
           </div>
           <div class="primera-parte">
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[1].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[1].imagen)" :alt="obras.title" />
               </div>
             </div>
             <div class="plantilla-texto">
@@ -63,14 +63,14 @@
             </div>
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[2].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[2].imagen)" :alt="obras.title" />
               </div>
             </div>
           </div>
           <div class="primera-parte">
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[3].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[3].imagen)" :alt="obras.title" />
               </div>
             </div>
             <div class="plantilla-texto">
@@ -114,17 +114,22 @@ export default {
             title
           }
         }
-        artworks(filter: { category_1_id: { name: { _eq: "Mariología" } } }, limit: 4) {
-          id
-          title
-          image {
+        obra(filter: { clasificacion: { categorias_lista_id: { nombre: { _eq: "Advocaciones" } } } }, limit: 4) {
+          arca_id
+          titulo
+          clasificacion {
+            categorias_lista_id {
+              nombre
+            }
+          }
+          imagen {
             id
             title
           }
         }
       }
     `;
-    const { paginas, artworks } = await this.$graphql.principal.request(query);
+    const { paginas, obra } = await this.$graphql.principal.request(query);
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
     } else {
@@ -133,8 +138,8 @@ export default {
       }
       throw new Error('La página no existe');
     }
-    if (artworks && artworks.length) {
-      this.obras = artworks;
+    if (obra && obra.length) {
+      this.obras = obra;
     }
   },
   head() {

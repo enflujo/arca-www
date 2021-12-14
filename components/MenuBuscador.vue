@@ -82,7 +82,7 @@
           </div>
           <span v-if="inicialSeleccionada != ''">
             <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="lista-autores">
-              <nuxt-link :to="`/autor/${autor.lastname}?page=1`">{{ autor.lastname }} {{ autor.name }}</nuxt-link>
+              <nuxt-link :to="`/autor/${autor.apellido}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
             </li>
           </span>
         </ul>
@@ -92,7 +92,7 @@
         <h3 class="seccion" @click="colapsarPaises">Países</h3>
         <ul v-if="paisesVisible">
           <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores">
-            <nuxt-link :to="`/mapa/${pais.name_spanish}?page=1`">{{ pais.name_spanish }}</nuxt-link>
+            <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -161,18 +161,18 @@ export default {
             name
           }
         }
-        countries {
+        paises_lista {
           id
-          name_spanish
+          nombre_es
         }
-        authors {
+        autores {
           id
-          lastname
-          name
+          nombre
+          apellido
         }
       }
     `;
-    const { paginas, artworks, countries, authors } = await this.$graphql.principal.request(query);
+    const { paginas, obra, paisesLista, autores } = await this.$graphql.principal.request(query);
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
     } else {
@@ -181,8 +181,8 @@ export default {
       }
       throw new Error('La página no existe');
     }
-    if (countries && countries.length) {
-      this.paises = countries.sort((a, b) => {
+    if (paisesLista && paisesLista.length) {
+      this.paises = paisesLista.sort((a, b) => {
         const nombreA = a.name_spanish;
         const nombreB = b.name_spanish;
         if (nombreA < nombreB) {
@@ -199,8 +199,8 @@ export default {
       }
       throw new Error('La página no existe');
     }
-    if (authors && authors.length) {
-      this.autores = authors.sort((a, b) => {
+    if (autores && autores.length) {
+      this.autores = autores.sort((a, b) => {
         const apellidoA = a.lastname;
         const apellidoB = b.lastname;
         if (apellidoA < apellidoB) {
@@ -212,9 +212,9 @@ export default {
         return 0;
       });
     }
-    if (artworks && artworks.length) {
+    if (obra && obra.length) {
       const categorias = {};
-      artworks.forEach((work) => {
+      obra.forEach((work) => {
         const cat1 = work.category_1_id ? work.category_1_id : null;
         const cat2 = work.category_2_id ? work.category_2_id.name : null;
         const cat3 = work.category_3_id ? work.category_3_id.name : null;
