@@ -17,12 +17,12 @@
       <div class="contenedor-centrado">
         <div class="completo-archivo">
           <div class="titulo">
-            <h1>{{ obra.title }}</h1>
-            <h3 class="nombre-autor">{{ `${obra.author_id.name} ${obra.author_id.lastname}` }}</h3>
+            <h1>{{ obra.titulo }}</h1>
+            <h3 class="nombre-autor">{{ `${obra.autor.nombre} ${obra.autor.apellido}` }}</h3>
           </div>
           <div v-if="!imagenAbierta" class="descripcion">
             <div class="imagenCerrada" @click="imagenAbierta = true">
-              <img :src="urlImagen(obra.image)" :alt="obra.title" />
+              <img :src="urlImagen(obra.imagen)" :alt="obra.titulo" />
             </div>
 
             <div class="hover-info">
@@ -41,9 +41,9 @@
           <div v-if="imagenAbierta" class="imagenAbierta">
             <vue-magnifier
               class="imagen-des"
-              :src="urlImagen(obra.image)"
-              :srcLarge="urlImagen(obra.image)"
-              :alt="obra.title"
+              :src="urlImagen(obra.imagen)"
+              :srcLarge="urlImagen(obra.imagen)"
+              :alt="obra.titulo"
             >
             </vue-magnifier>
             <span class="cerrar" @click="imagenAbierta = false">
@@ -81,7 +81,7 @@
                   fill="grey"
                 />
               </svg>
-              <div class="texto-cat">descripcion</div>
+              <div class="texto-cat">descripción</div>
             </button>
             <button
               class="botones-imagen"
@@ -122,25 +122,25 @@
               <h1 class="sub-pestana">Datos</h1>
               <div class="linea">
                 <div class="titulo">Título</div>
-                <div class="descripcion">{{ obra.title }}</div>
+                <div class="descripcion">{{ obra.titulo }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Autor</div>
-                <nuxt-link :to="`/autor/${obra.author_id.lastname}?page=1`">
-                  <div class="descripcion">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</div>
+                <nuxt-link :to="`/autor/${obra.autor.apellido}?page=1`">
+                  <div class="descripcion">{{ obra.autor.nombre }} {{ obra.autor.apellido }}</div>
                 </nuxt-link>
               </div>
               <div class="linea">
                 <div class="titulo">Fecha</div>
-                <div class="descripcion">{{ obra.annotation_date }}</div>
+                <div class="descripcion">{{ obra.fechas_actividad }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Tipo</div>
-                <div class="descripcion">{{ obra.type_id.name }}</div>
+                <div class="descripcion">{{ obra.tecnica.nombre }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Fuente de la imagen</div>
-                <div class="descripcion">{{ obra.source_id.name }}</div>
+                <div class="descripcion">{{ obra.fuente_imagen }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Categorías</div>
@@ -247,107 +247,62 @@ export default {
   async fetch() {
     const query = gql`
       query {
-        artworks(filter: { id: { _eq: ${this.$route.params.id} } }, limit: 1) {
-          id
-          title
-          annotation_date
-          latitude_current
-          longitude_current
-          synthesis
-          image {
-            id
-            title
+        obra(filter: { arca_id: { _eq: ${this.$route.params.id} } }, limit: 1) {
+          arca_id
+          titulo
+          autor {
+            apellido
+            nombre
           }
-          author_id {
-            id
-            name
-            lastname
+          tecnica {
+            nombre
           }
-          origin_country_id {
+          fechas_actividad
+          sintesis
+          imagen {
             id
-            name_spanish
           }
-          actual_country_id {
-            id
-            name_spanish
+          fuente_imagen
+          ubicacion_actual {
+            nombre
+            lat
+            lon
           }
-          category_1_id {
-            id
-            name
-          }
-          category_2_id {
-            id
-            name
-          }
-          category_3_id {
-            id
-            name
-          }
-          category_4_id {
-            id
-            name
-          }
-          category_5_id {
-            id
-            name
-          }
-          type_id {
-            id
-            name
-          }
-          source_id {
-            id
-            name
-          }
-        }
-
-    categories(filter: { artworks_category_1_r: { _or: [
-        { id: { _eq: ${this.$route.params.id} } }
-        ]} }, limit: 100) {
-          name
-          artworks_category_1_r {
-            id
-            title
-            annotation_date
-            image {
-              id
-              title
-            }
-            author_id {
-              id
-              name
-              lastname
+          clasificacion {
+            categorias_lista_id {
+              nombre
+              ascendencia
             }
           }
         }
       }
     `;
 
-    const { categories, artworks } = await this.$graphql.principal.request(query);
+    const { obra } = await this.$graphql.principal.request(query);
 
-    if (artworks && artworks.length) {
-      this.obra = artworks[0];
-    }
-    if (categories && categories.length) {
+    if (obra && obra.length) {
+      this.obra = obra[0];
+    } else {
+      /* if (categories && categories.length) {
       categories.forEach((category) => {
         this.obras = category.artworks_category_1_r;
       });
-    } else {
+    } */
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
     }
 
-    this.agregarCategorias();
+    //  this.agregarCategorias();
   },
 
   head() {
     return crearHead(
       this.$store.state.general.datos.nombre,
-      this.obra.title,
-      this.obra.synthesis,
-      this.obra.image,
+      this.obra.titulo,
+      this.obra.sintesis,
+      this.obra.imagen,
       this.$nuxt.$route.path
     );
   },
@@ -359,7 +314,7 @@ export default {
     cambiarPestana(pestana) {
       this.pestana = pestana;
     },
-    agregarCategorias() {
+    /*  agregarCategorias() {
       const categorias = [];
       const cantidad = 5;
       for (let i = 0; i <= cantidad; i++) {
@@ -369,7 +324,7 @@ export default {
         }
       }
       this.categorias = categorias;
-    },
+    }, */
   },
 };
 </script>

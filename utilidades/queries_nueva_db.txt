@@ -56,7 +56,35 @@ query {
     }
 
 
-
+PARA IMAGEN INDIVIDUAL
+query {
+        obra{
+          arca_id
+            titulo
+            autor {
+                apellido
+                nombre
+            }
+            
+          fechas_actividad
+          sintesis
+          imagen {
+                id
+            }
+          fuente_imagen
+          ubicacion_actual {
+            nombre
+            lat
+            lon
+          }
+          clasificacion {
+            categorias_lista_id {
+                nombre
+                ascendencia
+            }
+         }
+        }
+        }
 
 
 PARA LISTA DE PAíSES:
