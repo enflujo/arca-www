@@ -91,7 +91,8 @@
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarPaises">Países</h3>
         <ul v-if="paisesVisible">
-          <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores">
+          <p>{{ paises }}</p>
+          <li v-for="(pais, i) in paises" :key="`pais${i}`" class="lista-paises">
             <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
           </li>
         </ul>
@@ -122,48 +123,17 @@ export default {
   async fetch() {
     const query = gql`
       query {
-        paginas(filter: { slug: { _eq: "archivo" } }, limit: 1) {
-          titulo
-          slug
-          descripcion
-          contenido
-          banner {
-            id
-            title
-          }
-        }
-        artworks(limit: 50) {
-          id
-          title
-          author_id {
-            id
-            name
-            lastname
-          }
-          category_1_id {
-            id
-            name
-          }
-          category_2_id {
-            id
-            name
-          }
-          category_3_id {
-            id
-            name
-          }
-          category_4_id {
-            id
-            name
-          }
-          category_5_id {
-            id
-            name
-          }
-        }
         paises_lista {
-          id
           nombre_es
+        }
+        obra(limit: 50) {
+          arca_id
+          clasificacion {
+            categorias_lista_id {
+              nombre
+              ascendencia
+            }
+          }
         }
         autores {
           id
@@ -172,19 +142,27 @@ export default {
         }
       }
     `;
-    const { paginas, obra, paisesLista, autores } = await this.$graphql.principal.request(query);
-    if (paginas.length && paginas[0].slug) {
-      this.pagina = paginas[0];
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('La página no existe');
+    const { obra, paisesLista, autores } = await this.$graphql.principal.request(query);
+    // console.log(obra, autores, 'paises_lista:', paisesLista);
+    this.obras = obra;
+    this.paises = paisesLista;
+    if (autores && autores.length) {
+      this.autores = autores.sort((a, b) => {
+        const apellidoA = a.apellido;
+        const apellidoB = b.apellido;
+        if (apellidoA < apellidoB) {
+          return -1;
+        }
+        if (apellidoA > apellidoB) {
+          return 1;
+        }
+        return 0;
+      });
     }
-    if (paisesLista && paisesLista.length) {
+    /*   if (paisesLista && paisesLista.length) {
       this.paises = paisesLista.sort((a, b) => {
-        const nombreA = a.name_spanish;
-        const nombreB = b.name_spanish;
+        const nombreA = a.nombre;
+        const nombreB = b.nombre;
         if (nombreA < nombreB) {
           return -1;
         }
@@ -198,21 +176,12 @@ export default {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
-    }
-    if (autores && autores.length) {
-      this.autores = autores.sort((a, b) => {
-        const apellidoA = a.lastname;
-        const apellidoB = b.lastname;
-        if (apellidoA < apellidoB) {
-          return -1;
-        }
-        if (apellidoA > apellidoB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    if (obra && obra.length) {
+    } */
+
+    // TODO: ¿Cómo se resuelve de nuevo la lista de categorías?
+    // obra.forEach((element) => console.log(element.clasificacion[0].categorias_lista_id.nombre));
+
+    /* if (obra && obra.length) {
       const categorias = {};
       obra.forEach((work) => {
         const cat1 = work.category_1_id ? work.category_1_id : null;
@@ -247,7 +216,7 @@ export default {
         }
       });
       this.categorias = categorias;
-    }
+    } */
     this.cargarIniciales();
   },
   computed: {
@@ -304,7 +273,7 @@ export default {
     cargarIniciales() {
       const iniciales = [];
       for (const autor in this.autores) {
-        iniciales.push(this.autores[autor].lastname.charAt(0));
+        iniciales.push(this.autores[autor].apellido.charAt(0));
       }
       this.iniciales = new Set(iniciales);
     },
@@ -312,7 +281,7 @@ export default {
       this.inicialSeleccionada = inicial;
     },
     autoresPorInicial(inicial) {
-      const autores = this.autores.filter((autor) => autor.lastname.charAt(0) === inicial);
+      const autores = this.autores.filter((autor) => autor.apellido.charAt(0) === inicial);
       return autores;
     },
   },

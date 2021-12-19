@@ -27,14 +27,8 @@
 
             <div class="hover-info">
               <div class="textos-hover">
-                <h1 class="descripcion-tit">Información básica de la imagen</h1>
-                <p class="descripcion-des">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
-                  porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
-                  sapien. Duis vitae hendrerit lacus. Vivamus accumsan imperdiet sem eget fringilla. Ut vulputate diam
-                  augue, in egestas sem consectetur ut. Nam suscipit, justo id pharetra pharetra, ligula ligula auctor
-                  velit.
-                </p>
+                <h1 class="descripcion-tit">Información de la imagen</h1>
+                <p class="descripcion-des">{{ obra.sintesis }}</p>
               </div>
             </div>
           </div>
@@ -47,7 +41,7 @@
             >
             </vue-magnifier>
             <span class="cerrar" @click="imagenAbierta = false">
-              <p>X</p>
+              <p>X &nbsp;</p>
             </span>
           </div>
           <div class="botonera">
@@ -135,7 +129,7 @@
                 <div class="descripcion">{{ obra.fechas_actividad }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">Tipo</div>
+                <div class="titulo">Técnica</div>
                 <div class="descripcion">{{ obra.tecnica.nombre }}</div>
               </div>
               <div class="linea">
@@ -143,11 +137,19 @@
                 <div class="descripcion">{{ obra.fuente_imagen }}</div>
               </div>
               <div class="linea">
+                <div class="titulo">Ubicación actual</div>
+                <div class="descripcion">{{ obra.ubicacion_actual.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Donante</div>
+                <div class="descripcion">{{ obra.donante.nombre }}</div>
+              </div>
+              <div class="linea">
                 <div class="titulo">Categorías</div>
                 <ul class="nube-categorias">
-                  <div v-for="(nombre, i) in categorias" :key="`categoria-${i}`" class="categorias">
-                    <nuxt-link :to="`/categoria/${categorias[i]}?page=1`"
-                      ><li>{{ categorias[i] }}</li></nuxt-link
+                  <div v-for="(categoria, i) in obra.clasificacion" :key="`categoria-${i}`" class="categorias">
+                    <nuxt-link :to="`/categoria/${obra.clasificacion[i].categorias_lista_id.nombre}?page=1`"
+                      ><li>{{ obra.clasificacion[i].categorias_lista_id.nombre }}</li></nuxt-link
                     >
                   </div>
                 </ul>
@@ -156,24 +158,32 @@
             <span v-else-if="pestana == 'descripcion'">
               <h1 class="sub-pestana">Descripción</h1>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Tipo de relato visual</div>
+                <div class="descripcion">{{ obra.tipo_relato_visual.nombre }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Escenario</div>
+                <div class="descripcion">{{ obra.escenario.nombre }}</div>
               </div>
             </span>
 
             <span v-else-if="pestana == 'personajes'">
               <h1 class="sub-pestana">Personajes y gestos</h1>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Cuerpo</div>
+                <div class="descripcion">{{ obra.cuerpo_imagen.nombre }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Disposición corporal</div>
+                <div class="descripcion">{{ obra.disposicion_corporal.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Gestos</div>
+                <div class="descripcion">{{ obra.gestos }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Complejidad gestual</div>
+                <div class="descripcion">{{ obra.complejidad_gestual.nombre }}</div>
               </div>
             </span>
 
@@ -189,7 +199,8 @@
               </div>
             </span>
           </section>
-          <h1 class="sub-pestana">Ubicación</h1>
+          <!-- <h1 class="sub-pestana">Ubicación</h1> -->
+
           <section class="informacion-geografica">
             <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
@@ -211,8 +222,9 @@
                 <div v-if="obra.origin_country_id.name_spanish != obra.actual_country_id.name_spanish" class="mapa">
                   <h5 class="subtitulo">País actual</h5>
                   <div class="ubicacion"></div>
-                  <nuxt-link :to="`/mapa/${obra.actual_country_id.name_spanish}?page=1`">
-                    <h5 class="pais">{{ obra.actual_country_id.name_spanish }}</h5>
+
+                  <nuxt-link :to="`/mapa/${obra.ubicacion_actua}?page=1`">
+                    <h5 class="pais">{{ obra.ubicacion_actual }}</h5>
                   </nuxt-link>
                 </div>
               </span>
@@ -274,6 +286,25 @@ export default {
               ascendencia
             }
           }
+          donante {
+            nombre
+          }
+          tipo_relato_visual {
+            nombre
+          }
+          escenario {
+            nombre
+          }
+          cuerpo_imagen  {
+            nombre
+          }
+          complejidad_gestual {
+            nombre
+          }
+          disposicion_corporal {
+            nombre
+          }
+
         }
       }
     `;
@@ -340,7 +371,7 @@ main {
 }
 .nube-categorias {
   display: grid;
-  width: 90vw;
+  width: 100vw;
 }
 .triangulo-des {
   width: 0;
@@ -366,8 +397,8 @@ main {
   left: 228px;
   cursor: pointer;
   .textos-hover {
-    padding-top: 5px;
-    padding-left: 20px;
+    padding-top: 1vh;
+    padding-left: 2vw;
     .descripcion-tit {
       color: $profundidad;
       padding-bottom: 20px;
@@ -398,10 +429,10 @@ main {
   justify-content: center;
   overflow: hidden;
   .completo-archivo {
-    padding-top: 50px;
+    padding-top: 15vh;
     overflow: hidden;
-    width: 900px;
-    padding-bottom: 50px;
+    width: 60vw;
+    padding-bottom: 15vh;
   }
   .titulo {
     justify-content: flex-end;
@@ -412,6 +443,7 @@ main {
   .imagenAbierta {
     display: flex;
     border-radius: 10px;
+
     .cerrar {
       cursor: pointer;
       color: $dolor;
@@ -419,6 +451,10 @@ main {
   }
   .imagenCerrada {
     cursor: pointer;
+    width: 30vw;
+    img {
+      object-fit: cover;
+    }
   }
 }
 hr.linea-red {
@@ -494,31 +530,31 @@ button:focus {
     display: flex;
     align-items: baseline;
     height: fit-content;
-    margin-top: 1.2em;
+    margin-top: 0.2em;
     .titulo {
-      letter-spacing: 3px;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       font-family: $fuenteMenu;
       font-weight: 400;
-      font-size: 12px;
-      margin-top: 30px;
+      font-size: 0.75em;
+      margin-top: 2.4vw;
       color: $profundidad;
       text-align: start;
-      width: 200px;
+      width: 20vw;
     }
     .descripcion {
       position: relative;
-      left: 80px;
+      left: 3vw;
       font-family: $fuentePrincipal;
-      font-size: 18px;
+      font-size: 1em;
       width: 90vw;
-      margin-right: 100px;
+      margin-right: 3em;
     }
     .categorias {
       position: relative;
-      left: 80px;
+      left: 3vw;
       font-family: $fuentePrincipal;
-      font-size: 18px;
+      font-size: 1em;
       text-transform: capitalize;
       width: 90vw;
     }
@@ -526,7 +562,6 @@ button:focus {
     ul {
       position: relative;
       left: 0px;
-      margin-right: 100px;
     }
   }
 }

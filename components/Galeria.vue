@@ -2,24 +2,24 @@
   <span>
     <div class="todas-images">
       <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
-        <nuxt-link :to="`/imagen/${obra.id}`"
-          ><img :src="urlImagen(obras[i].image)" :alt="obras.title" />
+        <nuxt-link :to="`/imagen/${obra.arca_id}`"
+          ><img :src="urlImagen(obras[i].imagen)" :alt="obras[i].titulo" />
           <div class="informacion-hover">
-            <h2 v-if="obra.title.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 30) + '\u2026' }}</h2>
-            <h2 v-else class="nombre-obra-hover">{{ obra.title }}</h2>
-            <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
+            <h2 v-if="obra.titulo.length > 40" class="nombre-obra-hover">{{ obra.title.substr(0, 30) + '\u2026' }}</h2>
+            <h2 v-else class="nombre-obra-hover">{{ obra.titulo }}</h2>
+            <h3 class="nombre-autor-hover">{{ obra.autor.nombre }} {{ obra.autor.apellido }}</h3>
             <div class="pais-hover">
-              <p v-if="obra.actual_country_id != null">País actual: {{ obra.actual_country_id.name_spanish }}</p>
-              <div v-if="obra.origin_country_id != null && obra.actual_country_id != null">
+              <p v-if="obra.ubicacion_actual.nombre != null">Ubicación actual: {{ obra.ubicacion_actual.nombre }}</p>
+              <!-- <div v-if="obra.origin_country_id != null && obra.actual_country_id != null">
                 <p v-if="obra.origin_country_id.id != obra.actual_country_id.id">
                   País de origen: {{ obra.origin_country_id.name_spanish }}
                 </p>
-              </div>
-              <div v-if="obra.origin_country_id != null && obra.actual_country_id == null">
+              </div> -->
+              <!-- <div v-if="obra.origin_country_id != null && obra.actual_country_id == null">
                 País de origen: {{ obra.origin_country_id.name_spanish }}
-              </div>
+              </div> -->
               <span class="fecha-hover">
-                {{ obra.annotation_date }}
+                {{ obra.fechas_actividad }}
               </span>
             </div>
             <!-- <h3 class="boton-detalles">DETALLES -></h3> -->

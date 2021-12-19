@@ -50,42 +50,32 @@ export default {
 
     const query = gql`
       query {
-        artworks(filter: { author_id: { lastname: { _eq: "${autor}" } } }, page: ${page} ) {
-          id
-          title
-          annotation_date
-          synthesis
-          latitude_current
-          longitude_current
-          image {
-            id
-            title
+        obra(filter: { autor: { apellido: { _eq: "${autor}" } } }, page: ${page} ) {
+          arca_id
+          titulo
+          fechas_actividad
+          sintesis
+          ubicacion_actual {
+            nombre
+            lat
+            lon
           }
-          author_id {
+          imagen {
             id
-            artworkso2m {
-              id
-            }
-            name
-            lastname
-            biography
           }
-          actual_country_id {
-            id
-            name_spanish
-          }
-          origin_country_id {
-            id
-            name_spanish
+          autor {
+            apellido
+            nombre
+            biografia
           }
         }
         }
     `;
 
-    const { artworks } = await this.$graphql.principal.request(query);
+    const { obra } = await this.$graphql.principal.request(query);
 
-    if (artworks && artworks.length) {
-      this.obras = artworks;
+    if (obra && obra.length) {
+      this.obras = obra;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;

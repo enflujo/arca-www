@@ -144,7 +144,7 @@ export default {
 $border-size: 1px;
 $magnifier-width: 135px;
 $magnifier-height: 135px;
-// Define your responsive sizes of
+// Definir el tamaño de la imagen
 $sizes: (
   '(max-width: 320px)' 250px 250px,
   '(max-width: 480px)' 350px 350px,
@@ -155,8 +155,6 @@ $sizes: (
 .vue-magnifier-container {
   display: flex;
   overflow-y: hidden;
-  height: 90%;
-  flex-direction: column;
   .preview {
     position: relative;
     background: {
