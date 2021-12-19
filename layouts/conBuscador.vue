@@ -6,8 +6,8 @@
       <MenuBuscador />
 
       <Nuxt keepAlive />
-      <FooterPequeno />
     </main>
+    <FooterPequeno />
   </div>
 </template>
 
