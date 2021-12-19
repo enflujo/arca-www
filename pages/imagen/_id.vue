@@ -179,7 +179,11 @@
               </div>
               <div class="linea">
                 <div class="titulo">Gestos</div>
-                <div class="descripcion">{{ obra.gestos }}</div>
+                <ul class="nube-categorias">
+                  <div v-for="(gesto, i) in obra.gestos" :key="`gesto-${i}`" class="categorias">
+                    <li>{{ obra.gestos[i].gestos_lista_id.nombre }}</li>
+                  </div>
+                </ul>
               </div>
               <div class="linea">
                 <div class="titulo">Complejidad gestual</div>
@@ -303,6 +307,11 @@ export default {
           }
           disposicion_corporal {
             nombre
+          }
+          gestos {
+            gestos_lista_id {
+              nombre
+            }
           }
 
         }
@@ -429,10 +438,10 @@ main {
   justify-content: center;
   overflow: hidden;
   .completo-archivo {
-    padding-top: 15vh;
+    padding-top: 10vh;
     overflow: hidden;
     width: 60vw;
-    padding-bottom: 15vh;
+    padding-bottom: 10vh;
   }
   .titulo {
     justify-content: flex-end;

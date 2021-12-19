@@ -69,7 +69,7 @@ export default {
             biografia
           }
         }
-        }
+      }
     `;
 
     const { obra } = await this.$graphql.principal.request(query);
