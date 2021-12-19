@@ -91,7 +91,6 @@
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarPaises">Países</h3>
         <ul v-if="paisesVisible">
-          <p>{{ paises }}</p>
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="lista-paises">
             <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
           </li>
@@ -135,34 +134,33 @@ export default {
             }
           }
         }
-        autores {
-          id
+        autores(limit: -1) {
           nombre
           apellido
         }
       }
     `;
-    const { obra, paisesLista, autores } = await this.$graphql.principal.request(query);
-    // console.log(obra, autores, 'paises_lista:', paisesLista);
+    const { paises_lista, obra, autores } = await this.$graphql.principal.request(query);
+    // console.log(obra, autores, 'paises_lista:', paises_lista, gestosLista);
     this.obras = obra;
-    this.paises = paisesLista;
     if (autores && autores.length) {
       this.autores = autores.sort((a, b) => {
-        const apellidoA = a.apellido;
-        const apellidoB = b.apellido;
-        if (apellidoA < apellidoB) {
+        const nombreA = a.apellido;
+        const nombreB = b.apellido;
+        if (nombreA < nombreB) {
           return -1;
         }
-        if (apellidoA > apellidoB) {
+        if (nombreA > nombreB) {
           return 1;
         }
         return 0;
       });
+      console.log('thisautores: ', this.autores.length);
     }
-    /*   if (paisesLista && paisesLista.length) {
-      this.paises = paisesLista.sort((a, b) => {
-        const nombreA = a.nombre;
-        const nombreB = b.nombre;
+    if (paises_lista && paises_lista.length) {
+      this.paises = paises_lista.sort((a, b) => {
+        const nombreA = a.nombre_es;
+        const nombreB = b.nombre_es;
         if (nombreA < nombreB) {
           return -1;
         }
@@ -176,7 +174,7 @@ export default {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
-    } */
+    }
 
     // TODO: ¿Cómo se resuelve de nuevo la lista de categorías?
     // obra.forEach((element) => console.log(element.clasificacion[0].categorias_lista_id.nombre));
@@ -273,9 +271,17 @@ export default {
     cargarIniciales() {
       const iniciales = [];
       for (const autor in this.autores) {
-        iniciales.push(this.autores[autor].apellido.charAt(0));
+        const inicial = this.autores[autor].apellido
+          .charAt(0)
+          // TODO: resolver las mayúculas con tildes
+          /* .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') */
+          .toUpperCase();
+        if (inicial !== '') {
+          iniciales.push(inicial);
+        }
       }
-      this.iniciales = new Set(iniciales);
+      this.iniciales = Array.from(new Set(iniciales)).sort();
     },
     elegirInicial(inicial) {
       this.inicialSeleccionada = inicial;
@@ -356,6 +362,7 @@ ul {
 }
 .iniciales {
   margin-bottom: 1em;
+  height: auto;
 }
 .inicial {
   display: inline;
@@ -368,6 +375,8 @@ ul {
 }
 nav li {
   cursor: pointer;
+  margin-bottom: 0.4em;
+  line-height: 1.1em;
 }
 .cat {
   width: auto;

@@ -337,26 +337,30 @@ export default {
 
     const query = gql`
       query {
-        artworks(search: "${queryString}") {
-            id
-            title
-            image {
-              id
-              title
-            }
-            author_id {
-              id
-              name
-              lastname
-            }
+        obra(search: "${queryString}") {
+          arca_id
+          titulo
+          autor {
+            apellido
+            nombre
           }
+          fechas_actividad
+          imagen {
+            id
+          }
+          ubicacion_actual {
+            nombre
+            lat
+            lon
+          }
+        }
       }
     `;
 
-    const { artworks } = await this.$graphql.principal.request(query);
+    const { obra } = await this.$graphql.principal.request(query);
 
-    if (artworks && artworks.length) {
-      this.obras = artworks;
+    if (obra && obra.length) {
+      this.obras = obra;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
