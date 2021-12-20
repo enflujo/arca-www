@@ -58,7 +58,7 @@ footer {
   background-color: $dolor;
   color: $claridad;
   height: 120px;
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
