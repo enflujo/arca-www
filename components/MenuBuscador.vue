@@ -140,6 +140,7 @@ export default {
         }
       }
     `;
+    /* eslint-disable camelcase */
     const { paises_lista, obra, autores } = await this.$graphql.principal.request(query);
     // console.log(obra, autores, 'paises_lista:', paises_lista, gestosLista);
     this.obras = obra;
@@ -155,8 +156,8 @@ export default {
         }
         return 0;
       });
-      console.log('thisautores: ', this.autores.length);
     }
+
     if (paises_lista && paises_lista.length) {
       this.paises = paises_lista.sort((a, b) => {
         const nombreA = a.nombre_es;
@@ -376,7 +377,6 @@ ul {
 nav li {
   cursor: pointer;
   margin-bottom: 0.4em;
-  line-height: 1.1em;
 }
 .cat {
   width: auto;
