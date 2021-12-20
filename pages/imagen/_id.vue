@@ -133,17 +133,14 @@
                 <div class="descripcion">{{ obra.tecnica.nombre }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">Fuente de la imagen</div>
-                <div class="descripcion">{{ obra.fuente_imagen }}</div>
-              </div>
-              <div class="linea">
                 <div class="titulo">Ubicación actual</div>
                 <div class="descripcion">{{ obra.ubicacion_actual.nombre }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">Donante</div>
-                <div class="descripcion">{{ obra.donante.nombre }}</div>
+                <div class="titulo">Fuente de la imagen</div>
+                <div class="descripcion">{{ obra.fuente_imagen }}</div>
               </div>
+              <!-- país de origen -->
               <div class="linea">
                 <div class="titulo">Categorías</div>
                 <ul class="nube-categorias">
@@ -154,6 +151,7 @@
                   </div>
                 </ul>
               </div>
+              <!-- descriptores -->
             </span>
             <span v-else-if="pestana == 'descripcion'">
               <h1 class="sub-pestana">Descripción</h1>
@@ -165,17 +163,52 @@
                 <div class="titulo">Escenario</div>
                 <div class="descripcion">{{ obra.escenario.nombre }}</div>
               </div>
+              <div class="linea">
+                <div class="titulo">Donante</div>
+                <div class="descripcion">{{ obra.donante.nombre }}</div>
+              </div>
+              <!-- filacteria -->
+              <!-- icono texto -->
+              <div class="linea">
+                <div class="titulo">Iconotexto</div>
+                <div class="descripcion">{{ obra.tipo_iconotexto.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Anotación Comentario Bibliográfico</div>
+                <div class="descripcion">{{ obra.anotacion_comentario_bibliografico }}</div>
+              </div>
+              <!-- símbolos -->
+              <!-- características particulares ¿? -->
             </span>
 
             <span v-else-if="pestana == 'personajes'">
               <h1 class="sub-pestana">Personajes y gestos</h1>
               <div class="linea">
+                <!-- Esto va? -->
                 <div class="titulo">Cuerpo</div>
                 <div class="descripcion">{{ obra.cuerpo_imagen.nombre }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Disposición corporal</div>
                 <div class="descripcion">{{ obra.disposicion_corporal.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Tipo gestual</div>
+                <div class="descripcion">{{ obra.tipo_gestual.nombre }}</div>
+              </div>
+              <!-- Objeto-gesto -->
+              <div class="linea">
+                <div class="titulo">Objeto</div>
+                <ul class="nube-categorias">
+                  <div v-for="(objeto, i) in obra.objeto" :key="`gesto-${i}`" class="categorias">
+                    <li>{{ obra.objeto[i].objetos_lista_id.nombre }}</li>
+                  </div>
+                </ul>
+              </div>
+
+              <div class="linea">
+                <div class="titulo">Complejidad gestual</div>
+                <div class="descripcion">{{ obra.complejidad_gestual.nombre }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Gestos</div>
@@ -185,9 +218,11 @@
                   </div>
                 </ul>
               </div>
+              <!-- fisiognómica -->
+              <!-- fisiognómica de la imagen -->
               <div class="linea">
-                <div class="titulo">Complejidad gestual</div>
-                <div class="descripcion">{{ obra.complejidad_gestual.nombre }}</div>
+                <div class="titulo">Rostro</div>
+                <div class="descripcion">{{ obra.rostro.nombre }}</div>
               </div>
             </span>
 
@@ -293,6 +328,10 @@ export default {
           donante {
             nombre
           }
+          tipo_iconotexto {
+            nombre
+          }
+          anotacion_comentario_bibliografico
           tipo_relato_visual {
             nombre
           }
@@ -301,6 +340,14 @@ export default {
           }
           cuerpo_imagen  {
             nombre
+          }
+          tipo_gestual {
+            nombre
+          }
+          objeto {
+            objetos_lista_id {
+              nombre
+            }
           }
           complejidad_gestual {
             nombre
@@ -313,7 +360,9 @@ export default {
               nombre
             }
           }
-
+          rostro {
+            nombre
+          }
         }
       }
     `;
@@ -380,7 +429,6 @@ main {
 }
 .nube-categorias {
   display: grid;
-  width: 100vw;
 }
 .triangulo-des {
   width: 0;
@@ -549,7 +597,7 @@ button:focus {
       margin-top: 2.4vw;
       color: $profundidad;
       text-align: start;
-      width: 20vw;
+      width: 35vw;
     }
     .descripcion {
       position: relative;
@@ -557,7 +605,6 @@ button:focus {
       font-family: $fuentePrincipal;
       font-size: 1em;
       width: 90vw;
-      margin-right: 3em;
     }
     .categorias {
       position: relative;
