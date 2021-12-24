@@ -1,7 +1,17 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <h1>Pendiente...</h1>
+      <div class="loading-contenedor">
+        <Logo class="svgDolor opac" />
+        <div class="loading">
+          <div class="loading-text">
+            <span class="loading-text-words">A</span>
+            <span class="loading-text-words">R</span>
+            <span class="loading-text-words">C</span>
+            <span class="loading-text-words">A</span>
+          </div>
+        </div>
+      </div>
     </template>
 
     <template v-else-if="$fetchState.error">
