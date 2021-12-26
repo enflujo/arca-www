@@ -1,9 +1,15 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <div class="contenedor">
-        <div class="centrar-contenido">
-          <h1>Pendiente...</h1>
+      <div class="loading-contenedor">
+        <Logo class="svgDolor opac" />
+        <div class="loading">
+          <div class="loading-text">
+            <span class="loading-text-words">A</span>
+            <span class="loading-text-words">R</span>
+            <span class="loading-text-words">C</span>
+            <span class="loading-text-words">A</span>
+          </div>
         </div>
       </div>
     </template>
@@ -97,4 +103,58 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.loading-contenedor {
+  width: calc(100vw - 280px);
+  left: 280px;
+  position: relative;
+  padding-left: 500px;
+  padding-right: 500px;
+  padding-top: 250px;
+  padding-bottom: 250px;
+  height: calc(100vh - 120px);
+}
+.svgDolor {
+  fill: $dolor;
+}
+// .opac {
+//   animation: opacidad 2s infinite;
+// }
+// @keyframes opacidad {
+//   0% {
+//     opacity: 0;
+//   }
+//   50% {
+//     opacity: 1;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
+.loading-text {
+  height: 100px;
+  text-align: center;
+  span {
+    display: inline-block;
+    margin: 0 5px;
+    color: $dolor;
+    font-size: 32px;
+    font-family: $fuentePrincipal;
+    @for $i from 0 through 6 {
+      &:nth-child(#{$i + 1}) {
+        filter: blur(0px);
+        animation: blur-text 1.5s (#{$i/5}) + s infinite linear alternate;
+      }
+    }
+  }
+}
+
+@keyframes blur-text {
+  0% {
+    filter: blur(0px);
+  }
+  100% {
+    filter: blur(4px);
+  }
+}
+</style>
