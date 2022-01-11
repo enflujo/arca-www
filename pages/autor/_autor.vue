@@ -32,7 +32,6 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-
 export default {
   layout: 'conBuscador',
   data() {
@@ -43,11 +42,9 @@ export default {
       autor: '',
     };
   },
-
   async fetch() {
     const autor = (this.autor = this.$route.params.autor);
     const page = this.$route.query.page;
-
     const query = gql`
       query {
         artworks(filter: { author_id: { lastname: { _eq: "${autor}" } } }, page: ${page} ) {
@@ -81,9 +78,7 @@ export default {
         }
         }
     `;
-
     const { artworks } = await this.$graphql.principal.request(query);
-
     if (artworks && artworks.length) {
       this.obras = artworks;
     } else {
@@ -93,7 +88,6 @@ export default {
       throw new Error('La página no existe');
     }
   },
-
   /**
    * TODO: ver como construir el head con datos del pais.
    */
