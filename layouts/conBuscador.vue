@@ -1,11 +1,11 @@
 <template>
   <div id="contenedor">
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
-
     <main role="main">
       <MenuBuscador />
-
-      <Nuxt keepAlive />
+      <div class="cont-resultado">
+        <Nuxt keepAlive />
+      </div>
     </main>
     <FooterPequeno />
   </div>
@@ -51,8 +51,13 @@ main {
 #contenedor {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   color: $profundidad;
+}
+.cont-resultado {
+  width: calc(100vw - 280px);
+  position: relative;
+  left: 280px;
+  min-height: 100vh;
 }
 .contenedor {
   display: flex;

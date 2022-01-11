@@ -49,7 +49,6 @@ main {
 #contenedor {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   color: $profundidad;
 }
 .contenedor {
