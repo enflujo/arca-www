@@ -47,7 +47,7 @@ export default {
     return {
       pagina: {},
       obras: [],
-      pages: [...Array(11).keys()].splice(1),
+      pages: [],
       autor: '',
     };
   },
@@ -58,6 +58,12 @@ export default {
 
     const query = gql`
       query {
+        obra_aggregated(filter: { autor: { apellido: { _eq: "${autor}" } } } ) {
+          count {
+            id
+          }
+        }
+
         obra(filter: { autor: { apellido: { _eq: "${autor}" } } }, page: ${page} ) {
           arca_id
           titulo
@@ -80,8 +86,15 @@ export default {
       }
     `;
 
-    const { obra } = await this.$graphql.principal.request(query);
+    // eslint-disable-next-line camelcase
+    const { obra, obra_aggregated } = await this.$graphql.principal.request(query);
 
+    // eslint-disable-next-line camelcase
+    if (obra_aggregated) {
+      const obrasPorPagina = 50;
+      const cantidadObras = Math.ceil(obra_aggregated[0].count.id / obrasPorPagina);
+      this.pages = Array.from({ length: cantidadObras }, (_, index) => index + 1);
+    }
     if (obra && obra.length) {
       this.obras = obra;
     } else {
