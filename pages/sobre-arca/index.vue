@@ -170,6 +170,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "sass:math";
+
 .loading-contenedor-completo {
   width: 100vw;
   position: relative;
@@ -208,7 +210,7 @@ export default {
     @for $i from 0 through 6 {
       &:nth-child(#{$i + 1}) {
         filter: blur(0px);
-        animation: blur-text 1.5s (#{$i/5}) + s infinite linear alternate;
+        animation: blur-text 1.5s (#{math.div($i, 5)}) + s infinite linear alternate;
       }
     }
   }

@@ -140,6 +140,8 @@ export default {
 </script>
 
 <style lang="scss">
+@use "sass:math";
+
 // Configurar aspecto de la lupa
 $border-size: 1px;
 $magnifier-width: 135px;
@@ -174,7 +176,7 @@ $sizes: (
       border-color: $dolor;
       border-radius: 50%;
       cursor: none;
-      transform: translate((-1 * $magnifier-width/2), (-1 * $magnifier-width/2));
+      transform: translate((-1 * math.div($magnifier-width, 2)), (-1 * math.div($magnifier-width, 2)));
 
       display: none;
       pointer-events: none;
