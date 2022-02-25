@@ -1,110 +1,94 @@
 <template>
-  <div>
-    <template v-if="$fetchState.pending">
-      <div class="loading-contenedor">
-        <Logo class="svgDolor opac" />
-        <div class="loading">
-          <div class="loading-text">
-            <span class="loading-text-words">A</span>
-            <span class="loading-text-words">R</span>
-            <span class="loading-text-words">C</span>
-            <span class="loading-text-words">A</span>
-          </div>
-        </div>
-      </div>
-    </template>
+  <div id="archivo">
+    <Cargador v-if="$fetchState.pending" />
 
-    <template v-else-if="$fetchState.error">
-      <div>
-        <h1 class="error">{{ $fetchState.error.message }}</h1>
-      </div>
-    </template>
+    <div v-else-if="$fetchState.error">
+      <h1 class="error">{{ $fetchState.error.message }}</h1>
+    </div>
 
-    <template v-else>
-      <div class="contenedor-pagina">
-        <section class="imagenes">
-          <div class="descripcion-datos"></div>
-          <div class="agrupar-elementos">
-            <div class="todas-images">
-              <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
-                <nuxt-link :to="`/imagen/${obra.id}`">
-                  <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
-                  <div class="informacion-hover">
-                    <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
-                    <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
-                    <p class="descripcion-hover">{{ obra.synthesis.substr(0, 60) + '\u2026' }}</p>
-                    <h3 class="boton-detalles">DETALLES -></h3>
-                  </div>
-                </nuxt-link>
-              </div>
+    <div v-else>
+      <section class="imagenes">
+        <div class="descripcion-datos"></div>
+        <div class="agrupar-elementos">
+          <div class="todas-images">
+            <div v-for="(obra, i) in obras" :key="`obra-${i}`" class="imagen">
+              <nuxt-link :to="`/imagen/${obra.id}`">
+                <img :src="urlImagen(obras[i].image)" :alt="obras.title" />
+                <div class="informacion-hover">
+                  <h2 class="nombre-obra-hover">{{ obra.title }}</h2>
+                  <h3 class="nombre-autor-hover">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</h3>
+                  <p class="descripcion-hover">{{ obra.synthesis.substr(0, 60) + '\u2026' }}</p>
+                  <h3 class="boton-detalles">DETALLES -></h3>
+                </div>
+              </nuxt-link>
             </div>
-            <div class="barra-detalles">
-              <div class="cambio-vista">
-                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29">
-                  <g id="Group_595" data-name="Group 595" transform="translate(-1853 -447)">
-                    <g id="Group_585" data-name="Group 585" transform="translate(1853.472 447)">
-                      <path
-                        id="Ellipse_57"
-                        data-name="Ellipse 57"
-                        d="M14.5,2A12.5,12.5,0,0,0,5.661,23.339,12.5,12.5,0,0,0,23.339,5.661,12.418,12.418,0,0,0,14.5,2m0-2A14.5,14.5,0,1,1,0,14.5,14.5,14.5,0,0,1,14.5,0Z"
-                        transform="translate(-0.472 0)"
-                        fill="#af2828"
-                      />
-                    </g>
-                    <g id="Group_586" data-name="Group 586" transform="translate(20 10)">
-                      <rect
-                        id="Rectangle_139"
-                        data-name="Rectangle 139"
-                        width="5"
-                        height="5"
-                        transform="translate(1842 446)"
-                        fill="#af2828"
-                      />
-                      <rect
-                        id="Rectangle_141"
-                        data-name="Rectangle 141"
-                        width="5"
-                        height="5"
-                        transform="translate(1842 452)"
-                        fill="#af2828"
-                      />
-                      <rect
-                        id="Rectangle_140"
-                        data-name="Rectangle 140"
-                        width="5"
-                        height="5"
-                        transform="translate(1848 446)"
-                        fill="#af2828"
-                      />
-                      <rect
-                        id="Rectangle_142"
-                        data-name="Rectangle 142"
-                        width="5"
-                        height="5"
-                        transform="translate(1848 452)"
-                        fill="#af2828"
-                      />
-                    </g>
-                  </g>
-                </svg>
-                <input id="switch" type="checkbox" /><label for="switch">Toggle</label>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24.393" height="24.403" viewBox="0 0 24.393 24.403">
-                  <g id="Group_581" data-name="Group 581" transform="translate(0 0)">
+          </div>
+          <div class="barra-detalles">
+            <div class="cambio-vista">
+              <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29">
+                <g id="Group_595" data-name="Group 595" transform="translate(-1853 -447)">
+                  <g id="Group_585" data-name="Group 585" transform="translate(1853.472 447)">
                     <path
-                      id="Path_1123"
-                      data-name="Path 1123"
-                      d="M79.785,134.263A12.216,12.216,0,0,0,90.793,116.8c-.012-.033-.026-.065-.041-.1s-.025-.045-.038-.067a12.2,12.2,0,1,0-10.93,17.63ZM88.191,116.7,80.9,120.254v-8.124a9.9,9.9,0,0,1,7.287,4.573Zm-9.525-4.572v9.915a1.12,1.12,0,0,0,1.61,1.006l8.893-4.335a9.952,9.952,0,1,1-10.5-6.586Z"
-                      transform="translate(-67.587 -109.859)"
-                      fill="#c6c6c6"
+                      id="Ellipse_57"
+                      data-name="Ellipse 57"
+                      d="M14.5,2A12.5,12.5,0,0,0,5.661,23.339,12.5,12.5,0,0,0,23.339,5.661,12.418,12.418,0,0,0,14.5,2m0-2A14.5,14.5,0,1,1,0,14.5,14.5,14.5,0,0,1,14.5,0Z"
+                      transform="translate(-0.472 0)"
+                      fill="#af2828"
                     />
                   </g>
-                </svg>
-              </div>
+                  <g id="Group_586" data-name="Group 586" transform="translate(20 10)">
+                    <rect
+                      id="Rectangle_139"
+                      data-name="Rectangle 139"
+                      width="5"
+                      height="5"
+                      transform="translate(1842 446)"
+                      fill="#af2828"
+                    />
+                    <rect
+                      id="Rectangle_141"
+                      data-name="Rectangle 141"
+                      width="5"
+                      height="5"
+                      transform="translate(1842 452)"
+                      fill="#af2828"
+                    />
+                    <rect
+                      id="Rectangle_140"
+                      data-name="Rectangle 140"
+                      width="5"
+                      height="5"
+                      transform="translate(1848 446)"
+                      fill="#af2828"
+                    />
+                    <rect
+                      id="Rectangle_142"
+                      data-name="Rectangle 142"
+                      width="5"
+                      height="5"
+                      transform="translate(1848 452)"
+                      fill="#af2828"
+                    />
+                  </g>
+                </g>
+              </svg>
+              <input id="switch" type="checkbox" /><label for="switch">Toggle</label>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24.393" height="24.403" viewBox="0 0 24.393 24.403">
+                <g id="Group_581" data-name="Group 581" transform="translate(0 0)">
+                  <path
+                    id="Path_1123"
+                    data-name="Path 1123"
+                    d="M79.785,134.263A12.216,12.216,0,0,0,90.793,116.8c-.012-.033-.026-.065-.041-.1s-.025-.045-.038-.067a12.2,12.2,0,1,0-10.93,17.63ZM88.191,116.7,80.9,120.254v-8.124a9.9,9.9,0,0,1,7.287,4.573Zm-9.525-4.572v9.915a1.12,1.12,0,0,0,1.61,1.006l8.893-4.335a9.952,9.952,0,1,1-10.5-6.586Z"
+                    transform="translate(-67.587 -109.859)"
+                    fill="#c6c6c6"
+                  />
+                </g>
+              </svg>
             </div>
           </div>
-        </section>
-      </div>
-    </template>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -184,69 +168,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use "sass:math";
+@use 'sass:math';
 
-.loading-contenedor {
-  width: calc(100vw - 280px);
-  left: 280px;
-  position: relative;
-  padding-left: 500px;
-  padding-right: 500px;
-  padding-top: 250px;
-  padding-bottom: 250px;
-  height: calc(100vh - 120px);
-}
-.svgDolor {
-  fill: $dolor;
-}
-// .opac {
-//   animation: opacidad 2s infinite;
-// }
-// @keyframes opacidad {
-//   0% {
-//     opacity: 0;
-//   }
-//   50% {
-//     opacity: 1;
-//   }
-//   100% {
-//     opacity: 0;
-//   }
-// }
-.loading-text {
-  height: 100px;
-  text-align: center;
-  span {
-    display: inline-block;
-    margin: 0 5px;
-    color: $dolor;
-    font-size: 32px;
-    font-family: $fuentePrincipal;
-    @for $i from 0 through 6 {
-      &:nth-child(#{$i + 1}) {
-        filter: blur(0px);
-        animation: blur-text 1.5s (#{math.div($i, 5)}) + s infinite linear alternate;
-      }
-    }
-  }
+#archivo {
+  display: flex;
 }
 
-@keyframes blur-text {
-  0% {
-    filter: blur(0px);
-  }
-  100% {
-    filter: blur(4px);
-  }
-}
-
-#mapa {
-  top: 0 !important;
-  display: flex !important;
-  width: 25vw !important;
-  height: 30vh !important;
-  position: relative !important;
-}
 .nombre-obra-hover {
   color: $claridad;
   letter-spacing: 0;
@@ -269,7 +196,6 @@ export default {
   align-items: center;
 }
 .barra-detalles {
-  display: none;
   flex-direction: column;
   width: 5%;
   justify-content: space-around;
@@ -336,9 +262,7 @@ export default {
   top: 80px;
   left: 10px;
 }
-.contenedor-pagina {
-  display: flex;
-}
+
 .logo-texto {
   top: 20px;
   position: relative;
