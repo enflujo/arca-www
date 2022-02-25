@@ -1,0 +1,27 @@
+name: Despliegue
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: 🐘 Desplegar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🐯 Obtener código del repositorio
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DOMINIO }}
+          username: ${{ secrets.USUARIO }}
+          password: ${{ secrets.CLAVE }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd ${{ secrets.RUTA }}
+            git pull origin main
+            yarn
+            yarn server:stop
+            yarn build
+            yarn server:restart
