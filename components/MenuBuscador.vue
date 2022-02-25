@@ -1,5 +1,5 @@
 <template>
-  <nav class="barra-izquierda">
+  <nav id="barra-izquierda">
     <nuxt-link :to="'/'">
       <h2 class="logo-texto">ARCA</h2>
     </nuxt-link>
@@ -81,8 +81,8 @@
             </li>
           </div>
           <span v-if="inicialSeleccionada != ''">
-            <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="lista-autores">
-              <nuxt-link :to="`/autor/${autor.apellido}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
+            <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
+              <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
             </li>
           </span>
         </ul>
@@ -91,7 +91,7 @@
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarPaises">Países</h3>
         <ul v-if="paisesVisible">
-          <li v-for="(pais, i) in paises" :key="`pais${i}`" class="lista-paises">
+          <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
             <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
           </li>
         </ul>
@@ -135,6 +135,7 @@ export default {
           }
         }
         autores(limit: -1) {
+          id
           nombre
           apellido
         }
@@ -142,20 +143,10 @@ export default {
     `;
     /* eslint-disable camelcase */
     const { paises_lista, obra, autores } = await this.$graphql.principal.request(query);
-    // console.log(obra, autores, 'paises_lista:', paises_lista, gestosLista);
+
     this.obras = obra;
     if (autores && autores.length) {
-      this.autores = autores.sort((a, b) => {
-        const nombreA = a.apellido;
-        const nombreB = b.apellido;
-        if (nombreA < nombreB) {
-          return -1;
-        }
-        if (nombreA > nombreB) {
-          return 1;
-        }
-        return 0;
-      });
+      this.autores = autores;
     }
 
     if (paises_lista && paises_lista.length) {
@@ -269,12 +260,13 @@ export default {
       contenedor.classList.toggle('cerrado');
       // contenedor.classList.toggle('categoriaLarga');
     },
+
     cargarIniciales() {
       const iniciales = [];
       for (const autor in this.autores) {
         const inicial = this.autores[autor].apellido
           .charAt(0)
-          // TODO: resolver las mayúculas con tildes
+          // TODO: resolver las mayúsculas con tildes
           /* .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '') */
           .toUpperCase();
@@ -296,88 +288,76 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#mapa {
-  top: 0 !important;
-  display: flex !important;
-  width: 25vw !important;
-  height: 30vh !important;
-  position: relative !important;
-}
-.descripcion-datos {
-  height: 40px;
-  border-bottom: 1px solid $mediana;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.barra-detalles {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.agrupar-elementos {
-  display: flex;
-}
-.contenedor-pagina {
-  display: flex;
+#barra-izquierda {
+  background-color: $mediana;
+  border-right: 2px solid $dolor;
+  position: fixed;
+  overflow: auto;
+  width: 280px;
+  height: 100vh;
 }
 .logo-texto {
   margin: 20px;
   font-family: $fuentePrincipal;
 }
+
 li {
   margin-bottom: 0.2em;
 }
-.descripcion {
-  margin-top: 10px;
-}
-.barra-izquierda {
-  background-color: $mediana;
-  border-right: 2px solid $dolor;
-  width: 280px;
-  height: 100vh;
-  position: fixed;
-}
+
 .barra-texto {
-  width: 275px;
   padding-left: 20px;
   margin-top: 2em;
-  z-index: 2;
-  height: calc(100vh - 145px);
 }
 .pantalla {
   margin-top: 10px;
 }
+
 ul {
   list-style: none;
-  // margin: 0.5em 1em;
   margin-right: 0.2em;
   margin-left: 0.8em;
   padding-top: 0.5em;
   font-family: $fuenteMenu;
 }
+
 .seccion {
   margin-bottom: 10px;
   font-family: $fuentePrincipal;
   cursor: pointer;
 }
+
 .iniciales {
   margin-bottom: 1em;
   height: auto;
 }
+
 .inicial {
   display: inline;
   padding-left: 3px;
   padding-right: 3px;
   margin-bottom: 1em;
-}
-.autores {
-  height: auto;
-}
-nav li {
   cursor: pointer;
-  margin-bottom: 0.4em;
 }
+
+.enlace-menu {
+  margin-bottom: 0.4em;
+  font-size: 0.85em;
+  position: relative;
+
+  &::before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    display: block;
+    background-color: $dolor;
+    position: absolute;
+    left: -9px;
+    top: 0.5em;
+  }
+}
+
 .cat {
   width: auto;
   overflow: hidden;
@@ -391,5 +371,9 @@ nav li {
   &.categoria5 {
     height: fit-content;
   }
+}
+
+.nuxt-link-exact-active {
+  font-weight: bold;
 }
 </style>

@@ -3,9 +3,7 @@
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
     <main role="main">
       <MenuBuscador />
-      <div class="cont-resultado">
-        <Nuxt keepAlive />
-      </div>
+      <Nuxt keepAlive />
     </main>
     <FooterPequeno />
   </div>
@@ -38,30 +36,31 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@use "sass:color";
+<style lang="scss" scoped>
+@use 'sass:color';
 @font-face {
   font-family: 'Agraham';
   src: local('Agraham'), local('Agraham Personal Use');
 }
-main {
-  display: flex;
-  flex-direction: column;
-}
+
 #contenedor {
+  color: $profundidad;
   display: flex;
   flex-direction: column;
-  color: $profundidad;
-}
-.cont-resultado {
-  width: calc(100vw - 280px);
-  position: relative;
-  left: 280px;
+  justify-content: space-between;
   min-height: 100vh;
 }
-.contenedor {
+
+main {
   display: flex;
+  flex-direction: row;
 }
+
+.pagina {
+  width: calc(100vw - 280px);
+  margin-left: 280px;
+}
+
 // Teléfonos horizontal
 @media (min-width: $minCelular) {
 }
