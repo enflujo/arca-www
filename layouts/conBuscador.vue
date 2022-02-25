@@ -38,10 +38,6 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:color';
-@font-face {
-  font-family: 'Agraham';
-  src: local('Agraham'), local('Agraham Personal Use');
-}
 
 #contenedor {
   color: $profundidad;

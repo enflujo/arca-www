@@ -38,10 +38,7 @@ export default {
 
 <style lang="scss">
 @use 'sass:color';
-@font-face {
-  font-family: 'Agraham';
-  src: local('Agraham'), local('Agraham Personal Use');
-}
+
 main {
   display: flex;
   flex-direction: column;
