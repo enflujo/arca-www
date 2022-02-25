@@ -140,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss">
-@use "sass:math";
+@use 'sass:math';
 
 // Configurar aspecto de la lupa
 $border-size: 1px;

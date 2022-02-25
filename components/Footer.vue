@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss">
-@use "sass:color";
+@use 'sass:color';
 footer {
   background-color: $dolor;
   color: $claridad;

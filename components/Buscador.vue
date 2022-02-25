@@ -37,6 +37,7 @@ input {
   text-transform: uppercase;
   margin-left: 5%;
 }
+
 input:focus {
   outline: none;
 }

@@ -9,7 +9,7 @@
 <script></script>
 
 <style lang="scss">
-@use "sass:color";
+@use 'sass:color';
 
 .contenedor-elementos {
   position: absolute;

@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="scss">
-@use "sass:color";
+@use 'sass:color';
 @font-face {
   font-family: 'Agraham';
   src: local('Agraham'), local('Agraham Personal Use');

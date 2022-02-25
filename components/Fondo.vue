@@ -7,7 +7,7 @@
 <script></script>
 
 <style lang="scss">
-@use "sass:color";
+@use 'sass:color';
 
 .completo {
   height: 100vh;

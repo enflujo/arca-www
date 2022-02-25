@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss">
-@use "sass:color";
+@use 'sass:color';
 #pequeno {
   width: calc(100% - 280px);
   position: relative;
