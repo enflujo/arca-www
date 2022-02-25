@@ -63,6 +63,7 @@ $menuRayaColor: $claridad;
 
 .contenedorMenu {
   z-index: 9999;
+  position: fixed;
 }
 
 .menuBtn {

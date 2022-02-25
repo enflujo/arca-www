@@ -72,19 +72,21 @@
 
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarAutores">Autores</h3>
-        <ul v-if="autoresVisible">
-          <div class="iniciales">
-            <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="inicial">
-              <span @click="elegirInicial(inicial)">
-                {{ inicial }}
-              </span>
-            </li>
-          </div>
-          <span v-if="inicialSeleccionada != ''">
-            <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
-              <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
-            </li>
-          </span>
+        <ul v-if="autoresVisible" class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''">
+          <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
+            <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
+          </li>
         </ul>
       </div>
 
