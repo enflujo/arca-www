@@ -1,7 +1,17 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <Cargador />
+      <div class="loading-contenedor-completo">
+        <Logo class="svgDolor opac" />
+        <div class="loading">
+          <div class="loading-text">
+            <span class="loading-text-words">A</span>
+            <span class="loading-text-words">R</span>
+            <span class="loading-text-words">C</span>
+            <span class="loading-text-words">A</span>
+          </div>
+        </div>
+      </div>
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -22,9 +32,7 @@
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante">Proyecto</h2>
               <p class="descripcion-importante">
-                El proyecto Arca se ensambla a partir de la necesidad de establecer una geografía de los temas de las
-                representaciones visuales que surgieron en América colonial. Su elaboración proviene de una pregunta
-                central ¿qué se pintó en América colonial y cuáles son los temas propios a cada región?
+                {{ informacion.proyecto }}
               </p>
             </div>
             <div class="pequena-galeria">
@@ -42,23 +50,15 @@
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante izquierda">Propósito</h2>
               <p class="descripcion-importante izquierda">
-                El propósito ha sido reunir toda la producción visual conocida y disponible, de manera que se pueda
-                tener una visión de conjunto de los temas, sus diferencias gestuales, las similitudes en el tratamiento,
-                etc. Para el efecto se han reunido imágenes que provienen principalmente de pintura en sus diferentes
-                soportes, y eventualmente objetos, techos y mural, debida su importancia. El criterio temporal cubre
-                desde las tempranas imágenes del siglo XVI hasta la década de 1830, cuando se comienza a agotar, aunque
-                no exclusivamente, la tradición colonial.
+                {{ informacion.proposito }}
               </p>
             </div>
           </div>
           <div class="primera-parte">
             <div class="plantilla-texto">
-              <h2 class="subtitulo-importante">ESPACIO</h2>
+              <h2 class="subtitulo-importante">Espacio</h2>
               <p class="descripcion-importante">
-                Se ha tratado de cubrir toda América, de modo que se pueda tener un acercamiento no sólo a los temas,
-                sino también a los desiguales volúmenes de producción en cada región. Cada tema ha sido clasificado en
-                varias categorías, la mayoría de ellas tomadas de la tradición barroca, de modo que se pueda
-                georreferenciar los datos.
+                {{ informacion.espacio }}
               </p>
             </div>
             <div class="pequena-galeria">
@@ -76,10 +76,7 @@
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante izquierda">El conjunto</h2>
               <p class="descripcion-importante izquierda">
-                Como se trata de observar el conjunto de los temas, muchas de estas imágenes no tienen una calidad que
-                permita apreciar sus detalles, pero sí al menos la calidad de la composición. La diversidad de fuentes
-                de donde se han tomado, genera problemas con la autoría, la datación y hasta el mismo título de la obra.
-                Cualquier pregunta, observación, sugerencia o corrección, será bienvenida.
+                {{ informacion.conjunto }}
               </p>
             </div>
           </div>
@@ -99,6 +96,7 @@ export default {
     return {
       pagina: {},
       obras: [],
+      informacion: {},
     };
   },
   async fetch() {
@@ -113,6 +111,12 @@ export default {
             id
             title
           }
+        }
+        general {
+          proyecto
+          proposito
+          espacio
+          conjunto
         }
         obra(filter: { clasificacion: { categorias_lista_id: { nombre: { _eq: "Advocaciones" } } } }, limit: 4) {
           arca_id
@@ -129,7 +133,7 @@ export default {
         }
       }
     `;
-    const { paginas, obra } = await this.$graphql.principal.request(query);
+    const { paginas, general, obra } = await this.$graphql.principal.request(query);
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
     } else {
@@ -140,6 +144,9 @@ export default {
     }
     if (obra && obra.length) {
       this.obras = obra;
+    }
+    if (general) {
+      this.informacion = general;
     }
   },
   head() {
@@ -161,12 +168,61 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:math';
-
+.loading-contenedor-completo {
+  width: 100vw;
+  position: relative;
+  padding-left: 620px;
+  padding-right: 620px;
+  padding-top: 250px;
+  padding-bottom: 250px;
+  height: calc(100vh - 120px);
+}
+.svgDolor {
+  fill: $dolor;
+}
+// .opac {
+//   animation: opacidad 2s infinite;
+// }
+// @keyframes opacidad {
+//   0% {
+//     opacity: 0;
+//   }
+//   50% {
+//     opacity: 1;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
+.loading-text {
+  height: 100px;
+  text-align: center;
+  span {
+    display: inline-block;
+    margin: 0 5px;
+    color: $dolor;
+    font-size: 32px;
+    font-family: $fuentePrincipal;
+    @for $i from 0 through 6 {
+      &:nth-child(#{$i + 1}) {
+        filter: blur(0px);
+        animation: blur-text 1.5s (#{math.div($i, 5)}) + s infinite linear alternate;
+      }
+    }
+  }
+}
+@keyframes blur-text {
+  0% {
+    filter: blur(0px);
+  }
+  100% {
+    filter: blur(4px);
+  }
+}
 #main2 {
   display: flex;
   justify-content: center;
 }
-
 .main {
   display: flex;
 }
