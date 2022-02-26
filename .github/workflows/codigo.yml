@@ -1,4 +1,4 @@
-name: ci
+name: estilos-codigo
 
 on:
   push:

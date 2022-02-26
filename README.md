@@ -1,6 +1,7 @@
-# Sitio principal del Laboratorio EnFlujo
+# Sitio principal de ARCA
 
-![CI workflow](https://github.com/enflujo/enflujo-www/actions/workflows/ci.yml/badge.svg)
+![Estilos Código](https://github.com/enflujo/arca-www/actions/workflows/codigo.yml/badge.svg)
+![Despliegue](https://github.com/enflujo/arca-www/actions/workflows/despliegue.yml/badge.svg)
 
 Creado con [Nuxt.js](https://nuxtjs.org) (Vue con _Server-Side-Rendering_)
 
@@ -43,92 +44,8 @@ yarn lint
 yarn lint:fix
 ```
 
-## Sobre Vue
+## Despliegue al servidor
 
-```js
-data() {
-  return  {
-    variable1: false,
-    variable2: true
-  }
-}
+Github Actions se encarga de actualizar el código y reiniciar el servidor cuando se actualiza este repositorio.
 
-this.variable1
-this.variable2
-this.variable3
-
-computed: {
-  variable3() {
-    return this.$store....
-  }
-}
-```
-
-```js
-<template>
-
-<template>
-
-<script>
-// En Footer
-props: {
-  algo: {
-    type: Number
-  }
-}
-
-watch: {
-  algo() {
-    hagaAlgo();
-    otraCosaExclusivaDeJS();
-  }
-}
-
-
-</script>
-```
-
-```js
-//Componente en Vue (puede ser de la carpeta componentes, pero tambien los layouts y pages). En resumen, todos los archivos .vue son componentes.
-<Componente prop1="hola" />
-<Pagina :propVariable="algoDeDatos" />
-<Layout>
-  <OtroComponente>
-</Layout>
-```
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 5a7c54f (📝 sobre el Store)
-#### Store
-
-```js
-const state = {
-  x: null,
-};
-const actions = {
-  hola({ commit, state }, datos) {
-    //...
-    commit('mutarEstadoX', datosConvertidosEnAccion);
-  },
-};
-const mutations = {
-  mutarEstadoX(state, datos) {
-    this.state.x = datos;
-  },
-};
-```
-
-```js
-store.dispatch('[nombreDelStore]/[nombreDeAccion]', datos);
-store.commit('[nombreDelStore]/[nombreDeMutacion]', datos);
-```
-<<<<<<< HEAD
-
-=======
-
-> > > > > > > e859fcb (💩)
-=======
->>>>>>> 5a7c54f (📝 sobre el Store)
+Para saltarse el despliegue, incluir en el mensaje `[skip ci]`.
