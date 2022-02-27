@@ -38,12 +38,6 @@ export default {
   flex-wrap: wrap;
 }
 
-.nuxt-link-exact-active {
-  font-weight: 600;
-  background-color: black;
-  color: white;
-}
-
 // .paginas {
 //   display: flex;
 //   width: 110vw;

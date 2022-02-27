@@ -8,7 +8,7 @@
 
     <div class="barra-texto">
       <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
-      <ul v-if="categoriasVisible">
+      <ul v-if="categoriasVisible" class="opciones">
         <li
           v-for="(cat1, i) in Object.keys(categorias).sort()"
           :key="`cat1${i}`"
@@ -83,7 +83,7 @@
           </li>
         </ul>
 
-        <ul v-if="inicialSeleccionada != ''">
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
           <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
             <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
           </li>
@@ -92,7 +92,7 @@
 
       <div class="pantalla">
         <h3 class="seccion" @click="colapsarPaises">Países</h3>
-        <ul v-if="paisesVisible">
+        <ul v-if="paisesVisible" class="opciones">
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
             <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
           </li>
@@ -316,11 +316,14 @@ li {
 }
 
 ul {
-  list-style: none;
   margin-right: 0.2em;
   margin-left: 0.8em;
   padding-top: 0.5em;
   font-family: $fuenteMenu;
+
+  &.opciones {
+    overflow: visible;
+  }
 }
 
 .seccion {

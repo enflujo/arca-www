@@ -86,30 +86,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.barra-detalles {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  align-content: center;
-}
 .cambio-vista {
-  height: 150px;
-  justify-content: space-around;
+  margin: 1em;
   align-items: center;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 .descripcion {
   margin-top: 10px;
 }
-.descripcion-categoria {
-  background-color: $dolor;
-  width: 350px;
-  height: 200px;
-  color: $claridad;
-  padding: 10px;
-  position: relative;
-}
+
 input[type='checkbox'] {
   height: 0;
   width: 0;

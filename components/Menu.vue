@@ -118,7 +118,7 @@ $menuRayaColor: $claridad;
       opacity: 1;
     }
 
-    &.nuxt-link-active {
+    &.nuxt-link-exact-active {
       color: $claridad;
       opacity: 1;
     }
