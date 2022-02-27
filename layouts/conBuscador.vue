@@ -5,7 +5,7 @@
       <MenuBuscador />
       <Nuxt keepAlive />
     </main>
-    <FooterPequeno />
+    <Footer :completo="false" />
   </div>
 </template>
 
