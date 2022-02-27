@@ -32,12 +32,6 @@ export default {
   background-size: cover;
 }
 
-.logoArca {
-  width: 100px;
-  margin-top: 10px;
-  display: block;
-}
-
 #logoArca {
   width: 125px;
   margin-top: 10px;
