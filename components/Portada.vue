@@ -24,7 +24,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 99vh;
-  width: 100vw;
+  width: 100%;
   z-index: 1;
   background-attachment: fixed;
   background-image: url(./static/imgs/background-image.png);
