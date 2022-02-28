@@ -295,13 +295,15 @@ export default {
     };
   },
 
+  // TODO: Cambiar el segundo query para filtrar por categoría y ¿de dónde sacar el id de la categoría?
   async fetch() {
     const query = gql`
       query {
-        obra(filter: { arca_id: { _eq: ${this.$route.params.id} } }, limit: 1) {
+        obra_individual: obra(filter: { arca_id: { _eq: ${this.$route.params.id} } }, limit: 1) {
           arca_id
           titulo
           autor {
+            arca_id
             apellido
             nombre
           }
@@ -364,26 +366,47 @@ export default {
             nombre
           }
         }
+
+        obras_galeria: obra(filter: { autor: { arca_id: { _eq: 53 } } } ) {
+          arca_id
+          titulo
+          fechas_actividad
+          sintesis
+          ubicacion_actual {
+            nombre
+            lat
+            lon
+          }
+          imagen {
+            id
+          }
+          autor {
+            apellido
+            nombre
+            biografia
+          }
+        }
       }
     `;
 
-    const { obra } = await this.$graphql.principal.request(query);
+    // eslint-disable-next-line camelcase
+    const { obra_individual, obras_galeria } = await this.$graphql.principal.request(query);
 
-    if (obra && obra.length) {
-      this.obra = obra[0];
+    // eslint-disable-next-line camelcase
+    if (obra_individual && obra_individual.length) {
+      this.obra = obra_individual[0];
     } else {
-      /* if (categories && categories.length) {
-      categories.forEach((category) => {
-        this.obras = category.artworks_category_1_r;
-      });
-    } */
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
     }
 
-    //  this.agregarCategorias();
+    // eslint-disable-next-line camelcase
+    if (obras_galeria && obras_galeria.length) {
+      // eslint-disable-next-line camelcase
+      this.obras = obras_galeria;
+    }
   },
 
   head() {
@@ -403,17 +426,6 @@ export default {
     cambiarPestana(pestana) {
       this.pestana = pestana;
     },
-    /*  agregarCategorias() {
-      const categorias = [];
-      const cantidad = 5;
-      for (let i = 0; i <= cantidad; i++) {
-        const categoria = this.obra[`category_${i}_id`];
-        if (categoria) {
-          categorias.push(categoria.name);
-        }
-      }
-      this.categorias = categorias;
-    }, */
   },
 };
 </script>
