@@ -7,8 +7,8 @@
     <Buscador />
 
     <div class="barra-texto">
-      <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
-      <ul v-if="categoriasVisible" class="opciones">
+      <h3 class="seccion" @click="desplegar">Categorías</h3>
+      <ul class="opciones">
         <li
           v-for="(cat1, i) in Object.keys(categorias).sort()"
           :key="`cat1${i}`"
@@ -71,8 +71,8 @@
       </ul>
 
       <div class="pantalla">
-        <h3 class="seccion" @click="colapsarAutores">Autores</h3>
-        <ul v-if="autoresVisible" class="iniciales">
+        <h3 class="seccion" @click="desplegar">Autores</h3>
+        <ul class="iniciales">
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
@@ -91,10 +91,19 @@
       </div>
 
       <div class="pantalla">
-        <h3 class="seccion" @click="colapsarPaises">Países</h3>
-        <ul v-if="paisesVisible" class="opciones">
+        <h3 class="seccion" @click="desplegar">Países</h3>
+        <ul class="opciones">
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
             <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Fisiognómica</h3>
+        <ul class="opciones">
+          <li v-for="(posicion, i) in fisiognomica" :key="`posicion${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${fisiognomica[0].nombre}?page=1`">{{ fisiognomica[i].nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -113,10 +122,7 @@ export default {
       obras: [],
       autores: [],
       paises: [],
-      categoriasVisible: true,
-      subcategoriasVisible: true,
-      autoresVisible: true,
-      paisesVisible: true,
+      fisiognomica: [],
       iniciales: new Set(),
       inicialSeleccionada: '',
     };
@@ -141,10 +147,13 @@ export default {
           nombre
           apellido
         }
+        fisiognomica_lista {
+          nombre
+        }
       }
     `;
     /* eslint-disable camelcase */
-    const { paises_lista, obra, autores } = await this.$graphql.principal.request(query);
+    const { paises_lista, obra, autores, fisiognomica_lista } = await this.$graphql.principal.request(query);
 
     this.obras = obra;
     if (autores && autores.length) {
@@ -163,6 +172,10 @@ export default {
         }
         return 0;
       });
+    }
+
+    if (fisiognomica_lista && fisiognomica_lista.length) {
+      this.fisiognomica = fisiognomica_lista;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
@@ -228,34 +241,9 @@ export default {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
     },
-    // TODO: Volver una sola función con parámetros
-    colapsarCategorias() {
-      if (this.categoriasVisible === true) {
-        this.categoriasVisible = false;
-      } else {
-        this.categoriasVisible = true;
-      }
-    },
-    colapsarSubcategorias() {
-      if (this.subcategoriasVisible === true) {
-        this.subcategoriasVisible = false;
-      } else {
-        this.subcategoriasVisible = true;
-      }
-    },
-    colapsarAutores() {
-      if (this.autoresVisible === true) {
-        this.autoresVisible = false;
-      } else {
-        this.autoresVisible = true;
-      }
-    },
-    colapsarPaises() {
-      if (this.paisesVisible === true) {
-        this.paisesVisible = false;
-      } else {
-        this.paisesVisible = true;
-      }
+    desplegar(evento) {
+      const contenedor = evento.target.parentElement;
+      contenedor.classList.toggle('abierto');
     },
     abrir(evento) {
       const contenedor = evento.target.parentElement;
@@ -313,6 +301,10 @@ li {
 }
 .pantalla {
   margin-top: 10px;
+  height: 1.7em;
+  &.abierto {
+    height: fit-content;
+  }
 }
 
 ul {
