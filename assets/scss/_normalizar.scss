@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700;800;900&display=swap');
 
 @font-face {
@@ -23,7 +23,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
 blockquote,
@@ -62,8 +61,7 @@ h4 {
 a {
   font-family: $fuenteMenu;
   font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 3px;
+  // letter-spacing: 3px;
 }
 
 button {
@@ -98,9 +96,8 @@ img,
 video {
   width: 100%;
   -o-object-position: center top;
-  object-position: top;
+  object-position: center top;
   height: auto;
-  object-fit: none;
 }
 
 body {
@@ -122,29 +119,7 @@ a:hover {
   background-color: color.scale($profundidad, $lightness: 80%);
   color: $claridad;
 }
-// .contenedor {
-//   display: flex;
-//   width: 100vw;
-//   justify-content: center;
-//   position: absolute;
-//   overflow: hidden;
-//   // height: 100vh;
-//   top: 0;
-//   .centrar-contenido {
-//     width: 800px;
-//     flex-direction: column;
-//   }
-// }
 
 .texto-claro {
   color: $claridad;
-}
-
-.contenedor-pagina {
-  flex-wrap: wrap;
-  width: calc(100vw - 280px) !important;
-  height: 100vh;
-  align-self: flex-end;
-  position: relative;
-  left: 280px;
 }

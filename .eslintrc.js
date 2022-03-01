@@ -12,5 +12,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     'vue/attribute-hyphenation': ['error', 'never'],
+    camelCase: 'off',
   },
 };

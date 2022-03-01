@@ -37,11 +37,8 @@ export default {
 </script>
 
 <style lang="scss">
-@use "sass:color";
-@font-face {
-  font-family: 'Agraham';
-  src: local('Agraham'), local('Agraham Personal Use');
-}
+@use 'sass:color';
+
 main {
   display: flex;
   flex-direction: column;
@@ -49,7 +46,6 @@ main {
 #contenedor {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   color: $profundidad;
 }
 .contenedor {

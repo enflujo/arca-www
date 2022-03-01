@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer :class="`${completo ? 'completo' : 'pequeno'}`">
     <div class="logo-completo">
       <Icono :fill="color" />
       <h2 class="logo-texto">Arca</h2>
@@ -18,37 +18,23 @@
 
 <script>
 export default {
+  props: {
+    completo: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       color: '#fffdf8',
       fecha: '',
     };
   },
-  mounted() {
-    this.actualizarFecha();
-  },
-  methods: {
-    actualizarFecha() {
-      setInterval(() => {
-        const ahora = new Date();
-        const opciones = {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        };
-        this.fecha = ahora.toLocaleString('es-CO', opciones);
-      }, 1000);
-    },
-  },
 };
 </script>
 
 <style lang="scss">
-@use "sass:color";
+@use 'sass:color';
 footer {
   background-color: $dolor;
   color: $claridad;
@@ -58,6 +44,7 @@ footer {
   align-items: center;
   justify-content: space-evenly;
   position: relative;
+
   .logo-completo {
     display: flex;
     justify-content: center;
@@ -85,5 +72,10 @@ footer {
   .copy {
     font-size: 0.9em;
   }
+}
+
+.pequeno {
+  width: calc(100% - 280px);
+  left: 280px;
 }
 </style>

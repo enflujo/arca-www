@@ -90,3 +90,23 @@ export const crearHead = (titulo, subtitulo, descripcion, banner, ruta) => {
     ],
   };
 };
+
+/**
+ * Elimina las tildes de todo el texto.
+ *
+ * @param {string} texto Texto sobre el cual eliminar las tildes
+ * @returns Texto sin tildes.
+ */
+export const eliminarTildes = (texto) => {
+  return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '');
+};
+
+/**
+ * Ayuda a extraer la primera letra de un texto omitiendo tildes.
+ *
+ * @param {string} texto Texto del cual extraer la primera letra
+ * @returns Primera letra del texto sin tilde.
+ */
+export const extraerPrimeraLetra = (texto) => {
+  return eliminarTildes(texto.trim().charAt(0));
+};

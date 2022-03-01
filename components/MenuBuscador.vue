@@ -1,5 +1,5 @@
 <template>
-  <nav class="barra-izquierda">
+  <nav id="barra-izquierda">
     <nuxt-link :to="'/'">
       <h2 class="logo-texto">ARCA</h2>
     </nuxt-link>
@@ -7,8 +7,8 @@
     <Buscador />
 
     <div class="barra-texto">
-      <h3 class="seccion" @click="colapsarCategorias">Categorías</h3>
-      <ul v-if="categoriasVisible">
+      <h3 class="seccion" @click="desplegar">Categorías</h3>
+      <ul class="opciones">
         <li
           v-for="(cat1, i) in Object.keys(categorias).sort()"
           :key="`cat1${i}`"
@@ -71,28 +71,39 @@
       </ul>
 
       <div class="pantalla">
-        <h3 class="seccion" @click="colapsarAutores">Autores</h3>
-        <ul v-if="autoresVisible">
-          <div class="iniciales">
-            <li v-for="(inicial, i) in iniciales" :key="`inicial${i}`" class="inicial">
-              <span @click="elegirInicial(inicial)">
-                {{ inicial }}
-              </span>
-            </li>
-          </div>
-          <span v-if="inicialSeleccionada != ''">
-            <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="lista-autores">
-              <nuxt-link :to="`/autor/${autor.lastname}?page=1`">{{ autor.lastname }} {{ autor.name }}</nuxt-link>
-            </li>
-          </span>
+        <h3 class="seccion" @click="desplegar">Autores</h3>
+        <ul class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
+          <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
+            <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
+          </li>
         </ul>
       </div>
 
       <div class="pantalla">
-        <h3 class="seccion" @click="colapsarPaises">Países</h3>
-        <ul v-if="paisesVisible">
-          <li v-for="(pais, i) in paises" :key="`autor${i}`" class="lista-autores">
-            <nuxt-link :to="`/mapa/${pais.name_spanish}?page=1`">{{ pais.name_spanish }}</nuxt-link>
+        <h3 class="seccion" @click="desplegar">Países</h3>
+        <ul class="opciones">
+          <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
+            <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Fisiognómica</h3>
+        <ul class="opciones">
+          <li v-for="(posicion, i) in fisiognomica" :key="`posicion${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${fisiognomica[0].nombre}?page=1`">{{ fisiognomica[i].nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -102,7 +113,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { urlImagen } from '../utilidades/ayudas';
+import { urlImagen, extraerPrimeraLetra, eliminarTildes } from '../utilidades/ayudas';
 export default {
   data() {
     return {
@@ -111,10 +122,7 @@ export default {
       obras: [],
       autores: [],
       paises: [],
-      categoriasVisible: true,
-      subcategoriasVisible: true,
-      autoresVisible: true,
-      paisesVisible: true,
+      fisiognomica: [],
       iniciales: new Set(),
       inicialSeleccionada: '',
     };
@@ -122,69 +130,40 @@ export default {
   async fetch() {
     const query = gql`
       query {
-        paginas(filter: { slug: { _eq: "archivo" } }, limit: 1) {
-          titulo
-          slug
-          descripcion
-          contenido
-          banner {
-            id
-            title
+        paises_lista {
+          nombre_es
+        }
+        obra(limit: 50) {
+          arca_id
+          clasificacion {
+            categorias_lista_id {
+              nombre
+              ascendencia
+            }
           }
         }
-        artworks(limit: 50) {
+        autores(limit: -1) {
           id
-          title
-          author_id {
-            id
-            name
-            lastname
-          }
-          category_1_id {
-            id
-            name
-          }
-          category_2_id {
-            id
-            name
-          }
-          category_3_id {
-            id
-            name
-          }
-          category_4_id {
-            id
-            name
-          }
-          category_5_id {
-            id
-            name
-          }
+          nombre
+          apellido
         }
-        countries {
-          id
-          name_spanish
-        }
-        authors {
-          id
-          lastname
-          name
+        fisiognomica_lista {
+          nombre
         }
       }
     `;
-    const { paginas, artworks, countries, authors } = await this.$graphql.principal.request(query);
-    if (paginas.length && paginas[0].slug) {
-      this.pagina = paginas[0];
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('La página no existe');
+    /* eslint-disable camelcase */
+    const { paises_lista, obra, autores, fisiognomica_lista } = await this.$graphql.principal.request(query);
+
+    this.obras = obra;
+    if (autores && autores.length) {
+      this.autores = autores;
     }
-    if (countries && countries.length) {
-      this.paises = countries.sort((a, b) => {
-        const nombreA = a.name_spanish;
-        const nombreB = b.name_spanish;
+
+    if (paises_lista && paises_lista.length) {
+      this.paises = paises_lista.sort((a, b) => {
+        const nombreA = a.nombre_es;
+        const nombreB = b.nombre_es;
         if (nombreA < nombreB) {
           return -1;
         }
@@ -193,28 +172,23 @@ export default {
         }
         return 0;
       });
+    }
+
+    if (fisiognomica_lista && fisiognomica_lista.length) {
+      this.fisiognomica = fisiognomica_lista;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
       }
       throw new Error('La página no existe');
     }
-    if (authors && authors.length) {
-      this.autores = authors.sort((a, b) => {
-        const apellidoA = a.lastname;
-        const apellidoB = b.lastname;
-        if (apellidoA < apellidoB) {
-          return -1;
-        }
-        if (apellidoA > apellidoB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    if (artworks && artworks.length) {
+
+    // TODO: ¿Cómo se resuelve de nuevo la lista de categorías?
+    // obra.forEach((element) => console.log(element.clasificacion[0].categorias_lista_id.nombre));
+
+    /* if (obra && obra.length) {
       const categorias = {};
-      artworks.forEach((work) => {
+      obra.forEach((work) => {
         const cat1 = work.category_1_id ? work.category_1_id : null;
         const cat2 = work.category_2_id ? work.category_2_id.name : null;
         const cat3 = work.category_3_id ? work.category_3_id.name : null;
@@ -247,7 +221,7 @@ export default {
         }
       });
       this.categorias = categorias;
-    }
+    } */
     this.cargarIniciales();
   },
   computed: {
@@ -267,139 +241,125 @@ export default {
     urlImagen(objImg, key) {
       return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
     },
-    // TODO: Volver una sola función con parámetros
-    colapsarCategorias() {
-      if (this.categoriasVisible === true) {
-        this.categoriasVisible = false;
-      } else {
-        this.categoriasVisible = true;
-      }
-    },
-    colapsarSubcategorias() {
-      if (this.subcategoriasVisible === true) {
-        this.subcategoriasVisible = false;
-      } else {
-        this.subcategoriasVisible = true;
-      }
-    },
-    colapsarAutores() {
-      if (this.autoresVisible === true) {
-        this.autoresVisible = false;
-      } else {
-        this.autoresVisible = true;
-      }
-    },
-    colapsarPaises() {
-      if (this.paisesVisible === true) {
-        this.paisesVisible = false;
-      } else {
-        this.paisesVisible = true;
-      }
+    desplegar(evento) {
+      const contenedor = evento.target.parentElement;
+      contenedor.classList.toggle('abierto');
     },
     abrir(evento) {
       const contenedor = evento.target.parentElement;
       contenedor.classList.toggle('cerrado');
       // contenedor.classList.toggle('categoriaLarga');
     },
+
     cargarIniciales() {
       const iniciales = [];
       for (const autor in this.autores) {
-        iniciales.push(this.autores[autor].lastname.charAt(0));
+        const inicial = extraerPrimeraLetra(this.autores[autor].apellido).toUpperCase();
+
+        if (inicial !== '') {
+          iniciales.push(inicial);
+        }
       }
-      this.iniciales = new Set(iniciales);
+
+      this.iniciales = Array.from(new Set(iniciales)).sort();
     },
+
     elegirInicial(inicial) {
       this.inicialSeleccionada = inicial;
     },
+
     autoresPorInicial(inicial) {
-      const autores = this.autores.filter((autor) => autor.lastname.charAt(0) === inicial);
-      return autores;
+      return this.autores
+        .filter((autor) => extraerPrimeraLetra(autor.apellido) === inicial)
+        .sort((a, b) => {
+          const apellidoA = eliminarTildes(a.apellido.toUpperCase());
+          const apellidoB = eliminarTildes(b.apellido.toUpperCase());
+
+          if (apellidoA < apellidoB) return -1;
+          if (apellidoA > apellidoB) return 1;
+          return 0;
+        });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-#mapa {
-  top: 0 !important;
-  display: flex !important;
-  width: 25vw !important;
-  height: 30vh !important;
-  position: relative !important;
-}
-.descripcion-datos {
-  height: 40px;
-  border-bottom: 1px solid $mediana;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.barra-detalles {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.agrupar-elementos {
-  display: flex;
-}
-.contenedor-pagina {
-  display: flex;
+#barra-izquierda {
+  background-color: $mediana;
+  border-right: 2px solid $dolor;
+  position: fixed;
+  overflow: auto;
+  width: 280px;
+  height: 100vh;
 }
 .logo-texto {
   margin: 20px;
   font-family: $fuentePrincipal;
 }
+
 li {
   margin-bottom: 0.2em;
 }
-.descripcion {
-  margin-top: 10px;
-}
-.barra-izquierda {
-  background-color: $mediana;
-  border-right: 2px solid $dolor;
-  width: 280px;
-  height: 100vh;
-  position: fixed;
-}
+
 .barra-texto {
-  width: 275px;
   padding-left: 20px;
   margin-top: 2em;
-  z-index: 2;
-  height: calc(100vh - 145px);
 }
 .pantalla {
   margin-top: 10px;
+  height: 1.7em;
+  &.abierto {
+    height: fit-content;
+  }
 }
+
 ul {
-  list-style: none;
-  // margin: 0.5em 1em;
   margin-right: 0.2em;
   margin-left: 0.8em;
   padding-top: 0.5em;
   font-family: $fuenteMenu;
+
+  &.opciones {
+    overflow: visible;
+  }
 }
+
 .seccion {
   margin-bottom: 10px;
   font-family: $fuentePrincipal;
   cursor: pointer;
 }
+
 .iniciales {
   margin-bottom: 1em;
-}
-.inicial {
-  display: inline;
-  padding-left: 3px;
-  padding-right: 3px;
-  margin-bottom: 1em;
-}
-.autores {
   height: auto;
 }
-nav li {
+
+.inicial {
+  display: inline;
+  margin-bottom: 1em;
   cursor: pointer;
 }
+
+.enlace-menu {
+  margin-bottom: 0.4em;
+  font-size: 0.85em;
+  position: relative;
+
+  &::before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    display: block;
+    background-color: $dolor;
+    position: absolute;
+    left: -9px;
+    top: 0.5em;
+  }
+}
+
 .cat {
   width: auto;
   overflow: hidden;
@@ -413,5 +373,9 @@ nav li {
   &.categoria5 {
     height: fit-content;
   }
+}
+
+.nuxt-link-exact-active {
+  font-weight: bold;
 }
 </style>

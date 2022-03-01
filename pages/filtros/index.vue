@@ -1,9 +1,7 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <div>
-        <h1>Pendiente...</h1>
-      </div>
+      <Cargador />
     </template>
 
     <template v-else-if="$fetchState.error">

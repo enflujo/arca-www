@@ -1,12 +1,5 @@
 <template>
   <div class="contenedor-general">
-    <!-- <div class="contenedor-derecho">
-      <img src="imgs/MapaImagen.jpeg" class="mapaImagen" />
-    </div>
-    <div class="contenedor-izquierdo">
-      <div class="contenedor-mitad"></div>
-    </div> -->
-
     <div class="segundo-cuadro">
       <div class="botones">
         <button class="boton-filtro" @click="actualizarFiltro('pais')">
@@ -170,33 +163,7 @@ export default {
     left: 10%;
     margin: 8%;
   }
-  // .contenedor-derecho {
-  //   position: absolute;
-  //   width: 50vw;
-  //   left: 50vw;
-  //   height: 100vh;
-  //   .mapaImagen {
-  //     right: 0px;
-  //     height: 100vh;
-  //   }
-  // }
-  // .contenedor-izquierdo {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   width: 50vw;
-  //   height: 100vh;
-  //   background-color: $profundidad;
-  //   .contenedor-mitad {
-  //     color: $claridad;
-  //     position: relative;
-  //     top: 100px;
-  //     display: flex;
-  //     justify-content: center;
-  //     flex-direction: column;
-  //     align-items: center;
-  //   }
-  // }
+
   .boton-filtro {
     display: flex;
     width: 30%;
@@ -204,6 +171,7 @@ export default {
     justify-content: space-around;
     color: $profundidad;
   }
+
   .lista-paises {
     display: flex;
     justify-content: space-around;

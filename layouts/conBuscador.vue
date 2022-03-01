@@ -1,13 +1,11 @@
 <template>
   <div id="contenedor">
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
-
     <main role="main">
       <MenuBuscador />
-
       <Nuxt keepAlive />
-      <FooterPequeno />
     </main>
+    <Footer :completo="false" />
   </div>
 </template>
 
@@ -38,25 +36,27 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@use "sass:color";
-@font-face {
-  font-family: 'Agraham';
-  src: local('Agraham'), local('Agraham Personal Use');
+<style lang="scss" scoped>
+@use 'sass:color';
+
+#contenedor {
+  color: $profundidad;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
 }
+
 main {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
-#contenedor {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  color: $profundidad;
+
+.pagina {
+  width: calc(100vw - 280px);
+  margin-left: 280px;
 }
-.contenedor {
-  display: flex;
-}
+
 // Teléfonos horizontal
 @media (min-width: $minCelular) {
 }

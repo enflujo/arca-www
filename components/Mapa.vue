@@ -54,12 +54,12 @@ export default {
       };
 
       geoJson.data.features = this.$props.datos.map((punto) => {
-        const { latitude_current: lat, longitude_current: lon, title, annotation_date: date, id } = punto;
+        const { lat, lon, nombre: title, id } = punto;
 
         return {
           type: 'Feature',
           properties: {
-            description: `${title} (${date}) ${id}`,
+            description: title,
             id: `${id}`,
           },
           geometry: {
@@ -125,9 +125,9 @@ export default {
 #mapa {
   top: 10%;
   bottom: 0;
-  width: 25vw;
-  height: 30vh;
-  display: none;
+  width: 60vw;
+  height: 60vh;
+  //display: none;
   // position: absolute;
   // clip-path: inset(32% 65% 10% 15% round 400px);
 }

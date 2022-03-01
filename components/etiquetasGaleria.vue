@@ -5,7 +5,6 @@
         <div class="categoria" @click="borrarEtiqueta">{{ busqueda }} X</div>
       </nuxt-link>
     </span>
-    <MenuVistas :busqueda="busqueda" />
   </div>
 </template>
 
@@ -48,6 +47,7 @@ export default {
   margin-right: 6%;
   margin-left: 2%;
   overflow: hidden;
+
   .categoria {
     background-color: $dolor;
     color: $mediana;

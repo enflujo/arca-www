@@ -1,12 +1,12 @@
-name: ci
+name: Estilos código
 
 on:
   push:
     branches:
-      - main
+      - nueva_bd
   pull_request:
     branches:
-      - main
+      - nueva_bd
 
 jobs:
   ci:

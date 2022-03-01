@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <h1>Pendiente...</h1>
+      <Cargador />
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -22,64 +22,51 @@
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante">Proyecto</h2>
               <p class="descripcion-importante">
-                El proyecto Arca se ensambla a partir de la necesidad de establecer una geografía de los temas de las
-                representaciones visuales que surgieron en América colonial. Su elaboración proviene de una pregunta
-                central ¿qué se pintó en América colonial y cuáles son los temas propios a cada región?
+                {{ informacion.proyecto }}
               </p>
             </div>
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[0].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[0].imagen)" :alt="obras.title" />
               </div>
             </div>
           </div>
           <div class="primera-parte">
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[1].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[1].imagen)" :alt="obras.title" />
               </div>
             </div>
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante izquierda">Propósito</h2>
               <p class="descripcion-importante izquierda">
-                El propósito ha sido reunir toda la producción visual conocida y disponible, de manera que se pueda
-                tener una visión de conjunto de los temas, sus diferencias gestuales, las similitudes en el tratamiento,
-                etc. Para el efecto se han reunido imágenes que provienen principalmente de pintura en sus diferentes
-                soportes, y eventualmente objetos, techos y mural, debida su importancia. El criterio temporal cubre
-                desde las tempranas imágenes del siglo XVI hasta la década de 1830, cuando se comienza a agotar, aunque
-                no exclusivamente, la tradición colonial.
+                {{ informacion.proposito }}
               </p>
             </div>
           </div>
           <div class="primera-parte">
             <div class="plantilla-texto">
-              <h2 class="subtitulo-importante">ESPACIO</h2>
+              <h2 class="subtitulo-importante">Espacio</h2>
               <p class="descripcion-importante">
-                Se ha tratado de cubrir toda América, de modo que se pueda tener un acercamiento no sólo a los temas,
-                sino también a los desiguales volúmenes de producción en cada región. Cada tema ha sido clasificado en
-                varias categorías, la mayoría de ellas tomadas de la tradición barroca, de modo que se pueda
-                georreferenciar los datos.
+                {{ informacion.espacio }}
               </p>
             </div>
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[2].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[2].imagen)" :alt="obras.title" />
               </div>
             </div>
           </div>
           <div class="primera-parte">
             <div class="pequena-galeria">
               <div class="imagen-horizontal">
-                <img :src="urlImagen(obras[3].image)" :alt="obras.title" />
+                <img :src="urlImagen(obras[3].imagen)" :alt="obras.title" />
               </div>
             </div>
             <div class="plantilla-texto">
               <h2 class="subtitulo-importante izquierda">El conjunto</h2>
               <p class="descripcion-importante izquierda">
-                Como se trata de observar el conjunto de los temas, muchas de estas imágenes no tienen una calidad que
-                permita apreciar sus detalles, pero sí al menos la calidad de la composición. La diversidad de fuentes
-                de donde se han tomado, genera problemas con la autoría, la datación y hasta el mismo título de la obra.
-                Cualquier pregunta, observación, sugerencia o corrección, será bienvenida.
+                {{ informacion.conjunto }}
               </p>
             </div>
           </div>
@@ -94,11 +81,13 @@
 <script>
 import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
+
 export default {
   data() {
     return {
       pagina: {},
       obras: [],
+      informacion: {},
     };
   },
   async fetch() {
@@ -114,17 +103,28 @@ export default {
             title
           }
         }
-        artworks(filter: { category_1_id: { name: { _eq: "Mariología" } } }, limit: 4) {
-          id
-          title
-          image {
+        general {
+          proyecto
+          proposito
+          espacio
+          conjunto
+        }
+        obra(filter: { clasificacion: { categorias_lista_id: { nombre: { _eq: "Advocaciones" } } } }, limit: 4) {
+          arca_id
+          titulo
+          clasificacion {
+            categorias_lista_id {
+              nombre
+            }
+          }
+          imagen {
             id
             title
           }
         }
       }
     `;
-    const { paginas, artworks } = await this.$graphql.principal.request(query);
+    const { paginas, general, obra } = await this.$graphql.principal.request(query);
     if (paginas.length && paginas[0].slug) {
       this.pagina = paginas[0];
     } else {
@@ -133,8 +133,11 @@ export default {
       }
       throw new Error('La página no existe');
     }
-    if (artworks && artworks.length) {
-      this.obras = artworks;
+    if (obra && obra.length) {
+      this.obras = obra;
+    }
+    if (general) {
+      this.informacion = general;
     }
   },
   head() {
