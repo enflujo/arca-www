@@ -17,24 +17,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use "sass:color";
+@use 'sass:color';
 #portada {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 99vh;
-  width: 100vw;
+  width: 100%;
   z-index: 1;
   background-attachment: fixed;
   background-image: url(./static/imgs/background-image.png);
-  background-position: 50%, 50%;
-}
-
-.logoArca {
-  width: 100px;
-  margin-top: 10px;
-  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #logoArca {

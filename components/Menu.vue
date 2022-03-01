@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use "sass:color";
+@use 'sass:color';
 $menuRayaAncho: 25px;
 $menuRayaAlto: 3px;
 $menuRayaRadio: 4px;
@@ -63,6 +63,7 @@ $menuRayaColor: $claridad;
 
 .contenedorMenu {
   z-index: 9999;
+  position: fixed;
 }
 
 .menuBtn {
@@ -117,7 +118,7 @@ $menuRayaColor: $claridad;
       opacity: 1;
     }
 
-    &.nuxt-link-active {
+    &.nuxt-link-exact-active {
       color: $claridad;
       opacity: 1;
     }
@@ -132,17 +133,6 @@ $menuRayaColor: $claridad;
 .menuPrincipal {
   z-index: 2;
   position: relative;
-}
-
-.fondo {
-  /*  pointer-events: none;
-  z-index: 1;
-  width: 100vw;
-  height: 100vh;
-  background-color: #00000098;
-  position: absolute;
-  transition: all 0.5s ease-in-out;
-  opacity: 0; */
 }
 
 .cerrado {

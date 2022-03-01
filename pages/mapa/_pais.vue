@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <h1>Pendiente...</h1>
+      <Cargador />
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -10,7 +10,6 @@
 
     <template v-else>
       <div class="contenedor-pagina">
-        <!-- <DescripcionGaleria v-if="obras.length < 100" :numero="obras.length" :busqueda="$route.params.pais" /> -->
         <EtiquetasGaleria :busqueda="$route.params.pais" />
         <Galeria :obras="obras" />
         <MenuVistas :busqueda="$route.params.pais" />
@@ -46,34 +45,44 @@ export default {
 
     const query = gql`
       query {
-        artworks(filter: { actual_country_id: { name_spanish: { _eq: "${pais}" } } }, page: ${page}) {
-          id
-          title
-          annotation_date
-          synthesis
-          latitude_current
-          longitude_current
-          image {
+        obra_aggregated(filter: { ubicacion_actual: { nombre: { _eq: "${pais}" } } } ) {
+          count {
             id
-            title
           }
-          author_id {
-            id
-            name
-            lastname
+        }
+
+        obra(filter: { ubicacion_actual: { nombre: { _eq: "${pais}" } } }, page: ${page}) {
+          arca_id
+          titulo
+          autor {
+            apellido
+            nombre
           }
-          actual_country_id {
+          fechas_actividad
+          sintesis
+          imagen {
             id
-            name_spanish
+          }
+          ubicacion_actual {
+            nombre
+            lat
+            lon
           }
         }
       }
     `;
 
-    const { artworks } = await this.$graphql.principal.request(query);
+    // eslint-disable-next-line camelcase
+    const { obra, obra_aggregated } = await this.$graphql.principal.request(query);
 
-    if (artworks && artworks.length) {
-      this.obras = artworks;
+    // eslint-disable-next-line camelcase
+    if (obra_aggregated) {
+      const obrasPorPagina = 50;
+      const cantidadObras = Math.ceil(obra_aggregated[0].count.id / obrasPorPagina);
+      this.pages = Array.from({ length: cantidadObras }, (_, index) => index + 1);
+    }
+    if (obra && obra.length) {
+      this.obras = obra;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="$fetchState.pending">
-      <h1>Pendiente...</h1>
+      <Cargador />
     </template>
 
     <template v-else-if="$fetchState.error">
@@ -17,37 +17,31 @@
       <div class="contenedor-centrado">
         <div class="completo-archivo">
           <div class="titulo">
-            <h1>{{ obra.title }}</h1>
-            <h3 class="nombre-autor">{{ `${obra.author_id.name} ${obra.author_id.lastname}` }}</h3>
+            <h1>{{ obra.titulo }}</h1>
+            <h3 class="nombre-autor">{{ `${obra.autor.nombre} ${obra.autor.apellido}` }}</h3>
           </div>
           <div v-if="!imagenAbierta" class="descripcion">
             <div class="imagenCerrada" @click="imagenAbierta = true">
-              <img :src="urlImagen(obra.image)" :alt="obra.title" />
+              <img :src="urlImagen(obra.imagen)" :alt="obra.titulo" />
             </div>
 
             <div class="hover-info">
               <div class="textos-hover">
-                <h1 class="descripcion-tit">Información básica de la imagen</h1>
-                <p class="descripcion-des">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam molestie tristique ullamcorper. Integer
-                  porttitor nibh tincidunt, malesuada mi eu, facilisis ante. Fusce ac mi ut est fringilla blandit id sed
-                  sapien. Duis vitae hendrerit lacus. Vivamus accumsan imperdiet sem eget fringilla. Ut vulputate diam
-                  augue, in egestas sem consectetur ut. Nam suscipit, justo id pharetra pharetra, ligula ligula auctor
-                  velit.
-                </p>
+                <h1 class="descripcion-tit">Información de la imagen</h1>
+                <p class="descripcion-des">{{ obra.sintesis }}</p>
               </div>
             </div>
           </div>
           <div v-if="imagenAbierta" class="imagenAbierta">
             <vue-magnifier
               class="imagen-des"
-              :src="urlImagen(obra.image)"
-              :srcLarge="urlImagen(obra.image)"
-              :alt="obra.title"
+              :src="urlImagen(obra.imagen)"
+              :srcLarge="urlImagen(obra.imagen)"
+              :alt="obra.titulo"
             >
             </vue-magnifier>
             <span class="cerrar" @click="imagenAbierta = false">
-              <p>X</p>
+              <p>X &nbsp;</p>
             </span>
           </div>
           <div class="botonera">
@@ -81,7 +75,7 @@
                   fill="grey"
                 />
               </svg>
-              <div class="texto-cat">descripcion</div>
+              <div class="texto-cat">descripción</div>
             </button>
             <button
               class="botones-imagen"
@@ -122,58 +116,113 @@
               <h1 class="sub-pestana">Datos</h1>
               <div class="linea">
                 <div class="titulo">Título</div>
-                <div class="descripcion">{{ obra.title }}</div>
+                <div class="descripcion">{{ obra.titulo }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Autor</div>
-                <nuxt-link :to="`/autor/${obra.author_id.lastname}?page=1`">
-                  <div class="descripcion">{{ obra.author_id.name }} {{ obra.author_id.lastname }}</div>
+                <nuxt-link :to="`/autor/${obra.autor.apellido}?page=1`">
+                  <div class="descripcion">{{ obra.autor.nombre }} {{ obra.autor.apellido }}</div>
                 </nuxt-link>
               </div>
               <div class="linea">
                 <div class="titulo">Fecha</div>
-                <div class="descripcion">{{ obra.annotation_date }}</div>
+                <div class="descripcion">{{ obra.fechas_actividad }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">Tipo</div>
-                <div class="descripcion">{{ obra.type_id.name }}</div>
+                <div class="titulo">Técnica</div>
+                <div class="descripcion">{{ obra.tecnica.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Ubicación actual</div>
+                <div class="descripcion">{{ obra.ubicacion_actual.nombre }}</div>
               </div>
               <div class="linea">
                 <div class="titulo">Fuente de la imagen</div>
-                <div class="descripcion">{{ obra.source_id.name }}</div>
+                <div class="descripcion">{{ obra.fuente_imagen }}</div>
               </div>
+              <!-- país de origen -->
               <div class="linea">
                 <div class="titulo">Categorías</div>
                 <ul class="nube-categorias">
-                  <div v-for="(nombre, i) in categorias" :key="`categoria-${i}`" class="categorias">
-                    <nuxt-link :to="`/categoria/${categorias[i]}?page=1`"
-                      ><li>{{ categorias[i] }}</li></nuxt-link
+                  <div v-for="(categoria, i) in obra.clasificacion" :key="`categoria-${i}`" class="categorias">
+                    <nuxt-link :to="`/categoria/${obra.clasificacion[i].categorias_lista_id.nombre}?page=1`"
+                      ><li>{{ obra.clasificacion[i].categorias_lista_id.nombre }}</li></nuxt-link
                     >
                   </div>
                 </ul>
               </div>
+              <!-- descriptores -->
             </span>
             <span v-else-if="pestana == 'descripcion'">
               <h1 class="sub-pestana">Descripción</h1>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Tipo de relato visual</div>
+                <div class="descripcion">{{ obra.tipo_relato_visual.nombre }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Escenario</div>
+                <div class="descripcion">{{ obra.escenario.nombre }}</div>
               </div>
+              <div class="linea">
+                <div class="titulo">Donante</div>
+                <div class="descripcion">{{ obra.donante.nombre }}</div>
+              </div>
+              <!-- filacteria -->
+              <!-- icono texto -->
+              <div class="linea">
+                <div class="titulo">Iconotexto</div>
+                <div class="descripcion">{{ obra.tipo_iconotexto.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Anotación Comentario Bibliográfico</div>
+                <div class="descripcion">{{ obra.anotacion_comentario_bibliografico }}</div>
+              </div>
+              <!-- símbolos -->
+              <!-- características particulares ¿? -->
             </span>
 
             <span v-else-if="pestana == 'personajes'">
               <h1 class="sub-pestana">Personajes y gestos</h1>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <!-- Esto va? -->
+                <div class="titulo">Cuerpo</div>
+                <div class="descripcion">{{ obra.cuerpo_imagen.nombre }}</div>
               </div>
               <div class="linea">
-                <div class="titulo">título ejemplo</div>
-                <div class="descripcion">ejemplo de descripción lorem ipsum</div>
+                <div class="titulo">Disposición corporal</div>
+                <div class="descripcion">{{ obra.disposicion_corporal.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Tipo gestual</div>
+                <div class="descripcion">{{ obra.tipo_gestual.nombre }}</div>
+              </div>
+              <!-- Objeto-gesto -->
+              <div class="linea">
+                <div class="titulo">Objeto</div>
+                <ul class="nube-categorias">
+                  <div v-for="(objeto, i) in obra.objeto" :key="`gesto-${i}`" class="categorias">
+                    <li>{{ obra.objeto[i].objetos_lista_id.nombre }}</li>
+                  </div>
+                </ul>
+              </div>
+
+              <div class="linea">
+                <div class="titulo">Complejidad gestual</div>
+                <div class="descripcion">{{ obra.complejidad_gestual.nombre }}</div>
+              </div>
+              <div class="linea">
+                <div class="titulo">Gestos</div>
+                <ul class="nube-categorias">
+                  <div v-for="(gesto, i) in obra.gestos" :key="`gesto-${i}`" class="categorias">
+                    <li>{{ obra.gestos[i].gestos_lista_id.nombre }}</li>
+                  </div>
+                </ul>
+              </div>
+              <!-- fisiognómica -->
+              <!-- fisiognómica de la imagen -->
+              <div class="linea">
+                <div class="titulo">Rostro</div>
+                <div class="descripcion">{{ obra.rostro.nombre }}</div>
               </div>
             </span>
 
@@ -189,7 +238,8 @@
               </div>
             </span>
           </section>
-          <h1 class="sub-pestana">Ubicación</h1>
+          <!-- <h1 class="sub-pestana">Ubicación</h1> -->
+
           <section class="informacion-geografica">
             <div v-if="obra.actual_country_id != null || obra.origin_country_id != null" class="galeria-mapas">
               <div class="mapa">
@@ -211,8 +261,9 @@
                 <div v-if="obra.origin_country_id.name_spanish != obra.actual_country_id.name_spanish" class="mapa">
                   <h5 class="subtitulo">País actual</h5>
                   <div class="ubicacion"></div>
-                  <nuxt-link :to="`/mapa/${obra.actual_country_id.name_spanish}?page=1`">
-                    <h5 class="pais">{{ obra.actual_country_id.name_spanish }}</h5>
+
+                  <nuxt-link :to="`/mapa/${obra.ubicacion_actua}?page=1`">
+                    <h5 class="pais">{{ obra.ubicacion_actual }}</h5>
                   </nuxt-link>
                 </div>
               </span>
@@ -244,94 +295,106 @@ export default {
     };
   },
 
+  // TODO: Cambiar el segundo query para filtrar por categoría y ¿de dónde sacar el id de la categoría?
   async fetch() {
     const query = gql`
       query {
-        artworks(filter: { id: { _eq: ${this.$route.params.id} } }, limit: 1) {
-          id
-          title
-          annotation_date
-          latitude_current
-          longitude_current
-          synthesis
-          image {
-            id
-            title
+        obra_individual: obra(filter: { arca_id: { _eq: ${this.$route.params.id} } }, limit: 1) {
+          arca_id
+          titulo
+          autor {
+            arca_id
+            apellido
+            nombre
           }
-          author_id {
-            id
-            name
-            lastname
+          tecnica {
+            nombre
           }
-          origin_country_id {
+          fechas_actividad
+          sintesis
+          imagen {
             id
-            name_spanish
           }
-          actual_country_id {
-            id
-            name_spanish
+          fuente_imagen
+          ubicacion_actual {
+            nombre
+            lat
+            lon
           }
-          category_1_id {
-            id
-            name
+          clasificacion {
+            categorias_lista_id {
+              nombre
+              ascendencia
+            }
           }
-          category_2_id {
-            id
-            name
+          donante {
+            nombre
           }
-          category_3_id {
-            id
-            name
+          tipo_iconotexto {
+            nombre
           }
-          category_4_id {
-            id
-            name
+          anotacion_comentario_bibliografico
+          tipo_relato_visual {
+            nombre
           }
-          category_5_id {
-            id
-            name
+          escenario {
+            nombre
           }
-          type_id {
-            id
-            name
+          cuerpo_imagen  {
+            nombre
           }
-          source_id {
-            id
-            name
+          tipo_gestual {
+            nombre
+          }
+          objeto {
+            objetos_lista_id {
+              nombre
+            }
+          }
+          complejidad_gestual {
+            nombre
+          }
+          disposicion_corporal {
+            nombre
+          }
+          gestos {
+            gestos_lista_id {
+              nombre
+            }
+          }
+          rostro {
+            nombre
           }
         }
 
-    categories(filter: { artworks_category_1_r: { _or: [
-        { id: { _eq: ${this.$route.params.id} } }
-        ]} }, limit: 100) {
-          name
-          artworks_category_1_r {
+        obras_galeria: obra(filter: { autor: { arca_id: { _eq: 53 } } } ) {
+          arca_id
+          titulo
+          fechas_actividad
+          sintesis
+          ubicacion_actual {
+            nombre
+            lat
+            lon
+          }
+          imagen {
             id
-            title
-            annotation_date
-            image {
-              id
-              title
-            }
-            author_id {
-              id
-              name
-              lastname
-            }
+          }
+          autor {
+            apellido
+            nombre
+            biografia
           }
         }
       }
     `;
 
-    const { categories, artworks } = await this.$graphql.principal.request(query);
+    // eslint-disable-next-line camelcase
+    const { obra_individual, obras_galeria } = await this.$graphql.principal.request(query);
 
-    if (artworks && artworks.length) {
-      this.obra = artworks[0];
-    }
-    if (categories && categories.length) {
-      categories.forEach((category) => {
-        this.obras = category.artworks_category_1_r;
-      });
+    // eslint-disable-next-line camelcase
+    if (obra_individual && obra_individual.length) {
+      this.obra = obra_individual[0];
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
@@ -339,15 +402,19 @@ export default {
       throw new Error('La página no existe');
     }
 
-    this.agregarCategorias();
+    // eslint-disable-next-line camelcase
+    if (obras_galeria && obras_galeria.length) {
+      // eslint-disable-next-line camelcase
+      this.obras = obras_galeria;
+    }
   },
 
   head() {
     return crearHead(
       this.$store.state.general.datos.nombre,
-      this.obra.title,
-      this.obra.synthesis,
-      this.obra.image,
+      this.obra.titulo,
+      this.obra.sintesis,
+      this.obra.imagen,
       this.$nuxt.$route.path
     );
   },
@@ -359,21 +426,13 @@ export default {
     cambiarPestana(pestana) {
       this.pestana = pestana;
     },
-    agregarCategorias() {
-      const categorias = [];
-      const cantidad = 5;
-      for (let i = 0; i <= cantidad; i++) {
-        const categoria = this.obra[`category_${i}_id`];
-        if (categoria) {
-          categorias.push(categoria.name);
-        }
-      }
-      this.categorias = categorias;
-    },
   },
 };
 </script>
+
 <style lang="scss" scoped>
+@use 'sass:math';
+
 main {
   justify-content: center;
   display: flex;
@@ -385,7 +444,6 @@ main {
 }
 .nube-categorias {
   display: grid;
-  width: 90vw;
 }
 .triangulo-des {
   width: 0;
@@ -411,8 +469,8 @@ main {
   left: 228px;
   cursor: pointer;
   .textos-hover {
-    padding-top: 5px;
-    padding-left: 20px;
+    padding-top: 1vh;
+    padding-left: 2vw;
     .descripcion-tit {
       color: $profundidad;
       padding-bottom: 20px;
@@ -443,10 +501,10 @@ main {
   justify-content: center;
   overflow: hidden;
   .completo-archivo {
-    padding-top: 50px;
+    padding-top: 10vh;
     overflow: hidden;
-    width: 900px;
-    padding-bottom: 50px;
+    width: 60vw;
+    padding-bottom: 10vh;
   }
   .titulo {
     justify-content: flex-end;
@@ -457,6 +515,7 @@ main {
   .imagenAbierta {
     display: flex;
     border-radius: 10px;
+
     .cerrar {
       cursor: pointer;
       color: $dolor;
@@ -464,6 +523,10 @@ main {
   }
   .imagenCerrada {
     cursor: pointer;
+    width: 30vw;
+    img {
+      object-fit: cover;
+    }
   }
 }
 hr.linea-red {
@@ -539,31 +602,30 @@ button:focus {
     display: flex;
     align-items: baseline;
     height: fit-content;
-    margin-top: 1.2em;
+    margin-top: 0.2em;
     .titulo {
-      letter-spacing: 3px;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       font-family: $fuenteMenu;
       font-weight: 400;
-      font-size: 12px;
-      margin-top: 30px;
+      font-size: 0.75em;
+      margin-top: 2.4vw;
       color: $profundidad;
       text-align: start;
-      width: 200px;
+      width: 35vw;
     }
     .descripcion {
       position: relative;
-      left: 80px;
+      left: 3vw;
       font-family: $fuentePrincipal;
-      font-size: 18px;
+      font-size: 1em;
       width: 90vw;
-      margin-right: 100px;
     }
     .categorias {
       position: relative;
-      left: 80px;
+      left: 3vw;
       font-family: $fuentePrincipal;
-      font-size: 18px;
+      font-size: 1em;
       text-transform: capitalize;
       width: 90vw;
     }
@@ -571,7 +633,6 @@ button:focus {
     ul {
       position: relative;
       left: 0px;
-      margin-right: 100px;
     }
   }
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD:.github/workflows/estilo-codigo.yml
+name: Estilo Código
+=======
 name: Estilos código
+>>>>>>> de323537496b5d305df731eeef7ac5526091a48f:.github/workflows/codigo.yml
 
 on:
   push:
