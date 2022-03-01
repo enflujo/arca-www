@@ -113,7 +113,7 @@
 
 <script>
 import { gql } from 'nuxt-graphql-request';
-import { urlImagen } from '../utilidades/ayudas';
+import { urlImagen, extraerPrimeraLetra, eliminarTildes } from '../utilidades/ayudas';
 export default {
   data() {
     return {
@@ -254,24 +254,31 @@ export default {
     cargarIniciales() {
       const iniciales = [];
       for (const autor in this.autores) {
-        const inicial = this.autores[autor].apellido
-          .charAt(0)
-          // TODO: resolver las mayúsculas con tildes
-          /* .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '') */
-          .toUpperCase();
+        const inicial = extraerPrimeraLetra(this.autores[autor].apellido).toUpperCase();
+
         if (inicial !== '') {
           iniciales.push(inicial);
         }
       }
+
       this.iniciales = Array.from(new Set(iniciales)).sort();
     },
+
     elegirInicial(inicial) {
       this.inicialSeleccionada = inicial;
     },
+
     autoresPorInicial(inicial) {
-      const autores = this.autores.filter((autor) => autor.apellido.charAt(0) === inicial);
-      return autores;
+      return this.autores
+        .filter((autor) => extraerPrimeraLetra(autor.apellido) === inicial)
+        .sort((a, b) => {
+          const apellidoA = eliminarTildes(a.apellido.toUpperCase());
+          const apellidoB = eliminarTildes(b.apellido.toUpperCase());
+
+          if (apellidoA < apellidoB) return -1;
+          if (apellidoA > apellidoB) return 1;
+          return 0;
+        });
     },
   },
 };
@@ -331,8 +338,6 @@ ul {
 
 .inicial {
   display: inline;
-  padding-left: 3px;
-  padding-right: 3px;
   margin-bottom: 1em;
   cursor: pointer;
 }
