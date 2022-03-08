@@ -100,10 +100,177 @@
       </div>
 
       <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Características</h3>
+        <ul class="opciones">
+          <li v-for="(caracteristica, i) in caracteristicas" :key="`posicion${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${caracteristicas[0].nombre}?page=1`">{{ caracteristicas[i].nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Cartela - Filacteria</h3>
+        <ul class="opciones">
+          <li v-for="(item, i) in cartelaFilacteria" :key="`cartela${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${cartelaFilacteria[0].nombre}?page=1`">{{
+              cartelaFilacteria[i].nombre
+            }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Descriptores</h3>
+        <ul class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
+          <li
+            v-for="(descriptor, i) in descriptorPorInicial(inicialSeleccionada)"
+            :key="`descriptor${i}`"
+            class="enlace-menu"
+          >
+            <nuxt-link :to="`/archivo/${descriptor.descripcion}?page=1`">{{ descriptor.descripcion }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Donantes</h3>
+        <ul class="opciones">
+          <li v-for="(donante, i) in donantes" :key="`donante${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${donantes[0].nombre}?page=1`">{{ donantes[i].nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Escenarios</h3>
+        <ul class="opciones">
+          <li v-for="(escenario, i) in escenarios" :key="`escenario${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${escenarios[0].nombre}?page=1`">{{ escenarios[i].nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
         <h3 class="seccion" @click="desplegar">Fisiognómica</h3>
         <ul class="opciones">
           <li v-for="(posicion, i) in fisiognomica" :key="`posicion${i}`" class="enlace-menu">
             <nuxt-link :to="`/archivo/${fisiognomica[0].nombre}?page=1`">{{ fisiognomica[i].nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Gestos</h3>
+        <ul class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
+          <li
+            v-for="(gesto, i) in menuPorInicial(inicialSeleccionada, 'gestos')"
+            :key="`gesto${i}`"
+            class="enlace-menu"
+          >
+            <nuxt-link :to="`/archivo/${gesto.nombre}?page=1`">{{ gesto.nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Objetos</h3>
+        <ul class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
+          <li
+            v-for="(objeto, i) in menuPorInicial(inicialSeleccionada, 'objetos')"
+            :key="`objeto${i}`"
+            class="enlace-menu"
+          >
+            <nuxt-link :to="`/archivo/${objeto.nombre}?page=1`">{{ objeto.nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Relatos visuales</h3>
+        <ul class="opciones">
+          <li v-for="(relato, i) in relatos" :key="`relato${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${relatos[0].nombre}?page=1`">{{ relatos[i].nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Símbolos</h3>
+        <ul class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
+          <li
+            v-for="(simbolo, i) in menuPorInicial(inicialSeleccionada, 'simbolos')"
+            :key="`simbolo${i}`"
+            class="enlace-menu"
+          >
+            <nuxt-link :to="`/archivo/${simbolo.nombre}?page=1`">{{ simbolo.nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
+
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Técnicas</h3>
+        <ul class="iniciales">
+          <li
+            v-for="(inicial, i) in iniciales"
+            :key="`inicial${i}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'nuxt-link-exact-active' : ''}`"
+            @click="elegirInicial(inicial)"
+          >
+            {{ inicial }}
+          </li>
+        </ul>
+
+        <ul v-if="inicialSeleccionada != ''" class="opciones">
+          <li
+            v-for="(tecnica, i) in menuPorInicial(inicialSeleccionada, 'tecnicas')"
+            :key="`simbolo${i}`"
+            class="enlace-menu"
+          >
+            <nuxt-link :to="`/archivo/${tecnica.nombre}?page=1`">{{ tecnica.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -122,7 +289,17 @@ export default {
       obras: [],
       autores: [],
       paises: [],
+      caracteristicas: [],
+      cartelaFilacteria: [],
+      descriptores: [],
+      donantes: [],
+      escenarios: [],
       fisiognomica: [],
+      gestos: [],
+      objetos: [],
+      relatos: [],
+      simbolos: [],
+      tecnicas: [],
       iniciales: new Set(),
       inicialSeleccionada: '',
     };
@@ -130,7 +307,7 @@ export default {
   async fetch() {
     const query = gql`
       query {
-        paises_lista {
+        paises_lista(sort: ["sort", "nombre_es"], limit: -1) {
           nombre_es
         }
         obra(limit: 50) {
@@ -147,13 +324,69 @@ export default {
           nombre
           apellido
         }
-        fisiognomica_lista {
+        caracteristicas_particulares_lista(sort: ["sort", "nombre"], limit: -1) {
+          id
+          nombre
+        }
+        cartela_filacteria_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        descriptores_lista(sort: ["sort", "descripcion"], limit: -1) {
+          arca_id
+          descripcion
+        }
+        donante_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        escenarios_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        fisiognomica_lista(sort: ["sort", "nombre"], limit: -1) {
+          id
+          nombre
+        }
+        gestos_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        objetos_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        relato_visual_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        simbolos_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
+          nombre
+        }
+        tecnica_lista(sort: ["sort", "nombre"], limit: -1) {
+          arca_id
           nombre
         }
       }
     `;
     /* eslint-disable camelcase */
-    const { paises_lista, obra, autores, fisiognomica_lista } = await this.$graphql.principal.request(query);
+    const {
+      paises_lista,
+      obra,
+      autores,
+      caracteristicas_particulares_lista,
+      cartela_filacteria_lista,
+      descriptores_lista,
+      donante_lista,
+      escenarios_lista,
+      fisiognomica_lista,
+      gestos_lista,
+      objetos_lista,
+      relato_visual_lista,
+      simbolos_lista,
+      tecnica_lista,
+    } = await this.$graphql.principal.request(query);
 
     this.obras = obra;
     if (autores && autores.length) {
@@ -174,8 +407,38 @@ export default {
       });
     }
 
+    if (caracteristicas_particulares_lista && caracteristicas_particulares_lista.length) {
+      this.caracteristicas = caracteristicas_particulares_lista;
+    }
+    if (cartela_filacteria_lista && cartela_filacteria_lista.length) {
+      this.cartelaFilacteria = cartela_filacteria_lista;
+    }
+    if (descriptores_lista && descriptores_lista.length) {
+      this.descriptores = descriptores_lista;
+    }
+    if (donante_lista && donante_lista.length) {
+      this.donantes = donante_lista;
+    }
+    if (escenarios_lista && escenarios_lista.length) {
+      this.escenarios = escenarios_lista;
+    }
     if (fisiognomica_lista && fisiognomica_lista.length) {
       this.fisiognomica = fisiognomica_lista;
+    }
+    if (gestos_lista && gestos_lista.length) {
+      this.gestos = gestos_lista;
+    }
+    if (objetos_lista && objetos_lista.length) {
+      this.objetos = objetos_lista;
+    }
+    if (relato_visual_lista && relato_visual_lista.length) {
+      this.relatos = relato_visual_lista;
+    }
+    if (simbolos_lista && simbolos_lista.length) {
+      this.simbolos = simbolos_lista;
+    }
+    if (tecnica_lista && tecnica_lista.length) {
+      this.tecnicas = tecnica_lista;
     } else {
       if (process.server) {
         this.$nuxt.context.res.statusCode = 404;
@@ -279,6 +542,14 @@ export default {
           if (apellidoA > apellidoB) return 1;
           return 0;
         });
+    },
+
+    descriptorPorInicial(inicial) {
+      return this.descriptores.filter((descriptor) => extraerPrimeraLetra(descriptor.descripcion) === inicial);
+    },
+
+    menuPorInicial(inicial, menu) {
+      return this[menu].filter((item) => extraerPrimeraLetra(item.nombre) === inicial);
     },
   },
 };
