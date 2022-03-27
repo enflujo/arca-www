@@ -3,7 +3,9 @@
     <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
     <main role="main">
       <MenuBuscador />
-      <Nuxt keepAlive />
+      <div class="pagina">
+        <Nuxt keepAlive />
+      </div>
     </main>
     <Footer :completo="false" />
   </div>
@@ -53,8 +55,9 @@ main {
 }
 
 .pagina {
-  width: calc(100vw - 280px);
-  margin-left: 280px;
+  width: calc(100vw - 23vw);
+  margin-top: 10px;
+  margin-left: 8vw;
 }
 
 // Teléfonos horizontal
