@@ -438,6 +438,40 @@ main {
   display: flex;
   flex-direction: column;
 }
+.contenedor-centrado {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  overflow: hidden;
+  .completo-archivo {
+    padding-top: 10vh;
+    overflow: hidden;
+    width: 70vw;
+    padding-bottom: 10vh;
+  }
+  .titulo {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+  }
+  .imagenAbierta {
+    display: flex;
+    border-radius: 10px;
+
+    .cerrar {
+      cursor: pointer;
+      color: $dolor;
+    }
+  }
+  .imagenCerrada {
+    cursor: pointer;
+    width: 30vw;
+    img {
+      object-fit: cover;
+    }
+  }
+}
 .sub-pestana {
   padding-top: 1.5em;
   font-size: 24px;
@@ -495,42 +529,11 @@ main {
   background-color: $mediana;
   z-index: -99;
 }
-.contenedor-centrado {
-  display: flex;
-  width: 100vw;
-  justify-content: center;
-  overflow: hidden;
-  .completo-archivo {
-    padding-top: 10vh;
-    overflow: hidden;
-    width: 60vw;
-    padding-bottom: 10vh;
-  }
-  .titulo {
-    justify-content: flex-end;
-    display: flex;
-    flex-direction: column;
-    text-align: start;
-  }
-  .imagenAbierta {
-    display: flex;
-    border-radius: 10px;
-
-    .cerrar {
-      cursor: pointer;
-      color: $dolor;
-    }
-  }
-  .imagenCerrada {
-    cursor: pointer;
-    width: 30vw;
-    img {
-      object-fit: cover;
-    }
-  }
-}
 hr.linea-red {
   border-top: 2px solid $dolor;
+}
+h1 {
+  font-size: 3vh;
 }
 h5 {
   font-family: $fuenteMenu;
@@ -568,12 +571,12 @@ img {
     text-transform: uppercase;
     font-family: 'Work Sans', sans-serif;
     font-weight: 400;
-    font-size: 12px;
-    margin-top: 30px;
+    font-size: 1.6vh;
+    margin-top: 4vh;
     flex-direction: column;
     display: flex;
     align-items: center;
-    height: 110px;
+    height: 9vh;
     justify-content: flex-end;
     cursor: pointer;
     color: #9a9da7;
@@ -598,6 +601,7 @@ button:focus {
   outline: none;
 }
 .informacion-general {
+  margin-bottom: 1vh;
   .linea {
     display: flex;
     align-items: baseline;
@@ -608,7 +612,7 @@ button:focus {
       text-transform: uppercase;
       font-family: $fuenteMenu;
       font-weight: 400;
-      font-size: 0.75em;
+      font-size: 2vh;
       margin-top: 2.4vw;
       color: $profundidad;
       text-align: start;
@@ -618,7 +622,7 @@ button:focus {
       position: relative;
       left: 3vw;
       font-family: $fuentePrincipal;
-      font-size: 1em;
+      font-size: 2vh;
       width: 90vw;
     }
     .categorias {
@@ -674,11 +678,5 @@ button:focus {
   position: relative;
   top: 60px;
   align-self: center;
-}
-.galeria {
-  position: relative;
-  height: 70vh;
-  margin-top: 13px;
-  overflow-y: hidden;
 }
 </style>
