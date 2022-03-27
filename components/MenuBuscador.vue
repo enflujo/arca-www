@@ -561,12 +561,13 @@ export default {
   border-right: 2px solid $dolor;
   position: fixed;
   overflow: auto;
-  width: 280px;
+  width: 15vw;
   height: 100vh;
 }
 .logo-texto {
-  margin: 20px;
+  margin: 1vw;
   font-family: $fuentePrincipal;
+  overflow: hidden;
 }
 
 li {
@@ -574,12 +575,13 @@ li {
 }
 
 .barra-texto {
-  padding-left: 20px;
+  padding-left: 1vw;
   margin-top: 2em;
 }
 .pantalla {
-  margin-top: 10px;
-  height: 1.7em;
+  margin-top: 1.1vh;
+  height: 2vh;
+  overflow: hidden;
   &.abierto {
     height: fit-content;
   }
@@ -590,6 +592,7 @@ ul {
   margin-left: 0.8em;
   padding-top: 0.5em;
   font-family: $fuenteMenu;
+  font-size: 1.8vh;
 
   &.opciones {
     overflow: visible;
@@ -597,14 +600,16 @@ ul {
 }
 
 .seccion {
-  margin-bottom: 10px;
   font-family: $fuentePrincipal;
+  font-size: 2vh;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .iniciales {
   margin-bottom: 1em;
   height: auto;
+  font-size: 1.8vh;
 }
 
 .inicial {
@@ -615,7 +620,6 @@ ul {
 
 .enlace-menu {
   margin-bottom: 0.4em;
-  font-size: 0.85em;
   position: relative;
 
   &::before {
