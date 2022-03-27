@@ -136,4 +136,7 @@ export default {
     }
   }
 }
+.error {
+  margin-left: 8vw;
+}
 </style>
