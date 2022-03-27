@@ -6,8 +6,9 @@
     </div>
     <div class="texto-f-uno">
       <p class="copy">
-        Proyecto de Jaime H. Borja Gómez (jborja@uniandes.edu.co) <br />
-        Departamento de Historia, Universidad de los Andes <br />Bogotá, Colombia
+        {{ informacionFooter.footer_autor }} {{ informacionFooter.footer_email }} <br />
+        {{ informacionFooter.footer_institucion }} <br />
+        {{ informacionFooter.footer_lugar }}
       </p>
     </div>
     <div class="texto-f-dos">
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import { gql } from 'nuxt-graphql-request';
 export default {
   props: {
     completo: {
@@ -28,7 +30,29 @@ export default {
     return {
       color: '#fffdf8',
       fecha: '',
+      informacionFooter: {},
     };
+  },
+  async fetch() {
+    const query = gql`
+      query {
+        general {
+          footer_autor
+          footer_email
+          footer_institucion
+          footer_lugar
+        }
+      }
+    `;
+    const { general } = await this.$graphql.principal.request(query);
+    if (general) {
+      this.informacionFooter = general;
+    } else {
+      if (process.server) {
+        this.$nuxt.context.res.statusCode = 404;
+      }
+      throw new Error('Datos no encontrados');
+    }
   },
 };
 </script>
@@ -38,7 +62,7 @@ export default {
 footer {
   background-color: $dolor;
   color: $claridad;
-  height: 120px;
+  height: 14vh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -50,13 +74,13 @@ footer {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    .arcaIcono {
-      width: 60px;
-    }
+    height: 10vh;
+    margin-left: 1vh;
     .logo-texto {
       color: $claridad;
       text-transform: uppercase;
       font-family: $fuentePrincipal;
+      font-size: 3vh;
     }
   }
   .texto-f-uno {
@@ -70,12 +94,12 @@ footer {
     text-align: center;
   }
   .copy {
-    font-size: 0.9em;
+    font-size: 1.5vh;
   }
 }
 
 .pequeno {
-  width: calc(100% - 280px);
-  left: 280px;
+  width: calc(100% - 15vw);
+  left: 15vw;
 }
 </style>
