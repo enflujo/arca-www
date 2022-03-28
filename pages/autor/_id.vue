@@ -110,8 +110,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.error {
-  margin-left: 8vw;
-}
-</style>
+<style lang="scss" scoped></style>
