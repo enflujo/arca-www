@@ -6,7 +6,8 @@
     </div>
     <div class="texto-f-uno">
       <p class="copy">
-        {{ informacionFooter.footer_autor }} {{ informacionFooter.footer_email }} <br />
+        {{ informacionFooter.footer_autor }} <br />
+        {{ informacionFooter.footer_email }} <br />
         {{ informacionFooter.footer_institucion }} <br />
         {{ informacionFooter.footer_lugar }}
       </p>
