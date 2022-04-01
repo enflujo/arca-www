@@ -85,7 +85,7 @@
 
         <ul v-if="inicialSeleccionada != ''" class="opciones">
           <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
-            <nuxt-link :to="`/archivo/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
+            <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -147,7 +147,7 @@
         <h3 class="seccion" @click="desplegar">Donantes</h3>
         <ul class="opciones">
           <li v-for="(donante, i) in donantes" :key="`donante${i}`" class="enlace-menu">
-            <nuxt-link :to="`/archivo/donante/${donante.arca_id}?page=1`">{{ donantes[i].nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/${donantes[0].nombre}?page=1`">{{ donantes[i].nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -156,7 +156,7 @@
         <h3 class="seccion" @click="desplegar">Escenarios</h3>
         <ul class="opciones">
           <li v-for="(escenario, i) in escenarios" :key="`escenario${i}`" class="enlace-menu">
-            <nuxt-link :to="`/archivo/escenario/${escenario.arca_id}?page=1`">{{ escenarios[i].nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/${escenarios[0].nombre}?page=1`">{{ escenarios[i].nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -189,7 +189,7 @@
             :key="`gesto${i}`"
             class="enlace-menu"
           >
-            <nuxt-link :to="`/archivo/gesto/${gesto.arca_id}?page=1`">{{ gesto.nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/${gesto.nombre}?page=1`">{{ gesto.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -267,7 +267,7 @@
         <ul v-if="inicialSeleccionada != ''" class="opciones">
           <li
             v-for="(tecnica, i) in menuPorInicial(inicialSeleccionada, 'tecnicas')"
-            :key="`simbolo${i}`"
+            :key="`tecnica${i}`"
             class="enlace-menu"
           >
             <nuxt-link :to="`/archivo/${tecnica.nombre}?page=1`">{{ tecnica.nombre }}</nuxt-link>
@@ -580,7 +580,7 @@ li {
 }
 .pantalla {
   margin-top: 1.1vh;
-  height: 2vh;
+  height: 1em;
   overflow: hidden;
   &.abierto {
     height: fit-content;
@@ -601,7 +601,7 @@ ul {
 
 .seccion {
   font-family: $fuentePrincipal;
-  font-size: 2vh;
+  font-size: 0.9em;
   cursor: pointer;
   overflow: hidden;
 }
@@ -609,7 +609,7 @@ ul {
 .iniciales {
   margin-bottom: 1em;
   height: auto;
-  font-size: 1.8vh;
+  font-size: 1em;
 }
 
 .inicial {

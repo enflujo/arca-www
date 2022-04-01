@@ -38,6 +38,14 @@ export default {
   flex-wrap: wrap;
 }
 
+.num-pag {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  text-align: center;
+  padding: 10px;
+}
+
 // .paginas {
 //   display: flex;
 //   width: 110vw;
@@ -54,14 +62,6 @@ export default {
 //     border: 2px solid $profundidad;
 //     border-radius: 200px;
 //     justify-content: center;
-
-//     .num-pag {
-//       display: flex;
-//       justify-content: center;
-//       align-self: center;
-//       text-align: center;
-//       padding: 10px;
-//     }
 //   }
 // }
 </style>

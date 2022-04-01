@@ -26,25 +26,25 @@ export default {
       obras: [],
       totalObras: 0,
       simbolo: '',
-      simboloId: null,
+      simboloId: 0,
     };
   },
 
   async fetch() {
-    const idSimbolo = this.$route.params.id;
-    // const { page } = this.$route.query;
+    const idSimbolo = (this.simboloId = this.$route.params.id);
+    const { page } = this.$route.query;
 
     const query = gql`
       query {
-        obra_aggregated(filter: {
-          simbolo: {
+        obra_simbolos_lista_aggregated(filter: {
+          simbolos_lista_id: {
             id: {
               _eq: ${idSimbolo}
             }
           }
         }) {
           count {
-            arca_id
+            id
           }
         }
 
@@ -54,7 +54,7 @@ export default {
               _eq: ${idSimbolo}
             }
           }
-        }) {
+        }, page: ${page}) {
           obra_id {
             arca_id
             titulo
@@ -80,11 +80,12 @@ export default {
     `;
 
     // eslint-disable-next-line camelcase
-    const { obra_aggregated, obra_simbolos_lista } = await this.$graphql.principal.request(query);
+    const { obra_simbolos_lista_aggregated, obra_simbolos_lista } = await this.$graphql.principal.request(query);
 
     // eslint-disable-next-line camelcase
-    if (obra_aggregated) {
-      this.totalObras = obra_aggregated[0].count.id;
+    if (obra_simbolos_lista_aggregated && obra_simbolos_lista_aggregated.length) {
+      this.totalObras = obra_simbolos_lista_aggregated[0].count.id;
+      console.log(this.totalObras);
     }
 
     // eslint-disable-next-line camelcase
