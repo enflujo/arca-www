@@ -85,7 +85,7 @@
 
         <ul v-if="inicialSeleccionada != ''" class="opciones">
           <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
-            <nuxt-link :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -147,7 +147,7 @@
         <h3 class="seccion" @click="desplegar">Donantes</h3>
         <ul class="opciones">
           <li v-for="(donante, i) in donantes" :key="`donante${i}`" class="enlace-menu">
-            <nuxt-link :to="`/archivo/${donantes[0].nombre}?page=1`">{{ donantes[i].nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/donante/${donante.arca_id}?page=1`">{{ donantes[i].nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -156,7 +156,7 @@
         <h3 class="seccion" @click="desplegar">Escenarios</h3>
         <ul class="opciones">
           <li v-for="(escenario, i) in escenarios" :key="`escenario${i}`" class="enlace-menu">
-            <nuxt-link :to="`/archivo/${escenarios[0].nombre}?page=1`">{{ escenarios[i].nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/escenario/${escenario.arca_id}?page=1`">{{ escenarios[i].nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -189,7 +189,7 @@
             :key="`gesto${i}`"
             class="enlace-menu"
           >
-            <nuxt-link :to="`/archivo/${gesto.nombre}?page=1`">{{ gesto.nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/gesto/${gesto.arca_id}?page=1`">{{ gesto.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -246,7 +246,7 @@
             :key="`simbolo${i}`"
             class="enlace-menu"
           >
-            <nuxt-link :to="`/archivo/${simbolo.nombre}?page=1`">{{ simbolo.nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/simbolo/${simbolo.id}?page=1`">{{ simbolo.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -361,7 +361,7 @@ export default {
           nombre
         }
         simbolos_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
+          id
           nombre
         }
         tecnica_lista(sort: ["sort", "nombre"], limit: -1) {
