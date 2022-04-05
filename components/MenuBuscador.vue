@@ -138,7 +138,7 @@
             :key="`descriptor${i}`"
             class="enlace-menu"
           >
-            <nuxt-link :to="`/archivo/${descriptor.descripcion}?page=1`">{{ descriptor.descripcion }}</nuxt-link>
+            <nuxt-link :to="`/archivo/descriptor/${descriptor.id}?page=1`">{{ descriptor.descripcion }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -333,7 +333,7 @@ export default {
           nombre
         }
         descriptores_lista(sort: ["sort", "descripcion"], limit: -1) {
-          arca_id
+          id
           descripcion
         }
         donante_lista(sort: ["sort", "nombre"], limit: -1) {
@@ -592,7 +592,7 @@ ul {
   margin-left: 0.8em;
   padding-top: 0.5em;
   font-family: $fuenteMenu;
-  font-size: 1.8vh;
+  font-size: 0.9em;
 
   &.opciones {
     overflow: visible;
