@@ -7,10 +7,41 @@
 </template>
 
 <script>
+import { gql } from 'nuxt-graphql-request';
+import { urlImagen } from '../utilidades/ayudas';
 export default {
+  data() {
+    return {
+      informacion: {},
+      urlImagenFondo: '',
+    };
+  },
   computed: {
     general() {
       return this.$store.state.general.datos;
+    },
+  },
+  async fetch() {
+    const query = gql`
+      query {
+        general {
+          banner {
+            id
+            title
+          }
+        }
+      }
+    `;
+    const general = await this.$graphql.principal.request(query);
+    if (general) {
+      this.informacion = general;
+      this.urlImagenFondo = urlImagen(general.banner);
+      console.log(general);
+    }
+  },
+  methods: {
+    urlImagen(objImg, key) {
+      return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
     },
   },
 };
