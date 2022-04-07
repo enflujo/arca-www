@@ -103,7 +103,9 @@
         <h3 class="seccion" @click="desplegar">Características</h3>
         <ul class="opciones">
           <li v-for="(caracteristica, i) in caracteristicas" :key="`posicion${i}`" class="enlace-menu">
-            <nuxt-link :to="`/archivo/${caracteristicas[0].nombre}?page=1`">{{ caracteristicas[i].nombre }}</nuxt-link>
+            <nuxt-link :to="`/archivo/caracteristica/${caracteristica.id}?page=1`">{{
+              caracteristicas[i].nombre
+            }}</nuxt-link>
           </li>
         </ul>
       </div>
