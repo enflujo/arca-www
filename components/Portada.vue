@@ -16,11 +16,6 @@ export default {
       urlImagenFondo: '',
     };
   },
-  computed: {
-    general() {
-      return this.$store.state.general.datos;
-    },
-  },
   async fetch() {
     const query = gql`
       query {
@@ -38,6 +33,11 @@ export default {
       this.urlImagenFondo = urlImagen(general.banner);
       console.log(general);
     }
+  },
+  computed: {
+    general() {
+      return this.$store.state.general.datos;
+    },
   },
   methods: {
     urlImagen(objImg, key) {
