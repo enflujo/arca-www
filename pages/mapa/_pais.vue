@@ -65,6 +65,11 @@ export default {
           }
           ubicacion_actual {
             nombre
+            ciudad {
+              pais {
+                nombre_es
+              }
+            }
             lat
             lon
           }

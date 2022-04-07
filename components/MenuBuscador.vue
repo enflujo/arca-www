@@ -7,68 +7,14 @@
     <Buscador />
 
     <div class="barra-texto">
-      <h3 class="seccion" @click="desplegar">Categorías</h3>
-      <ul class="opciones">
-        <li
-          v-for="(cat1, i) in Object.keys(categorias).sort()"
-          :key="`cat1${i}`"
-          class="cat categoria1 cerrado"
-          :class="{ categoriaLarga: cat1.length > 12 }"
-        >
-          <span v-if="Object.keys(categorias[cat1]).length" class="abrir" @click="abrir">+</span>
-          <nuxt-link :to="`/categoria/${cat1}?page=1`">{{ cat1 }}</nuxt-link>
-
-          <ul v-if="Object.keys(categorias[cat1]).length">
-            <li
-              v-for="(cat2, i2) in Object.keys(categorias[cat1]).sort()"
-              :key="`cat2${i2}`"
-              class="cat categoria2 cerrado"
-              :class="{ categoriaLarga: cat2.length > 12 }"
-            >
-              <span v-if="Object.keys(categorias[cat1][cat2]).length" class="abrir" @click="abrir">+</span>
-
-              <nuxt-link :to="`/categoria/${cat2}?page=1`">{{ cat2 }}</nuxt-link>
-
-              <ul v-if="Object.keys(categorias[cat1][cat2]).length">
-                <li
-                  v-for="(cat3, i3) in Object.keys(categorias[cat1][cat2]).sort()"
-                  :key="`cat3${i3}`"
-                  class="cat categoria3 cerrado"
-                  :class="{ categoriaLarga: cat3.length > 12 }"
-                >
-                  <span v-if="Object.keys(categorias[cat1][cat2][cat3]).length" class="abrir" @click="abrir">+</span>
-                  <nuxt-link :to="`/categoria/${cat3}?page=1`">{{ cat3 }}</nuxt-link>
-
-                  <ul v-if="Object.keys(categorias[cat1][cat2][cat3]).length">
-                    <li
-                      v-for="(cat4, i4) in Object.keys(categorias[cat1][cat2][cat3]).sort()"
-                      :key="`cat4${i4}`"
-                      class="cat categoria4 cerrado"
-                      :class="{ categoriaLarga: cat4.length > 12 }"
-                    >
-                      <span v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length" class="abrir" @click="abrir"
-                        >+</span
-                      >
-
-                      <nuxt-link :to="`/categoria/${cat4}?page=1`">{{ cat4 }}</nuxt-link>
-                      <ul v-if="Object.keys(categorias[cat1][cat2][cat3][cat4]).length">
-                        <li
-                          v-for="(cat5, i5) in Object.keys(categorias[cat1][cat2][cat3][cat4]).sort()"
-                          :key="`cat5${i5}`"
-                          class="cat categoria5"
-                          :class="{ categoriaLarga: cat5.length > 12 }"
-                        >
-                          <nuxt-link :to="`/categoria/${cat5}?page=1`">{{ cat5 }}</nuxt-link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
+      <div class="pantalla">
+        <h3 class="seccion" @click="desplegar">Categorías</h3>
+        <ul class="opciones">
+          <li v-for="(categoria, i) in categorias" :key="`categoria${i}`" class="enlace-menu">
+            <nuxt-link :to="`/archivo/${categoria.id}?page=1`">{{ categoria.nombre }}</nuxt-link>
+          </li>
+        </ul>
+      </div>
 
       <div class="pantalla">
         <h3 class="seccion" @click="desplegar">Autores</h3>
@@ -287,10 +233,10 @@ export default {
   data() {
     return {
       pagina: {},
-      categorias: {},
       obras: [],
       autores: [],
       paises: [],
+      categorias: [],
       caracteristicas: [],
       cartelaFilacteria: [],
       descriptores: [],
@@ -325,6 +271,10 @@ export default {
           id
           nombre
           apellido
+        }
+        categorias_lista(sort: ["sort", "nombre"], filter: { arca_id: { _lt: 12 } }) {
+          id
+          nombre
         }
         caracteristicas_particulares_lista(sort: ["sort", "nombre"], limit: -1) {
           id
@@ -377,6 +327,7 @@ export default {
       paises_lista,
       obra,
       autores,
+      categorias_lista,
       caracteristicas_particulares_lista,
       cartela_filacteria_lista,
       descriptores_lista,
@@ -408,7 +359,9 @@ export default {
         return 0;
       });
     }
-
+    if (categorias_lista && categorias_lista.length) {
+      this.categorias = categorias_lista;
+    }
     if (caracteristicas_particulares_lista && caracteristicas_particulares_lista.length) {
       this.caracteristicas = caracteristicas_particulares_lista;
     }
