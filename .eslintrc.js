@@ -4,8 +4,15 @@ module.exports = {
     browser: true,
     node: true,
   },
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: 'babel-eslint',
+    requireConfigFile: false,
+    parser: '@babel/eslint-parser',
+    babelOptions: {
+      parserOpts: {
+        plugins: ['jsx'],
+      },
+    },
   },
   extends: ['@nuxtjs', 'plugin:prettier/recommended', 'plugin:nuxt/recommended'],
   plugins: [],
