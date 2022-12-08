@@ -7,32 +7,14 @@
 </template>
 
 <script>
-import { gql } from 'nuxt-graphql-request';
 import { urlImagen } from '../utilidades/ayudas';
 export default {
+  name: 'PaginaPortada',
   data() {
     return {
       informacion: {},
       urlImagenFondo: '',
     };
-  },
-  async fetch() {
-    const query = gql`
-      query {
-        general {
-          banner {
-            id
-            title
-          }
-        }
-      }
-    `;
-    const general = await this.$graphql.principal.request(query);
-    if (general) {
-      this.informacion = general;
-      this.urlImagenFondo = urlImagen(general.banner);
-      console.log(general);
-    }
   },
   computed: {
     general() {

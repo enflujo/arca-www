@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import { gql } from 'nuxt-graphql-request';
 export default {
+  name: 'SeccionFooter',
   props: {
     completo: {
       type: Boolean,
@@ -33,27 +33,6 @@ export default {
       fecha: '',
       informacionFooter: {},
     };
-  },
-  async fetch() {
-    const query = gql`
-      query {
-        general {
-          footer_autor
-          footer_email
-          footer_institucion
-          footer_lugar
-        }
-      }
-    `;
-    const { general } = await this.$graphql.principal.request(query);
-    if (general) {
-      this.informacionFooter = general;
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('Datos no encontrados');
-    }
   },
 };
 </script>

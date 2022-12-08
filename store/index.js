@@ -6,6 +6,5 @@ export const actions = {
    */
   async nuxtServerInit({ dispatch }) {
     await dispatch('general/cargarGeneral');
-    await dispatch('general/cargarSettings');
   },
 };

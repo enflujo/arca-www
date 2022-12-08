@@ -3,12 +3,12 @@
  */
 // TODO: Borrar
 // export const apiBase = 'http://143.110.150.100:8055';
-export const apiBase = 'http://arca.solucionesinmateriales.com';
+export const apiBase = 'https://apiarca.uniandes.edu.co';
 
 /**
  * La URL del frontend.
  */
-export const urlBase = 'https://enflujo.uniandes.edu.co';
+export const urlBase = 'https://arca.uniandes.edu.co';
 
 /**
  * El color principal de identidad.

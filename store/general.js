@@ -34,31 +34,6 @@ export const actions = {
     commit('actualizarDatos', general);
     commit('actualizarMenus', menus);
   },
-
-  async cargarSettings({ commit }) {
-    const baseQuery = gql`
-      query {
-        settings {
-          project_name
-          project_url
-          project_color
-          public_foreground {
-            id
-            title
-          }
-          public_background {
-            id
-            title
-          }
-          public_note
-        }
-      }
-    `;
-    // los : cambian el nombre
-    const { settings } = await this.$graphql.sistema.request(baseQuery);
-
-    commit('actualizarDatos', settings);
-  },
 };
 
 export const mutations = {
