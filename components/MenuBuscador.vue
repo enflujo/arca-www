@@ -40,7 +40,7 @@
         <h3 class="seccion" @click="desplegar">Países</h3>
         <ul class="opciones">
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
-            <nuxt-link :to="`/mapa/${pais.nombre_es}?page=1`">{{ pais.nombre_es }}</nuxt-link>
+            <nuxt-link :to="`/mapa/${pais.nombre}?page=1`">{{ pais.nombre }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -252,154 +252,153 @@ export default {
       inicialSeleccionada: '',
     };
   },
+  /**
+   *         # paises_lista(sort: ["sort", "nombre_es"], limit: -1) {
+        #   nombre_es
+        # }
+
+        # obras(limit: 50) {
+        #   arca_id
+        #   clasificacion {
+        #     categorias_lista_id {
+        #       nombre
+        #       ascendencia
+        #     }
+        #   }
+        # }
+
+        # categorias_lista(sort: ["sort", "nombre"], filter: { arca_id: { _lt: 12 } }) {
+        #   id
+        #   nombre
+        # }
+        # caracteristicas_particulares_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   id
+        #   nombre
+        # }
+        # cartela_filacteria_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+        # descriptores_lista(sort: ["sort", "descripcion"], limit: -1) {
+        #   id
+        #   descripcion
+        # }
+        # donante_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+        # escenarios_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+        # fisiognomica_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   id
+        #   nombre
+        # }
+        # gestos_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+        # objetos_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+        # relato_visual_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+        # simbolos_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   id
+        #   nombre
+        # }
+        # tecnica_lista(sort: ["sort", "nombre"], limit: -1) {
+        #   arca_id
+        #   nombre
+        # }
+   */
   async fetch() {
     const query = gql`
       query {
-        paises_lista(sort: ["sort", "nombre_es"], limit: -1) {
-          nombre_es
-        }
-        obra(limit: 50) {
-          arca_id
-          clasificacion {
-            categorias_lista_id {
-              nombre
-              ascendencia
-            }
-          }
-        }
         autores(limit: -1) {
           id
           nombre
           apellido
         }
-        categorias_lista(sort: ["sort", "nombre"], filter: { arca_id: { _lt: 12 } }) {
-          id
-          nombre
-        }
-        caracteristicas_particulares_lista(sort: ["sort", "nombre"], limit: -1) {
-          id
-          nombre
-        }
-        cartela_filacteria_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
-          nombre
-        }
-        descriptores_lista(sort: ["sort", "descripcion"], limit: -1) {
-          id
-          descripcion
-        }
-        donante_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
-          nombre
-        }
-        escenarios_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
-          nombre
-        }
-        fisiognomica_lista(sort: ["sort", "nombre"], limit: -1) {
-          id
-          nombre
-        }
-        gestos_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
-          nombre
-        }
-        objetos_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
-          nombre
-        }
-        relato_visual_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
-          nombre
-        }
-        simbolos_lista(sort: ["sort", "nombre"], limit: -1) {
-          id
-          nombre
-        }
-        tecnica_lista(sort: ["sort", "nombre"], limit: -1) {
-          arca_id
+        # Número de ciudades asociadas al país NO es igual a 0
+        paises(filter: { ciudades_func: { count: { _neq: 0 } } }) {
           nombre
         }
       }
     `;
-    /* eslint-disable camelcase */
     const {
-      paises_lista,
-      obra,
       autores,
-      categorias_lista,
-      caracteristicas_particulares_lista,
-      cartela_filacteria_lista,
-      descriptores_lista,
-      donante_lista,
-      escenarios_lista,
-      fisiognomica_lista,
-      gestos_lista,
-      objetos_lista,
-      relato_visual_lista,
-      simbolos_lista,
-      tecnica_lista,
+      paises,
+      // obra,
+
+      // categorias_lista,
+      // caracteristicas_particulares_lista,
+      // cartela_filacteria_lista,
+      // descriptores_lista,
+      // donante_lista,
+      // escenarios_lista,
+      // fisiognomica_lista,
+      // gestos_lista,
+      // objetos_lista,
+      // relato_visual_lista,
+      // simbolos_lista,
+      // tecnica_lista,
     } = await this.$graphql.principal.request(query);
 
-    this.obras = obra;
+    // this.obras = obra;
     if (autores && autores.length) {
       this.autores = autores;
     }
 
-    if (paises_lista && paises_lista.length) {
-      this.paises = paises_lista.sort((a, b) => {
-        const nombreA = a.nombre_es;
-        const nombreB = b.nombre_es;
-        if (nombreA < nombreB) {
-          return -1;
-        }
-        if (nombreA > nombreB) {
-          return 1;
-        }
-        return 0;
-      });
+    if (paises && paises.length) {
+      this.paises = paises;
     }
-    if (categorias_lista && categorias_lista.length) {
-      this.categorias = categorias_lista;
-    }
-    if (caracteristicas_particulares_lista && caracteristicas_particulares_lista.length) {
-      this.caracteristicas = caracteristicas_particulares_lista;
-    }
-    if (cartela_filacteria_lista && cartela_filacteria_lista.length) {
-      this.cartelaFilacteria = cartela_filacteria_lista;
-    }
-    if (descriptores_lista && descriptores_lista.length) {
-      this.descriptores = descriptores_lista;
-    }
-    if (donante_lista && donante_lista.length) {
-      this.donantes = donante_lista;
-    }
-    if (escenarios_lista && escenarios_lista.length) {
-      this.escenarios = escenarios_lista;
-    }
-    if (fisiognomica_lista && fisiognomica_lista.length) {
-      this.fisiognomica = fisiognomica_lista;
-    }
-    if (gestos_lista && gestos_lista.length) {
-      this.gestos = gestos_lista;
-    }
-    if (objetos_lista && objetos_lista.length) {
-      this.objetos = objetos_lista;
-    }
-    if (relato_visual_lista && relato_visual_lista.length) {
-      this.relatos = relato_visual_lista;
-    }
-    if (simbolos_lista && simbolos_lista.length) {
-      this.simbolos = simbolos_lista;
-    }
-    if (tecnica_lista && tecnica_lista.length) {
-      this.tecnicas = tecnica_lista;
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('La página no existe');
-    }
+
+    // if (categorias_lista && categorias_lista.length) {
+    //   this.categorias = categorias_lista;
+    // }
+    // if (caracteristicas_particulares_lista && caracteristicas_particulares_lista.length) {
+    //   this.caracteristicas = caracteristicas_particulares_lista;
+    // }
+    // if (cartela_filacteria_lista && cartela_filacteria_lista.length) {
+    //   this.cartelaFilacteria = cartela_filacteria_lista;
+    // }
+    // if (descriptores_lista && descriptores_lista.length) {
+    //   this.descriptores = descriptores_lista;
+    // }
+    // if (donante_lista && donante_lista.length) {
+    //   this.donantes = donante_lista;
+    // }
+    // if (escenarios_lista && escenarios_lista.length) {
+    //   this.escenarios = escenarios_lista;
+    // }
+    // if (fisiognomica_lista && fisiognomica_lista.length) {
+    //   this.fisiognomica = fisiognomica_lista;
+    // }
+    // if (gestos_lista && gestos_lista.length) {
+    //   this.gestos = gestos_lista;
+    // }
+    // if (objetos_lista && objetos_lista.length) {
+    //   this.objetos = objetos_lista;
+    // }
+    // if (relato_visual_lista && relato_visual_lista.length) {
+    //   this.relatos = relato_visual_lista;
+    // }
+    // if (simbolos_lista && simbolos_lista.length) {
+    //   this.simbolos = simbolos_lista;
+    // }
+    // if (tecnica_lista && tecnica_lista.length) {
+    //   this.tecnicas = tecnica_lista;
+    // } else {
+    //   if (process.server) {
+    //     this.$nuxt.context.res.statusCode = 404;
+    //   }
+    //   throw new Error('La página no existe');
+    // }
 
     // TODO: ¿Cómo se resuelve de nuevo la lista de categorías?
     // obra.forEach((element) => console.log(element.clasificacion[0].categorias_lista_id.nombre));
