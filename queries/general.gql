@@ -1,0 +1,20 @@
+query General {
+  general {
+    nombre
+    descripcion
+    banner {
+      id
+      title
+    }
+  }
+
+  menus {
+    nombre
+    paginas {
+      paginas_id {
+        slug
+        titulo
+      }
+    }
+  }
+}

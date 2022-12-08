@@ -17,8 +17,8 @@
 import { gql } from 'nuxt-graphql-request';
 import { crearHead, urlImagen } from '../../utilidades/ayudas';
 
+definePageMeta({ layout: 'conBuscador' });
 export default {
-  layout: 'conBuscador',
   data() {
     return {
       pagina: {},

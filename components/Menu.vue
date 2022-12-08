@@ -1,3 +1,39 @@
+<script setup>
+import { usarGeneral } from '@/store/general';
+
+const general = usarGeneral();
+
+const props = defineProps({
+  colorFondo: {
+    type: String,
+    default: '#08173E',
+  },
+
+  menuAbierto: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+// export default {
+//   computed: {
+//     paginas() {
+//       return this.$store.state.general.menus.principal;
+//     },
+//   },
+
+//   methods: {
+//     resolverMenu() {
+//       this.$emit('resolverMenu');
+//     },
+
+//     cerrarMenu() {
+//       this.$emit('cerrarMenu');
+//     },
+//   },
+// };
+</script>
+
 <template>
   <div :class="`contenedorMenu ${menuAbierto ? 'abierto' : 'cerrado'}`">
     <div v-click-outside="cerrarMenu" class="menuPrincipal">
@@ -20,39 +56,6 @@
     <div class="fondo"></div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'SeccionMenu',
-  props: {
-    colorFondo: {
-      type: String,
-      default: '#08173E',
-    },
-
-    menuAbierto: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  computed: {
-    paginas() {
-      return this.$store.state.general.menus.principal;
-    },
-  },
-
-  methods: {
-    resolverMenu() {
-      this.$emit('resolverMenu');
-    },
-
-    cerrarMenu() {
-      this.$emit('cerrarMenu');
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use 'sass:color';

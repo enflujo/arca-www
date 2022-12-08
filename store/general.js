@@ -1,4 +1,22 @@
-import { gql } from 'nuxt-graphql-request';
+import { defineStore } from 'pinia';
+
+export const usarGeneral = defineStore('general', {
+  state: () => ({
+    datosCargados: false,
+    datos: {},
+    menus: {},
+    filtro: '',
+  }),
+
+  actions: {
+    async cargarGeneral() {
+      const { data } = await useAsyncGql('General');
+      this.datos = data.value.general;
+      this.menus = data.value.menus;
+      this.datosCargados = true;
+    },
+  },
+});
 
 export const state = () => ({
   datos: {},

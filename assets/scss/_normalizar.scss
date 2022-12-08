@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: 'Yeseva';
-  src: local('Yeseva'), url(~assets/fuentes/Yeseva.ttf) format('truetype');
+  src: local('Yeseva'), url(@/assets/fuentes/Yeseva.ttf) format('truetype');
 }
 
 html {
