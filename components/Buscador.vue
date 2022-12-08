@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: 'SeccionBuscador',
   data() {
     return {
       searchQuery: '',

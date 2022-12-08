@@ -6,6 +6,7 @@
 import mapboxgl from 'mapbox-gl';
 
 export default {
+  name: 'ElementoMapa',
   props: {
     datos: {
       type: Array,

@@ -52,6 +52,7 @@
 import { gql } from 'nuxt-graphql-request';
 
 export default {
+  name: 'SeccionFiltros',
   data() {
     return {
       paises: [],

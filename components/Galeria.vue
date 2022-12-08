@@ -23,6 +23,7 @@
 <script>
 import { urlImagen } from '../utilidades/ayudas';
 export default {
+  name: 'ElementoGaleria',
   props: {
     obras: {
       type: Array,

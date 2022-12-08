@@ -12,6 +12,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'ElementoCargador',
+};
+</script>
+
 <style lang="scss" scoped>
 @use 'sass:math';
 

@@ -23,6 +23,7 @@
 
 <script>
 export default {
+  name: 'SeccionMenu',
   props: {
     colorFondo: {
       type: String,

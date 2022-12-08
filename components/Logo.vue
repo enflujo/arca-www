@@ -21,3 +21,9 @@
     />
   </svg>
 </template>
+
+<script>
+export default {
+  name: 'LogoArca',
+};
+</script>

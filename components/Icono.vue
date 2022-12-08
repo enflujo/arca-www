@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  name: 'IconoArca',
   props: {
     fondo: {
       type: String,

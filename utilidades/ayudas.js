@@ -10,7 +10,7 @@ import { apiBase, urlBase, nombre } from '../config/general';
  */
 export const urlImagen = (id, key) => {
   if (!id) {
-    throw new Error(`Se tiene que usar un ID del archivo pero ahora eparametro es ${JSON.stringify(id)}`);
+    throw new Error(`Se tiene que usar un ID del archivo pero ahora el parámetro es ${JSON.stringify(id)}`);
   }
 
   if (key) {

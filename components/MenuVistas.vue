@@ -48,7 +48,9 @@
           </g>
         </g>
       </svg>
+
       <input id="switch" type="checkbox" /><label for="switch">Toggle</label>
+
       <svg xmlns="http://www.w3.org/2000/svg" width="24.393" height="24.403" viewBox="0 0 24.393 24.403">
         <g id="Group_581" data-name="Group 581" transform="translate(0 0)">
           <path
