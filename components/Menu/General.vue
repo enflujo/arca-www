@@ -2,19 +2,31 @@
 import { usarGeneral } from '@/store/general';
 
 const general = usarGeneral();
-
+const menuAbierto = ref(false);
 const props = defineProps({
   colorFondo: {
     type: String,
     default: '#08173E',
   },
-
-  menuAbierto: {
-    type: Boolean,
-    default: false,
-  },
 });
 
+const paginas = computed(() => general.menus.principal);
+
+/**
+ * Intercambia el estado del menú: si esta abierto lo cierra, si esta cerrado lo abre.
+ */
+function resolverMenu() {
+  menuAbierto.value = !menuAbierto.value.menuAbierto;
+}
+
+/**
+ * Cierra el menú, lo usamos en navegación si el menú esta abierto.
+ */
+function cerrarMenu() {
+  if (menuAbierto.value) {
+    menuAbierto.value = false;
+  }
+}
 // export default {
 //   computed: {
 //     paginas() {
@@ -36,14 +48,14 @@ const props = defineProps({
 
 <template>
   <div :class="`contenedorMenu ${menuAbierto ? 'abierto' : 'cerrado'}`">
-    <div v-click-outside="cerrarMenu" class="menuPrincipal">
+    <div class="menuPrincipal">
       <nav class="menuContenido">
         <NuxtLink
           v-for="pagina in paginas"
           :key="pagina.slug"
           :to="pagina.slug ? `/${pagina.slug}` : '/'"
           class="navBtn"
-          @click.native="resolverMenu"
+          @click="resolverMenu"
         >
           {{ pagina.titulo }}
         </NuxtLink>
@@ -59,6 +71,7 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 @use 'sass:color';
+
 $menuRayaAncho: 25px;
 $menuRayaAlto: 3px;
 $menuRayaRadio: 4px;
@@ -139,12 +152,6 @@ $menuRayaColor: $claridad;
   position: relative;
 }
 
-.cerrado {
-  .fondo {
-    opacity: 0;
-  }
-}
-
 .abierto {
   .menuPrincipal {
     .botonMenu {
@@ -168,10 +175,6 @@ $menuRayaColor: $claridad;
       padding: 2%;
       font-size: 90%;
     }
-  }
-
-  .fondo {
-    opacity: 1;
   }
 }
 

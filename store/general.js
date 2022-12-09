@@ -12,16 +12,13 @@ export const usarGeneral = defineStore('general', {
     async cargarGeneral() {
       const { data } = await useAsyncGql('General');
       this.datos = data.value.general;
-      this.menus = data.value.menus;
+
+      data.value.menus.forEach((menu) => {
+        this.menus[menu.nombre] = menu.paginas.map((pagina) => pagina.paginas_id);
+      });
       this.datosCargados = true;
     },
   },
-});
-
-export const state = () => ({
-  datos: {},
-  menus: {},
-  filtro: '',
 });
 
 export const actions = {

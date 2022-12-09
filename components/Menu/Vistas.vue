@@ -1,3 +1,22 @@
+<script setup>
+const props = defineProps({
+  busqueda: {
+    type: String,
+    default: '',
+  },
+
+  descripcion: {
+    type: String,
+    default: '',
+  },
+
+  obras: {
+    type: Array,
+    default: () => [],
+  },
+});
+</script>
+
 <template>
   <div class="barra-detalles">
     <div class="cambio-vista">
@@ -65,27 +84,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    busqueda: {
-      type: String,
-      default: '',
-    },
-
-    descripcion: {
-      type: String,
-      default: '',
-    },
-
-    obras: {
-      type: Array,
-      default: () => [],
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .cambio-vista {

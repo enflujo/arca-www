@@ -1,0 +1,5 @@
+query Ubicaciones($cantidad: Int = -1) {
+  ubicaciones(limit: $cantidad) {
+    nombre
+  }
+}

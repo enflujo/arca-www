@@ -2,32 +2,15 @@
 import { usarGeneral } from '@/store/general';
 
 const cerebro = usarGeneral();
-const colorIcono = ref('#FFF');
-const menuAbierto = ref(false);
 
 if (!cerebro.datosCargados) {
   await useAsyncData('general', cerebro.cargarGeneral);
-}
-
-/**
- * Intercambia el estado del menú: si esta abierto lo cierra, si esta cerrado lo abre.
- */
-function resolverMenu() {
-  this.menuAbierto = !this.menuAbierto;
-}
-/**
- * Cierra el menú, lo usamos en navegación si el menú esta abierto.
- */
-function cerrarMenu() {
-  if (this.menuAbierto) {
-    this.menuAbierto = false;
-  }
 }
 </script>
 
 <template>
   <div id="contenedor">
-    <!-- <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" /> -->
+    <MenuGeneral />
 
     <main role="main">
       <slot />

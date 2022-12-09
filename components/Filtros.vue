@@ -125,12 +125,14 @@ export default {
         comparacion: id,
       });
     },
+
     buscarAutor(id) {
       this.$store.dispatch('buscador/buscar', {
         campo: 'author_id',
         comparacion: id,
       });
     },
+
     actualizarFiltro(filtro) {
       this.$store.commit('general/actualizarFiltro', filtro);
     },
