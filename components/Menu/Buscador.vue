@@ -305,10 +305,10 @@ function desplegar(evento) {
       </div>
 
       <div class="pantalla">
-        <h3 class="seccion" @click="desplegar">Países</h3>
+        <NuxtLink class="seccion" to="/archivo/paises" @click="desplegar">Países</NuxtLink>
         <ul class="opciones">
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
-            <NuxtLink :to="`/mapa/${pais.nombre}?page=1`">{{ pais.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/paises/${pais.nombre}?page=1`">{{ pais.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>

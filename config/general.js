@@ -1,8 +1,6 @@
 /**
  * La URL donde esta el API (Directus en nuestro caso).
  */
-// TODO: Borrar
-// export const apiBase = 'http://143.110.150.100:8055';
 export const apiBase = 'https://apiarca.uniandes.edu.co';
 
 /**
