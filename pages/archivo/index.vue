@@ -1,15 +1,19 @@
 <script setup>
+import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 // import { crearHead, urlImagen } from '../../utilidades/ayudas';
 const pagina = ref({});
 const obras = ref([]);
 const cargando = ref(true);
+const cerebroArchivo = usarArchivo();
 
 // Nuxt normaliza los nombres de "layouts" a kebab-case.
 definePageMeta({ layout: 'con-buscador' });
 
 onMounted(async () => {
+  cerebroArchivo.paginaActual = '';
+
   const Archivo = gql`
     query {
       paginas(filter: { slug: { _eq: "archivo" } }, limit: 1) {
