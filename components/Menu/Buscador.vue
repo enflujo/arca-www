@@ -59,7 +59,7 @@ onMounted(async () => {
     inicialesAutores.add(inicial);
   });
 
-  autores.value = Array.from(listaIniciales).sort();
+  autores.value = Array.from(inicialesAutores).sort();
 
   cargando.value = false;
 });
@@ -306,18 +306,12 @@ function cargarIniciales() {}
 
         <ul class="iniciales">
           <li
-            v-for="(inicial, i) in iniciales"
+            v-for="(inicial, i) in autores"
             :key="`inicial${i}`"
             :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
-          </li>
-        </ul>
-
-        <ul v-if="inicialSeleccionada != ''" class="opciones">
-          <li v-for="(autor, i) in autoresPorInicial(inicialSeleccionada)" :key="`autor${i}`" class="enlace-menu">
-            <NuxtLink :to="`/autor/${autor.id}?page=1`">{{ autor.apellido }} {{ autor.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
