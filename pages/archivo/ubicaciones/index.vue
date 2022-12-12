@@ -8,8 +8,10 @@ const cerebroArchivo = usarArchivo();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
+// Falta agregar y organizar ciudades y ubicaciones en una sola página, con un mapa
+
 onMounted(async () => {
-  cerebroArchivo.paginaActual = 'paises';
+  cerebroArchivo.paginaActual = 'ubicaciones';
 
   const ObrasPorPaises = gql`
     query {
@@ -57,8 +59,8 @@ onMounted(async () => {
 <template>
   <Cargador v-if="cargando" />
 
-  <h1>Países</h1>
-  <p v-for="pais in paises" :key="pais.slug">{{ pais.nombre }} - {{ pais.slug }} - {{ pais.numObras }}</p>
+  <h1>Ubicaciones</h1>
+  <p v-for="pais in paises" :key="pais.slug">{{ pais.nombre }} ({{ pais.numObras }})</p>
 </template>
 
 <style lang="scss" scoped></style>
