@@ -21,12 +21,9 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
     "mapbox-gl": "^2.11.1",
-    "nuxt": "^3.0.0",
-    "nuxt-graphql-client": "^0.2.20"
+    "nuxt": "^3.0.0"
   },
   "devDependencies": {
-    "graphql": "^16.6.0",
-    "graphql-tag": "^2.12.6",
     "prettier": "^2.8.1",
     "sass": "^1.56.1"
   },

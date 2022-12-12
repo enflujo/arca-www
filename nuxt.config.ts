@@ -9,7 +9,7 @@ const server = {
 };
 
 export default defineNuxtConfig({
-  modules: ['nuxt-graphql-client', '@pinia/nuxt'],
+  modules: ['@pinia/nuxt'],
   runtimeConfig: {
     public: {
       GQL_HOST: `${apiBase}/graphql`,

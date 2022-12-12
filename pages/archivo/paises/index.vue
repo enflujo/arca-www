@@ -1,17 +1,35 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
+const cargando = ref(true);
 const paises = ref([]);
 const cerebroArchivo = usarArchivo();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
-onMounted(() => {
+
+onMounted(async () => {
   cerebroArchivo.paginaActual = 'paises';
-});
 
-const { data, pending, error } = useAsyncGql('ObrasPorPaises', {}, { lazy: true });
+  const ObrasPorPaises = gql`
+    query {
+      paises(filter: { ciudades_func: { count: { _neq: 0 } } }) {
+        nombre
+        slug
+        geo
+        ciudades {
+          ubicaciones {
+            obras_func {
+              count
+            }
+          }
+        }
+      }
+    }
+  `;
 
-watch(data, ({ paises: datosPaises }) => {
+  const { paises: datosPaises } = await obtenerDatos(ObrasPorPaises);
+
   paises.value = datosPaises
     .map((pais) => {
       // Agrupar el conteo de obras de un país en una sola variable
@@ -31,11 +49,13 @@ watch(data, ({ paises: datosPaises }) => {
     })
     // Filtrar países que sí tienen obras.
     .filter((pais) => pais.numObras);
+
+  cargando.value = false;
 });
 </script>
 
 <template>
-  <Cargador v-if="pending" />
+  <Cargador v-if="cargando" />
 
   <h1>Países</h1>
   <p v-for="pais in paises" :key="pais.slug">{{ pais.nombre }} - {{ pais.slug }} - {{ pais.numObras }}</p>

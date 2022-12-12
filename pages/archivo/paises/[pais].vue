@@ -1,25 +1,33 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
+const cargando = ref(true);
 const datosPais = ref(null);
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
-onMounted(() => {
+onMounted(async () => {
   cerebroArchivo.paginaActual = 'paises';
-});
 
-const { data, pending, error } = useAsyncGql('Pais', { slug: ruta.params.pais }, { lazy: true });
+  const Pais = gql`
+  query {
+    paises(filter: { slug: { _eq: "${ruta.params.pais}" } }, limit: 1) {
+    nombre
+  }
+  }
+  `;
+  const { paises } = await obtenerDatos(Pais);
 
-watch(data, ({ paises }) => {
   datosPais.value = paises[0];
+  cargando.value = false;
 });
 </script>
 
 <template>
-  <Cargador v-if="pending" />
+  <Cargador v-if="cargando" />
   <div v-if="datosPais">
     <h1>{{ datosPais.nombre }}</h1>
   </div>

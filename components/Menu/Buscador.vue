@@ -2,7 +2,9 @@
 // import { urlImagen, extraerPrimeraLetra, eliminarTildes } from '@/utilidades/ayudas';
 import { usarGeneral } from '@/cerebros/general';
 import { usarArchivo } from '@/cerebros/archivo';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
+const cargando = ref(true);
 const cerebro = usarGeneral();
 const cerebroArchivo = usarArchivo();
 const obrasSeleccionadas = computed(() => cerebro.buscador.seleccionados);
@@ -27,18 +29,33 @@ const inicialSeleccionada = ref('');
 
 const paginaActual = computed(() => cerebroArchivo.paginaActual);
 
-// watch: {
-//     obrasSeleccionadas(obras) {
-//       this.obras = obras;
-//     },
-//   },
+onMounted(async () => {
+  const ArchivoMenuBuscador = gql`
+    query {
+      autores(limit: -1) {
+        id
+        nombre
+        apellido
+      }
 
-const { pending, data, error } = await useAsyncGql('ArchivoMenuBuscador', {}, { lazy: true });
+      # Número de ciudades asociadas al país NO es igual a 0
+      paises(filter: { ciudades_func: { count: { _neq: 0 } } }) {
+        nombre
+        slug
+      }
 
-watch(data, (datos) => {
+      gestos {
+        nombre
+      }
+    }
+  `;
+  const datos = await obtenerDatos(ArchivoMenuBuscador);
+
   autores.value = datos.autores;
   paises.value = datos.paises;
   gestos.value = datos.gestos;
+
+  cargando.value = false;
 });
 
 // function urlImagen(objImg, key) {

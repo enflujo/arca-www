@@ -1,16 +1,33 @@
 <script setup>
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+
 // import { crearHead, urlImagen } from '../../utilidades/ayudas';
 const pagina = ref({});
 const obras = ref([]);
+const cargando = ref(true);
 
 // Nuxt normaliza los nombres de "layouts" a kebab-case.
 definePageMeta({ layout: 'con-buscador' });
 
-const { data, pending, error } = await useAsyncGql('ArchivoInicio', {}, { lazy: true });
+onMounted(async () => {
+  const Archivo = gql`
+    query {
+      paginas(filter: { slug: { _eq: "archivo" } }, limit: 1) {
+        titulo
+        slug
+        descripcion
+        contenido
+        banner {
+          id
+          title
+        }
+      }
+    }
+  `;
 
-watch(data, ({ paginas }) => {
-  console.log(paginas);
+  const { paginas } = await obtenerDatos(Archivo);
   pagina.value = paginas[0];
+  cargando.value = false;
 });
 
 // export default {
@@ -84,8 +101,10 @@ watch(data, ({ paginas }) => {
 </script>
 
 <template>
-  <Cargador v-if="pending" />
+  <Cargador v-if="cargando" />
   <MenuVistas />
+
+  <h1>{{ pagina.titulo }}</h1>
 </template>
 
 <style lang="scss" scoped></style>

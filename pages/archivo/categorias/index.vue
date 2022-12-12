@@ -1,46 +1,87 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
+const cargando = ref(true);
 const categorias = ref([]);
 const cerebroArchivo = usarArchivo();
 
 definePageMeta({ layout: 'con-buscador' });
-onMounted(() => {
-  cerebroArchivo.paginaActual = 'categorias';
-});
 
-const { data, pending, error } = await useAsyncGql('Categorias', {}, { lazy: true });
+onMounted(async () => {
+  function aplanarCategorias(datosCategoria, siguienteCategoria) {
+    const respuesta = {
+      nombre: datosCategoria.nombre,
+      numObras: datosCategoria.obras_func.count,
+    };
 
-watch(data, ({ categorias1 }) => {
-  console.log('hola');
+    if (siguienteCategoria <= 6) {
+      const siguienteNivel = `categorias${siguienteCategoria}`;
+
+      if (datosCategoria[siguienteNivel] && datosCategoria[siguienteNivel].length) {
+        const nivel = siguienteCategoria + 1;
+        respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria) => {
+          return aplanarCategorias(categoria, nivel);
+        });
+      }
+    }
+
+    return respuesta;
+  }
+
+  const Categorias = gql`
+    query {
+      categorias1 {
+        nombre
+        obras_func {
+          count
+        }
+        categorias2 {
+          nombre
+          obras_func {
+            count
+          }
+          categorias3 {
+            nombre
+            obras_func {
+              count
+            }
+            categorias4 {
+              nombre
+              obras_func {
+                count
+              }
+              categorias5 {
+                nombre
+                obras_func {
+                  count
+                }
+                categorias6 {
+                  nombre
+                  obras_func {
+                    count
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const { categorias1 } = await obtenerDatos(Categorias);
+
   categorias.value = categorias1.map((categoria1) => {
     return aplanarCategorias(categoria1, 2);
   });
+
+  cerebroArchivo.paginaActual = 'categorias';
+  cargando.value = false;
 });
-
-function aplanarCategorias(datosCategoria, siguienteCategoria) {
-  const respuesta = {
-    nombre: datosCategoria.nombre,
-    numObras: datosCategoria.obras_func.count,
-  };
-
-  if (siguienteCategoria <= 6) {
-    const siguienteNivel = `categorias${siguienteCategoria}`;
-
-    if (datosCategoria[siguienteNivel] && datosCategoria[siguienteNivel].length) {
-      const nivel = siguienteCategoria + 1;
-      respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria) => {
-        return aplanarCategorias(categoria, nivel);
-      });
-    }
-  }
-
-  return respuesta;
-}
 </script>
 
 <template>
-  <Cargador v-if="pending" />
+  <Cargador v-if="cargando" />
   <h1>Categorias</h1>
 
   <div v-if="categorias.length" class="visualizacion">
