@@ -1,14 +1,11 @@
 <script setup>
-// import { urlImagen, extraerPrimeraLetra, eliminarTildes } from '@/utilidades/ayudas';
-import { usarGeneral } from '@/cerebros/general';
-import { usarArchivo } from '@/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { usarGeneral } from '~~/cerebros/general';
+import { usarArchivo } from '~~/cerebros/archivo';
+import { extraerPrimeraLetra, gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const cerebro = usarGeneral();
 const cerebroArchivo = usarArchivo();
-const obrasSeleccionadas = computed(() => cerebro.buscador.seleccionados);
-const busquedaActual = computed(() => cerebro.buscador.busquedaActual);
 const pagina = ref({});
 const obras = ref([]);
 const autores = ref([]);
@@ -24,8 +21,11 @@ const objetos = ref([]);
 const relatos = ref([]);
 const simbolos = ref([]);
 const tecnicas = ref([]);
-const iniciales = ref(new Set());
+const iniciales = ref([]);
 const inicialSeleccionada = ref('');
+
+const obrasSeleccionadas = computed(() => cerebro.buscador.seleccionados);
+const busquedaActual = computed(() => cerebro.buscador.busquedaActual);
 
 const paginaActual = computed(() => cerebroArchivo.paginaActual);
 
@@ -33,8 +33,6 @@ onMounted(async () => {
   const ArchivoMenuBuscador = gql`
     query {
       autores(limit: -1) {
-        id
-        nombre
         apellido
       }
 
@@ -51,9 +49,17 @@ onMounted(async () => {
   `;
   const datos = await obtenerDatos(ArchivoMenuBuscador);
 
-  autores.value = datos.autores;
   paises.value = datos.paises;
   gestos.value = datos.gestos;
+
+  const inicialesAutores = new Set();
+
+  datos.autores.forEach((autor) => {
+    const inicial = extraerPrimeraLetra(autor.apellido).toUpperCase();
+    inicialesAutores.add(inicial);
+  });
+
+  autores.value = Array.from(listaIniciales).sort();
 
   cargando.value = false;
 });
@@ -73,18 +79,7 @@ function desplegar(evento) {
 //   // contenedor.classList.toggle('categoriaLarga');
 // }
 
-// function cargarIniciales() {
-//   const iniciales = [];
-//   for (const autor in this.autores) {
-//     const inicial = extraerPrimeraLetra(this.autores[autor].apellido).toUpperCase();
-
-//     if (inicial !== '') {
-//       iniciales.push(inicial);
-//     }
-//   }
-
-//   iniciales.value = Array.from(new Set(iniciales)).sort();
-// }
+function cargarIniciales() {}
 
 // function elegirInicial(inicial) {
 //   inicialSeleccionada.value = inicial;
@@ -296,8 +291,9 @@ function desplegar(evento) {
     <Buscador />
 
     <nav class="opcionesBuscador">
-      <div class="pantalla" :class="paginaActual === 'categorias' ? 'abierto' : ''">
+      <div class="opcion" :class="paginaActual === 'categorias' ? 'abierto' : ''">
         <NuxtLink class="seccion" to="/archivo/categorias">Categorías</NuxtLink>
+
         <ul class="opciones">
           <li v-for="(categoria, i) in categorias" :key="`categoria${i}`" class="enlace-menu">
             <NuxtLink :to="`/archivo/${categoria.id}?page=1`">{{ categoria.nombre }}</NuxtLink>
@@ -305,7 +301,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla" :class="paginaActual === 'autores' ? 'abierto' : ''">
+      <div class="opcion" :class="paginaActual === 'autores' ? 'abierto' : ''">
         <NuxtLink to="/autores" class="seccion">Autores</NuxtLink>
 
         <ul class="iniciales">
@@ -326,7 +322,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla" :class="paginaActual === 'paises' ? 'abierto' : ''">
+      <div class="opcion" :class="paginaActual === 'paises' ? 'abierto' : ''">
         <NuxtLink class="seccion" to="/archivo/paises">Países</NuxtLink>
 
         <ul class="opciones">
@@ -336,8 +332,9 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <NuxtLink class="seccion" to="/" @click="desplegar">Cartela - Filacteria</NuxtLink>
+
         <ul class="opciones">
           <li v-for="(item, i) in cartelaFilacteria" :key="`cartela${i}`" class="enlace-menu">
             <NuxtLink :to="`/archivo/${cartelaFilacteria[0].nombre}?page=1`">{{
@@ -347,7 +344,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Descriptores</h3>
         <ul class="iniciales">
           <li
@@ -371,7 +368,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Donantes</h3>
         <ul class="opciones">
           <li v-for="(donante, i) in donantes" :key="`donante${i}`" class="enlace-menu">
@@ -380,7 +377,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Escenarios</h3>
         <ul class="opciones">
           <li v-for="(escenario, i) in escenarios" :key="`escenario${i}`" class="enlace-menu">
@@ -389,7 +386,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Fisiognómica</h3>
         <ul class="opciones">
           <li v-for="(posicion, i) in fisiognomica" :key="`posicion${i}`" class="enlace-menu">
@@ -398,7 +395,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Gestos</h3>
         <ul class="iniciales">
           <li
@@ -422,7 +419,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Objetos</h3>
         <ul class="iniciales">
           <li
@@ -446,7 +443,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Relatos visuales</h3>
         <ul class="opciones">
           <li v-for="(relato, i) in relatos" :key="`relato${i}`" class="enlace-menu">
@@ -455,7 +452,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Símbolos</h3>
         <ul class="iniciales">
           <li
@@ -479,7 +476,7 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
+      <div class="opcion">
         <h3 class="seccion" @click="desplegar">Técnicas</h3>
         <ul class="iniciales">
           <li
@@ -515,6 +512,7 @@ function desplegar(evento) {
   width: 15vw;
   height: 100vh;
 }
+
 .logo-texto {
   margin: 1vw;
   font-family: $fuentePrincipal;
@@ -529,7 +527,8 @@ li {
   padding-left: 1em;
   margin-top: 1em;
 }
-.pantalla {
+
+.opcion {
   height: 1em;
   margin-top: 0.4em;
   overflow: hidden;
@@ -558,15 +557,18 @@ ul {
 }
 
 .iniciales {
-  margin-bottom: 1em;
-  height: auto;
+  // height: auto;
   font-size: 1em;
+  display: flex;
 }
 
 .inicial {
-  display: inline;
-  margin-bottom: 1em;
   cursor: pointer;
+  padding: 0.3em;
+
+  &.activo {
+    font-weight: bold;
+  }
 }
 
 .enlace-menu {
