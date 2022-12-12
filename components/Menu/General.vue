@@ -1,22 +1,24 @@
 <script setup>
-import { usarGeneral } from '@/store/general';
+import { usarGeneral } from '@/cerebros/general';
 
 const general = usarGeneral();
 const menuAbierto = ref(false);
-const props = defineProps({
-  colorFondo: {
-    type: String,
-    default: '#08173E',
-  },
+const menuGeneral = ref();
+const paginas = computed(() => general.menus.principal);
+
+onMounted(() => {
+  document.body.addEventListener('click', clicFuera);
 });
 
-const paginas = computed(() => general.menus.principal);
+onUnmounted(() => {
+  document.body.removeEventListener('click', clicFuera);
+});
 
 /**
  * Intercambia el estado del menú: si esta abierto lo cierra, si esta cerrado lo abre.
  */
 function resolverMenu() {
-  menuAbierto.value = !menuAbierto.value.menuAbierto;
+  menuAbierto.value = !menuAbierto.value;
 }
 
 /**
@@ -27,27 +29,16 @@ function cerrarMenu() {
     menuAbierto.value = false;
   }
 }
-// export default {
-//   computed: {
-//     paginas() {
-//       return this.$store.state.general.menus.principal;
-//     },
-//   },
 
-//   methods: {
-//     resolverMenu() {
-//       this.$emit('resolverMenu');
-//     },
-
-//     cerrarMenu() {
-//       this.$emit('cerrarMenu');
-//     },
-//   },
-// };
+function clicFuera(evento) {
+  if (!(menuGeneral.value === evento.target || menuGeneral.value.contains(evento.target))) {
+    cerrarMenu();
+  }
+}
 </script>
 
 <template>
-  <div :class="`contenedorMenu ${menuAbierto ? 'abierto' : 'cerrado'}`">
+  <div ref="menuGeneral" id="menuGeneral" :class="`${menuAbierto ? 'abierto' : ''}`">
     <div class="menuPrincipal">
       <nav class="menuContenido">
         <NuxtLink
@@ -65,7 +56,6 @@ function cerrarMenu() {
         <div class="botonMenu"><span class="menuRaya"></span></div>
       </div>
     </div>
-    <div class="fondo"></div>
   </div>
 </template>
 
@@ -78,7 +68,7 @@ $menuRayaRadio: 4px;
 $menuRayaEspacio: 6px;
 $menuRayaColor: $claridad;
 
-.contenedorMenu {
+.menuGeneral {
   z-index: 9999;
   position: fixed;
 }

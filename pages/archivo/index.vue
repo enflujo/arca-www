@@ -1,14 +1,17 @@
 <script setup>
-import { crearHead, urlImagen } from '../../utilidades/ayudas';
+// import { crearHead, urlImagen } from '../../utilidades/ayudas';
 const pagina = ref({});
 const obras = ref([]);
 
 // Nuxt normaliza los nombres de "layouts" a kebab-case.
 definePageMeta({ layout: 'con-buscador' });
 
-const { data, error } = await useAsyncGql('ArchivoInicio');
+const { data, pending, error } = await useAsyncGql('ArchivoInicio', {}, { lazy: true });
 
-pagina.value = data.value.paginas[0];
+watch(data, ({ paginas }) => {
+  console.log(paginas);
+  pagina.value = paginas[0];
+});
 
 // export default {
 //   data() {
@@ -81,30 +84,8 @@ pagina.value = data.value.paginas[0];
 </script>
 
 <template>
-  <div id="archivo" class="pagina">
-    <!-- <Cargador v-if="$fetchState.pending" /> -->
-
-    <!-- <div v-else-if="$fetchState.error">
-      <h1 class="error">{{ $fetchState.error.message }}</h1>
-    </div> -->
-
-    <section class="contenido">
-      <MenuVistas />
-      <NuxtLink class="enlace-archivo" to="/archivo/paises">Lugares</NuxtLink>
-    </section>
-  </div>
+  <Cargador v-if="pending" />
+  <MenuVistas />
 </template>
 
-<style lang="scss" scoped>
-//TODO: Esto es temporal mientras se diseña un home del archivo
-.enlace-archivo {
-  margin: 1em;
-  font-size: 1.3em;
-  font-weight: bold;
-  color: $dolor;
-
-  &:hover {
-    color: lighten($dolor, 20%);
-  }
-}
-</style>
+<style lang="scss" scoped></style>

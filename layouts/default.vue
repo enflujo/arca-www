@@ -1,5 +1,5 @@
 <script setup>
-import { usarGeneral } from '@/store/general';
+import { usarGeneral } from '~~/cerebros/general';
 
 const cerebro = usarGeneral();
 

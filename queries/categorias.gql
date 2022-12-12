@@ -1,0 +1,44 @@
+query Categorias {
+  categorias1 {
+    nombre
+    obras_func {
+      count
+    }
+    categorias2 {
+      nombre
+      obras_func {
+        count
+      }
+      categorias3 {
+        nombre
+        obras_func {
+          count
+        }
+        categorias4 {
+          nombre
+          obras_func {
+            count
+          }
+          categorias5 {
+            nombre
+            obras_func {
+              count
+            }
+            categorias6 {
+              nombre
+              obras_func {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query Categorias1 {
+  categorias1 {
+    nombre
+  }
+}

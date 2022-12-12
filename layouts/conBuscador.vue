@@ -1,5 +1,5 @@
 <script setup>
-import { usarGeneral } from '@/store/general';
+import { usarGeneral } from '~~/cerebros/general';
 
 const cerebro = usarGeneral();
 
@@ -11,11 +11,9 @@ if (!cerebro.datosCargados) {
 <template>
   <div id="contenedor">
     <MenuGeneral />
+    <MenuBuscador />
     <main role="main">
-      <MenuBuscador />
-      <div class="pagina">
-        <slot />
-      </div>
+      <slot />
     </main>
     <Footer :completo="false" />
   </div>
@@ -33,8 +31,8 @@ if (!cerebro.datosCargados) {
 }
 
 main {
-  display: flex;
-  flex-direction: row;
+  width: 85vw;
+  margin-left: 15vw;
 }
 
 .pagina {

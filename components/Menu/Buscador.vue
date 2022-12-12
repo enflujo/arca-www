@@ -1,7 +1,10 @@
 <script setup>
 // import { urlImagen, extraerPrimeraLetra, eliminarTildes } from '@/utilidades/ayudas';
-import { usarGeneral } from '@/store/general';
+import { usarGeneral } from '@/cerebros/general';
+import { usarArchivo } from '@/cerebros/archivo';
+
 const cerebro = usarGeneral();
+const cerebroArchivo = usarArchivo();
 const obrasSeleccionadas = computed(() => cerebro.buscador.seleccionados);
 const busquedaActual = computed(() => cerebro.buscador.busquedaActual);
 const pagina = ref({});
@@ -9,7 +12,6 @@ const obras = ref([]);
 const autores = ref([]);
 const paises = ref([]);
 const categorias = ref([]);
-const caracteristicas = ref([]);
 const cartelaFilacteria = ref([]);
 const descriptores = ref([]);
 const donantes = ref([]);
@@ -23,17 +25,21 @@ const tecnicas = ref([]);
 const iniciales = ref(new Set());
 const inicialSeleccionada = ref('');
 
+const paginaActual = computed(() => cerebroArchivo.paginaActual);
+
 // watch: {
 //     obrasSeleccionadas(obras) {
 //       this.obras = obras;
 //     },
 //   },
 
-const { data, error } = await useAsyncGql('ArchivoMenuBuscador');
+const { pending, data, error } = await useAsyncGql('ArchivoMenuBuscador', {}, { lazy: true });
 
-autores.value = data.value.autores;
-paises.value = data.value.paises;
-gestos.value = data.value.gestos;
+watch(data, (datos) => {
+  autores.value = datos.autores;
+  paises.value = datos.paises;
+  gestos.value = datos.gestos;
+});
 
 // function urlImagen(objImg, key) {
 //   return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
@@ -184,9 +190,7 @@ function desplegar(evento) {
 // if (categorias_lista && categorias_lista.length) {
 //   this.categorias = categorias_lista;
 // }
-// if (caracteristicas_particulares_lista && caracteristicas_particulares_lista.length) {
-//   this.caracteristicas = caracteristicas_particulares_lista;
-// }
+
 // if (cartela_filacteria_lista && cartela_filacteria_lista.length) {
 //   this.cartelaFilacteria = cartela_filacteria_lista;
 // }
@@ -267,16 +271,16 @@ function desplegar(evento) {
 </script>
 
 <template>
-  <nav id="barra-izquierda">
+  <div id="contenedorBuscador">
     <NuxtLink :to="'/'">
       <h2 class="logo-texto">ARCA</h2>
     </NuxtLink>
 
     <Buscador />
 
-    <div class="barra-texto">
-      <div class="pantalla">
-        <h3 class="seccion" @click="desplegar">Categorías</h3>
+    <nav class="opcionesBuscador">
+      <div class="pantalla" :class="paginaActual === 'categorias' ? 'abierto' : ''">
+        <NuxtLink class="seccion" to="/archivo/categorias">Categorías</NuxtLink>
         <ul class="opciones">
           <li v-for="(categoria, i) in categorias" :key="`categoria${i}`" class="enlace-menu">
             <NuxtLink :to="`/archivo/${categoria.id}?page=1`">{{ categoria.nombre }}</NuxtLink>
@@ -284,13 +288,14 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
-        <h3 class="seccion" @click="desplegar">Autores</h3>
+      <div class="pantalla" :class="paginaActual === 'autores' ? 'abierto' : ''">
+        <NuxtLink to="/autores" class="seccion">Autores</NuxtLink>
+
         <ul class="iniciales">
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
-            :class="`inicial ${inicialSeleccionada === inicial ? 'NuxtLink-exact-active' : ''}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
@@ -304,28 +309,18 @@ function desplegar(evento) {
         </ul>
       </div>
 
-      <div class="pantalla">
-        <NuxtLink class="seccion" to="/archivo/paises" @click="desplegar">Países</NuxtLink>
+      <div class="pantalla" :class="paginaActual === 'paises' ? 'abierto' : ''">
+        <NuxtLink class="seccion" to="/archivo/paises">Países</NuxtLink>
+
         <ul class="opciones">
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/paises/${pais.nombre}?page=1`">{{ pais.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/paises/${pais.slug}?page=1`">{{ pais.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
 
       <div class="pantalla">
-        <h3 class="seccion" @click="desplegar">Características</h3>
-        <ul class="opciones">
-          <li v-for="(caracteristica, i) in caracteristicas" :key="`posicion${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/caracteristica/${caracteristica.id}?page=1`">{{
-              caracteristicas[i].nombre
-            }}</NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="pantalla">
-        <h3 class="seccion" @click="desplegar">Cartela - Filacteria</h3>
+        <NuxtLink class="seccion" to="/" @click="desplegar">Cartela - Filacteria</NuxtLink>
         <ul class="opciones">
           <li v-for="(item, i) in cartelaFilacteria" :key="`cartela${i}`" class="enlace-menu">
             <NuxtLink :to="`/archivo/${cartelaFilacteria[0].nombre}?page=1`">{{
@@ -341,7 +336,7 @@ function desplegar(evento) {
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
-            :class="`inicial ${inicialSeleccionada === inicial ? 'NuxtLink-exact-active' : ''}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
@@ -392,7 +387,7 @@ function desplegar(evento) {
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
-            :class="`inicial ${inicialSeleccionada === inicial ? 'NuxtLink-exact-active' : ''}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
@@ -416,7 +411,7 @@ function desplegar(evento) {
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
-            :class="`inicial ${inicialSeleccionada === inicial ? 'NuxtLink-exact-active' : ''}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
@@ -449,7 +444,7 @@ function desplegar(evento) {
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
-            :class="`inicial ${inicialSeleccionada === inicial ? 'NuxtLink-exact-active' : ''}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
@@ -473,7 +468,7 @@ function desplegar(evento) {
           <li
             v-for="(inicial, i) in iniciales"
             :key="`inicial${i}`"
-            :class="`inicial ${inicialSeleccionada === inicial ? 'NuxtLink-exact-active' : ''}`"
+            :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
             @click="elegirInicial(inicial)"
           >
             {{ inicial }}
@@ -490,12 +485,12 @@ function desplegar(evento) {
           </li>
         </ul>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-#barra-izquierda {
+#contenedorBuscador {
   background-color: $mediana;
   border-right: 2px solid $dolor;
   position: fixed;
@@ -513,13 +508,13 @@ li {
   margin-bottom: 0.2em;
 }
 
-.barra-texto {
-  padding-left: 1vw;
-  margin-top: 2em;
+.opcionesBuscador {
+  padding-left: 1em;
+  margin-top: 1em;
 }
 .pantalla {
-  margin-top: 1.1vh;
   height: 1em;
+  margin-top: 0.4em;
   overflow: hidden;
   &.abierto {
     height: fit-content;
@@ -589,7 +584,8 @@ ul {
   }
 }
 
-.NuxtLink-exact-active {
+.activo,
+.router-link-exact-active {
   font-weight: bold;
 }
 </style>

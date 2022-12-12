@@ -3,3 +3,24 @@ query Ubicaciones($cantidad: Int = -1) {
     nombre
   }
 }
+
+query ObrasPorPaises {
+  paises(filter: { ciudades_func: { count: { _neq: 0 } } }) {
+    nombre
+    slug
+    geo
+    ciudades {
+      ubicaciones {
+        obras_func {
+          count
+        }
+      }
+    }
+  }
+}
+
+query Pais($slug: String) {
+  paises(filter: { slug: { _eq: $slug } }, limit: 1) {
+    nombre
+  }
+}

@@ -21,6 +21,7 @@ query ArchivoMenuBuscador {
   # Número de ciudades asociadas al país NO es igual a 0
   paises(filter: { ciudades_func: { count: { _neq: 0 } } }) {
     nombre
+    slug
   }
 
   gestos {
