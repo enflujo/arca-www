@@ -1,8 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config';
-import { head } from './config/head';
-import { css } from './config/css';
-import { styleResources } from './config/styleResources';
-import { graphql } from './config/graphql';
 import { apiBase } from './config/general';
 
 const isDev = process.env.NODE_ENV === 'development';
