@@ -12,6 +12,7 @@ onMounted(async () => {
   function aplanarCategorias(datosCategoria, siguienteCategoria) {
     const respuesta = {
       nombre: datosCategoria.nombre,
+      slug: datosCategoria.slug,
       numObras: datosCategoria.obras_func.count,
     };
 
@@ -33,31 +34,37 @@ onMounted(async () => {
     query {
       categorias1 {
         nombre
+        slug
         obras_func {
           count
         }
         categorias2 {
           nombre
+          slug
           obras_func {
             count
           }
           categorias3 {
             nombre
+            slug
             obras_func {
               count
             }
             categorias4 {
               nombre
+              slug
               obras_func {
                 count
               }
               categorias5 {
                 nombre
+                slug
                 obras_func {
                   count
                 }
                 categorias6 {
                   nombre
+                  slug
                   obras_func {
                     count
                   }
@@ -81,8 +88,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
   <h1>Categorias</h1>
+  <Cargador v-if="cargando" />
+
+  <GraficaArbol v-else :datos="categorias" />
 
   <div v-if="categorias.length" class="visualizacion">
     <ul class="nivelCategoria">
