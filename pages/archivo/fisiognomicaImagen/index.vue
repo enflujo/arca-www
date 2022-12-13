@@ -34,7 +34,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <Cargador v-if="cargando" />
 
   <h1>Fisiognómica Imagen</h1>
-  <p v-for="elemento in fisiognomicaImagen" :key="elemento.slug">
-    {{ elemento.nombre }} ({{ elemento.obras_func.count }})
-  </p>
+  <ul class="opciones">
+    <li v-for="elemento in fisiognomicaImagen" :key="elemento.slug">
+      <NuxtLink :to="`/archivo/fisiognomicaImagen/${elemento.slug}?page=1`"
+        >{{ elemento.nombre }} ({{ elemento.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

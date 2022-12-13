@@ -34,5 +34,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <Cargador v-if="cargando" />
 
   <h1>Gestos</h1>
-  <p v-for="gesto in gestos" :key="gesto.slug">{{ gesto.nombre }} ({{ gesto.obras_func.count }})</p>
+  <ul class="opciones">
+    <li v-for="gesto in gestos" :key="gesto.slug">
+      <NuxtLink :to="`/archivo/gestos/${gesto.slug}?page=1`"
+        >{{ gesto.nombre }} ({{ gesto.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

@@ -34,5 +34,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <Cargador v-if="cargando" />
 
   <h1>Rostros</h1>
-  <p v-for="rostro in rostros" :key="rostro.slug">{{ rostro.nombre }} ({{ rostro.obras_func.count }})</p>
+  <ul class="opciones">
+    <li v-for="rostro in rostros" :key="rostro.slug">
+      <NuxtLink :to="`/archivo/rostros/${rostro.slug}?page=1`"
+        >{{ rostro.nombre }} ({{ rostro.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

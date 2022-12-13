@@ -23,8 +23,8 @@ onMounted(async () => {
     }
   `;
 
-  // TODO: No trae nada en el array
   const { relatos_visuales: datosRelatos } = await obtenerDatos(ObrasPorRelatos);
+
   ordenarPorNombre(datosRelatos);
   relatos.value = datosRelatos;
 
@@ -36,5 +36,12 @@ onMounted(async () => {
   <Cargador v-if="cargando" />
 
   <h1>Relatos Visuales</h1>
-  <p v-for="relato in relatos" :key="relato.slug">{{ relato.nombre }} ({{ relato.obras_func.count }})</p>
+
+  <ul class="opciones">
+    <li v-for="relato in relatos" :key="relato.slug">
+      <NuxtLink :to="`/archivo/relatos/${relato.slug}?page=1`"
+        >{{ relato.nombre }} ({{ relato.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

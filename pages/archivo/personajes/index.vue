@@ -34,5 +34,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <Cargador v-if="cargando" />
 
   <h1>Personajes</h1>
-  <p v-for="personaje in personajes" :key="personaje.slug">{{ personaje.nombre }} ({{ personaje.obras_func.count }})</p>
+  <ul class="opciones">
+    <li v-for="personaje in personajes" :key="personaje.slug">
+      <NuxtLink :to="`/archivo/personajes/${personaje.slug}?page=1`"
+        >{{ personaje.nombre }} ({{ personaje.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

@@ -35,5 +35,11 @@ onMounted(async () => {
   <Cargador v-if="cargando" />
 
   <h1>Objetos</h1>
-  <p v-for="objeto in objetos" :key="objeto.slug">{{ objeto.nombre }} ({{ objeto.obras_func.count }})</p>
+  <ul class="opciones">
+    <li v-for="objeto in objetos" :key="objeto.slug">
+      <NuxtLink :to="`/archivo/objetos/${objeto.slug}?page=1`"
+        >{{ objeto.nombre }} ({{ objeto.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

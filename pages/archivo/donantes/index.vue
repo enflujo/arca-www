@@ -36,5 +36,11 @@ onMounted(async () => {
   <Cargador v-if="cargando" />
 
   <h1>Donantes</h1>
-  <p v-for="donante in donantes" :key="donante.slug">{{ donante.nombre }} ({{ donante.obras_func.count }})</p>
+  <ul class="opciones">
+    <li v-for="donante in donantes" :key="donante.slug">
+      <NuxtLink :to="`/archivo/donantes/${donante.slug}?page=1`"
+        >{{ donante.nombre }} ({{ donante.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>
