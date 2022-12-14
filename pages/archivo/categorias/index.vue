@@ -14,6 +14,7 @@ onMounted(async () => {
       nombre: datosCategoria.nombre,
       slug: datosCategoria.slug,
       numObras: datosCategoria.obras_func.count,
+      ancestro: datosCategoria.ancestro ? datosCategoria.ancestro.slug : null,
     };
 
     if (siguienteCategoria <= 6) {
@@ -41,30 +42,45 @@ onMounted(async () => {
         categorias2 {
           nombre
           slug
+          ancestro {
+            slug
+          }
           obras_func {
             count
           }
           categorias3 {
             nombre
             slug
+            ancestro {
+              slug
+            }
             obras_func {
               count
             }
             categorias4 {
               nombre
               slug
+              ancestro {
+                slug
+              }
               obras_func {
                 count
               }
               categorias5 {
                 nombre
                 slug
+                ancestro {
+                  slug
+                }
                 obras_func {
                   count
                 }
                 categorias6 {
                   nombre
                   slug
+                  ancestro {
+                    slug
+                  }
                   obras_func {
                     count
                   }
@@ -93,7 +109,7 @@ onMounted(async () => {
 
   <GraficaArbol v-else :datos="categorias" />
 
-  <div v-if="categorias.length" class="visualizacion">
+  <!-- <div v-if="categorias.length" class="visualizacion">
     <ul class="nivelCategoria">
       <li v-for="(categoria1, i) in categorias" :key="`categoria1${i}`">
         nivel1 - {{ categoria1.nombre }} ({{ categoria1.numObras }})
@@ -129,7 +145,7 @@ onMounted(async () => {
         </ul>
       </li>
     </ul>
-  </div>
+  </div> -->
 </template>
 
 <style lang="scss" scoped>

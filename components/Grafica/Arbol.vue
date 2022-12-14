@@ -11,8 +11,12 @@ const props = defineProps({
 });
 const max = ref(0);
 const datosColumnas = ref([]);
+const contenedores = ref();
+const contenedor = ref();
+const datosSvgs = ref([[], [], [], [], []]);
+const dims = ref(null);
 
-onMounted(() => {
+onBeforeMount(() => {
   let calculoMax = 0;
 
   props.datos.forEach((categoria1) => {
@@ -54,62 +58,93 @@ onMounted(() => {
   max.value = calculoMax;
 });
 
+onMounted(() => {
+  actualizarLineas();
+});
+
 function escala(numObras, min, maximo, maxBase = max.value) {
   return convertirEscala(numObras, 1, maxBase, min, maximo);
 }
 
-const datosSubcategoria = (datos, indice) => {
-  switch (indice) {
-    case 1:
-      return datos.categorias2 ? datos.categorias2 : [];
-    case 2:
-      return datos.categorias2;
-  }
-  return [];
-};
+function actualizarLineas() {
+  const { width: ancho, height: alto, x, y } = contenedor.value.getBoundingClientRect();
+  // salir si el contenedor aún no tiene alto, esto significa que aún esta pintando en las posiciones que se necesitan a continuación.
+  if (alto === 0) return;
+  console.log('hey');
+  dims.value = { ancho, alto };
+
+  contenedores.value.forEach((contenedor) => {
+    const subNiveles = contenedor.querySelectorAll('.contenedorSubNivel');
+    subNiveles.forEach((nivel, i) => {
+      const elementos = nivel.querySelectorAll('.elementoLista .circulo');
+      elementos.forEach((nodo) => {
+        const dimsAncestro = contenedor
+          .querySelector(`[data-fuente="${nodo.dataset.ancestro}"]`)
+          .getBoundingClientRect();
+        const dimsNodo = nodo.getBoundingClientRect();
+
+        const x1 = dimsAncestro.x - x + dimsAncestro.width / 2;
+        const y1 = dimsAncestro.y - y + dimsAncestro.height / 2;
+        const x2 = dimsNodo.x - x + dimsNodo.width / 2;
+        const y2 = dimsNodo.y - y + dimsNodo.height / 2;
+        datosSvgs.value[i].push({ x1, y1, x2, y2 });
+      });
+    });
+  });
+}
 </script>
 
 <template>
-  <div class="contenedor">
-    <div class="contenedorNivel1" v-for="categoria1 in props.datos">
-      <span
-        class="nombre nombreNivel1"
-        :data-slug="categoria1.slug"
-        :style="`font-size:${escala(categoria1.numObras, 1, 6)}em`"
-      >
-        {{ categoria1.nombre }}
+  <div class="contenedor" ref="contenedor">
+    <svg id="lineas" v-if="dims" width="2139" height="10136">
+      <g v-for="(columna, i) in datosSvgs" :key="`columna-${i}`">
+        <line
+          class="linea"
+          v-for="nodo in columna"
+          :key="`linea-${i}`"
+          :x1="nodo.x1"
+          :y1="nodo.y1"
+          :x2="nodo.x2"
+          :y2="nodo.y2"
+        ></line>
+      </g>
+    </svg>
+    <div class="contenedorNivel1" v-for="(categoria1, i) in props.datos" ref="contenedores">
+      <span class="elementoLista nombreNivel1" :style="`font-size:${escala(categoria1.numObras, 0.8, 2)}em`">
+        <span
+          class="circulo"
+          :style="`width:${escala(categoria1.numObras, 5, 50, max / 6)}px;height:${escala(
+            categoria1.numObras,
+            5,
+            50,
+            max / 6
+          )}px`"
+          :data-fuente="categoria1.slug"
+        ></span>
+        <span class="nombre">{{ categoria1.nombre }}</span>
       </span>
 
       <div class="contenedorSubNivel" v-for="nivel in categoria1.arbol">
-        <span
-          class="nombre"
-          v-for="subCategoria in nivel"
-          :style="`font-size:${escala(subCategoria.numObras, 1, 6, max / 2)}em`"
-        >
+        <span class="elementoLista" v-for="subCategoria in nivel">
           <span
             class="circulo"
-            :style="`width:${escala(subCategoria.numObras, 5, 20, max / 2)}px;height:${escala(
+            :data-ancestro="subCategoria.ancestro"
+            :data-fuente="subCategoria.slug"
+            :style="`width:${escala(subCategoria.numObras, 5, 50, max / 6)}px;height:${escala(
               subCategoria.numObras,
               5,
-              20,
-              max / 2
+              50,
+              max / 6
             )}px`"
           ></span>
-          <span>{{ subCategoria.nombre }}</span>
+
+          <span class="nombre" v-if="subCategoria.numObras > 500">
+            {{ subCategoria.nombre }} ({{ subCategoria.numObras }})
+          </span>
         </span>
       </div>
     </div>
   </div>
-
-  <!-- <div id="nivel2" class="contenedorNivel">
-    <div class="subNivel" v-for="categoria1 in props.datos">
-      <div class="categoriaNivel2" v-if="categoria1.categorias2" v-for="categoria2 in categoria1.categorias2">
-        <span class="nombre" :data-pariente="categoria1.slug" :style="escala(categoria2.numObras)">
-          {{ categoria2.nombre }}
-        </span>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -117,7 +152,20 @@ const datosSubcategoria = (datos, indice) => {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
+  position: relative;
+
+  svg {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+
+    .linea {
+      stroke: rgb(236, 85, 20);
+      stroke-width: 1;
+    }
+  }
 }
+
 .contenedorNivel1 {
   padding: 1em;
   display: flex;
@@ -125,32 +173,37 @@ const datosSubcategoria = (datos, indice) => {
   justify-content: space-around;
   transform-origin: 0 0;
   transition: all 0.5s ease-in-out;
-
-  // &:hover {
-  //   font-size: 3rem;
-  // }
+  position: relative;
 }
 
 .contenedorSubNivel {
   display: flex;
   flex-direction: column;
   flex: 1;
+  // padding: 0 2em;
 }
 
 .nombreNivel1 {
   flex: 1;
 }
 
-.nombre {
+.elementoLista {
   position: relative;
   display: inline-block;
+  line-height: 0;
 }
+
+.nombre {
+  position: absolute;
+  left: 0;
+}
+
 .circulo {
-  display: block;
+  display: inline-block;
   background-color: hotpink;
   border-radius: 50%;
 
-  position: absolute;
-  left: -1em;
+  // position: absolute;
+  top: 0;
 }
 </style>
