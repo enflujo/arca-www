@@ -19,7 +19,7 @@ if (!cerebro.datosCargados) {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use 'sass:color';
 
 #contenedor {
@@ -39,18 +39,6 @@ main {
   width: calc(100vw - 23vw);
   margin-top: 10px;
   margin-left: 8vw;
-}
-
-.contenedorGaleria {
-  width: 85vw;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.imagenGaleria {
-  width: 180px;
-  height: auto;
-  margin-right: 0.5em;
 }
 
 // Teléfonos horizontal
