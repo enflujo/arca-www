@@ -17,9 +17,10 @@ onMounted(async () => {
     relatos_visuales(filter: { slug: { _eq: "${ruta.params.relato}" } }, limit: 1) {
       nombre
       obras {
+        id
         titulo
         imagen {
-          id,
+          id
           title
         }
         autores {

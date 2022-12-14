@@ -16,8 +16,9 @@ onMounted(async () => {
   const Donante = gql`
   query {
     donantes(filter: { slug: { _eq: "${ruta.params.donante}" } }, limit: 1) {
-    nombre
-    obras {
+      nombre
+      obras {
+        id
         titulo
         imagen {
           id

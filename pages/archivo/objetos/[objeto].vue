@@ -20,6 +20,7 @@ onMounted(async () => {
     nombre
     obras {
       obras_id {
+        id
         titulo
         imagen {
           id

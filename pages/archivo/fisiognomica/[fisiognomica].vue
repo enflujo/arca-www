@@ -16,9 +16,10 @@ onMounted(async () => {
   const Fisiognomica = gql`
   query {
     fisiognomicas(filter: { slug: { _eq: "${ruta.params.fisiognomica}" } }, limit: 1) {
-    nombre
-    obras {
-        titulo,
+      nombre
+      obras {
+        id
+        titulo
         imagen {
           id
           title

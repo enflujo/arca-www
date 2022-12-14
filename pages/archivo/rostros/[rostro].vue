@@ -16,8 +16,9 @@ onMounted(async () => {
   const Rostro = gql`
   query {
     rostros(filter: { slug: { _eq: "${ruta.params.rostro}" } }, limit: 1) {
-    nombre
-    obras {
+      nombre
+      obras {
+        id
         titulo
         imagen {
           id,

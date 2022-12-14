@@ -9,7 +9,7 @@ defineProps({
 <template>
   <div class="contenedorGaleria">
     <div v-for="obra in obras" :key="obra.id" class="obra">
-      <nuxt-link :to="`/`">
+      <nuxt-link :to="`/archivo/obras/${obra.id}`">
         <img class="imagen" :src="urlImagen(obra.imagen.id, 'galeria')" :alt="obra.titulo" />
         <div class="infoImagen">
           <p class="titulo">{{ obra.titulo }}</p>
