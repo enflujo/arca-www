@@ -30,7 +30,7 @@ defineProps({
 }
 
 .obra {
-  display: flex;
+  display: block;
   width: min-content;
   min-width: 250px;
   margin: 0.25em;

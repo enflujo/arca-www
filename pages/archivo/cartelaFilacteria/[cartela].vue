@@ -3,7 +3,7 @@ import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
-const datosFisiognomica = ref(null);
+const datosCartelaFilacteria = ref(null);
 const obras = ref(null);
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
@@ -11,11 +11,11 @@ const ruta = useRoute();
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 onMounted(async () => {
-  cerebroArchivo.paginaActual = 'fisiognomica';
+  cerebroArchivo.paginaActual = 'cartelaFilacteria';
 
-  const Fisiognomica = gql`
+  const CartelaFilacteria = gql`
   query {
-    fisiognomicas(filter: { slug: { _eq: "${ruta.params.fisiognomica}" } }, limit: 1) {
+    cartelas_filacterias(filter: { slug: { _eq: "${ruta.params.cartela}" } }, limit: 1) {
     nombre
     obras {
         titulo,
@@ -33,18 +33,18 @@ onMounted(async () => {
     }
   }
   `;
-  const { fisiognomicas } = await obtenerDatos(Fisiognomica);
+  const { cartelas_filacterias } = await obtenerDatos(CartelaFilacteria);
 
-  datosFisiognomica.value = fisiognomicas[0];
-  obras.value = datosFisiognomica.value.obras;
+  datosCartelaFilacteria.value = cartelas_filacterias[0];
+  obras.value = datosCartelaFilacteria.value.obras;
   cargando.value = false;
 });
 </script>
 
 <template>
   <Cargador v-if="cargando" />
-  <div v-if="datosFisiognomica">
-    <h1>{{ datosFisiognomica.nombre }}</h1>
+  <div v-if="datosCartelaFilacteria">
+    <h1>{{ datosCartelaFilacteria.nombre }}</h1>
     <Galeria :obras="obras" />
   </div>
 </template>

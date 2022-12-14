@@ -15,16 +15,16 @@ onMounted(async () => {
   const Relato = gql`
   query {
     relatos_visuales(filter: { slug: { _eq: "${ruta.params.relato}" } }, limit: 1) {
-      nombre,
+      nombre
       obras {
-        titulo,
+        titulo
         imagen {
           id,
           title
-        },
+        }
         autores {
           autores_id {
-            nombre,
+            nombre
             apellido
           }
         }

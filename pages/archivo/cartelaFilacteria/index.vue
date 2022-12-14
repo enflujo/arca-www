@@ -34,13 +34,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <Cargador v-if="cargando" />
 
   <h1>Cartela - Filacteria</h1>
-  <div>
-    <NuxtLink
-      :to="`/archivo/cartelaFilacteria/${elemento.slug}?page=1`"
-      v-for="elemento in cartelaFilacteria"
-      :key="elemento.slug"
-    >
-      {{ elemento.nombre }} ({{ elemento.obras_func.count }})
-    </NuxtLink>
-  </div>
+  <ul class="opciones">
+    <li v-for="elemento in cartelaFilacteria" :key="elemento.slug">
+      <NuxtLink :to="`/archivo/cartelaFilacteria/${elemento.slug}?page=1`"
+        >{{ elemento.nombre }} ({{ elemento.obras_func.count }})</NuxtLink
+      >
+    </li>
+  </ul>
 </template>

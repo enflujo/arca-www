@@ -4,6 +4,7 @@ import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const datosDonante = ref(null);
+const obras = ref(null);
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 
@@ -16,12 +17,27 @@ onMounted(async () => {
   query {
     donantes(filter: { slug: { _eq: "${ruta.params.donante}" } }, limit: 1) {
     nombre
+    obras {
+        titulo
+        imagen {
+          id
+          title
+        }
+        autores {
+          autores_id {
+            nombre
+            apellido
+          }
+        }
+      }
   }
   }
   `;
   const { donantes } = await obtenerDatos(Donante);
 
   datosDonante.value = donantes[0];
+  obras.value = datosDonante.value.obras;
+  console.log(obras.value);
   cargando.value = false;
 });
 </script>
@@ -30,5 +46,6 @@ onMounted(async () => {
   <Cargador v-if="cargando" />
   <div v-if="datosDonante">
     <h1>{{ datosDonante.nombre }}</h1>
+    <Galeria :obras="obras" />
   </div>
 </template>
