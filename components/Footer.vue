@@ -13,7 +13,7 @@
       </p>
     </div>
     <div class="texto-f-dos">
-      <p class="copy">Bibliografía general <br />Recursos derivados <br />Contacto</p>
+      <p>Bibliografía general <br />Recursos derivados <br />Contacto</p>
     </div>
   </footer>
 </template>
@@ -61,7 +61,7 @@ footer {
       color: $claridad;
       text-transform: uppercase;
       font-family: $fuentePrincipal;
-      font-size: 3vh;
+      font-size: 1.5em;
     }
   }
   .texto-f-uno {
@@ -73,9 +73,6 @@ footer {
     display: flex;
     width: 150px;
     text-align: center;
-  }
-  .copy {
-    font-size: 1.5vh;
   }
 }
 
