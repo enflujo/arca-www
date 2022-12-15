@@ -7,6 +7,9 @@ const obra = ref(null);
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 
+// Para cambiar de pestaña y mostrar otros datos
+const pestana = ref('');
+
 definePageMeta({ layout: 'default', keepalive: true });
 
 onMounted(async () => {
@@ -16,14 +19,67 @@ onMounted(async () => {
   query {
     obras(filter: { id: { _eq: "${ruta.params.obra}" } }, limit: 1) {
         titulo
+        sintesis
+        comentario_bibliografico
+        iconotexto
+        categoria1 {
+          nombre
+          descripcion
+        }
+        categoria2 {
+          nombre
+        }
+        categoria3 {
+          nombre
+        }
+        categoria4 {
+          nombre
+        }
+        categoria5 {
+          nombre
+        }
+        categoria6 {
+          nombre
+        }
+        fecha_inicial
+        fecha_final
+        fuente {
+          descripcion
+        }
         imagen {
           id
           title
+        }
+        donante {
+          nombre
+        }
+        ciudad_origen {
+          nombre
+          pais {
+            nombre
+          }
+        }
+        ubicacion {
+          nombre
+          ciudad {
+            nombre
+            pais {
+              nombre
+            }
+          }
         }
         autores {
           autores_id {
             nombre
             apellido
+        }
+      }
+      relato_visual {
+        nombre
+      }
+      tecnicas {
+        tecnicas_id {
+        nombre
         }
       }
     }
@@ -32,6 +88,8 @@ onMounted(async () => {
 
   const { obras } = await obtenerDatos(Obra);
   obra.value = obras[0];
+
+  console.log(obra.value);
 
   cargando.value = false;
 });
@@ -47,6 +105,12 @@ onMounted(async () => {
       {{ obra.autores[0].autores_id.apellido }}
     </h2>
     <div id="contenedorImagen"><img class="imagen" :src="urlImagen(obra.imagen.id)" :alt="obra.titulo" /></div>
+    <p>
+      Fecha: {{ obra.fecha_inicial }} <span v-if="obra.fecha_final">- {{ obra.fecha_final }}</span>
+    </p>
+    <p v-if="obra.tecnicas.length">
+      Técnica: <span v-for="tecnica in obra.tecnicas" :key="tecnica.nombre">{{ tecnica.nombre }}</span>
+    </p>
   </div>
 </template>
 
