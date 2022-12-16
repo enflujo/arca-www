@@ -96,7 +96,7 @@ function actualizarLineas() {
 
 <template>
   <div class="contenedor" ref="contenedor">
-    <svg id="lineas" v-if="dims" width="2139" height="10136">
+    <svg id="lineas" v-if="dims" :width="dims.ancho" :height="dims.alto">
       <g v-for="(columna, i) in datosSvgs" :key="`columna-${i}`">
         <line
           class="linea"
@@ -138,7 +138,7 @@ function actualizarLineas() {
             )}px`"
           ></span>
 
-          <span class="nombre" v-if="subCategoria.numObras > 500">
+          <span class="nombre" v-if="subCategoria.numObras > 0">
             {{ subCategoria.nombre }} ({{ subCategoria.numObras }})
           </span>
         </span>
@@ -158,6 +158,7 @@ function actualizarLineas() {
     position: absolute;
     top: 0;
     z-index: 2;
+    pointer-events: none;
 
     .linea {
       stroke: rgb(236, 85, 20);
@@ -190,12 +191,12 @@ function actualizarLineas() {
 .elementoLista {
   position: relative;
   display: inline-block;
-  line-height: 0;
 }
 
 .nombre {
   position: absolute;
   left: 0;
+  background-color: aqua;
 }
 
 .circulo {
