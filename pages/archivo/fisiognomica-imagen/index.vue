@@ -3,16 +3,16 @@ import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
-const fisiognomica = ref([]);
+const fisiognomicaImagen = ref([]);
 const cerebroArchivo = usarArchivo();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true }),
   onMounted(async () => {
-    cerebroArchivo.paginaActual = 'fisiognomica';
+    cerebroArchivo.paginaActual = 'fisiognomica-imagen';
 
-    const ObrasPorFisiognomica = gql`
+    const ObrasPorFisiognomicaImagen = gql`
       query {
-        fisiognomicas(sort: ["nombre"], limit: -1) {
+        fisiognomicas_imagen(sort: ["nombre"], limit: -1) {
           nombre
           slug
           obras_func {
@@ -22,8 +22,9 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
       }
     `;
 
-    const { fisiognomicas: datosFisiognomica } = await obtenerDatos(ObrasPorFisiognomica);
-    fisiognomica.value = datosFisiognomica;
+    const { fisiognomicas_imagen: datosFisiognomicaImagen } = await obtenerDatos(ObrasPorFisiognomicaImagen);
+    fisiognomicaImagen.value = datosFisiognomicaImagen;
+
     cargando.value = false;
   });
 </script>
@@ -31,11 +32,10 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
 <template>
   <Cargador v-if="cargando" />
 
-  <h1>Fisiognómica</h1>
-
+  <h1>Fisiognómica Imagen</h1>
   <ul class="opciones">
-    <li v-for="elemento in fisiognomica" :key="elemento.slug">
-      <NuxtLink :to="`/archivo/fisiognomica/${elemento.slug}?page=1`"
+    <li v-for="elemento in fisiognomicaImagen" :key="elemento.slug">
+      <NuxtLink :to="`/archivo/fisiognomicaImagen/${elemento.slug}?page=1`"
         >{{ elemento.nombre }} ({{ elemento.obras_func.count }})</NuxtLink
       >
     </li>

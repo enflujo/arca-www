@@ -3,16 +3,16 @@ import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
-const fisiognomica = ref([]);
+const cartelaFilacteria = ref([]);
 const cerebroArchivo = usarArchivo();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true }),
   onMounted(async () => {
-    cerebroArchivo.paginaActual = 'fisiognomica';
+    cerebroArchivo.paginaActual = 'cartela-filacteria';
 
-    const ObrasPorFisiognomica = gql`
+    const ObrasPorCartela = gql`
       query {
-        fisiognomicas(sort: ["nombre"], limit: -1) {
+        cartelas_filacterias(sort: ["nombre"], limit: -1) {
           nombre
           slug
           obras_func {
@@ -22,8 +22,8 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
       }
     `;
 
-    const { fisiognomicas: datosFisiognomica } = await obtenerDatos(ObrasPorFisiognomica);
-    fisiognomica.value = datosFisiognomica;
+    const { cartelas_filacterias: datosCartelaFilacteria } = await obtenerDatos(ObrasPorCartela);
+    cartelaFilacteria.value = datosCartelaFilacteria;
     cargando.value = false;
   });
 </script>
@@ -31,11 +31,10 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
 <template>
   <Cargador v-if="cargando" />
 
-  <h1>Fisiognómica</h1>
-
+  <h1>Cartela - Filacteria</h1>
   <ul class="opciones">
-    <li v-for="elemento in fisiognomica" :key="elemento.slug">
-      <NuxtLink :to="`/archivo/fisiognomica/${elemento.slug}?page=1`"
+    <li v-for="elemento in cartelaFilacteria" :key="elemento.slug">
+      <NuxtLink :to="`/archivo/cartelaFilacteria/${elemento.slug}?page=1`"
         >{{ elemento.nombre }} ({{ elemento.obras_func.count }})</NuxtLink
       >
     </li>

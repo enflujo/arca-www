@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, ordenarPorNombre } from '~~/utilidades/ayudas';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const donantes = ref([]);
@@ -13,7 +13,7 @@ onMounted(async () => {
 
   const ObrasPorDonantes = gql`
     query {
-      donantes {
+      donantes(sort: ["nombre"], limit: -1) {
         nombre
         slug
         obras_func {
@@ -24,8 +24,6 @@ onMounted(async () => {
   `;
 
   const { donantes: datosDonantes } = await obtenerDatos(ObrasPorDonantes);
-  ordenarPorNombre(datosDonantes);
-
   donantes.value = datosDonantes;
 
   cargando.value = false;

@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, ordenarPorNombre } from '~~/utilidades/ayudas';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const tecnicas = ref([]);
@@ -12,7 +12,7 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
 
     const ObrasPorTecnicas = gql`
       query {
-        tecnicas {
+        tecnicas(sort: ["nombre"], limit: -1) {
           nombre
           slug
           obras_func {
@@ -23,9 +23,7 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
     `;
 
     const { tecnicas: datosTecnicas } = await obtenerDatos(ObrasPorTecnicas);
-    ordenarPorNombre(datosTecnicas);
     tecnicas.value = datosTecnicas;
-
     cargando.value = false;
   });
 </script>

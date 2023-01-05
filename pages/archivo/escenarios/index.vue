@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, ordenarPorNombre } from '~~/utilidades/ayudas';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const escenarios = ref([]);
@@ -13,7 +13,7 @@ onMounted(async () => {
 
   const ObrasPorEscenarios = gql`
     query {
-      escenarios {
+      escenarios(sort: ["nombre"], limit: -1) {
         nombre
         slug
         obras_func {
@@ -24,8 +24,6 @@ onMounted(async () => {
   `;
 
   const { escenarios: datosEscenarios } = await obtenerDatos(ObrasPorEscenarios);
-  ordenarPorNombre(datosEscenarios);
-
   escenarios.value = datosEscenarios;
 
   cargando.value = false;

@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, ordenarPorNombre } from '~~/utilidades/ayudas';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const personajes = ref([]);
@@ -12,7 +12,7 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
 
     const ObrasPorPersonajes = gql`
       query {
-        personajes {
+        personajes(sort: ["nombre"], limit: -1) {
           nombre
           slug
           obras_func {
@@ -23,9 +23,7 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
     `;
 
     const { personajes: datosPersonajes } = await obtenerDatos(ObrasPorPersonajes);
-    ordenarPorNombre(datosPersonajes);
     personajes.value = datosPersonajes;
-
     cargando.value = false;
   });
 </script>
