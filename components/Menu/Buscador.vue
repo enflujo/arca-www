@@ -287,7 +287,7 @@ function cargarIniciales() {}
       </div>
 
       <div class="opcion" :class="paginaActual === 'autores' ? 'abierto' : ''">
-        <NuxtLink to="/autores" class="seccion">Autores</NuxtLink>
+        <NuxtLink to="/archivo/autores" class="seccion">Autores</NuxtLink>
 
         <ul class="iniciales">
           <li
@@ -312,10 +312,10 @@ function cargarIniciales() {}
       </div>
 
       <div class="opcion">
-        <NuxtLink class="seccion" to="/archivo/cartelaFilacteria">Cartela - Filacteria</NuxtLink>
+        <NuxtLink class="seccion" to="/archivo/cartela-filacteria">Cartela - Filacteria</NuxtLink>
         <ul class="opciones">
           <li v-for="(elemento, i) in cartelaFilacteria" :key="`cartela${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/cartelaFilacteria/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/cartela-filacteria/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -348,10 +348,10 @@ function cargarIniciales() {}
       </div>
 
       <div class="opcion">
-        <NuxtLink class="seccion" to="/archivo/fisiognomicaImagen">Fisiognómica Imagen</NuxtLink>
+        <NuxtLink class="seccion" to="/archivo/fisiognomica-imagen">Fisiognómica Imagen</NuxtLink>
         <ul class="opciones">
           <li v-for="(elemento, i) in fisiognomicaImagen" :key="`fisiognomicaImagen${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/fisiognomicaImagen/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/fisiognomica-imagen/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
