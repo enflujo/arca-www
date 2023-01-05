@@ -126,3 +126,18 @@ export const obtenerDatos = async (query) => {
 
   return peticion.data;
 };
+
+export function ordenarPorNombre(lista) {
+  lista.sort((a, b) => {
+    const nombreA = a.nombre.toUpperCase(); // ignorar mayúsculas y minúsculas
+    const nombreB = b.nombre.toUpperCase();
+    if (nombreA < nombreB) {
+      return -1;
+    }
+    if (nombreA > nombreB) {
+      return 1;
+    }
+
+    return 0;
+  });
+}

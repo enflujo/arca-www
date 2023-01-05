@@ -31,7 +31,7 @@ if (!cerebro.datosCargados) {
 }
 
 main {
-  width: 85vw;
+  width: 84vw;
   margin-left: 15vw;
 }
 
