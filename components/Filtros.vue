@@ -1,5 +1,97 @@
+<script>
+// import { gql } from 'nuxt-graphql-request';
+
+// export default {
+//   name: 'SeccionFiltros',
+//   data() {
+//     return {
+//       paises: [],
+//       autores: [],
+//     };
+//   },
+
+//   async fetch() {
+//     const query = gql`
+//       query {
+//         countries {
+//           id
+//           name_spanish
+//         }
+//         authors {
+//           id
+//           lastname
+//           name
+//         }
+//       }
+//     `;
+
+//     const { countries, authors } = await this.$graphql.principal.request(query);
+
+//     if (countries && countries.length) {
+//       this.paises = countries.sort((a, b) => {
+//         const nombreA = a.name_spanish;
+//         const nombreB = b.name_spanish;
+
+//         if (nombreA < nombreB) {
+//           return -1;
+//         }
+//         if (nombreA > nombreB) {
+//           return 1;
+//         }
+//         return 0;
+//       });
+//     } else {
+//       if (process.server) {
+//         this.$nuxt.context.res.statusCode = 404;
+//       }
+//       throw new Error('La página no existe');
+//     }
+//     if (authors && authors.length) {
+//       this.autores = authors.sort((a, b) => {
+//         const apellidoA = a.lastname;
+//         const apellidoB = b.lastname;
+
+//         if (apellidoA < apellidoB) {
+//           return -1;
+//         }
+//         if (apellidoA > apellidoB) {
+//           return 1;
+//         }
+//         return 0;
+//       });
+//     }
+//   },
+
+//   computed: {
+//     filtro() {
+//       return this.$store.state.general.filtro;
+//     },
+//   },
+
+//   methods: {
+//     buscarPais(id) {
+//       this.$store.dispatch('buscador/buscar', {
+//         campo: 'actual_country_id',
+//         comparacion: id,
+//       });
+//     },
+
+//     buscarAutor(id) {
+//       this.$store.dispatch('buscador/buscar', {
+//         campo: 'author_id',
+//         comparacion: id,
+//       });
+//     },
+
+//     actualizarFiltro(filtro) {
+//       this.$store.commit('general/actualizarFiltro', filtro);
+//     },
+//   },
+// };
+</script>
+
 <template>
-  <div class="contenedor-general">
+  <!-- <div class="contenedor-general">
     <div class="segundo-cuadro">
       <div class="botones">
         <button class="boton-filtro" @click="actualizarFiltro('pais')">
@@ -45,100 +137,8 @@
         </h3>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
-
-<script>
-import { gql } from 'nuxt-graphql-request';
-
-export default {
-  name: 'SeccionFiltros',
-  data() {
-    return {
-      paises: [],
-      autores: [],
-    };
-  },
-
-  async fetch() {
-    const query = gql`
-      query {
-        countries {
-          id
-          name_spanish
-        }
-        authors {
-          id
-          lastname
-          name
-        }
-      }
-    `;
-
-    const { countries, authors } = await this.$graphql.principal.request(query);
-
-    if (countries && countries.length) {
-      this.paises = countries.sort((a, b) => {
-        const nombreA = a.name_spanish;
-        const nombreB = b.name_spanish;
-
-        if (nombreA < nombreB) {
-          return -1;
-        }
-        if (nombreA > nombreB) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('La página no existe');
-    }
-    if (authors && authors.length) {
-      this.autores = authors.sort((a, b) => {
-        const apellidoA = a.lastname;
-        const apellidoB = b.lastname;
-
-        if (apellidoA < apellidoB) {
-          return -1;
-        }
-        if (apellidoA > apellidoB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-  },
-
-  computed: {
-    filtro() {
-      return this.$store.state.general.filtro;
-    },
-  },
-
-  methods: {
-    buscarPais(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'actual_country_id',
-        comparacion: id,
-      });
-    },
-
-    buscarAutor(id) {
-      this.$store.dispatch('buscador/buscar', {
-        campo: 'author_id',
-        comparacion: id,
-      });
-    },
-
-    actualizarFiltro(filtro) {
-      this.$store.commit('general/actualizarFiltro', filtro);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .contenedor-general {

@@ -92,8 +92,6 @@ ul {
 img,
 video {
   width: 100%;
-  -o-object-position: center top;
-  object-position: center top;
   height: auto;
 }
 
@@ -107,7 +105,7 @@ a:link {
   color: $profundidad;
 
   &:hover {
-    transition: 0.25s ease-in-out;
+    transition: 0.2s ease-out;
   }
 }
 

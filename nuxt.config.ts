@@ -10,11 +10,6 @@ const server = {
 
 export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
-  runtimeConfig: {
-    public: {
-      GQL_HOST: `${apiBase}/graphql`,
-    },
-  },
   vite: {
     css: {
       preprocessorOptions: {

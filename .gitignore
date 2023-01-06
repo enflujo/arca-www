@@ -92,3 +92,5 @@ sw.*
 # Configuración local
 .env
 .vscode/
+
+.output
