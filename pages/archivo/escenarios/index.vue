@@ -5,7 +5,7 @@ import { gql } from '~~/utilidades/ayudas';
 const escenarios = ref([]);
 const cerebroArchivo = usarArchivo();
 
-cerebroArchivo.paginaActual = 'escenarios';
+cerebroArchivo.paginaActual = 'Escenarios';
 
 const ObrasPorEscenarios = gql`
   query {

@@ -1,29 +1,27 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const datosPais = ref(null);
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+cerebroArchivo.paginaActual = 'Ubicaciones';
 
-onMounted(async () => {
-  cerebroArchivo.paginaActual = 'paises';
-
-  const Pais = gql`
+const Pais = gql`
   query {
     paises(filter: { slug: { _eq: "${ruta.params.pais}" } }, limit: 1) {
       nombre
     }
   }
   `;
-  const { paises } = await obtenerDatos(Pais);
+const { paises } = await obtenerDatos('pais', Pais);
 
-  datosPais.value = paises[0];
-  cargando.value = false;
-});
+datosPais.value = paises[0];
+cargando.value = false;
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>

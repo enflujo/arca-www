@@ -3,5 +3,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Galeria coleccion="donantes" />
+  <Galeria coleccion="donantes" paginaActual="Donantes" />
 </template>

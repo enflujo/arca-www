@@ -5,22 +5,6 @@ import { extraerPrimeraLetra, gql } from '~~/utilidades/ayudas';
 
 const cerebro = usarGeneral();
 const cerebroArchivo = usarArchivo();
-const pagina = ref({});
-const obras = ref([]);
-const categorias = ref([]);
-const cartelaFilacteria = ref([]);
-const donantes = ref([]);
-const escenarios = ref([]);
-const fisiognomica = ref([]);
-const fisiognomicaImagen = ref([]);
-const gestos = ref([]);
-const objetos = ref([]);
-const personajes = ref([]);
-const relatos = ref([]);
-const rostros = ref([]);
-const simbolos = ref([]);
-const tecnicas = ref([]);
-const iniciales = ref([]);
 const inicialSeleccionada = ref('');
 const autores = ref(null);
 const inicialesAutores = new Set();
@@ -42,9 +26,6 @@ const opciones = [
   { nombre: 'Técnicas', slug: 'tecnicas' },
 ];
 
-const obrasSeleccionadas = computed(() => cerebro.buscador.seleccionados);
-const busquedaActual = computed(() => cerebro.buscador.busquedaActual);
-
 const paginaActual = computed(() => cerebroArchivo.paginaActual);
 
 const ArchivoMenuBuscador = gql`
@@ -52,15 +33,9 @@ const ArchivoMenuBuscador = gql`
     autores(limit: -1, sort: ["apellido"]) {
       apellido
     }
-
-    # Número de ciudades asociadas al país NO es igual a 0
-    paises(filter: { ciudades_func: { count: { _neq: 0 } } }) {
-      nombre
-      slug
-    }
   }
 `;
-const { autores: datosAutores, paises } = await obtenerDatos('archivoMenuBuscador', ArchivoMenuBuscador);
+const { autores: datosAutores } = await obtenerDatos('archivoMenuBuscador', ArchivoMenuBuscador);
 
 datosAutores.forEach((autor) => {
   const inicial = extraerPrimeraLetra(autor.apellido).toUpperCase();
@@ -84,7 +59,7 @@ autores.value = Array.from(inicialesAutores).sort();
           v-for="opcion in opciones"
           :key="opcion.slug"
           class="opcion"
-          :class="paginaActual === opcion.slug ? 'activo' : ''"
+          :class="paginaActual === opcion.nombre ? 'activo' : ''"
         >
           <NuxtLink class="coleccion" :to="`/archivo/${opcion.slug}`">{{ opcion.nombre }}</NuxtLink>
 

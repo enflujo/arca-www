@@ -5,7 +5,7 @@ import { gql } from '~~/utilidades/ayudas';
 const donantes = ref([]);
 const cerebroArchivo = usarArchivo();
 
-cerebroArchivo.paginaActual = 'donantes';
+cerebroArchivo.paginaActual = 'Donantes';
 
 const ObrasPorDonantes = gql`
   query {

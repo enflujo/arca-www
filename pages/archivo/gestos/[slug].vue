@@ -3,5 +3,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Galeria coleccion="gestos" :en-tabla-relacional="true" />
+  <Galeria coleccion="gestos" :enTablaRelacional="true" paginaActual="Gestos" />
 </template>

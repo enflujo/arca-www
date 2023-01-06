@@ -1,55 +1,13 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { urlImagen } from '~~/utilidades/ayudas';
-import { nombrePorSlug, obrasPorSlug } from '~~/utilidades/queries';
 
-const props = defineProps({
-  coleccion: String,
-  enTablaRelacional: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-/**
- * Operaciones en el servidor
- */
-const ruta = useRoute();
-const datos = ref(null);
-const respuesta = await obtenerDatos(props.coleccion, nombrePorSlug(props.coleccion, ruta.params.slug));
-
-useHead(elementosCabeza(respuesta[props.coleccion][0], ruta.path)); // SEO
-
-datos.value = respuesta[props.coleccion][0];
-
-/**
- * Operaciones en el cliente
- */
-const obras = ref([]);
-const cerebroArchivo = usarArchivo();
-
-const { data, pending } = obtenerDatosAsinc(
-  `obras-${datos.value.id}`,
-  obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional)
-);
-
-onMounted(() => {
-  cerebroArchivo.paginaActual = props.coleccion;
-});
-
-watch(data, (datosObras) => {
-  // Extraer las obras de colección directamente o de la tabla relacional.
-  obras.value = !props.enTablaRelacional
-    ? datosObras[props.coleccion][0].obras
-    : datosObras[props.coleccion][0].obras.map((obra) => obra.obras_id);
+defineProps({
+  obras: Array,
 });
 </script>
 
 <template>
-  <h1>{{ datos.nombre }}</h1>
-  <Cargador v-if="pending" />
-
-  <div v-else class="contenedorGaleria">
+  <div class="contenedorGaleria">
     <div v-for="obra in obras" :key="obra.id" class="obra">
       <span class="registro">{{ obra.registro }}</span>
 

@@ -5,7 +5,7 @@ import { gql } from '~~/utilidades/ayudas';
 const cartelaFilacteria = ref([]);
 const cerebroArchivo = usarArchivo();
 
-cerebroArchivo.paginaActual = 'cartela-filacteria';
+cerebroArchivo.paginaActual = 'Cartela - Filacteria';
 
 const ObrasPorCartela = gql`
   query {

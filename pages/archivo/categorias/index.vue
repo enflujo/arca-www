@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const categorias = ref([]);
@@ -92,13 +92,13 @@ onMounted(async () => {
       }
     }
   `;
-  const { categorias1 } = await obtenerDatos(Categorias);
+  const { categorias1 } = await obtenerDatos('categorias', Categorias);
 
   categorias.value = categorias1.map((categoria1) => {
     return aplanarCategorias(categoria1, 2);
   });
 
-  cerebroArchivo.paginaActual = 'categorias';
+  cerebroArchivo.paginaActual = 'Categorías';
   cargando.value = false;
 });
 </script>

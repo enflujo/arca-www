@@ -4,7 +4,7 @@ import { gql } from '~~/utilidades/ayudas';
 
 const objetos = ref([]);
 const cerebroArchivo = usarArchivo();
-cerebroArchivo.paginaActual = 'objetos';
+cerebroArchivo.paginaActual = 'Objetos';
 
 const ObrasPorObjetos = gql`
   query {

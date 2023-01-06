@@ -10,7 +10,7 @@ const ruta = useRoute();
 // Para cambiar de pestaña y mostrar otros datos
 const pestana = ref('');
 
-cerebroArchivo.paginaActual = 'obras';
+cerebroArchivo.paginaActual = 'Obras';
 
 const Obra = gql`
   query {

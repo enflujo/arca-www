@@ -3,5 +3,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Galeria coleccion="fisiognomicas" />
+  <Galeria coleccion="fisiognomicas" paginaActual="Fisiognómica" />
 </template>

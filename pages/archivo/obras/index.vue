@@ -6,7 +6,7 @@ const cargando = ref(true);
 const total = ref(0);
 const cerebroArchivo = usarArchivo();
 
-cerebroArchivo.paginaActual = 'obras';
+cerebroArchivo.paginaActual = 'Obras';
 
 const Obras = gql`
   query {

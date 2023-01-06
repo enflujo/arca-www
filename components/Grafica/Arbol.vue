@@ -70,7 +70,7 @@ function actualizarLineas() {
   const { width: ancho, height: alto, x, y } = contenedor.value.getBoundingClientRect();
   // salir si el contenedor aún no tiene alto, esto significa que aún esta pintando en las posiciones que se necesitan a continuación.
   if (alto === 0) return;
-  console.log('hey');
+
   dims.value = { ancho, alto };
 
   contenedores.value.forEach((contenedor) => {

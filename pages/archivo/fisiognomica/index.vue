@@ -5,7 +5,7 @@ import { gql } from '~~/utilidades/ayudas';
 const fisiognomica = ref([]);
 const cerebroArchivo = usarArchivo();
 
-cerebroArchivo.paginaActual = 'fisiognomica';
+cerebroArchivo.paginaActual = 'Fisiognómica';
 
 const ObrasPorFisiognomica = gql`
   query {
