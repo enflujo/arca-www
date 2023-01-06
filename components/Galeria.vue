@@ -9,13 +9,21 @@ defineProps({
 <template>
   <div class="contenedorGaleria">
     <div v-for="obra in obras" :key="obra.id" class="obra">
-      <nuxt-link :to="`/archivo/obras/${obra.id}`">
+      <span class="registro">{{ obra.registro }}</span>
+
+      <NuxtLink :to="`/archivo/obras/${obra.id}`" class="enlaceObra">
         <img class="imagen" :src="urlImagen(obra.imagen.id, 'galeria')" :alt="obra.titulo" />
-        <div class="infoImagen">
-          <p class="titulo">{{ obra.titulo }}</p>
-          <p class="autor">{{ obra.autores[0].autores_id.nombre }} {{ obra.autores[0].autores_id.apellido }}</p>
-        </div>
-      </nuxt-link>
+      </NuxtLink>
+
+      <div class="infoImagen">
+        <NuxtLink :to="`/archivo/obras/${obra.id}`">
+          <h3 class="titulo">{{ obra.titulo }}</h3>
+        </NuxtLink>
+
+        <NuxtLink v-if="obra.autores.length" class="autor" :to="`/archivo/autores/${obra.autores[0].autores_id.id}`">
+          {{ obra.autores[0].autores_id.nombre }} {{ obra.autores[0].autores_id.apellido }}
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
@@ -25,36 +33,56 @@ defineProps({
   width: 85vw;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  background-color: black;
+  justify-content: flex-start;
+  padding: 0 2em;
 }
 
 .obra {
-  display: block;
-  width: min-content;
+  display: flex;
+  flex-direction: column;
   min-width: 250px;
-  margin: 0.25em;
-  padding: 0.25em;
+  margin: 0.5em;
+  padding: 0;
+  position: relative;
+}
+
+.enlaceObra {
+  background-color: black;
+}
+
+.registro {
+  background-color: $amarilloBase;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5em 1em;
+  font-size: 0.8em;
 }
 
 .imagen {
   width: auto;
-  height: 200px;
+  max-height: 200px;
   text-align: center;
   margin: 0 auto;
   display: block;
 }
 
 .infoImagen {
-  color: white;
-  text-align: center;
-  margin-top: 0.2em;
+  color: black;
+  background-color: $amarilloBase;
+  text-align: left;
+  padding: 0.8em;
+  font-size: 0.85em;
 
   .titulo {
-    font-style: italic;
+    font-size: 1em;
+    font-weight: normal;
+    max-width: 250px;
   }
-
-  .titulo::after {
+  .autor {
+    margin-top: 1.2em;
+    font-size: 0.85em;
+    font-weight: bold;
   }
 }
 </style>
