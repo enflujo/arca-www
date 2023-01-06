@@ -36,7 +36,7 @@ onMounted(async () => {
 
   <ul class="opciones">
     <li v-for="relato in relatos" :key="relato.slug">
-      <NuxtLink :to="`/archivo/relatos/${relato.slug}?page=1`"
+      <NuxtLink :to="`/archivo/relatos-visuales/${relato.slug}`"
         >{{ relato.nombre }} ({{ relato.obras_func.count }})</NuxtLink
       >
     </li>
