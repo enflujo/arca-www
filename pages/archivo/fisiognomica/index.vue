@@ -1,38 +1,32 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const fisiognomica = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true }),
-  onMounted(async () => {
-    cerebroArchivo.paginaActual = 'fisiognomica';
+cerebroArchivo.paginaActual = 'fisiognomica';
 
-    const ObrasPorFisiognomica = gql`
-      query {
-        fisiognomicas(sort: ["nombre"], limit: -1) {
-          nombre
-          slug
-          obras_func {
-            count
-          }
-        }
+const ObrasPorFisiognomica = gql`
+  query {
+    fisiognomicas(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
       }
-    `;
+    }
+  }
+`;
 
-    const { fisiognomicas: datosFisiognomica } = await obtenerDatos(ObrasPorFisiognomica);
-    fisiognomica.value = datosFisiognomica;
-    cargando.value = false;
-  });
+const { fisiognomicas: datosFisiognomica } = await obtenerDatos('obrasPorFisiognomica', ObrasPorFisiognomica);
+fisiognomica.value = datosFisiognomica;
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Fisiognómica</h1>
-
   <ul class="opciones">
     <li v-for="elemento in fisiognomica" :key="elemento.slug">
       <NuxtLink :to="`/archivo/fisiognomica/${elemento.slug}`"

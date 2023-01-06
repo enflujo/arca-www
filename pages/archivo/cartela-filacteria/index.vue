@@ -1,38 +1,37 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const cartelaFilacteria = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true }),
-  onMounted(async () => {
-    cerebroArchivo.paginaActual = 'cartela-filacteria';
+cerebroArchivo.paginaActual = 'cartela-filacteria';
 
-    const ObrasPorCartela = gql`
-      query {
-        cartelas_filacterias(sort: ["nombre"], limit: -1) {
-          nombre
-          slug
-          obras_func {
-            count
-          }
-        }
+const ObrasPorCartela = gql`
+  query {
+    cartelas_filacterias(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
       }
-    `;
+    }
+  }
+`;
 
-    const { cartelas_filacterias: datosCartelaFilacteria } = await obtenerDatos(ObrasPorCartela);
-    cartelaFilacteria.value = datosCartelaFilacteria;
-    cargando.value = false;
-  });
+const { data, error, pending } = obtenerDatosAsinc('obrasPorCartela', ObrasPorCartela);
+
+watch(data, ({ cartelas_filacterias: datosCartelaFilacteria }) => {
+  cartelaFilacteria.value = datosCartelaFilacteria;
+});
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Cartela - Filacteria</h1>
-  <ul class="opciones">
+  <Cargador v-if="pending" />
+  <ul v-else>
     <li v-for="elemento in cartelaFilacteria" :key="elemento.slug">
       <NuxtLink :to="`/archivo/cartela-filacteria/${elemento.slug}`">
         {{ elemento.nombre }} ({{ elemento.obras_func.count }})

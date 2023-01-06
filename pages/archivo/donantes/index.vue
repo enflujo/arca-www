@@ -1,40 +1,37 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const donantes = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+cerebroArchivo.paginaActual = 'donantes';
 
-onMounted(async () => {
-  cerebroArchivo.paginaActual = 'donantes';
-
-  const ObrasPorDonantes = gql`
-    query {
-      donantes(sort: ["nombre"], limit: -1) {
-        nombre
-        slug
-        obras_func {
-          count
-        }
+const ObrasPorDonantes = gql`
+  query {
+    donantes(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
       }
     }
-  `;
+  }
+`;
 
-  const { donantes: datosDonantes } = await obtenerDatos(ObrasPorDonantes);
+const { data, pending } = obtenerDatosAsinc('obrasPorDonantes', ObrasPorDonantes);
+
+watch(data, ({ donantes: datosDonantes }) => {
   donantes.value = datosDonantes;
-
-  cargando.value = false;
 });
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Donantes</h1>
-  <ul class="opciones">
+  <Cargador v-if="pending" />
+  <ul v-else>
     <li v-for="donante in donantes" :key="donante.slug">
       <NuxtLink :to="`/archivo/donantes/${donante.slug}`"
         >{{ donante.nombre }} ({{ donante.obras_func.count }})</NuxtLink

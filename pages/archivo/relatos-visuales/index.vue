@@ -1,37 +1,31 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const relatos = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+cerebroArchivo.paginaActual = 'relatos';
 
-onMounted(async () => {
-  cerebroArchivo.paginaActual = 'relatos';
-
-  const ObrasPorRelatos = gql`
-    query {
-      relatos_visuales(sort: ["nombre"], limit: -1) {
-        nombre
-        slug
-        obras_func {
-          count
-        }
+const ObrasPorRelatos = gql`
+  query {
+    relatos_visuales(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
       }
     }
-  `;
+  }
+`;
 
-  const { relatos_visuales: datosRelatos } = await obtenerDatos(ObrasPorRelatos);
-  relatos.value = datosRelatos;
-  cargando.value = false;
-});
+const { relatos_visuales: datosRelatos } = await obtenerDatos('obrasPorRelatos', ObrasPorRelatos);
+relatos.value = datosRelatos;
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Relatos Visuales</h1>
 
   <ul class="opciones">

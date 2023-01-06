@@ -1,31 +1,29 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, ordenarPorNombre } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
-const obras = ref([]);
+const total = ref(0);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true }),
-  onMounted(async () => {
-    cerebroArchivo.paginaActual = 'obras';
+cerebroArchivo.paginaActual = 'obras';
 
-    const Obras = gql`
-      query {
-        obras(limit: -1) {
-          id
-          titulo
-        }
+const Obras = gql`
+  query {
+    obras_aggregated {
+      count {
+        id
       }
-    `;
+    }
+  }
+`;
 
-    const { obras: datosObras } = await obtenerDatos(Obras);
+const { obras_aggregated } = await obtenerDatos('obras', Obras);
 
-    obras.value = datosObras;
-    cargando.value = false;
+total.value = obras_aggregated[0].count.id;
+cargando.value = false;
 
-    console.log(obras.value);
-  });
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
@@ -33,6 +31,6 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
 
   <h1>Obras</h1>
   <ul class="opciones">
-    <p>Hay {{ obras.length }} obras en la colección</p>
+    <p>Hay {{ total }} obras en la colección</p>
   </ul>
 </template>

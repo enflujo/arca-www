@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, urlImagen } from '~~/utilidades/ayudas';
+import { gql, urlImagen } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const obra = ref(null);
@@ -10,98 +10,94 @@ const ruta = useRoute();
 // Para cambiar de pestaña y mostrar otros datos
 const pestana = ref('');
 
-definePageMeta({ layout: 'default', keepalive: true });
+cerebroArchivo.paginaActual = 'obras';
 
-onMounted(async () => {
-  cerebroArchivo.paginaActual = 'obras';
-
-  const Obra = gql`
+const Obra = gql`
   query {
     obras_by_id(id: ${ruta.params.id}) {
-        titulo
-        sintesis
-        comentario_bibliografico
-        iconotexto
-        categoria1 {
+      titulo
+      sintesis
+      comentario_bibliografico
+      iconotexto
+      categoria1 {
+        nombre
+        descripcion
+      }
+      categoria2 {
+        nombre
+      }
+      categoria3 {
+        nombre
+      }
+      categoria4 {
+        nombre
+      }
+      categoria5 {
+        nombre
+      }
+      categoria6 {
+        nombre
+      }
+      fecha_inicial
+      fecha_final
+      fuente {
+        descripcion
+      }
+      imagen {
+        id
+        title
+      }
+      donante {
+        nombre
+      }
+      ciudad_origen {
+        nombre
+        pais {
           nombre
-          descripcion
         }
-        categoria2 {
-          nombre
-        }
-        categoria3 {
-          nombre
-        }
-        categoria4 {
-          nombre
-        }
-        categoria5 {
-          nombre
-        }
-        categoria6 {
-          nombre
-        }
-        fecha_inicial
-        fecha_final
-        fuente {
-          descripcion
-        }
-        imagen {
-          id
-          title
-        }
-        donante {
-          nombre
-        }
-        ciudad_origen {
+      }
+      ubicacion {
+        nombre
+        ciudad {
           nombre
           pais {
             nombre
           }
         }
-        ubicacion {
+      }
+      autores {
+        autores_id {
           nombre
-          ciudad {
-            nombre
-            pais {
-              nombre
-            }
-          }
-        }
-        autores {
-          autores_id {
-            nombre
-            apellido
-        }
+          apellido
       }
-      relato_visual {
-        nombre
-      }
-      tecnicas {
-        tecnicas_id {
-        nombre
-        }
+    }
+    relato_visual {
+      nombre
+    }
+    tecnicas {
+      tecnicas_id {
+      nombre
       }
     }
   }
-  `;
+}
+`;
 
-  const { obras_by_id } = await obtenerDatos(Obra);
-  obra.value = obras_by_id;
-  console.log(obra.value);
-  cargando.value = false;
-});
+const { obras_by_id } = await obtenerDatos('obra', Obra);
+obra.value = obras_by_id;
+cargando.value = false;
+
+definePageMeta({ layout: 'default', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <div id="contenedorObra" v-if="obra">
     <h1>{{ obra.titulo }}</h1>
     <h2>
       <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }}, </span>
       {{ obra.autores[0].autores_id.apellido }}
     </h2>
+
     <div id="contenedorImagen"><img class="imagen" :src="urlImagen(obra.imagen.id)" :alt="obra.titulo" /></div>
     <p>
       Fecha: {{ obra.fecha_inicial }} <span v-if="obra.fecha_final">- {{ obra.fecha_final }}</span>

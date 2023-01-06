@@ -1,36 +1,31 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const gestos = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador', keepalive: true }),
-  onMounted(async () => {
-    cerebroArchivo.paginaActual = 'gestos';
+cerebroArchivo.paginaActual = 'gestos';
 
-    const ObrasPorGestos = gql`
-      query {
-        gestos(sort: ["nombre"], limit: -1) {
-          nombre
-          slug
-          obras_func {
-            count
-          }
-        }
+const ObrasPorGestos = gql`
+  query {
+    gestos(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
       }
-    `;
+    }
+  }
+`;
 
-    const { gestos: datosGestos } = await obtenerDatos(ObrasPorGestos);
-    gestos.value = datosGestos;
-    cargando.value = false;
-  });
+const { gestos: datosGestos } = await obtenerDatos('obrasPorGestos', ObrasPorGestos);
+gestos.value = datosGestos;
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Gestos</h1>
   <ul class="opciones">
     <li v-for="gesto in gestos" :key="gesto.slug">

@@ -1,37 +1,30 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const objetos = ref([]);
 const cerebroArchivo = usarArchivo();
+cerebroArchivo.paginaActual = 'objetos';
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
-
-onMounted(async () => {
-  cerebroArchivo.paginaActual = 'objetos';
-
-  const ObrasPorObjetos = gql`
-    query {
-      objetos(sort: ["nombre"], limit: -1) {
-        nombre
-        slug
-        obras_func {
-          count
-        }
+const ObrasPorObjetos = gql`
+  query {
+    objetos(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
       }
     }
-  `;
+  }
+`;
 
-  const { objetos: datosObjetos } = await obtenerDatos(ObrasPorObjetos);
-  objetos.value = datosObjetos;
-  cargando.value = false;
-});
+const { objetos: datosObjetos } = await obtenerDatos('obrasPorObjetos', ObrasPorObjetos);
+objetos.value = datosObjetos;
+
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Objetos</h1>
   <ul class="opciones">
     <li v-for="objeto in objetos" :key="objeto.slug">
