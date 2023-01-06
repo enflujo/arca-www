@@ -281,7 +281,7 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(categoria, i) in categorias" :key="`categoria${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/${categoria.id}?page=1`">{{ categoria.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/${categoria.id}`">{{ categoria.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -306,7 +306,7 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(pais, i) in paises" :key="`pais${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/ubicaciones/${pais.slug}?page=1`">{{ pais.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/ubicaciones/${pais.slug}`">{{ pais.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -315,7 +315,7 @@ function cargarIniciales() {}
         <NuxtLink class="seccion" to="/archivo/cartela-filacteria">Cartela - Filacteria</NuxtLink>
         <ul class="opciones">
           <li v-for="(elemento, i) in cartelaFilacteria" :key="`cartela${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/cartela-filacteria/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/cartela-filacteria/${elemento.slug}`">{{ elemento.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -324,7 +324,7 @@ function cargarIniciales() {}
         <NuxtLink class="seccion" to="/archivo/donantes">Donantes</NuxtLink>
         <ul class="opciones">
           <li v-for="(donante, i) in donantes" :key="`donante${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/donantes/${donante.slug}?page=1`">{{ donante.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/donantes/${donante.slug}`">{{ donante.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -333,7 +333,7 @@ function cargarIniciales() {}
         <NuxtLink class="seccion" to="/archivo/escenarios">Escenarios</NuxtLink>
         <ul class="opciones">
           <li v-for="(escenario, i) in escenarios" :key="`escenario${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/escenarios/${escenario.slug}?page=1`">{{ escenario.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/escenarios/${escenario.slug}`">{{ escenario.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -342,7 +342,7 @@ function cargarIniciales() {}
         <NuxtLink class="seccion" to="/archivo/fisiognomica">Fisiognómica</NuxtLink>
         <ul class="opciones">
           <li v-for="(elemento, i) in fisiognomica" :key="`fisiognomica${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/fisiognomica/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/fisiognomica/${elemento.slug}`">{{ elemento.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -351,7 +351,7 @@ function cargarIniciales() {}
         <NuxtLink class="seccion" to="/archivo/fisiognomica-imagen">Fisiognómica Imagen</NuxtLink>
         <ul class="opciones">
           <li v-for="(elemento, i) in fisiognomicaImagen" :key="`fisiognomicaImagen${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/fisiognomica-imagen/${elemento.slug}?page=1`">{{ elemento.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/fisiognomica-imagen/${elemento.slug}`">{{ elemento.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -361,7 +361,7 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(gesto, i) in gestos" :key="`gesto${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/gestos/${gesto.slug}?page=1`">{{ gesto.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/gestos/${gesto.slug}`">{{ gesto.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -371,7 +371,7 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(objeto, i) in objetos" :key="`objeto${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/objetos/${objeto.slug}?page=1`">{{ objeto.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/objetos/${objeto.slug}`">{{ objeto.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -381,17 +381,17 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(personaje, i) in personajes" :key="`personaje${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/personajes/${personaje.slug}?page=1`">{{ personaje.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/personajes/${personaje.slug}`">{{ personaje.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
 
       <div class="opcion">
-        <NuxtLink class="seccion" to="/archivo/relatos">Relatos Visuales</NuxtLink>
+        <NuxtLink class="seccion" to="/archivo/relatos-visuales">Relatos Visuales</NuxtLink>
 
         <ul class="opciones">
           <li v-for="(relato, i) in relatos" :key="`relato${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/relatos/${relato.slug}?page=1`">{{ relato.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/relatos-visuales/${relato.slug}`">{{ relato.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -401,7 +401,7 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(rostro, i) in rostros" :key="`relato${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/rostros/${rostro.slug}?page=1`">{{ rostro.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/rostros/${rostro.slug}`">{{ rostro.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -411,7 +411,7 @@ function cargarIniciales() {}
 
         <ul class="opciones">
           <li v-for="(tecnica, i) in tecnicas" :key="`tecnica${i}`" class="enlace-menu">
-            <NuxtLink :to="`/archivo/tecnicas/${tecnica.slug}?page=1`">{{ tecnica.nombre }}</NuxtLink>
+            <NuxtLink :to="`/archivo/tecnicas/${tecnica.slug}`">{{ tecnica.nombre }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -459,10 +459,6 @@ ul {
   padding-top: 0.5em;
   font-family: $fuenteMenu;
   font-size: 0.9em;
-
-  &.opciones {
-    overflow: visible;
-  }
 }
 
 .seccion {

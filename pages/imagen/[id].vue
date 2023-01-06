@@ -120,7 +120,7 @@
               </div>
               <div class="linea">
                 <div class="titulo">Autor</div>
-                <nuxt-link :to="`/autor/${obra.autor.apellido}?page=1`">
+                <nuxt-link :to="`/autor/${obra.autor.apellido}`">
                   <div class="descripcion">{{ obra.autor.nombre }} {{ obra.autor.apellido }}</div>
                 </nuxt-link>
               </div>
@@ -145,7 +145,7 @@
                 <div class="titulo">Categorías</div>
                 <ul class="nube-categorias">
                   <div v-for="(categoria, i) in obra.clasificacion" :key="`categoria-${i}`" class="categorias">
-                    <nuxt-link :to="`/categoria/${obra.clasificacion[i].categorias_lista_id.nombre}?page=1`"
+                    <nuxt-link :to="`/categoria/${obra.clasificacion[i].categorias_lista_id.nombre}`"
                       ><li>{{ obra.clasificacion[i].categorias_lista_id.nombre }}</li></nuxt-link
                     >
                   </div>
@@ -253,7 +253,7 @@
                     fill="#08173e"
                   />
                 </svg>
-                <nuxt-link :to="`/mapa/${obra.origin_country_id.name_spanish}?page=1`">
+                <nuxt-link :to="`/mapa/${obra.origin_country_id.name_spanish}`">
                   <h5 class="pais">{{ obra.origin_country_id.name_spanish }}</h5>
                 </nuxt-link>
               </div>
@@ -262,7 +262,7 @@
                   <h5 class="subtitulo">País actual</h5>
                   <div class="ubicacion"></div>
 
-                  <nuxt-link :to="`/mapa/${obra.ubicacion_actua}?page=1`">
+                  <nuxt-link :to="`/mapa/${obra.ubicacion_actua}`">
                     <h5 class="pais">{{ obra.ubicacion_actual }}</h5>
                   </nuxt-link>
                 </div>

@@ -35,9 +35,7 @@ onMounted(async () => {
   <h1>Objetos</h1>
   <ul class="opciones">
     <li v-for="objeto in objetos" :key="objeto.slug">
-      <NuxtLink :to="`/archivo/objetos/${objeto.slug}?page=1`"
-        >{{ objeto.nombre }} ({{ objeto.obras_func.count }})</NuxtLink
-      >
+      <NuxtLink :to="`/archivo/objetos/${objeto.slug}`">{{ objeto.nombre }} ({{ objeto.obras_func.count }})</NuxtLink>
     </li>
   </ul>
 </template>

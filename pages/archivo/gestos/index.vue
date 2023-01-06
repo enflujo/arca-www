@@ -34,9 +34,7 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <h1>Gestos</h1>
   <ul class="opciones">
     <li v-for="gesto in gestos" :key="gesto.slug">
-      <NuxtLink :to="`/archivo/gestos/${gesto.slug}?page=1`"
-        >{{ gesto.nombre }} ({{ gesto.obras_func.count }})</NuxtLink
-      >
+      <NuxtLink :to="`/archivo/gestos/${gesto.slug}`">{{ gesto.nombre }} ({{ gesto.obras_func.count }})</NuxtLink>
     </li>
   </ul>
 </template>

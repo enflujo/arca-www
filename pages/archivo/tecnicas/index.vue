@@ -34,7 +34,7 @@ definePageMeta({ layout: 'con-buscador', keepalive: true }),
   <h1>Técnicas</h1>
   <ul class="opciones">
     <li v-for="tecnica in tecnicas" :key="tecnica.slug">
-      <NuxtLink :to="`/archivo/tecnicas/${tecnica.slug}?page=1`"
+      <NuxtLink :to="`/archivo/tecnicas/${tecnica.slug}`"
         >{{ tecnica.nombre }} ({{ tecnica.obras_func.count }})</NuxtLink
       >
     </li>
