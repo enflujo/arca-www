@@ -6,7 +6,7 @@ const cargando = ref(true);
 const autores = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador' });
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 onMounted(async () => {
   cerebroArchivo.paginaActual = 'autores';
@@ -34,9 +34,9 @@ onMounted(async () => {
   <Cargador v-if="cargando" />
 
   <h1>Autores</h1>
-  <p v-for="autor in autores" :key="`autor${autor.id}`">
+  <NuxtLink v-for="autor in autores" :key="`autor${autor.id}`" :to="`/archivo/autores/${autor.id}`">
     {{ autor.apellido }}, {{ autor.nombre }} ({{ autor.obras_func.count }})
-  </p>
+  </NuxtLink>
 </template>
 
 <style lang="scss" scoped></style>

@@ -1,113 +1,56 @@
-<template>
-  <div class="pagina autor">
-    <Cargador v-if="$fetchState.pending" />
+<script setup>
+import { usarArchivo } from '~~/cerebros/archivo';
+import { gql, obtenerDatos } from '~~/utilidades/ayudas';
 
-    <div v-else-if="$fetchState.error">
-      <h1 class="error">{{ $fetchState.error.message }}</h1>
-    </div>
+const cargando = ref(true);
+const datosAutor = ref(null);
+const obras = ref(null);
+const cerebroArchivo = usarArchivo();
+const ruta = useRoute();
 
-    <div v-else class="contenido">
-      <EtiquetasGaleria :busqueda="autor" />
-      <Galeria :obras="obras" />
-    </div>
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 
-    <Paginas v-if="totalObras > 100" :total="totalObras" :ruta="`/autor/${autorId}`" />
-  </div>
-</template>
+onMounted(async () => {
+  cerebroArchivo.paginaActual = 'autores';
 
-<script>
-import { gql } from 'nuxt-graphql-request';
+  const Autor = gql`
+  query {
+    autores_by_id(id: ${ruta.params.id}) {
+      nombre
+      apellido
 
-export default {
-  layout: 'conBuscador',
-  data() {
-    return {
-      pagina: {},
-      obras: [],
-      totalObras: 0,
-      autor: '',
-      autorId: null,
-    };
-  },
-
-  async fetch() {
-    const idAutor = this.$route.params.id;
-    const { page } = this.$route.query;
-
-    const query = gql`
-      query {
-        obra_aggregated(filter: {
-          autor: {
-            id: {
-              _eq: ${idAutor}
+      obras(limit: 20) {
+        obras_id {
+          id
+          registro
+          titulo
+          imagen {
+            id,
+            title
+          }
+          autores {
+            autores_id {
+              nombre
+              apellido
             }
           }
-        }) {
-          count {
-            id
-          }
-        }
-
-        obra(filter: { autor: { id: { _eq: ${idAutor} } } }, page: ${page} ) {
-          arca_id
-          titulo
-          fechas_actividad
-          sintesis
-          ubicacion_actual {
-            nombre
-            lat
-            lon
-          }
-          imagen {
-            id
-          }
-          autor {
-            apellido
-            nombre
-            biografia
-          }
         }
       }
-    `;
-
-    // eslint-disable-next-line camelcase
-    const { obra, obra_aggregated } = await this.$graphql.principal.request(query);
-
-    // eslint-disable-next-line camelcase
-    if (obra_aggregated) {
-      this.totalObras = obra_aggregated[0].count.id;
     }
+  }
+  `;
+  const { autores_by_id: autor } = await obtenerDatos(Autor);
 
-    if (obra && obra.length) {
-      this.obras = obra;
-      this.autorId = idAutor;
-      const { nombre, apellido } = obra[0].autor;
-      this.autor = nombre ? `${nombre} ${apellido}` : apellido;
-    } else {
-      if (process.server) {
-        this.$nuxt.context.res.statusCode = 404;
-      }
-      throw new Error('La página no existe');
-    }
-  },
-
-  watch: {
-    '$route.query': '$fetch',
-  },
-
-  /**
-   * TODO: ver como construir el head con datos del pais.
-   */
-  // head() {
-  //   return crearHead(
-  //     this.$store.state.general.datos.nombre,
-  //     this.pagina.titulo,
-  //     this.pagina.descripcion,
-  //     this.pagina.banner,
-  //     this.$nuxt.$route.path
-  //   );
-  // },
-};
+  datosAutor.value = autor;
+  obras.value = autor.obras.map((obra) => obra.obras_id);
+  cargando.value = false;
+});
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+  <Cargador v-if="cargando" />
+  <div v-if="datosAutor">
+    <h1>{{ datosAutor.nombre }} {{ datosAutor.apellido }}</h1>
+    <Galeria :obras="obras" />
+  </div>
+</template>
