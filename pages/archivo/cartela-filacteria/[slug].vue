@@ -1,6 +1,7 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { obtenerDatos } from '~~/utilidades/ayudas';
+import { buscarTermino } from '~~/utilidades/queries';
 
 const cargando = ref(true);
 const datosCartelaFilacteria = ref(null);
@@ -11,32 +12,13 @@ const ruta = useRoute();
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 onMounted(async () => {
-  cerebroArchivo.paginaActual = 'cartelaFilacteria';
+  cerebroArchivo.paginaActual = 'cartela-filacteria';
 
-  const CartelaFilacteria = gql`
-  query {
-    cartelas_filacterias(filter: { slug: { _eq: "${ruta.params.cartela}" } }, limit: 1) {
-    nombre
-    obras {
-        titulo,
-        imagen {
-          id
-          title
-        }
-        autores {
-          autores_id {
-            nombre
-            apellido
-          }
-        }
-      }
-    }
-  }
-  `;
+  const CartelaFilacteria = buscarTermino('cartelas_filacterias', ruta.params.slug);
   const { cartelas_filacterias } = await obtenerDatos(CartelaFilacteria);
 
   datosCartelaFilacteria.value = cartelas_filacterias[0];
-  obras.value = datosCartelaFilacteria.value.obras;
+  obras.value = cartelas_filacterias[0].obras;
   cargando.value = false;
 });
 </script>

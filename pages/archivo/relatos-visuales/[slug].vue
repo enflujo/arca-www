@@ -1,6 +1,7 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos, urlImagen } from '~~/utilidades/ayudas';
+import { obtenerDatos } from '~~/utilidades/ayudas';
+import { buscarTermino } from '~~/utilidades/queries';
 
 const cargando = ref(true);
 const datosRelato = ref(null);
@@ -12,32 +13,12 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 onMounted(async () => {
   cerebroArchivo.paginaActual = 'relatos';
-  const Relato = gql`
-  query {
-    relatos_visuales(filter: { slug: { _eq: "${ruta.params.relato}" } }, limit: 1) {
-      nombre
-      obras {
-        id
-        titulo
-        imagen {
-          id
-          title
-        }
-        autores {
-          autores_id {
-            nombre
-            apellido
-          }
-        }
-      }
-    }
-  }
-  `;
+
+  const Relato = buscarTermino('relatos_visuales', ruta.params.slug);
   const { relatos_visuales } = await obtenerDatos(Relato);
 
   datosRelato.value = relatos_visuales[0];
-  obras.value = datosRelato.value.obras;
-
+  obras.value = relatos_visuales[0].obras;
   cargando.value = false;
 });
 </script>

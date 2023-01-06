@@ -1,6 +1,7 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { buscarTermino } from '~~/utilidades/queries';
 
 const cargando = ref(true);
 const datosRostro = ref(null);
@@ -13,31 +14,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 onMounted(async () => {
   cerebroArchivo.paginaActual = 'rostros';
 
-  const Rostro = gql`
-  query {
-    rostros(filter: { slug: { _eq: "${ruta.params.rostro}" } }, limit: 1) {
-      nombre
-      obras {
-        id
-        titulo
-        imagen {
-          id,
-          title
-        }
-        autores {
-          autores_id {
-            nombre
-            apellido
-          }
-        }
-      }
-    }
-  }
-  `;
+  const Rostro = buscarTermino('rostros', ruta.params.slug);
   const { rostros } = await obtenerDatos(Rostro);
 
   datosRostro.value = rostros[0];
-  obras.value = datosRostro.value.obras;
+  obras.value = rostros[0].obras;
   cargando.value = false;
 });
 </script>

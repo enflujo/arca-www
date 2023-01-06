@@ -1,44 +1,23 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { obtenerDatos } from '~~/utilidades/ayudas';
+import { buscarTermino } from '~~/utilidades/queries';
 
 const cargando = ref(true);
 const datosFisiognomicaImagen = ref(null);
-const obras = ref(null);
+const obras = ref([]);
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 onMounted(async () => {
-  cerebroArchivo.paginaActual = 'fisiognomicaImagen';
-
-  const FisiognomicaImagen = gql`
-  query {
-    fisiognomicas_imagen(filter: { slug: { _eq: "${ruta.params.fisiognomicaImagen}" } }, limit: 1) {
-      nombre
-      obras {
-        id
-        titulo
-        imagen {
-          id,
-          title
-        }
-        autores {
-          autores_id {
-            nombre
-            apellido
-          }
-        }
-      }
-    }
-  }
-  `;
+  cerebroArchivo.paginaActual = 'fisiognomica-imagen';
+  const FisiognomicaImagen = buscarTermino('fisiognomicas_imagen', ruta.params.slug);
   const { fisiognomicas_imagen } = await obtenerDatos(FisiognomicaImagen);
 
   datosFisiognomicaImagen.value = fisiognomicas_imagen[0];
-  obras.value = datosFisiognomicaImagen.value.obras;
-
+  obras.value = fisiognomicas_imagen[0].obras;
   cargando.value = false;
 });
 </script>

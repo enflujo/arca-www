@@ -1,6 +1,7 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { obtenerDatos } from '~~/utilidades/ayudas';
+import { buscarTermino } from '~~/utilidades/queries';
 
 const cargando = ref(true);
 const datosDonante = ref(null);
@@ -13,32 +14,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 onMounted(async () => {
   cerebroArchivo.paginaActual = 'donantes';
 
-  const Donante = gql`
-  query {
-    donantes(filter: { slug: { _eq: "${ruta.params.donante}" } }, limit: 1) {
-      nombre
-      obras {
-        id
-        titulo
-        imagen {
-          id
-          title
-        }
-        autores {
-          autores_id {
-            nombre
-            apellido
-          }
-        }
-      }
-  }
-  }
-  `;
+  const Donante = buscarTermino('donantes', ruta.params.slug);
   const { donantes } = await obtenerDatos(Donante);
 
   datosDonante.value = donantes[0];
-  obras.value = datosDonante.value.obras;
-  console.log(obras.value);
+  obras.value = donantes[0].obras;
   cargando.value = false;
 });
 </script>
