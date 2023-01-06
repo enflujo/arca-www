@@ -17,7 +17,7 @@ onMounted(async () => {
 
   const Obra = gql`
   query {
-    obras(filter: { id: { _eq: "${ruta.params.obra}" } }, limit: 1) {
+    obras_by_id(id: ${ruta.params.id}) {
         titulo
         sintesis
         comentario_bibliografico
@@ -86,11 +86,9 @@ onMounted(async () => {
   }
   `;
 
-  const { obras } = await obtenerDatos(Obra);
-  obra.value = obras[0];
-
+  const { obras_by_id } = await obtenerDatos(Obra);
+  obra.value = obras_by_id;
   console.log(obra.value);
-
   cargando.value = false;
 });
 </script>
