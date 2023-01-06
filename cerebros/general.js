@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
-import { gql, obtenerDatos } from '~~/utilidades/ayudas';
+import { gql } from '~~/utilidades/ayudas';
 
 export const usarGeneral = defineStore('general', {
   state: () => ({
     datosCargados: false,
-    datos: {},
     menus: {},
     filtro: '',
+    titulo: '',
+    banner: null,
+    descripcion: '',
   }),
 
   actions: {
@@ -33,9 +35,11 @@ export const usarGeneral = defineStore('general', {
           }
         }
       `;
-      const { general, menus } = await obtenerDatos(General);
+      const { general, menus } = await obtenerDatos('general', General);
 
-      this.datos = general;
+      this.titulo = general.nombre || 'Arca';
+      this.banner = general.banner;
+      this.descripcion = general.descripcion || '';
 
       menus.forEach((menu) => {
         this.menus[menu.nombre] = menu.paginas.map((pagina) => pagina.paginas_id);
