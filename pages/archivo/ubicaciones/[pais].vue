@@ -15,8 +15,8 @@ onMounted(async () => {
   const Pais = gql`
   query {
     paises(filter: { slug: { _eq: "${ruta.params.pais}" } }, limit: 1) {
-    nombre
-  }
+      nombre
+    }
   }
   `;
   const { paises } = await obtenerDatos(Pais);

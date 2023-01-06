@@ -6,7 +6,7 @@ const cargando = ref(true);
 const categorias = ref([]);
 const cerebroArchivo = usarArchivo();
 
-definePageMeta({ layout: 'con-buscador' });
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 onMounted(async () => {
   function aplanarCategorias(datosCategoria, siguienteCategoria) {
