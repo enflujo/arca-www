@@ -2,22 +2,48 @@
 import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
-const datosAutor = ref(null);
-const obras = ref([]);
-const cerebroArchivo = usarArchivo();
+/**
+ * Operaciones en el servidor
+ */
 const ruta = useRoute();
-
-cerebroArchivo.paginaActual = 'Autores';
-
 const Autor = gql`
 query {
   autores_by_id(id: ${ruta.params.id}) {
     id
     nombre
     apellido
+    biografia
   }
 }
 `;
+
+const { autores_by_id: datosAutor } = await obtenerDatos('autor', Autor);
+
+const crearNombre = () => {
+  const partesNombre = [];
+  if (datosAutor.nombre) partesNombre.push(datosAutor.nombre);
+  if (datosAutor.apellido) partesNombre.push(datosAutor.apellido);
+
+  return partesNombre.join(' ');
+};
+
+useHead(
+  elementosCabeza(
+    {
+      nombre: crearNombre(),
+      descripcion: datosAutor.biografia,
+    },
+    ruta.path
+  )
+); // SEO
+
+/**
+ * Operaciones en el cliente
+ */
+const obras = ref([]);
+const cerebroArchivo = usarArchivo();
+
+cerebroArchivo.paginaActual = 'Autores';
 
 const ObrasAutor = gql`
 query {
@@ -43,10 +69,7 @@ query {
 }
 `;
 
-const { autores_by_id: autorGeneral } = await obtenerDatos('autor', Autor);
-const { data, error, pending, refresh } = obtenerDatosAsinc('obrasAutor', ObrasAutor);
-
-datosAutor.value = autorGeneral;
+const { data, error, pending } = obtenerDatosAsinc(`obrasAutor${datosAutor.id}`, ObrasAutor);
 
 watch(data, ({ autores_by_id }) => {
   obras.value = autores_by_id.obras.map((obra) => obra.obras_id);
@@ -56,17 +79,11 @@ watch(error, (errores) => {
   console.error(errores);
 });
 
-onMounted(() => {
-  if (!obras.value.length) {
-    refresh();
-  }
-});
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <h1>{{ datosAutor.nombre }} {{ datosAutor.apellido }}</h1>
+  <h1>Autor: {{ datosAutor.nombre }} {{ datosAutor.apellido }}</h1>
   <Cargador v-if="pending" />
-  <Galeria v-else :obras="obras" />
+  <GaleriaMosaico v-else :obras="obras" />
 </template>

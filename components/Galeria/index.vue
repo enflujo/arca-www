@@ -16,6 +16,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  singular: String,
 });
 
 /**
@@ -53,7 +54,7 @@ watch(data, (datosObras) => {
 </script>
 
 <template>
-  <h1>{{ `${props.paginaActual}: ${datos.nombre}` }}</h1>
+  <h1>{{ `${singular || props.paginaActual}: ${datos.nombre}` }}</h1>
   <Cargador v-if="pending" />
   <GaleriaMosaico :obras="obras" />
 </template>
