@@ -4,8 +4,10 @@ import { gql } from '~~/utilidades/ayudas';
 
 const fisiognomica = ref([]);
 const cerebroArchivo = usarArchivo();
+const ruta = useRoute();
+const titulo = 'Fisiognómica';
 
-cerebroArchivo.paginaActual = 'Fisiognómica';
+cerebroArchivo.paginaActual = titulo;
 
 const ObrasPorFisiognomica = gql`
   query {
@@ -22,11 +24,13 @@ const ObrasPorFisiognomica = gql`
 const { fisiognomicas: datosFisiognomica } = await obtenerDatos('obrasPorFisiognomica', ObrasPorFisiognomica);
 fisiognomica.value = datosFisiognomica;
 
+useHead(elementosCabeza({ titulo }, ruta.path));
+
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <h1>Fisiognómica</h1>
+  <h1>{{ titulo }}</h1>
   <ul class="opciones">
     <li v-for="elemento in fisiognomica" :key="elemento.slug">
       <NuxtLink :to="`/archivo/fisiognomica/${elemento.slug}`"
