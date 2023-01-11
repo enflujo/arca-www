@@ -33,7 +33,7 @@ const crearTitulo = (subtitulo: string | undefined) => {
  * ```js
  * // Dentro del script de la página:
  * head() {
- *   return crearHead(titulo, descripción, banner, ruta.path);
+ *   return elementosCabeza({nombre, descripcion, banner}, ruta.path);
  * }
  * ```
  * @param {object} datosPagina Los datos para SEO.

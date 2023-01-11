@@ -1,22 +1,19 @@
 <script setup>
 import { usarGeneral } from '~~/cerebros/general';
-import { urlImagen } from '../utilidades/ayudas';
-const informacion = ref({});
-const urlImagenFondo = ref();
 
 const general = usarGeneral();
 
-// function urlImagen(objImg, key) {
-//   return objImg && objImg.id ? urlImagen(objImg.id, key) : '';
-// }
+// El título en este caso es nulo ya que el título que pasamos a esta función se vuelve el subtítulo,
+// al ser la página inicial no se necesita.
+useHead(elementosCabeza({ titulo: null }, '/'));
 </script>
 
 <template>
   <div>
     <div id="portada">
       <Logo class="svgClaro" />
-      <h1 class="titulo logo-texto claridad">{{ general.datos.nombre }}</h1>
-      <h2 class="subtitulo">{{ general.datos.descripcion }}</h2>
+      <h1 class="titulo logo-texto claridad">{{ general.titulo }}</h1>
+      <h2 class="subtitulo">{{ general.descripcion }}</h2>
     </div>
   </div>
 </template>

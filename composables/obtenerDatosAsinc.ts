@@ -8,13 +8,21 @@ import { apiBase } from '~~/config/general';
  * @returns Devuelve el objeto asincrónico `{data, error, pending, refresh}`
  */
 export default function (llave: string, query: string) {
-  return useLazyAsyncData(
+  let Query = query;
+
+  const {
+    data,
+    error,
+    pending,
+    refresh: recargar,
+  } = useLazyAsyncData(
     llave,
     () => {
+      // console.log(Query);
       return $fetch(`${apiBase}/graphql`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query: Query }),
       });
     },
     {
@@ -22,4 +30,15 @@ export default function (llave: string, query: string) {
       server: false,
     }
   );
+
+  function refresh(query: string) {
+    Query = query;
+    recargar();
+  }
+
+  watch(error, (error) => {
+    console.log(JSON.stringify(error, null, 2));
+  });
+
+  return { data, error, pending, refresh };
 }
