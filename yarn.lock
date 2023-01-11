@@ -294,6 +294,11 @@
   dependencies:
     mime "^3.0.0"
 
+"@enflujo/alquimia@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@enflujo/alquimia/-/alquimia-1.0.4.tgz#9979a940b669ebeb67bdcf3087355f62c205af37"
+  integrity sha512-Z/54IsL0gEm+DduEcx+zYK2z6900iZj70HS53/RPtv+NYr4I5qIm0KcVuFT6BPd7vDupp9mGjscMUbKoqEyt9g==
+
 "@esbuild/android-arm@0.15.18":
   version "0.15.18"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm/-/android-arm-0.15.18.tgz#266d40b8fdcf87962df8af05b76219bc786b4f80"
@@ -3534,10 +3539,10 @@ potpack@^2.0.0:
   resolved "https://registry.yarnpkg.com/potpack/-/potpack-2.0.0.tgz#61f4dd2dc4b3d5e996e3698c0ec9426d0e169104"
   integrity sha512-Q+/tYsFU9r7xoOJ+y/ZTtdVQwTWfzjbiXBDMM/JKUux3+QPP02iUuIoeBQ+Ot6oEDlC+/PGjB/5A3K7KKb7hcw==
 
-prettier@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.1.tgz#4e1fd11c34e2421bc1da9aea9bd8127cd0a35efc"
-  integrity sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==
+prettier@^2.8.2:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.2.tgz#c4ea1b5b454d7c4b59966db2e06ed7eec5dfd160"
+  integrity sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==
 
 pretty-bytes@^6.0.0:
   version "6.0.0"
