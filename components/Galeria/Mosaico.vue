@@ -1,7 +1,7 @@
 <script setup>
 import { urlImagen } from '~~/utilidades/ayudas';
 
-defineProps({
+const props = defineProps({
   obras: Array,
 });
 </script>

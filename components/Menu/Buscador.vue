@@ -3,7 +3,6 @@ import { usarGeneral } from '~~/cerebros/general';
 import { usarArchivo } from '~~/cerebros/archivo';
 import { extraerPrimeraLetra, gql } from '~~/utilidades/ayudas';
 
-const cerebro = usarGeneral();
 const cerebroArchivo = usarArchivo();
 const inicialSeleccionada = ref('');
 const autores = ref(null);
