@@ -51,7 +51,6 @@ watch(
 watch(data, (respuesta) => {
   const nuevo = respuesta[`${props.coleccion}_by_id`];
   datosColeccion.value = nuevo;
-  console.log(datosColeccion);
 });
 </script>
 
