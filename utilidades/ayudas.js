@@ -4,8 +4,17 @@ import { apiBase, urlBase, nombre } from '../config/general';
  * Ayuda a construir la URL para pedir un archivo al API de Directus.
  * https://docs.directus.io/reference/api/assets/#requesting-a-thumbnail
  *
+ * Para ver las opciones que se pueden pasar al solicitar la imagen:
+ * https://docs.directus.io/reference/files.html#preset-transformations
+ *
+ * @example
+ * ```js
+ * // Ejemplo con parámetros:
+ * urlImagen(id, {quality: 85, format: webp});
+ * ```
+ *
  * @param {number} id El ID del archivo o imagen en Directus
- * @param {string|object} key El nombre del key u Objejo con parametros
+ * @param {string|object} key El nombre del key u Objeto con parámetros
  * @returns {string} URL con el endpoint desde donde se puede pedir el archivo
  */
 export const urlImagen = (id, key) => {
@@ -14,13 +23,13 @@ export const urlImagen = (id, key) => {
   }
 
   if (key) {
-    // Desde Directus se pueden crear configuraciones predeterminadas para pedir imagenes en diferentes formatos usando un "key"
+    // Desde Directus se pueden crear configuraciones predeterminadas para pedir imágenes en diferentes formatos usando un "key"
     // Si se usa un key, podemos devolver este endpoint sencillo
     if (typeof key === 'string') {
       return `${apiBase}/assets/${id}?key=${key}`;
     }
 
-    // Si no se usa un key sino que se pasan las opciones manualmente, debemos construir la URL con sus parametros.
+    // Si no se usa un key sino que se pasan las opciones manualmente, debemos construir la URL con sus parámetros.
     const query = new URLSearchParams(key).toString();
     return `${apiBase}/assets/${id}?${query}`;
   }
