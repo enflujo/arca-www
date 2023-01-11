@@ -1,5 +1,4 @@
 <script setup>
-import { usarGeneral } from '~~/cerebros/general';
 import { usarArchivo } from '~~/cerebros/archivo';
 import { extraerPrimeraLetra, gql } from '~~/utilidades/ayudas';
 
@@ -9,20 +8,23 @@ const autores = ref(null);
 const inicialesAutores = new Set();
 
 const opciones = [
-  { nombre: 'Categorías', slug: 'categorias' },
   { nombre: 'Autores', slug: 'autores', iniciales: inicialesAutores },
-  { nombre: 'Ubicaciones', slug: 'ubicaciones' },
-  { nombre: 'Cartela - Filacteria', slug: 'cartela-filacteria' },
-  { nombre: 'Donantes', slug: 'donantes' },
+  { nombre: 'Categorías', slug: 'categorias' },
   { nombre: 'Escenarios', slug: 'escenarios' },
+  { nombre: 'Técnicas', slug: 'tecnicas' },
+  { nombre: 'Donantes', slug: 'donantes' },
+  { nombre: 'Ubicaciones', slug: 'ubicaciones' },
+  { nombre: 'Relatos Visuales', slug: 'relatos-visuales' },
+  { nombre: 'Descriptores', slug: 'descriptores' },
+  { nombre: 'Objetos', slug: 'objetos' },
+  { nombre: 'Gestos', slug: 'gestos' },
+  { nombre: 'Cartela - Filacteria', slug: 'cartela-filacteria' },
+  { nombre: 'Símbolos', slug: 'simbolos' },
+  { nombre: 'Características Particulares', slug: 'caracteristicas-particulares' },
   { nombre: 'Fisiognómica', slug: 'fisiognomica' },
   { nombre: 'Fisiognómica Imagen', slug: 'fisiognomica-imagen' },
-  { nombre: 'Gestos', slug: 'gestos' },
-  { nombre: 'Objetos', slug: 'objetos' },
   { nombre: 'Personajes', slug: 'personajes' },
-  { nombre: 'Relatos Visuales', slug: 'relatos-visuales' },
   { nombre: 'Rostros', slug: 'rostros' },
-  { nombre: 'Técnicas', slug: 'tecnicas' },
 ];
 
 const paginaActual = computed(() => cerebroArchivo.paginaActual);
