@@ -190,10 +190,9 @@ definePageMeta({ layout: 'default', keepalive: true });
       <div class="datos">
         <span class="tituloDato">Ubicación actual:</span>
         <span v-if="obra.ubicacion.nombre">
-          {{ obra.ubicacion.nombre }} ({{ obra.ubicacion.ciudad.nombre }},
-          <NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">{{
-            obra.ubicacion.ciudad.pais.nombre
-          }}</NuxtLink
+          {{ obra.ubicacion.nombre }} ({{ obra.ubicacion.ciudad.nombre
+          }}<NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`"
+            >, {{ obra.ubicacion.ciudad.pais.nombre }}</NuxtLink
           >)</span
         >
       </div>
