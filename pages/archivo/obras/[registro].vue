@@ -48,12 +48,13 @@ const Obra = gql`
         title
       }
       donante {
-        nombre
         slug
+        nombre
       }
       ciudad_origen {
         nombre
         pais {
+          slug
           nombre
         }
       }
@@ -190,22 +191,28 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Ubicación actual:</span>
         <span v-if="obra.ubicacion.nombre">
           {{ obra.ubicacion.nombre }} ({{ obra.ubicacion.ciudad.nombre }},
-          <NuxtLink :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">{{
+          <NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">{{
             obra.ubicacion.ciudad.pais.nombre
           }}</NuxtLink
           >)</span
         >
       </div>
 
+      <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
+      si existen y son distintas, muestra la ciudad de origen-->
       <div
         class="datos"
         v-if="
+          obra.ubicacion.ciudad.nombre &&
+          obra.ciudad_origen &&
+          obra.ubicacion.ciudad.pais &&
+          obra.ciudad_origen.pais.nombre &&
           obra.ubicacion.ciudad.nombre !== obra.ciudad_origen.nombre &&
           obra.ubicacion.ciudad.pais.nombre !== obra.ciudad_origen.pais.nombre
         "
       >
         <span class="tituloDato">Ciudad de origen:</span> {{ obra.ciudad_origen.nombre }},
-        <NuxtLink :to="`/archivo/paises/${obra.ciudad_origen.pais.slug}`"
+        <NuxtLink v-if="obra.ciudad_origen.pais" :to="`/archivo/paises/${obra.ciudad_origen.pais.slug}`"
           >{{ obra.ciudad_origen.pais.nombre }}
         </NuxtLink>
       </div>
@@ -215,26 +222,26 @@ definePageMeta({ layout: 'default', keepalive: true });
         <NuxtLink :to="`/archivo/donantes/${obra.donante.slug}`"> {{ obra.donante.nombre }} </NuxtLink>
       </div>
 
-      <!--POR HACER: Arreglar enlaces-->
+      <!-- POR HACER: Arreglar enlaces -->
       <div class="datos" v-if="obra.categoria1.nombre">
         <span class="tituloDato">Categorías:</span>
         <ul class="lista">
-          <li>
+          <li v-if="obra.categoria1.nombre">
             <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria1.nombre }}</NuxtLink>
           </li>
-          <li v-if="obra.categoria2.nombre">
+          <li v-if="obra.categoria2 && obra.categoria2.nombre">
             <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria2.nombre }}</NuxtLink>
           </li>
-          <li v-if="obra.categoria3.nombre">
+          <li v-if="obra.categoria3 && obra.categoria3.nombre">
             <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria3.nombre }}</NuxtLink>
           </li>
-          <li v-if="obra.categoria4.nombre">
+          <li v-if="obra.categoria4 && obra.categoria4.nombre">
             <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria4.nombre }}</NuxtLink>
           </li>
-          <li v-if="obra.categoria5.nombre">
+          <li v-if="obra.categoria5 && obra.categoria5.nombre">
             <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria5.nombre }}</NuxtLink>
           </li>
-          <li v-if="obra.categoria6.nombre">
+          <li v-if="obra.categoria6 && obra.categoria6.nombre">
             <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria6.nombre }}</NuxtLink>
           </li>
         </ul>
@@ -294,13 +301,11 @@ definePageMeta({ layout: 'default', keepalive: true });
       >
         <span class="tituloDato">Gestos:</span>
         <ul class="lista">
-          <span v-for="gesto in obra.gestos" :key="gesto.nombre">
-            <li v-if="gesto.gestos_id.nombre !== 'No'">
-              <NuxtLink :to="`/archivo/gestos/${gesto.gestos_id.slug}`">
-                {{ gesto.gestos_id.nombre }}
-              </NuxtLink>
-            </li>
-          </span>
+          <li v-for="gesto in obra.gestos" :key="gesto.gestos_id.nombre">
+            <NuxtLink v-if="gesto.gestos_id.nombre !== 'No'" :to="`/archivo/gestos/${gesto.gestos_id.slug}`">
+              {{ gesto.gestos_id.nombre }}
+            </NuxtLink>
+          </li>
         </ul>
       </div>
 
@@ -308,7 +313,9 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Objetos:</span>
         <ul class="lista">
           <li v-for="objeto in obra.objetos" :key="objeto.objetos_id.nombre">
-            <NuxtLink :to="`/archivo/objetos/${objeto.objetos_id.slug}`">{{ objeto.objetos_id.nombre }} </NuxtLink>
+            <NuxtLink v-if="objeto.objetos_id.nombre" :to="`/archivo/objetos/${objeto.objetos_id.slug}`"
+              >{{ objeto.objetos_id.nombre }}
+            </NuxtLink>
           </li>
         </ul>
       </div>
@@ -331,7 +338,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Símbolos:</span>
         <ul class="lista">
           <li v-for="simbolo in obra.simbolos" :key="simbolo.simbolos_id.nombre">
-            <NuxtLink :to="`/archivo/simbolos/${simbolo.simbolos_id.slug}`">
+            <NuxtLink v-if="simbolo.simbolos_id.nombre" :to="`/archivo/simbolos/${simbolo.simbolos_id.slug}`">
               {{ simbolo.simbolos_id.nombre }}
             </NuxtLink>
           </li>
@@ -342,7 +349,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Escenarios:</span>
         <ul class="lista">
           <li v-for="escenario in obra.escenarios" :key="escenario.escenarios_id.nombre">
-            <NuxtLink :to="`/archivo/escenarios/${escenario.escenarios_id.slug}`">
+            <NuxtLink v-if="escenario.escenarios_id.nombre" :to="`/archivo/escenarios/${escenario.escenarios_id.slug}`">
               {{ escenario.escenarios_id.nombre }}
             </NuxtLink>
           </li>
@@ -353,7 +360,10 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Descriptores:</span>
         <ul class="lista">
           <li v-for="descriptor in obra.descriptores" :key="descriptor.descriptores_id.nombre">
-            <NuxtLink :to="`/archivo/descriptores/${descriptor.descriptores_id.slug}`">
+            <NuxtLink
+              v-if="descriptor.descriptores_id.nombre"
+              :to="`/archivo/descriptores/${descriptor.descriptores_id.slug}`"
+            >
               {{ descriptor.descriptores_id.nombre }}
             </NuxtLink>
           </li>
@@ -364,7 +374,10 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Características:</span>
         <ul class="lista">
           <li v-for="caracteristica in obra.caracteristicas" :key="caracteristica.caracteristicas_id.nombre">
-            <NuxtLink :to="`/archivo/caracteristicas-particulares/${caracteristica.caracteristicas_id.slug}`">
+            <NuxtLink
+              v-if="caracteristica.caracteristicas_id.nombre"
+              :to="`/archivo/caracteristicas-particulares/${caracteristica.caracteristicas_id.slug}`"
+            >
               {{ caracteristica.caracteristicas_id.nombre }}
             </NuxtLink>
           </li>
@@ -387,7 +400,7 @@ definePageMeta({ layout: 'default', keepalive: true });
 
       <div class="datos" v-if="obra.fuente.descripcion">
         <span class="tituloDato">Fuente:</span>
-        <span> {{ obra.fuente.descripcion }} </span>
+        <span v-html="obra.fuente.descripcion"></span>
       </div>
     </div>
   </div>
