@@ -1,42 +1,23 @@
+<script setup>
+import { usarGeneral } from '~~/cerebros/general';
+
+const cerebro = usarGeneral();
+
+if (!cerebro.datosCargados) {
+  await useAsyncData('general', cerebro.cargarGeneral);
+}
+</script>
+
 <template>
   <div id="contenedor">
-    <Menu :menuAbierto="menuAbierto" @resolverMenu="resolverMenu" @cerrarMenu="cerrarMenu" />
+    <MenuGeneral />
+    <MenuBuscador />
     <main role="main">
-      <MenuBuscador />
-      <div class="pagina">
-        <Nuxt keepAlive />
-      </div>
+      <slot />
     </main>
     <Footer :completo="false" />
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      colorIcono: '#FFF',
-      menuAbierto: false,
-    };
-  },
-  methods: {
-    /**
-     * Intercambia el estado del menú: si esta abierto lo cierra, si esta cerrado lo abre.
-     */
-    resolverMenu() {
-      this.menuAbierto = !this.menuAbierto;
-    },
-    /**
-     * Cierra el menú, lo usamos en navegación si el menú esta abierto.
-     */
-    cerrarMenu() {
-      if (this.menuAbierto) {
-        this.menuAbierto = false;
-      }
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @use 'sass:color';
@@ -50,8 +31,8 @@ export default {
 }
 
 main {
-  display: flex;
-  flex-direction: row;
+  width: 84vw;
+  margin-left: 15vw;
 }
 
 .pagina {

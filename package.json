@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt dev",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js",
     "lint:fix": "yarn lint --fix",
@@ -17,27 +19,14 @@
     "server:restart": "pm2 restart ecosystem.config.js"
   },
   "dependencies": {
-    "core-js": "^3.26.1",
-    "mapbox-gl": "^2.11.1",
-    "nuxt": "^2.15.8"
+    "@enflujo/alquimia": "^1.0.4",
+    "@pinia/nuxt": "^0.4.6",
+    "mapbox-gl": "^2.12.0",
+    "nuxt": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.5",
-    "@babel/eslint-parser": "^7.19.1",
-    "@nuxtjs/eslint-config": "^12.0.0",
-    "@nuxtjs/eslint-module": "^3.1.0",
-    "@nuxtjs/style-resources": "^1.2.1",
-    "eslint": "^8.29.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-nuxt": "^4.0.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.8.0",
-    "graphql": "^16.6.0",
-    "graphql-tag": "^2.12.6",
-    "nuxt-graphql-request": "^6.0.1",
-    "prettier": "^2.8.1",
-    "sass": "^1.56.1",
-    "sass-loader": "10"
+    "prettier": "^2.8.2",
+    "sass": "^1.57.1"
   },
   "browserslist": {
     "production": [
