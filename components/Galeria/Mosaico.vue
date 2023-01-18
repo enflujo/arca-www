@@ -8,15 +8,15 @@ const props = defineProps({
 
 <template>
   <div class="contenedorGaleria">
-    <div v-for="obra in obras" :key="obra.id" class="obra">
+    <div v-for="obra in obras" :key="obra.registro" class="obra">
       <span class="registro">{{ obra.registro }}</span>
 
-      <NuxtLink :to="`/archivo/obras/${obra.id}`" class="enlaceObra">
+      <NuxtLink :to="`/archivo/obras/${obra.registro}`" class="enlaceObra">
         <img class="imagen" :src="urlImagen(obra.imagen.id, 'galeria')" :alt="obra.titulo" />
       </NuxtLink>
 
       <div class="infoImagen">
-        <NuxtLink :to="`/archivo/obras/${obra.id}`">
+        <NuxtLink :to="`/archivo/obras/${obra.registro}`">
           <h3 class="titulo">{{ obra.titulo }}</h3>
         </NuxtLink>
 
