@@ -49,8 +49,6 @@ export const usarGeneral = defineStore('general', {
       });
 
       this.datosCargados = true;
-
-      console.log();
     },
   },
 });
