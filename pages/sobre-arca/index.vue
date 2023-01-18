@@ -9,11 +9,22 @@ const infoGeneral = ref([]);
 
 const Info = gql`
   query {
-    general {
-      nombre
-      proyecto
-      proposito
-      conjunto
+    paginas(filter: { slug: { _eq: "sobre-arca" } }, limit: 1) {
+      titulo
+      slug
+      descripcion
+      banner {
+        id
+        title
+      }
+      titulo_parrafo
+      texto_parrafo
+      titulo_parrafo_2
+      texto_parrafo_2
+      titulo_parrafo_3
+      texto_parrafo_3
+      titulo_parrafo_4
+      texto_parrafo_4
     }
   }
 `;
@@ -21,19 +32,25 @@ const Info = gql`
 // obtenerDatosAsinc se usa para obtener datos de forma reactiva, no estática.
 // Para obtener los datos estáticos (ej. "head") se usa la función con await. Ej. archivo - index.vue
 const { data, pending } = obtenerDatosAsinc('info', Info);
+const pagina = ref(null);
 
-watch(data, ({ general: datosGeneral }) => {
-  infoGeneral.value = datosGeneral;
+watch(data, ({ paginas: datosPagina }) => {
+  pagina.value = datosPagina[0];
 });
 </script>
 
 <template>
   <Cargador v-if="pending" />
   <div v-else id="sobre-arca">
-    <h1 class="titulo logo-texto claridad">{{ infoGeneral.nombre }}</h1>
-    <p class="parrafo" v-html="infoGeneral.proyecto"></p>
-    <p class="parrafo" v-html="infoGeneral.proposito"></p>
-    <p class="parrafo" v-html="infoGeneral.conjunto"></p>
+    <h1 class="titulo logo-texto claridad">{{ pagina.titulo }}</h1>
+    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo }}</h2>
+    <p class="parrafo">{{ pagina.texto_parrafo }}</p>
+    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo_2 }}</h2>
+    <p class="parrafo">{{ pagina.texto_parrafo_2 }}</p>
+    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo_3 }}</h2>
+    <p class="parrafo">{{ pagina.texto_parrafo_3 }}</p>
+    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo_4 }}</h2>
+    <p class="parrafo">{{ pagina.texto_parrafo_4 }}</p>
   </div>
 </template>
 
@@ -45,7 +62,12 @@ watch(data, ({ general: datosGeneral }) => {
   margin: 10vh auto;
 }
 
+.titulo {
+  margin-bottom: 1em;
+}
+
 .parrafo {
-  margin-top: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
 }
 </style>
