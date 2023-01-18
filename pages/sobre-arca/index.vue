@@ -17,14 +17,7 @@ const Info = gql`
         id
         title
       }
-      titulo_parrafo
-      texto_parrafo
-      titulo_parrafo_2
-      texto_parrafo_2
-      titulo_parrafo_3
-      texto_parrafo_3
-      titulo_parrafo_4
-      texto_parrafo_4
+      secciones
     }
   }
 `;
@@ -43,14 +36,14 @@ watch(data, ({ paginas: datosPagina }) => {
   <Cargador v-if="pending" />
   <div v-else id="sobre-arca">
     <h1 class="titulo logo-texto claridad">{{ pagina.titulo }}</h1>
-    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo }}</h2>
-    <p class="parrafo">{{ pagina.texto_parrafo }}</p>
-    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo_2 }}</h2>
-    <p class="parrafo">{{ pagina.texto_parrafo_2 }}</p>
-    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo_3 }}</h2>
-    <p class="parrafo">{{ pagina.texto_parrafo_3 }}</p>
-    <h2 class="titulo-parrafo">{{ pagina.titulo_parrafo_4 }}</h2>
-    <p class="parrafo">{{ pagina.texto_parrafo_4 }}</p>
+    <h2 class="titulo-parrafo">{{ pagina.secciones[0].titulo }}</h2>
+    <span class="parrafo" v-html="pagina.secciones[0].texto"></span>
+    <h2 class="titulo-parrafo">{{ pagina.secciones[1].titulo }}</h2>
+    <span class="parrafo" v-html="pagina.secciones[1].texto"></span>
+    <h2 class="titulo-parrafo">{{ pagina.secciones[2].titulo }}</h2>
+    <span class="parrafo" v-html="pagina.secciones[2].texto"></span>
+    <h2 class="titulo-parrafo">{{ pagina.secciones[3].titulo }}</h2>
+    <span class="parrafo" v-html="pagina.secciones[3].texto"></span>
   </div>
 </template>
 
@@ -67,6 +60,7 @@ watch(data, ({ paginas: datosPagina }) => {
 }
 
 .parrafo {
+  display: block;
   margin-top: 0.5em;
   margin-bottom: 1.5em;
 }
