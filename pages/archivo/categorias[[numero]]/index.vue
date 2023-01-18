@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql } from '~~/utilidades/ayudas';
+import { aplanarCategorias, gql } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const categorias = ref([]);
@@ -8,99 +8,33 @@ const cerebroArchivo = usarArchivo();
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
-onMounted(async () => {
-  function aplanarCategorias(datosCategoria, siguienteCategoria) {
-    const respuesta = {
-      nombre: datosCategoria.nombre,
-      slug: datosCategoria.slug,
-      numObras: datosCategoria.obras_func.count,
-      ancestro: datosCategoria.ancestro ? datosCategoria.ancestro.slug : null,
-    };
-
-    if (siguienteCategoria <= 6) {
-      const siguienteNivel = `categorias${siguienteCategoria}`;
-
-      if (datosCategoria[siguienteNivel] && datosCategoria[siguienteNivel].length) {
-        const nivel = siguienteCategoria + 1;
-        respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria) => {
-          return aplanarCategorias(categoria, nivel);
-        });
-      }
-    }
-
-    return respuesta;
-  }
-
-  const Categorias = gql`
-    query {
-      categorias1 {
-        nombre
-        slug
-        obras_func {
-          count
-        }
-        categorias2 {
+const camposCategoria = (nivel, respuesta) => {
+  if (nivel <= 6) {
+    const agregado =
+      respuesta +
+      `
+        categorias${nivel}(limit: -1) {
+          id
           nombre
           slug
-          ancestro {
-            slug
-          }
-          obras_func {
-            count
-          }
-          categorias3 {
-            nombre
-            slug
-            ancestro {
-              slug
-            }
-            obras_func {
-              count
-            }
-            categorias4 {
-              nombre
-              slug
-              ancestro {
-                slug
-              }
-              obras_func {
-                count
-              }
-              categorias5 {
-                nombre
-                slug
-                ancestro {
-                  slug
-                }
-                obras_func {
-                  count
-                }
-                categorias6 {
-                  nombre
-                  slug
-                  ancestro {
-                    slug
-                  }
-                  obras_func {
-                    count
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-  const { categorias1 } = await obtenerDatos('categorias', Categorias);
+          obras_func { count }
+          `;
+    return camposCategoria(nivel + 1, agregado);
+  } else {
+    return respuesta + '}}}}}}}';
+  }
+};
+const { categorias1 } = await obtenerDatos('categorias', camposCategoria(1, 'query {'));
 
+console.log(categorias1);
+if (categorias1) {
   categorias.value = categorias1.map((categoria1) => {
     return aplanarCategorias(categoria1, 2);
   });
 
   cerebroArchivo.paginaActual = 'Categorías';
   cargando.value = false;
-});
+}
 </script>
 
 <template>

@@ -100,7 +100,7 @@ function actualizarLineas() {
       <g v-for="(columna, i) in datosSvgs" :key="`columna-${i}`">
         <line
           class="linea"
-          v-for="nodo in columna"
+          v-for="(nodo, i) in columna"
           :key="`linea-${i}`"
           :x1="nodo.x1"
           :y1="nodo.y1"
@@ -109,7 +109,7 @@ function actualizarLineas() {
         ></line>
       </g>
     </svg>
-    <div class="contenedorNivel1" v-for="(categoria1, i) in props.datos" ref="contenedores">
+    <div class="contenedorNivel1" v-for="(categoria1, i) in props.datos" ref="contenedores" :key="i">
       <span class="elementoLista nombreNivel1" :style="`font-size:${escala(categoria1.numObras, 0.8, 2)}em`">
         <span
           class="circulo"
@@ -121,11 +121,13 @@ function actualizarLineas() {
           )}px`"
           :data-fuente="categoria1.slug"
         ></span>
-        <span class="nombre">{{ categoria1.nombre }}</span>
+        <NuxtLink :to="`/archivo/categorias/${categoria1.id}`"
+          ><span class="nombre">{{ categoria1.nombre }}</span></NuxtLink
+        >
       </span>
 
-      <div class="contenedorSubNivel" v-for="nivel in categoria1.arbol">
-        <span class="elementoLista" v-for="subCategoria in nivel">
+      <div class="contenedorSubNivel" v-for="nivel in categoria1.arbol" :key="nivel">
+        <span class="elementoLista" v-for="subCategoria in nivel" :key="subCategoria">
           <span
             class="circulo"
             :data-ancestro="subCategoria.ancestro"

@@ -87,3 +87,26 @@ export function ordenarPorNombre(lista) {
     return 0;
   });
 }
+
+export function aplanarCategorias(datosCategoria, siguienteCategoria) {
+  const respuesta = {
+    nombre: datosCategoria.nombre,
+    slug: datosCategoria.slug,
+    numObras: datosCategoria.obras_func.count,
+    ancestro: datosCategoria.ancestro ? datosCategoria.ancestro.slug : null,
+    id: datosCategoria.id,
+  };
+
+  if (siguienteCategoria <= 6) {
+    const siguienteNivel = `categorias${siguienteCategoria}`;
+
+    if (datosCategoria[siguienteNivel] && datosCategoria[siguienteNivel].length) {
+      const nivel = siguienteCategoria + 1;
+      respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria) => {
+        return aplanarCategorias(categoria, nivel);
+      });
+    }
+  }
+
+  return respuesta;
+}
