@@ -9,6 +9,7 @@ export const usarGeneral = defineStore('general', {
     titulo: '',
     banner: null,
     descripcion: '',
+    guardaescobas: '',
   }),
 
   actions: {
@@ -22,6 +23,7 @@ export const usarGeneral = defineStore('general', {
               id
               title
             }
+            texto_footer
           }
 
           menus {
@@ -40,12 +42,15 @@ export const usarGeneral = defineStore('general', {
       this.titulo = general.nombre || 'Arca';
       this.banner = general.banner;
       this.descripcion = general.descripcion || '';
+      this.guardaescobas = general.texto_footer || '';
 
       menus.forEach((menu) => {
         this.menus[menu.nombre] = menu.paginas.map((pagina) => pagina.paginas_id);
       });
 
       this.datosCargados = true;
+
+      console.log();
     },
   },
 });
