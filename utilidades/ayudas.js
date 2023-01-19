@@ -93,7 +93,7 @@ export function aplanarCategorias(datosCategoria, siguienteCategoria) {
     nombre: datosCategoria.nombre,
     slug: datosCategoria.slug,
     numObras: datosCategoria.obras_func.count,
-    ancestro: datosCategoria.ancestro ? datosCategoria.ancestro.slug : null,
+    ancestro: datosCategoria.ancestro ? datosCategoria.ancestro.id : null,
     id: datosCategoria.id,
   };
 

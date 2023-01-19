@@ -139,10 +139,12 @@ function actualizarLineas() {
               max / 6
             )}px`"
           ></span>
-
-          <span class="nombre" v-if="subCategoria.numObras > 0">
-            {{ subCategoria.nombre }} ({{ subCategoria.numObras }})
-          </span>
+          <!--¿Vamos armando la cadena de categorías o solo el primer y último nivel?-->
+          <NuxtLink :to="`/archivo/categorias/${categoria1.id}/${subCategoria.id}`"
+            ><span class="nombre" v-if="subCategoria.numObras > 0">
+              {{ subCategoria.nombre }} ({{ subCategoria.numObras }})
+            </span></NuxtLink
+          >
         </span>
       </div>
     </div>

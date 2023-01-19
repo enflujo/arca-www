@@ -5,4 +5,5 @@ console.log(ruta.params);
 
 <template>
   <h1>Categoria</h1>
+  <Galeria coleccion="categorias" paginaActual="Categorias" singular="Categoria" />
 </template>

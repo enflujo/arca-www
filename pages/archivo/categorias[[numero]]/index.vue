@@ -9,7 +9,7 @@ const cerebroArchivo = usarArchivo();
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 const camposCategoria = (nivel, respuesta) => {
-  if (nivel <= 6) {
+  if (nivel === 1) {
     const agregado =
       respuesta +
       `
@@ -17,6 +17,21 @@ const camposCategoria = (nivel, respuesta) => {
           id
           nombre
           slug
+          obras_func { count }
+          `;
+    return camposCategoria(nivel + 1, agregado);
+  }
+  if (nivel !== 1 && nivel <= 6) {
+    const agregado =
+      respuesta +
+      `
+        categorias${nivel}(limit: -1) {
+          id
+          nombre
+          slug
+          ancestro {
+            id
+          }
           obras_func { count }
           `;
     return camposCategoria(nivel + 1, agregado);
