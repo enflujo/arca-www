@@ -15,7 +15,7 @@ if (!cerebro.datosCargados) {
     <main role="main">
       <slot />
     </main>
-    <Footer :completo="false" />
+    <Guardaescobas :completo="false" />
   </div>
 </template>
 
