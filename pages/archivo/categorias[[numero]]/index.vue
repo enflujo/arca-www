@@ -2,11 +2,8 @@
 import { usarArchivo } from '~~/cerebros/archivo';
 import { aplanarCategorias, gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const categorias = ref([]);
 const cerebroArchivo = usarArchivo();
-
-definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 const camposCategoria = (nivel, respuesta) => {
   if (nivel === 1) {
@@ -39,22 +36,21 @@ const camposCategoria = (nivel, respuesta) => {
     return respuesta + '}}}}}}}';
   }
 };
-const { categorias1 } = await obtenerDatos('categorias', camposCategoria(1, 'query {'));
+const { data, pending } = obtenerDatosAsinc('categorias', camposCategoria(1, 'query {'));
 
-console.log(categorias1);
-if (categorias1) {
+watch(data, ({ categorias1 }) => {
   categorias.value = categorias1.map((categoria1) => {
     return aplanarCategorias(categoria1, 2);
   });
+});
 
-  cerebroArchivo.paginaActual = 'Categorías';
-  cargando.value = false;
-}
+cerebroArchivo.paginaActual = 'Categorías';
+definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
   <h1>Categorias</h1>
-  <Cargador v-if="cargando" />
+  <Cargador v-if="pending" />
 
   <GraficaArbol v-else :datos="categorias" />
 

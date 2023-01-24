@@ -67,30 +67,27 @@ function escala(numObras, min, maximo, maxBase = max.value) {
 }
 
 function actualizarLineas() {
-  const { width: ancho, height: alto, x, y } = contenedor.value.getBoundingClientRect();
-  // salir si el contenedor aún no tiene alto, esto significa que aún esta pintando en las posiciones que se necesitan a continuación.
-  if (alto === 0) return;
-
-  dims.value = { ancho, alto };
-
-  contenedores.value.forEach((contenedor) => {
-    const subNiveles = contenedor.querySelectorAll('.contenedorSubNivel');
-    subNiveles.forEach((nivel, i) => {
-      const elementos = nivel.querySelectorAll('.elementoLista .circulo');
-      elementos.forEach((nodo) => {
-        const dimsAncestro = contenedor
-          .querySelector(`[data-fuente="${nodo.dataset.ancestro}"]`)
-          .getBoundingClientRect();
-        const dimsNodo = nodo.getBoundingClientRect();
-
-        const x1 = dimsAncestro.x - x + dimsAncestro.width / 2;
-        const y1 = dimsAncestro.y - y + dimsAncestro.height / 2;
-        const x2 = dimsNodo.x - x + dimsNodo.width / 2;
-        const y2 = dimsNodo.y - y + dimsNodo.height / 2;
-        datosSvgs.value[i].push({ x1, y1, x2, y2 });
-      });
-    });
-  });
+  // const { width: ancho, height: alto, x, y } = contenedor.value.getBoundingClientRect();
+  // // salir si el contenedor aún no tiene alto, esto significa que aún esta pintando en las posiciones que se necesitan a continuación.
+  // if (alto === 0) return;
+  // dims.value = { ancho, alto };
+  // contenedores.value.forEach((contenedor) => {
+  //   const subNiveles = contenedor.querySelectorAll('.contenedorSubNivel');
+  //   subNiveles.forEach((nivel, i) => {
+  //     const elementos = nivel.querySelectorAll('.elementoLista .circulo');
+  //     elementos.forEach((nodo) => {
+  //       const dimsAncestro = contenedor
+  //         .querySelector(`[data-fuente="${nodo.dataset.ancestro}"]`)
+  //         .getBoundingClientRect();
+  //       const dimsNodo = nodo.getBoundingClientRect();
+  //       const x1 = dimsAncestro.x - x + dimsAncestro.width / 2;
+  //       const y1 = dimsAncestro.y - y + dimsAncestro.height / 2;
+  //       const x2 = dimsNodo.x - x + dimsNodo.width / 2;
+  //       const y2 = dimsNodo.y - y + dimsNodo.height / 2;
+  //       datosSvgs.value[i].push({ x1, y1, x2, y2 });
+  //     });
+  //   });
+  // });
 }
 </script>
 
@@ -121,12 +118,12 @@ function actualizarLineas() {
           )}px`"
           :data-fuente="categoria1.slug"
         ></span>
-        <NuxtLink :to="`/archivo/categorias/${categoria1.id}`"
+        <NuxtLink :to="`/archivo/categorias1/${categoria1.id}`"
           ><span class="nombre">{{ categoria1.nombre }}</span></NuxtLink
         >
       </span>
 
-      <div class="contenedorSubNivel" v-for="nivel in categoria1.arbol" :key="nivel">
+      <div class="contenedorSubNivel" v-for="(nivel, i) in categoria1.arbol" :key="nivel">
         <span class="elementoLista" v-for="subCategoria in nivel" :key="subCategoria">
           <span
             class="circulo"
@@ -140,7 +137,7 @@ function actualizarLineas() {
             )}px`"
           ></span>
           <!--¿Vamos armando la cadena de categorías o solo el primer y último nivel?-->
-          <NuxtLink :to="`/archivo/categorias/${categoria1.id}/${subCategoria.id}`"
+          <NuxtLink :to="`/archivo/categorias${i + 2}/${subCategoria.id}`"
             ><span class="nombre" v-if="subCategoria.numObras > 0">
               {{ subCategoria.nombre }} ({{ subCategoria.numObras }})
             </span></NuxtLink
@@ -198,9 +195,6 @@ function actualizarLineas() {
 }
 
 .nombre {
-  position: absolute;
-  left: 0;
-  background-color: aqua;
 }
 
 .circulo {
