@@ -48,6 +48,6 @@ footer {
 
 .pequeno {
   width: calc(100% - 15vw);
-  left: 15vw;
+  left: 20vw;
 }
 </style>

@@ -30,7 +30,7 @@ export const obrasPorSlug = (coleccion, slug, m2m = false) => {
   return gql`
   query {
     ${coleccion}(filter: { slug: { _eq: "${slug}" } }, limit: 1) {
-      obras(limit: 5) {
+      obras(limit: 50) {
         ${m2m ? 'obras_id {' : ''}
         id
         registro

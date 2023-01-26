@@ -32,7 +32,7 @@ if (!cerebro.datosCargados) {
 
 main {
   width: 84vw;
-  margin-left: 15vw;
+  margin-left: 25vw;
 }
 
 .pagina {

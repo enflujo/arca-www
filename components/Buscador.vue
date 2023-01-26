@@ -33,7 +33,7 @@ input {
   height: 40px;
   justify-content: center;
   background-color: #faf5ec;
-  font-family: 'Work Sans';
+  font-family: $fuentePrincipal;
   text-align: center;
   text-transform: uppercase;
   margin-left: 5%;

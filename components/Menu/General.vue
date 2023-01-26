@@ -89,6 +89,7 @@ $menuRayaColor: $claridad;
 }
 
 .logo-texto {
+  font-family: $fuentePrincipal;
   position: absolute;
   top: 25px;
   left: 25px;

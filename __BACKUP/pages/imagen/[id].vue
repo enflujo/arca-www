@@ -569,8 +569,8 @@ img {
   .botones-imagen {
     letter-spacing: 3px;
     text-transform: uppercase;
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 400;
+    font-family: $fuentePrincipal;
+    font-weight: $fuentePrincipalPeso;
     font-size: 1.6vh;
     margin-top: 4vh;
     flex-direction: column;

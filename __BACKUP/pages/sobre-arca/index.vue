@@ -228,7 +228,7 @@ export default {
   }
 }
 .descripcion {
-  font-family: 'Work Sans';
+  font-family: $fuentePrincipal;
   text-align: left;
   width: 80%;
   margin-top: 4em;
