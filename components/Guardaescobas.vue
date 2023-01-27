@@ -33,7 +33,7 @@ footer {
   align-items: center;
   justify-content: space-evenly;
   position: relative;
-  bottom: 0;
+  bottom: 35px;
   .texto-f-uno {
     display: flex;
     width: 350px;
@@ -47,7 +47,7 @@ footer {
 }
 
 .pequeno {
-  width: calc(100% - 15vw);
+  width: calc(100% - 20vw);
   left: 20vw;
 }
 </style>

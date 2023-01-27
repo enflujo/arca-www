@@ -34,7 +34,8 @@ const props = defineProps({
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 0 2em;
+  padding: 2em 0em ;
+  //margin: 0 0 0 0;
 }
 
 .obra {
