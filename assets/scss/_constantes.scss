@@ -1,20 +1,48 @@
-$fuenteMenu: 'Work Sans', sans-serif;
-$fuentePrincipal: 'Yeseva', sans-serif;
-$fuenteParrafos: 'Work Sans', sans-serif;
+$fuenteTitulo: 'Unbounded', italic;
+$fuenteMenu: 'Nunito', sans-serif;
 $fuenteMenuPeso: 600;
+$fuentePrincipal: 'Lora', serif;
 $fuentePrincipalPeso: 400;
 $fuentePrincipalBold: 700;
+$fuenteParrafos: 'Lora', serif;
+
+// Tamaños
+$tamanoMenu: 80px;
+$tamanoDashAl: 30vh;
+$tamanoDashAn: 25vw;
+
+//Colores
+$verdeEsmeralda: #0C4D51;
+$verdeEsmeralda2: #0E5E62;
+$verdeEsmeralda3:#2D9B97;
+$verdeMenta:#49C5B6;
+$verdeClaro:#D0F1EC;
+$verdeClaro2:#F2F9F8;
+
+$naranjaTeja: #C05C31;
+$naranjaLadrillo: #DF8C53;
+$naranjaArena: #E6AE61;
+$naranjaPlantaRodadora: #EAB28C;
+$naranjaLino: #F4E9E1;
+
+$amarilloArena2:#ECD06F;
+$amarilloJengibre:#FFE485;
+$amarilloCrema:#FFF0C2;
+$amarilloPetalo:#FFFBF0;
+
+$rojoCerezo:#9E171F;
+$rojoRaspon:#D14836;
+$rojoOxido:#D86A45;
+
+//ColoresLindosJeann
 $claridad: #fffdf8;
 $mediana: #faf5ec;
 $profundidad: #08173e;
 $dolor: #af2828;
-$tamanoMenu: 80px;
-$tamanoDashAl: 30vh;
-$tamanoDashAn: 25vw;
 $amarilloBase: #ecd06f;
 $amarilloClaro: #f5ebc6;
 
-// Tamaños Pantallas
+// Tamaños Pantallas 🖥️ 📺 📱
 $minCelular: 576px;
 $minTablet: 768px;
 $minPantalla: 992px;

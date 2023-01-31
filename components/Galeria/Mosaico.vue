@@ -30,11 +30,9 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .contenedorGaleria {
-  width: 85vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 0 2em;
 }
 
 .obra {

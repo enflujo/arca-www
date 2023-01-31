@@ -81,38 +81,51 @@ autores.value = Array.from(inicialesAutores).sort();
 </template>
 
 <style lang="scss" scoped>
+@use 'sass:color';
+
+a {
+  font-family: $fuenteMenu;
+}
+
 #contenedorBuscador {
-  background-color: $mediana;
-  border-right: 2px solid $dolor;
+  background-color: $verdeEsmeralda;
+  border-right: 0px solid $verdeEsmeralda;
   position: fixed;
   overflow: auto;
-  width: 15vw;
+  width: 20vw;
   height: 100vh;
 }
 
 .logo-texto {
-  margin: 1vw;
   font-family: $fuentePrincipal;
+  margin: 2.5vw;
+  margin-bottom: 2vw;
+  margin-top: 3vw;
+  color: $mediana;
+  letter-spacing: 0.15em;
+  font-size: 2.0em;
   overflow: hidden;
 }
 
 .opcionesBuscador {
-  margin-top: 1em;
+  text-transform: uppercase;
+  margin-top: 2em;
   padding: 0;
 }
 
 .listaMenu {
-  margin-left: 0;
+  margin-left: 2.5em;
+//  letter-spacing: -.01rem;
   position: relative;
 }
 
 .opcion {
   // height: 1em;
   font-size: 0.9em;
-  margin-top: 0.4em;
+  margin-top: 0.9em;
   overflow: hidden;
   position: relative;
-  padding-left: 0.7em;
+  padding-left: 1.4em;
 
   &.activo {
     .iniciales {
@@ -120,17 +133,27 @@ autores.value = Array.from(inicialesAutores).sort();
     }
   }
 
-  &::before {
-    content: '';
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    display: block;
-    background-color: $dolor;
-    position: absolute;
-    left: 0.3em;
-    top: 0.5em;
-    z-index: 9;
+  // &::before {
+  //   content: '';
+  //   width: 3px;
+  //   height: 3px;
+  //   border-radius: 50%;
+  //   display: block;
+  //   background-color: $dolor;
+  //   position: absolute;
+  //   left: 0.3em;
+  //   top: 0.5em;
+  //   z-index: 9;
+  // }
+
+  a,
+  a:link {
+
+    color: $mediana;
+
+    &:hover {
+      color: darken($mediana, 10%);
+    }
   }
 }
 
