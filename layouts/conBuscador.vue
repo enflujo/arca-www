@@ -31,8 +31,8 @@ if (!cerebro.datosCargados) {
 }
 
 main {
-  width: 80vw;
-  margin-left: 20vw;
+  width: 81vw;
+  margin-left: 19vw;
   padding: 2em 5em 2em 3em;
   background-color: $amarilloPetalo;
 }
