@@ -33,7 +33,7 @@ footer {
   align-items: center;
   justify-content: space-evenly;
   position: relative;
-  bottom: 35px;
+  
   .texto-f-uno {
     display: flex;
     width: 350px;
