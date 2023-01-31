@@ -48,7 +48,7 @@ cerebroArchivo.paginaActual = 'Autores';
 const ObrasAutor = gql`
 query {
   autores_by_id(id: ${ruta.params.id}) {
-    obras(limit: 20) {
+    obras(limit: ${cerebroArchivo.obrasPorPagina}) {
       obras_id {
         id
         registro

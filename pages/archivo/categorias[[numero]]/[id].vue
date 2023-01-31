@@ -41,7 +41,7 @@ cerebroArchivo.paginaActual = 'Categorías';
 const ObrasCategoria = gql`
 query {
   ${llave}(id: ${ruta.params.id}) {
-    obras(limit: 20) {
+    obras(limit: ${cerebroArchivo.obrasPorPagina}) {
       id
       registro
       titulo

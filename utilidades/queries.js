@@ -1,4 +1,7 @@
 import { gql } from './ayudas';
+import { usarArchivo } from '~~/cerebros/archivo';
+
+const cerebroArchivo = usarArchivo();
 
 /**
  * Datos básicos para cargar página con campo `nombre` rápidamente.
@@ -30,7 +33,7 @@ export const obrasPorSlug = (coleccion, slug, m2m = false) => {
   return gql`
   query {
     ${coleccion}(filter: { slug: { _eq: "${slug}" } }, limit: 1) {
-      obras(limit: 50) {
+      obras(limit: ${cerebroArchivo.obrasPorPagina}) {
         ${m2m ? 'obras_id {' : ''}
         id
         registro
