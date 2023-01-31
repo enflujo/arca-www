@@ -33,6 +33,8 @@ const props = defineProps({
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  padding: 0 2em;
+  background-color: $amarilloPetalo;
 }
 
 .obra {
@@ -42,6 +44,14 @@ const props = defineProps({
   margin: 0.5em;
   padding: 0;
   position: relative;
+  border: transparent solid 5px;
+  border-style: outset;
+  background-color: $amarilloBase;
+
+  &:hover {
+    border: $verdeEsmeralda3 solid 5px;
+    background-color: $verdeEsmeralda3;
+  }
 }
 
 .enlaceObra {
