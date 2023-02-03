@@ -38,7 +38,7 @@ definePageMeta({ layout: 'con-buscador' });
   <Cargador v-if="pending" />
   <ul v-else>
     <li v-for="autor in autores" :key="`autor${autor.id}`">
-      <NuxtLink :to="`/archivo/autores/${autor.id}`">
+      <NuxtLink :to="`/archivo/autores/${autor.id}?pagina=1`">
         {{ autor.apellido }}, {{ autor.nombre }} ({{ autor.obras_func.count }})
       </NuxtLink>
     </li>
