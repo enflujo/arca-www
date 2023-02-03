@@ -31,16 +31,9 @@ if (!cerebro.datosCargados) {
 }
 
 main {
-  width: 81vw;
   margin-left: 19vw;
   padding: 2em 5em 2em 3em;
   background-color: $amarilloPetalo;
-}
-
-.pagina {
-  width: calc(100vw - 23vw);
-  margin-top: 10px;
-  margin-left: 8vw;
 }
 
 // Teléfonos horizontal
