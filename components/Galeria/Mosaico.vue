@@ -8,10 +8,10 @@ const props = defineProps({
 
 <template>
   <div class="contenedorGaleria">
-    <div v-for="obra in obras" :key="obra.registro" class="obra">
+    <div v-for="obra in obras" :key="obra.registro" class="obra" @mouseover="resaltarObra">
       <span class="registro">{{ obra.registro }}</span>
 
-      <NuxtLink :to="`/archivo/obras/${obra.registro}`" class="enlaceObra">
+      <NuxtLink :to="`/archivo/obras/${obra.registro}`">
         <img class="imagen" :src="urlImagen(obra.imagen.id, 'galeria')" :alt="obra.titulo" />
       </NuxtLink>
 
@@ -44,27 +44,56 @@ const props = defineProps({
   margin: 0.5em;
   padding: 0;
   position: relative;
-  border: transparent solid 5px;
+  border: transparent solid 7px;
   border-style: outset;
   background-color: $amarilloBase;
 
-  &:hover {
-    border: $verdeEsmeralda3 solid 5px;
-    background-color: $verdeEsmeralda3;
+  .registro {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5em 1em;
+    font-size: 0.8em;
+    color: black;
+    background-color: $amarilloBase;
   }
-}
 
-.enlaceObra {
-  background-color: black;
-}
+  .infoImagen {
+    color: black;
+    text-align: left;
+    padding: 0.8em;
+    font-size: 0.85em;
 
-.registro {
-  background-color: $amarilloBase;
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.5em 1em;
-  font-size: 0.8em;
+    .titulo {
+      font-size: 1em;
+      font-weight: normal;
+      max-width: 250px;
+    }
+    .autor {
+      margin-top: 1.2em;
+      font-size: 0.85em;
+      font-weight: bold;
+
+      &:hover {
+        color: $amarilloBase;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: $verdeEsmeralda3;
+
+    .registro {
+      background-color: $verdeEsmeralda2;
+      color: $claridad;
+    }
+
+    .infoImagen {
+      a {
+        color: $claridad;
+      }
+    }
+  }
 }
 
 .imagen {
@@ -73,24 +102,5 @@ const props = defineProps({
   text-align: center;
   margin: 0 auto;
   display: block;
-}
-
-.infoImagen {
-  color: black;
-  background-color: $amarilloBase;
-  text-align: left;
-  padding: 0.8em;
-  font-size: 0.85em;
-
-  .titulo {
-    font-size: 1em;
-    font-weight: normal;
-    max-width: 250px;
-  }
-  .autor {
-    margin-top: 1.2em;
-    font-size: 0.85em;
-    font-weight: bold;
-  }
 }
 </style>
