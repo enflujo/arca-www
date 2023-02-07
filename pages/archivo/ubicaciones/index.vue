@@ -81,14 +81,20 @@ function cambiarVista(llave) {
       <img
         class="filtro"
         :class="vista === 'mapa' ? 'activo' : ''"
-        src="~~/assets/imgs/icono-mapa.svg"
+        src="~~/assets/imgs/boton_geo.svg"
         @click="cambiarVista('mapa')"
       />
       <img
         class="filtro"
         :class="vista === 'lista' ? 'activo' : ''"
-        src="~~/assets/imgs/icono-lista.svg"
+        src="~~/assets/imgs/boton_alfabetico.svg"
         @click="cambiarVista('lista')"
+      />
+      <img
+        class="filtro"
+        :class="vista === 'colombinas' ? 'activo' : ''"
+        src="~~/assets/imgs/boton_colombinas.svg"
+        @click="cambiarVista('colombinas')"
       />
     </div>
 
@@ -101,7 +107,20 @@ function cambiarVista(llave) {
 
     <ul v-if="vista === 'lista'">
       <li v-for="pais in datos" :key="pais.slug">
-        <NuxtLink :to="`/archivo/paises/${pais.slug}`">{{ pais.nombre }} ({{ pais.obras_func.count }})</NuxtLink>
+        <NuxtLink class="nombrePais" :to="`/archivo/paises/${pais.slug}`"
+          >{{ pais.nombre }} ({{ pais.obras_func.count }})</NuxtLink
+        >
+      </li>
+    </ul>
+
+    <ul v-if="vista === 'colombinas'">
+      <li v-for="pais in datos" :key="pais.slug">
+        <NuxtLink class="elementoColombina nombrePais" :to="`/archivo/paises/${pais.slug}`"
+          >{{ pais.nombre }}
+          <div class="colombina">
+            <span class="lineaColombina" :style="`width:${pais.obras_func.count}px`"></span
+            ><span class="circuloColombina"></span></div
+        ></NuxtLink>
       </li>
     </ul>
   </div>
@@ -121,11 +140,12 @@ ul {
 }
 
 .filtro {
-  height: 50px;
+  height: 25px;
   width: auto;
   cursor: pointer;
   opacity: 0.3;
   transition: opacity 0.3s ease-in-out;
+  margin: 0.3em;
 
   &.activo {
     opacity: 1;
@@ -133,6 +153,36 @@ ul {
 
   &:hover {
     opacity: 0.8;
+  }
+}
+
+.nombrePais {
+  text-transform: uppercase;
+  font-size: 0.8em;
+}
+
+// Colombinas
+.elementoColombina {
+  display: flex;
+  width: 40vw;
+  justify-content: end;
+}
+.colombina {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  margin-left: 1em;
+  .lineaColombina {
+    display: block;
+    height: 3px;
+    background-color: black;
+  }
+  .circuloColombina {
+    display: block;
+    height: 7px;
+    width: 7px;
+    background-color: black;
+    border-radius: 50%;
   }
 }
 </style>
