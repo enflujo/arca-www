@@ -1,12 +1,15 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
+import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 
 const cerebroArchivo = usarArchivo();
 const datos = ref(null);
 const paises = ref(null);
 const ubicaciones = ref(null);
 const vista = ref('mapa');
+const anchoPantalla = ref(0);
+const contenedorUbicaciones = ref(null);
 
 cerebroArchivo.paginaActual = 'Ubicaciones';
 
@@ -19,6 +22,9 @@ const ObrasPorPaises = gql`
       nombre
       slug
       geo
+      obras(limit: -1) {
+        id
+      }
       obras_func {
         count
       }
@@ -64,6 +70,16 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   ubicaciones.value = ubicacionesGeojson;
 });
 
+onMounted(() => {
+  //
+});
+
+onUpdated(() => {
+  if (vista.value !== 'colombinas') return;
+  anchoPantalla.value = contenedorUbicaciones.value.clientWidth;
+  console.log(contenedorUbicaciones.value);
+});
+
 function cambiarVista(llave) {
   if (llave !== vista.value) {
     vista.value = llave;
@@ -76,7 +92,7 @@ function cambiarVista(llave) {
 
   <Cargador v-if="pending" />
 
-  <div v-else id="contenedorUbicaciones">
+  <div v-else id="contenedorUbicaciones" ref="contenedorUbicaciones">
     <div id="filtros">
       <img
         class="filtro"
@@ -107,7 +123,7 @@ function cambiarVista(llave) {
 
     <ul v-if="vista === 'lista'">
       <li v-for="pais in datos" :key="pais.slug">
-        <NuxtLink class="nombrePais" :to="`/archivo/paises/${pais.slug}`"
+        <NuxtLink class="nombre" :to="`/archivo/paises/${pais.slug}`"
           >{{ pais.nombre }} ({{ pais.obras_func.count }})</NuxtLink
         >
       </li>
@@ -115,12 +131,24 @@ function cambiarVista(llave) {
 
     <ul v-if="vista === 'colombinas'">
       <li v-for="pais in datos" :key="pais.slug">
-        <NuxtLink class="elementoColombina nombrePais" :to="`/archivo/paises/${pais.slug}`"
-          >{{ pais.nombre }}
+        <NuxtLink class="nombre fila" :to="`/archivo/paises/${pais.slug}`">{{ pais.nombre }}</NuxtLink>
+
+        <NuxtLink class="elementoColombina fila" :to="`/archivo/paises/${pais.slug}`">
           <div class="colombina">
-            <span class="lineaColombina" :style="`width:${pais.obras_func.count}px`"></span
-            ><span class="circuloColombina"></span></div
-        ></NuxtLink>
+            <span
+              class="lineaColombina"
+              :style="`width:${convertirEscala(
+                pais.obras_func.count,
+                0,
+                datos[0].obras_func.count,
+                0,
+                anchoPantalla / 1.5
+              )}px`"
+            ></span>
+            <span class="circuloColombina"></span>
+            <span class="conteoObras">{{ pais.obras_func.count }}</span>
+          </div>
+        </NuxtLink>
       </li>
     </ul>
   </div>
@@ -132,7 +160,22 @@ function cambiarVista(llave) {
 }
 
 ul {
-  list-style: circle;
+  display: table;
+  width: 100%;
+
+  li {
+    display: table-row;
+  }
+
+  .fila {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .nombre {
+    text-align: right;
+    padding-right: 0.5em;
+  }
 }
 
 #filtros {
@@ -156,22 +199,17 @@ ul {
   }
 }
 
-.nombrePais {
+.nombre {
   text-transform: uppercase;
   font-size: 0.8em;
 }
 
 // Colombinas
-.elementoColombina {
-  display: flex;
-  width: 40vw;
-  justify-content: end;
-}
+
 .colombina {
   display: flex;
   align-items: center;
-  width: 500px;
-  margin-left: 1em;
+
   .lineaColombina {
     display: block;
     height: 3px;
@@ -183,6 +221,12 @@ ul {
     width: 7px;
     background-color: black;
     border-radius: 50%;
+  }
+
+  .conteoObras {
+    color: #788989;
+    font-size: 0.75em;
+    padding-left: 0.4em;
   }
 }
 </style>
