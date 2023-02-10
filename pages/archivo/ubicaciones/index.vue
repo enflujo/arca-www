@@ -1,6 +1,6 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
-import { gql } from '~~/utilidades/ayudas';
+import { gql, obtenerVariablesCSS } from '~~/utilidades/ayudas';
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 
 const cerebroArchivo = usarArchivo();
@@ -9,7 +9,11 @@ const paises = ref(null);
 const ubicaciones = ref(null);
 const vista = ref('mapa');
 const anchoPantalla = ref(0);
+const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
+const colorGraficaMin = ref('');
+const colorGraficaMax = ref('');
+let buscarColor;
 
 cerebroArchivo.paginaActual = 'Ubicaciones';
 
@@ -66,18 +70,22 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
    */
   datos.value = datosPaises.sort((a, b) => b.obras_func.count - a.obras_func.count);
 
+  const maximoObras = datos.value[0].obras_func.count;
   paises.value = paisesGeojson;
   ubicaciones.value = ubicacionesGeojson;
-});
+  valorMaximoObras.value = maximoObras;
 
-onMounted(() => {
-  //
+  buscarColor = escalaColores(
+    1,
+    maximoObras,
+    obtenerVariablesCSS('--amarilloArena2Var'),
+    obtenerVariablesCSS('--rojoCerezoVar')
+  );
 });
 
 onUpdated(() => {
   if (vista.value !== 'colombinas') return;
   anchoPantalla.value = contenedorUbicaciones.value.clientWidth;
-  console.log(contenedorUbicaciones.value);
 });
 
 function cambiarVista(llave) {
@@ -118,7 +126,7 @@ function cambiarVista(llave) {
       v-if="paises && ubicaciones && vista === 'mapa'"
       :paises="paises"
       :ubicaciones="ubicaciones"
-      :max="datos[0].obras_func.count"
+      :max="valorMaximoObras"
     />
 
     <ul v-if="vista === 'lista'">
@@ -139,11 +147,11 @@ function cambiarVista(llave) {
               class="lineaColombina"
               :style="`width:${convertirEscala(
                 pais.obras_func.count,
-                0,
-                datos[0].obras_func.count,
+                1,
+                valorMaximoObras,
                 0,
                 anchoPantalla / 1.5
-              )}px`"
+              )}px; background-color:${buscarColor(pais.obras_func.count)}`"
             ></span>
             <span class="circuloColombina"></span>
             <span class="conteoObras">{{ pais.obras_func.count }}</span>
@@ -202,10 +210,17 @@ ul {
 .nombre {
   text-transform: uppercase;
   font-size: 0.8em;
+
+  &:hover {
+    font-weight: bold;
+  }
+
+  &:hover::before {
+    content: '+ ';
+  }
 }
 
 // Colombinas
-
 .colombina {
   display: flex;
   align-items: center;
@@ -213,13 +228,11 @@ ul {
   .lineaColombina {
     display: block;
     height: 3px;
-    background-color: black;
   }
   .circuloColombina {
     display: block;
     height: 7px;
     width: 7px;
-    background-color: black;
     border-radius: 50%;
   }
 

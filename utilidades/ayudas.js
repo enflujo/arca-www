@@ -1,4 +1,5 @@
 import { apiBase, urlBase, nombre } from '../config/general';
+import { convertirEscala, hexARGB } from '@enflujo/alquimia';
 
 /**
  * Ayuda a construir la URL para pedir un archivo al API de Directus.
@@ -109,4 +110,13 @@ export function aplanarCategorias(datosCategoria, siguienteCategoria) {
   }
 
   return respuesta;
+}
+
+/**
+ *
+ * @param {string} nombre Nombre de la variable en css, por ejemplo '--verdeEsmeralda'
+ */
+export function obtenerVariablesCSS(nombre) {
+  const ele = window.getComputedStyle(document.body, '');
+  return ele.getPropertyValue(nombre);
 }
