@@ -84,12 +84,12 @@ autores.value = Array.from(inicialesAutores).sort();
 @use 'sass:color';
 
 a {
-  font-family: $fuenteMenu;
+  font-family: var(--fuenteMenu);
 }
 
 #contenedorBuscador {
-  background-color: $verdeEsmeralda;
-  border-right: 0px solid $verdeEsmeralda;
+  background-color: var(--verdeEsmeralda);
+  border-right: 0px solid var(--verdeEsmeralda);
   position: fixed;
   overflow: auto;
   width: 20vw;
@@ -97,11 +97,11 @@ a {
 }
 
 .logo-texto {
-  font-family: $fuentePrincipal;
+  font-family: var(--fuentePrincipal);
   margin: 2.5vw;
   margin-bottom: 2vw;
   margin-top: 3vw;
-  color: $mediana;
+  color: var(--mediana);
   letter-spacing: 0.15em;
   font-size: 2.0em;
   overflow: hidden;
@@ -139,7 +139,7 @@ a {
   //   height: 3px;
   //   border-radius: 50%;
   //   display: block;
-  //   background-color: $dolor;
+  //   background-color: var(--dolor);
   //   position: absolute;
   //   left: 0.3em;
   //   top: 0.5em;
@@ -149,10 +149,10 @@ a {
   a,
   a:link {
 
-    color: $mediana;
+    color: var(--mediana);
 
     &:hover {
-      color: darken($mediana, 10%);
+      color: darken(#FAF5EC, 10%);
     }
   }
 }

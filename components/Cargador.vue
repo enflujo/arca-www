@@ -29,7 +29,7 @@ export default {
 }
 
 .logo {
-  fill: $dolor;
+  fill:var(--dolor);
 }
 
 .texto-cargador {
@@ -38,9 +38,9 @@ export default {
   .letra-cargador {
     display: inline-block;
     margin: 0 5px;
-    color: $dolor;
+    color:var(--dolor);
     font-size: 32px;
-    font-family: $fuentePrincipal;
+    font-family: var(--fuentePrincipal);
     @for $i from 0 through 6 {
       &:nth-child(#{$i + 1}) {
         filter: blur(0px);

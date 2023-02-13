@@ -172,7 +172,7 @@
     width: 30%;
     position: relative;
     justify-content: space-around;
-    color: $profundidad;
+    color:var(--profundidad);
   }
 
   .lista-paises {

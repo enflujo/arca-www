@@ -23,7 +23,7 @@ export default {
 <style lang="scss" scoped>
 .descripcion-datos {
   height: 40px;
-  border-bottom: 1px solid $mediana;
+  border-bottom: 1px solid var(--mediana);
   flex: 0 0 100%;
   text-align: center;
   padding-top: 10px;

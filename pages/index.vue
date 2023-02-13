@@ -57,7 +57,7 @@ watch(data, ({ general }) => {
   margin-top: 10px;
   display: block;
   position: relative;
-  color: $claridad;
+  color: var(--claridad);
 }
 
 .titulo {
@@ -67,7 +67,7 @@ watch(data, ({ general }) => {
 }
 
 .claridad {
-  color: $claridad;
+  color: var(--claridad);
 }
 
 .logo-texto {
@@ -76,34 +76,34 @@ watch(data, ({ general }) => {
 }
 
 .svgClaro {
-  fill: $claridad;
+  fill: var(--claridad);
 }
 
 .subtitulo {
   font-size: 1.4em;
-  color: $claridad;
+  color: var(--claridad);
   font-weight: 400;
   text-transform: uppercase;
   width: 400px;
   text-align: center;
-  font-family: $fuenteMenu;
+  font-family: var(--fuenteMenu);
   letter-spacing: 5px;
   z-index: 10;
 }
 
 // Teléfonos horizontal
-@media (min-width: $minCelular) {
+@media (min-width: var(--minCelular)) {
 }
 
 // Pantallas medianas (Tablets)
-@media (min-width: $minTablet) {
+@media (min-width: var(--minTablet)) {
 }
 
 // Dispositivos grandes y pantallas medianas
-@media (min-width: $minPantalla) {
+@media (min-width: var(--minPantalla)) {
 }
 
 // Pantallas grandes
-@media (min-width: $minPantallaGrande) {
+@media (min-width: var(--minPantallaGrande)) {
 }
 </style>

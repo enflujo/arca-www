@@ -78,8 +78,8 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   buscarColor = escalaColores(
     1,
     maximoObras,
-    obtenerVariablesCSS('--amarilloArena2Var'),
-    obtenerVariablesCSS('--rojoCerezoVar')
+    obtenerVariablesCSS('--amarilloArena2'),
+    obtenerVariablesCSS('--rojoCerezo')
   );
 });
 

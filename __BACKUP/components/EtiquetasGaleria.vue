@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 .categorias-seleccionadas {
   height: 70px;
-  border-bottom: 1px solid $mediana;
+  border-bottom: 1px solid var(--mediana);
   flex: 0 0 100%;
   text-align: center;
   display: flex;
@@ -49,26 +49,26 @@ export default {
   overflow: hidden;
 
   .categoria {
-    background-color: $dolor;
-    color: $mediana;
+    background-color: var(--dolor);
+    color:var(--mediana);
     border-radius: 30px;
     margin-left: 10px;
     padding: 5px 15px 5px 15px;
-    font-family: $fuenteMenu;
+    font-family:var(--fuenteMenu);
     cursor: pointer;
     font-size: 0.8em;
     text-transform: capitalize;
     letter-spacing: 1px;
   }
   .categoria-sinselec {
-    background-color: $mediana;
-    color: $dolor;
+    background-color:var(--mediana);
+    color:var(--dolor);
     border-radius: 30px;
     margin-left: 10px;
     padding: 5px 15px 5px 15px;
-    font-family: $fuenteMenu;
+    font-family:var(--fuenteMenu);
     cursor: pointer;
-    border: 1px solid $dolor;
+    border: 1px solid var(--dolor);
   }
 }
 </style>

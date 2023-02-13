@@ -23,7 +23,7 @@ if (!cerebro.datosCargados) {
 @use 'sass:color';
 
 #contenedor {
-  color: $profundidad;
+  color: var(--profundidad);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,19 +33,19 @@ if (!cerebro.datosCargados) {
 main {
   margin-left: 19vw;
   padding: 2em 5em 2em 3em;
-  background-color: $amarilloPetalo;
+  background-color: var(--amarilloPetalo);
 }
 
 // Teléfonos horizontal
-@media (min-width: $minCelular) {
+@media (min-width: var(--minCelular)) {
 }
 // Pantallas medianas (Tablets)
-// @media (min-width: $minTablet) {
+// @media (min-width: var(--minTablet)) {
 // }
 // Dispositivos grandes y pantallas medianas
-@media (min-width: $minPantalla) {
+@media (min-width: var(--minPantalla)) {
 }
 // Pantallas grandes
-@media (min-width: $minPantallaGrande) {
+@media (min-width: var(--minPantallaGrande)) {
 }
 </style>

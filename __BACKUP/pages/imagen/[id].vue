@@ -461,7 +461,7 @@ main {
 
     .cerrar {
       cursor: pointer;
-      color: $dolor;
+      color:var(--dolor);
     }
   }
   .imagenCerrada {
@@ -483,8 +483,8 @@ main {
   width: 0;
   height: 0;
   border-right: 45px solid transparent;
-  border-top: 45px solid $claridad;
-  border-left: 45px solid $claridad;
+  border-top: 45px solid var(--claridad);
+  border-left: 45px solid var(--claridad);
   border-bottom: 45px solid transparent;
   position: absolute;
   top: 179px;
@@ -506,12 +506,12 @@ main {
     padding-top: 1vh;
     padding-left: 2vw;
     .descripcion-tit {
-      color: $profundidad;
+      color: var(--profundidad);
       padding-bottom: 20px;
     }
     .descripcion-des {
       line-height: 1.6;
-      color: $profundidad;
+      color: var(--profundidad);
     }
   }
 }
@@ -526,24 +526,24 @@ main {
   width: 100%;
   height: 100vh;
   position: absolute;
-  background-color: $mediana;
+  background-color:var(--mediana);
   z-index: -99;
 }
 hr.linea-red {
-  border-top: 2px solid $dolor;
+  border-top: 2px solid var(--dolor);
 }
 h1 {
   font-size: 3vh;
 }
 h5 {
-  font-family: $fuenteMenu;
+  font-family: var(--fuenteMenu);
   font-weight: 300;
   letter-spacing: 4px;
   text-transform: uppercase;
   padding-right: 4em;
 }
 .nombre-autor {
-  font-family: $fuenteMenu;
+  font-family: var(--fuenteMenu);
   font-weight: 400;
   letter-spacing: 3px;
   margin-top: 15px;
@@ -569,8 +569,8 @@ img {
   .botones-imagen {
     letter-spacing: 3px;
     text-transform: uppercase;
-    font-family: $fuentePrincipal;
-    font-weight: $fuentePrincipalPeso;
+    font-family: var(--fuentePrincipal);
+    font-weight: var(--fuentePrincipalPeso);
     font-size: 1.6vh;
     margin-top: 4vh;
     flex-direction: column;
@@ -587,12 +587,12 @@ img {
     transition: 0.7s;
   }
   .botonActivo {
-    color: $dolor;
+    color: var(--dolor);
     font-weight: 600;
     opacity: 1;
     transition: 0.7s;
     #Path_401 {
-      fill: $dolor;
+      fill: var(--dolor);
       opacity: 1;
     }
   }
@@ -610,25 +610,25 @@ button:focus {
     .titulo {
       letter-spacing: 0.25em;
       text-transform: uppercase;
-      font-family: $fuenteMenu;
+      font-family: var(--fuenteMenu);
       font-weight: 400;
       font-size: 2vh;
       margin-top: 2.4vw;
-      color: $profundidad;
+      color: var(--profundidad);
       text-align: start;
       width: 35vw;
     }
     .descripcion {
       position: relative;
       left: 3vw;
-      font-family: $fuentePrincipal;
+      font-family: var(--fuentePrincipal);
       font-size: 2vh;
       width: 90vw;
     }
     .categorias {
       position: relative;
       left: 3vw;
-      font-family: $fuentePrincipal;
+      font-family: var(--fuentePrincipal);
       font-size: 1em;
       text-transform: capitalize;
       width: 90vw;
