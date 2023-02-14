@@ -104,7 +104,7 @@ a:link {
 }
 
 ::selection {
-  background-color: color.scale(#08173E, $lightness: 80%);
+  background-color: color.scale($profundidad, $lightness: 80%);
   color: var(--claridad);
 }
 

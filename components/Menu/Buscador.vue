@@ -152,7 +152,7 @@ a {
     color: var(--mediana);
 
     &:hover {
-      color: darken(#FAF5EC, 10%);
+      color: darken($mediana, 10%);
     }
   }
 }
