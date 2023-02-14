@@ -66,7 +66,7 @@ $menuRayaAncho: 25px;
 $menuRayaAlto: 3px;
 $menuRayaRadio: 4px;
 $menuRayaEspacio: 6px;
-$menuRayaColor: $claridad;
+$menuRayaColor: var(--claridad);
 
 .menuGeneral {
   z-index: 9999;
@@ -83,7 +83,7 @@ $menuRayaColor: $claridad;
 
   &::before {
     content: '';
-    border-top: 80px solid $dolor;
+    border-top: 80px solid var(--dolor);
     border-left: 80px solid transparent;
     display: block;
     position: absolute;
@@ -95,8 +95,8 @@ $menuRayaColor: $claridad;
 }
 
 .botonMenu {
-  width: $tamanoMenu;
-  height: $tamanoMenu;
+  width: var(--tamanoMenu);
+  height: var(--tamanoMenu);
   position: relative;
   display: flex;
   justify-content: center;
@@ -105,7 +105,7 @@ $menuRayaColor: $claridad;
 }
 
 .logo-texto {
-  font-family: $fuentePrincipal;
+  font-family: var(--fuentePrincipal);
   position: absolute;
   top: 25px;
   left: 25px;
@@ -122,28 +122,28 @@ $menuRayaColor: $claridad;
   top: 0;
   text-align: center;
   font-size: 0;
-  color: $profundidad;
+  color: var(--profundidad);
   transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: $dolor;
+  background-color: var(--dolor);
 
   a,
   a:link {
-    color: $claridad;
+    color: var(--claridad);
     opacity: 0.4;
     padding: 0.3em 1em 0.7em 0.3em;
     margin-bottom: 0.5em;
     background-repeat: no-repeat;
 
     &:hover {
-      color: $claridad;
+      color: var(--claridad);
       opacity: 1;
     }
 
     &.nuxt-link-exact-active {
-      color: $claridad;
+      color: var(--claridad);
       opacity: 1;
     }
 
@@ -188,7 +188,7 @@ $menuRayaColor: $claridad;
 .menuRaya {
   width: $menuRayaAncho;
   height: $menuRayaAlto;
-  background-color: $claridad;
+  background-color: var(--claridad);
   border-radius: $menuRayaRadio;
   transition: all 0.2s ease-in-out;
 
@@ -198,7 +198,7 @@ $menuRayaColor: $claridad;
     position: absolute;
     width: $menuRayaAncho;
     height: $menuRayaAlto;
-    background-color: $claridad;
+    background-color: var(--claridad);
     border-radius: $menuRayaRadio;
     transition: all 0.5s ease-in-out;
   }
@@ -218,6 +218,25 @@ $menuRayaColor: $claridad;
 
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
+  .menuBtn {
+    right: 0;
+    top: 0;
+    width: 80px;
+    height: 80px;
+
+    &::before {
+      content: '';
+      border-top: 80px solid var(--dolor);
+      border-left: 80px solid transparent;
+      display: block;
+      position: absolute;
+    }
+
+    .botonMenu {
+      margin: -21px 0 0 14px;
+    }
+  }
+
   .abierto {
     .menuPrincipal {
       .menuBtn {

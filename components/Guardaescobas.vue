@@ -25,8 +25,8 @@ const props = defineProps({
 <style lang="scss">
 @use 'sass:color';
 footer {
-  background-color: $dolor;
-  color: $claridad;
+  background-color: var(--dolor);
+  color: var(--claridad);
   height: 14vh;
   width: 100%;
   display: flex;

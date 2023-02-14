@@ -110,7 +110,7 @@ label {
   text-indent: -9999px;
   width: 50px;
   height: 30px;
-  border: 2px solid $dolor;
+  border: 2px solid var(--dolor);
   background: transparent !important;
   display: block;
   border-radius: 100px;
@@ -125,7 +125,7 @@ label:after {
   left: 5px;
   width: 15px;
   height: 15px;
-  border: 2px solid $dolor;
+  border: 2px solid var(--dolor);
   border-radius: 90px;
   transition: 0.3s;
 }

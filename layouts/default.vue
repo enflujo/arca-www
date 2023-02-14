@@ -29,7 +29,7 @@ main {
 #contenedor {
   display: flex;
   flex-direction: column;
-  color: $profundidad;
+  color: var(--profundidad);
 }
 .contenedor {
   display: flex;

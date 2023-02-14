@@ -148,7 +148,7 @@ export default {
   .circulo {
     width: 80px;
     height: 80px;
-    background-color: $dolor;
+    background-color: var(--dolor);
     border-radius: 200px;
     align-self: center;
     position: relative;
@@ -161,12 +161,12 @@ export default {
     left: 60px;
     position: relative;
     flex-direction: column;
-    font-family: $fuentePrincipal;
+    font-family: var(--fuentePrincipal);
     .resaltar-tamano {
       font-size: 3em;
     }
     .resaltar-color {
-      color: $dolor;
+      color: var(--dolor);
     }
   }
 }
@@ -203,9 +203,9 @@ img {
 //     left: 0;
 //     width: 50vw;
 //     height: 100vh;
-//     background-color: $profundidad;
+//     background-color: var(--profundidad);
 //     .contenedor-mitad {
-//       color: $claridad;
+//       color: var(--claridad);
 //       position: relative;
 //       top: 100px;
 //       display: flex;

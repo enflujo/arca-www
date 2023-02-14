@@ -170,7 +170,7 @@ export default {
   justify-content: center;
   width: 100%;
   .parte {
-    background-color: $dolor;
+    background-color:var(--dolor);
     height: 2px;
     width: 15%;
     margin-left: 40px;
@@ -182,8 +182,8 @@ export default {
   display: flex;
   justify-content: center;
   text-align: center;
-  color: $dolor;
-  // border-bottom: 1px solid $dolor;
+  color:var(--dolor);
+  // border-bottom: 1px solid var(--dolor);
   padding-bottom: 15px;
 }
 .plantilla-texto {
@@ -205,7 +205,7 @@ export default {
   letter-spacing: 4px;
   text-transform: uppercase;
   font-weight: 400;
-  color: $dolor;
+  color:var(--dolor);
   font-size: 20px;
 }
 .descripcion-importante {
@@ -214,7 +214,7 @@ export default {
   line-height: 26px;
 }
 .pequena-galeria {
-  background-color: $dolor;
+  background-color:var(--dolor);
   width: 50%;
   height: 450px;
   border-radius: 10px;
@@ -228,7 +228,7 @@ export default {
   }
 }
 .descripcion {
-  font-family: $fuentePrincipal;
+  font-family: var(--fuentePrincipal);
   text-align: left;
   width: 80%;
   margin-top: 4em;

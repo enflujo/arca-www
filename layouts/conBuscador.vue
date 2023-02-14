@@ -23,7 +23,7 @@ if (!cerebro.datosCargados) {
 @use 'sass:color';
 
 #contenedor {
-  color: $profundidad;
+  color: var(--profundidad);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,7 +33,7 @@ if (!cerebro.datosCargados) {
 main {
   margin-left: 19vw;
   padding: 2em 5em 2em 3em;
-  background-color: $amarilloPetalo;
+  background-color: var(--amarilloPetalo);
 }
 
 // Teléfonos horizontal

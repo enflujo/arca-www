@@ -36,21 +36,21 @@ time {
 }
 
 h1 {
-  font-family: $fuentePrincipal;
+  font-family: var(--fuentePrincipal);
 }
 
 h2 {
-  font-family: $fuenteMenu;
-  color: $profundidad;
+  font-family:var(--fuenteMenu);
+  color:var(--profundidad);
 }
 
 p {
-  font-family: $fuenteParrafos;
+  font-family: var(--fuenteParrafos);
   letter-spacing: 0px;
 }
 
 a {
-  font-family: $fuentePrincipal;
+  font-family: var(--fuentePrincipal);
   font-weight: 400;
   // letter-spacing: 3px;
 }
@@ -90,13 +90,13 @@ video {
 }
 
 body {
-  font-weight: $fuentePrincipalPeso;
+  font-weight: var(--fuentePrincipalPeso);
 }
 
 a,
 a:link {
   text-decoration: none;
-  color: $profundidad;
+  color:var(--profundidad);
 
   &:hover {
     transition: 0.2s ease-out;
@@ -105,11 +105,11 @@ a:link {
 
 ::selection {
   background-color: color.scale($profundidad, $lightness: 80%);
-  color: $claridad;
+  color: var(--claridad);
 }
 
 .texto-claro {
-  color: $claridad;
+  color:var(--claridad);
 }
 
 main {

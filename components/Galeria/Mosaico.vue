@@ -34,7 +34,7 @@ const props = defineProps({
   flex-wrap: wrap;
   justify-content: flex-start;
   padding: 0 2em;
-  background-color: $amarilloPetalo;
+  background-color: var(--amarilloPetalo);
 }
 
 .obra {
@@ -46,7 +46,7 @@ const props = defineProps({
   position: relative;
   border: transparent solid 7px;
   border-style: outset;
-  background-color: $amarilloBase;
+  background-color: var(--amarilloBase);
 
   .registro {
     position: absolute;
@@ -55,7 +55,7 @@ const props = defineProps({
     padding: 0.5em 1em;
     font-size: 0.8em;
     color: black;
-    background-color: $amarilloBase;
+    background-color: var(--amarilloBase);
   }
 
   .infoImagen {
@@ -75,22 +75,22 @@ const props = defineProps({
       font-weight: bold;
 
       &:hover {
-        color: $amarilloBase;
+        color: var(--amarilloBase);
       }
     }
   }
 
   &:hover {
-    background-color: $verdeEsmeralda3;
+    background-color: var(--verdeEsmeralda3);
 
     .registro {
-      background-color: $verdeEsmeralda2;
-      color: $claridad;
+      background-color: var(--verdeEsmeralda2);
+      color: var(--claridad);
     }
 
     .infoImagen {
       a {
-        color: $claridad;
+        color: var(--claridad);
       }
     }
   }

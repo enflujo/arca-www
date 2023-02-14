@@ -425,7 +425,7 @@ definePageMeta({ layout: 'default', keepalive: true });
 .datos {
   display: flex;
   text-align: left;
-  font-family: $fuenteParrafos;
+  font-family: var(--fuenteParrafos);
 }
 .tituloDato {
   font-weight: bold;
