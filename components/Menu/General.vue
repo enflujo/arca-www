@@ -83,7 +83,7 @@ $menuRayaColor: var(--claridad);
 
   &::before {
     content: '';
-    border-top: 80px solid $dolor;
+    border-top: 80px solid var(--dolor);
     border-left: 80px solid transparent;
     display: block;
     position: absolute;
@@ -213,12 +213,30 @@ $menuRayaColor: var(--claridad);
 }
 
 // Teléfonos horizontal
-@media (min-width: var(--minCelular)) {
+@media (min-width: $minCelular) {
 }
 
 // Pantallas medianas (Tablets)
+@media (min-width: $minTablet) {
+  .menuBtn {
+    right: 0;
+    top: 0;
+    width: 80px;
+    height: 80px;
 
-@media (min-width: var(--minTablet)) {
+    &::before {
+      content: '';
+      border-top: 80px solid var(--dolor);
+      border-left: 80px solid transparent;
+      display: block;
+      position: absolute;
+    }
+
+    .botonMenu {
+      margin: -21px 0 0 14px;
+    }
+  }
+
   .abierto {
     .menuPrincipal {
       .menuBtn {
@@ -233,7 +251,7 @@ $menuRayaColor: var(--claridad);
 }
 
 // Dispositivos grandes y pantallas medianas
-@media (min-width: var(--minPantalla)) {
+@media (min-width: $minPantalla) {
   .abierto {
     .menuPrincipal {
       .menuContenido {
@@ -244,7 +262,7 @@ $menuRayaColor: var(--claridad);
 }
 
 // Pantallas grandes
-@media (min-width: var(--minPantallaGrande)) {
+@media (min-width: $minPantallaGrande) {
   .abierto {
     .menuPrincipal {
       .menuContenido {

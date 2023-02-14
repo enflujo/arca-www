@@ -92,18 +92,18 @@ watch(data, ({ general }) => {
 }
 
 // Teléfonos horizontal
-@media (min-width: var(--minCelular)) {
+@media (min-width: $minCelular) {
 }
 
 // Pantallas medianas (Tablets)
-@media (min-width: var(--minTablet)) {
+@media (min-width: $minTablet) {
 }
 
 // Dispositivos grandes y pantallas medianas
-@media (min-width: var(--minPantalla)) {
+@media (min-width: $minPantalla) {
 }
 
 // Pantallas grandes
-@media (min-width: var(--minPantallaGrande)) {
+@media (min-width: $minPantallaGrande) {
 }
 </style>
