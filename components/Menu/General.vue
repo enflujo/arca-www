@@ -76,6 +76,22 @@ $menuRayaColor: var(--claridad);
 .menuBtn {
   position: fixed;
   cursor: pointer;
+  right: 0;
+  top: 0;
+  width: 80px;
+  height: 80px;
+
+  &::before {
+    content: '';
+    border-top: 80px solid $dolor;
+    border-left: 80px solid transparent;
+    display: block;
+    position: absolute;
+  }
+
+  .botonMenu {
+    margin: -21px 0 0 14px;
+  }
 }
 
 .botonMenu {
@@ -201,26 +217,8 @@ $menuRayaColor: var(--claridad);
 }
 
 // Pantallas medianas (Tablets)
+
 @media (min-width: var(--minTablet)) {
-  .menuBtn {
-    right: 0;
-    top: 0;
-    width: 80px;
-    height: 80px;
-
-    &::before {
-      content: '';
-      border-top: 80px solid var(--dolor);
-      border-left: 80px solid transparent;
-      display: block;
-      position: absolute;
-    }
-
-    .botonMenu {
-      margin: -21px 0 0 14px;
-    }
-  }
-
   .abierto {
     .menuPrincipal {
       .menuBtn {
