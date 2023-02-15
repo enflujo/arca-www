@@ -19,14 +19,14 @@
     "server:restart": "pm2 restart ecosystem.config.js"
   },
   "dependencies": {
-    "@enflujo/alquimia": "^1.0.4",
+    "@enflujo/alquimia": "^1.0.5",
     "@pinia/nuxt": "^0.4.6",
-    "mapbox-gl": "^2.12.0",
-    "nuxt": "^3.0.0"
+    "mapbox-gl": "^2.12.1",
+    "nuxt": "^3.2.0"
   },
   "devDependencies": {
-    "prettier": "^2.8.2",
-    "sass": "^1.57.1"
+    "prettier": "^2.8.4",
+    "sass": "^1.58.1"
   },
   "browserslist": {
     "production": [
