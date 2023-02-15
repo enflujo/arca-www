@@ -24,7 +24,13 @@ const props = defineProps({
  */
 const ruta = useRoute();
 const datos = ref(null);
+const numeroPaginaActual = ref(0);
 const respuesta = await obtenerDatos(props.coleccion, nombrePorSlug(props.coleccion, ruta.params.slug));
+const numeroPaginas = computed(() => {
+  if (datos.value && datos.value.obras_func) {
+    return Math.ceil(datos.value.obras_func.count / cerebroArchivo.obrasPorPagina);
+  }
+});
 
 useHead(elementosCabeza(respuesta[props.coleccion][0], ruta.path)); // SEO
 
@@ -36,9 +42,9 @@ datos.value = respuesta[props.coleccion][0];
 const obras = ref([]);
 const cerebroArchivo = usarArchivo();
 
-const { data, pending } = obtenerDatosAsinc(
+const { data, pending, refresh } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
-  obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional)
+  obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional, ruta.query.pagina)
 );
 
 onMounted(() => {
@@ -46,15 +52,22 @@ onMounted(() => {
 });
 
 watch(data, (datosObras) => {
-  // Extraer las obras de colección directamente o de la tabla relacional.
+  // // Extraer las obras de colección directamente o de la tabla relacional.
   obras.value = !props.enTablaRelacional
     ? datosObras[props.coleccion][0].obras
     : datosObras[props.coleccion][0].obras.map((obra) => obra.obras_id);
 });
+
+function actualizarPagina(numeroPagina) {
+  refresh(obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional, numeroPagina));
+}
 </script>
 
 <template>
   <h1>{{ `${singular || props.paginaActual}: ${datos.nombre}` }}</h1>
   <Cargador v-if="pending" />
+
   <GaleriaMosaico :obras="obras" />
+
+  <MenuPaginas :actualizarPagina="actualizarPagina" :numeroPaginas="numeroPaginas" />
 </template>

@@ -1,49 +1,57 @@
-$fuenteTitulo: 'Unbounded', italic;
-$fuenteMenu: 'Nunito', sans-serif;
-$fuenteMenuPeso: 600;
-$fuentePrincipal: 'Lora', serif;
-$fuentePrincipalPeso: 400;
-$fuentePrincipalBold: 700;
-$fuenteParrafos: 'Lora', serif;
+:root {
+//Fuentes
+  --fuenteTitulo: 'Unbounded', italic;
+  --fuenteMenu: 'Nunito', sans-serif;
+  --fuenteMenuPeso: 600;
+  --fuentePrincipal: 'Lora', serif;
+  --fuentePrincipalPeso: 400;
+  --fuentePrincipalBold: 700;
+  --fuenteParrafos: 'Lora', serif;
 
-// Tamaños
-$tamanoMenu: 80px;
-$tamanoDashAl: 30vh;
-$tamanoDashAn: 25vw;
+//Tamaños
+  --tamanoMenu: 80px;
+  --tamanoDashAl:30vh;
+  --tamanoDashAn: 25vw;
 
-//Colores
-$verdeEsmeralda: #0C4D51;
-$verdeEsmeralda2: #0E5E62;
-$verdeEsmeralda3:#2D9B97;
-$verdeMenta:#49C5B6;
-$verdeClaro:#D0F1EC;
-$verdeClaro2:#F2F9F8;
+  //Colores
+  --verdeEsmeralda: #0C4D51;
+  --verdeEsmeralda2: #0E5E62;
+  --verdeEsmeralda3: #2D9B97;
+  --verdeMenta:#49C5B6;
 
-$naranjaTeja: #C05C31;
-$naranjaLadrillo: #DF8C53;
-$naranjaArena: #E6AE61;
-$naranjaPlantaRodadora: #EAB28C;
-$naranjaLino: #F4E9E1;
+  --naranjaPlantaRodadora:#EAB28C;
+  --naranjaLino:#F4E9E1;
 
-$amarilloArena2:#ECD06F;
-$amarilloJengibre:#FFE485;
-$amarilloCrema:#FFF0C2;
-$amarilloPetalo:#FFFBF0;
+// (Comentaario en archivo) -> // width: 81vw;
+  
+  --amarilloArena2:#ECD06F;
+  --amarilloJengibre: #FFE485;
+  --amarilloCrema:#FFF0C2;
+  --amarilloPetalo:#FFFBF0;
 
-$rojoCerezo:#9E171F;
-$rojoRaspon:#D14836;
-$rojoOxido:#D86A45;
+  --rojoCerezo:#9E171F;
+  --rojoRaspon:#D14836;
+  --rojoOxido:#D86A45;
 
 //ColoresLindosJeann
-$claridad: #fffdf8;
-$mediana: #faf5ec;
-$profundidad: #08173e;
-$dolor: #af2828;
-$amarilloBase: #ecd06f;
-$amarilloClaro: #f5ebc6;
+  --claridad:#FFFDF8;
+  --mediana:#FAF5EC;
+  --profundidad:#08173E;
+  --dolor:#AF2828;
+  --amarilloBase:#ECD06F;
+  --amarilloClaro:#F5EBC6;
+  }
 
 // Tamaños Pantallas 🖥️ 📺 📱
-$minCelular: 576px;
-$minTablet: 768px;
-$minPantalla: 992px;
-$minPantallaGrande: 1200px;
+  $minCelular:576px;
+  $minTablet:768px;
+  $minPantalla:992px;
+  $minPantallaGrande:1200px;
+
+  //ColoresLindosJeann
+  $claridad:#FFFDF8;
+  $mediana:#FAF5EC;
+  $profundidad:#08173E;
+  $dolor:#AF2828;
+  $amarilloBase:#ECD06F;
+  $amarilloClaro:#F5EBC6;

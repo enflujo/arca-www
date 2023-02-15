@@ -11,6 +11,7 @@ export default async function (llave: string, query: string) {
   const { data, error } = await useAsyncData(
     llave,
     () => {
+      // console.log('EN SERVIDOR', query)
       return $fetch(`${apiBase}/graphql`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

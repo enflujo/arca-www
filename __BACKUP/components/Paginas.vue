@@ -60,7 +60,7 @@ export default {
 //   .pag-cont {
 //     width: 350px;
 //     display: flex;
-//     border: 2px solid $profundidad;
+//     border: 2px solid var(--profundidad);
 //     border-radius: 200px;
 //     justify-content: center;
 //   }

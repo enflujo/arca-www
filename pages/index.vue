@@ -57,7 +57,7 @@ watch(data, ({ general }) => {
   margin-top: 10px;
   display: block;
   position: relative;
-  color: $claridad;
+  color: var(--claridad);
 }
 
 .titulo {
@@ -67,7 +67,7 @@ watch(data, ({ general }) => {
 }
 
 .claridad {
-  color: $claridad;
+  color: var(--claridad);
 }
 
 .logo-texto {
@@ -76,17 +76,17 @@ watch(data, ({ general }) => {
 }
 
 .svgClaro {
-  fill: $claridad;
+  fill: var(--claridad);
 }
 
 .subtitulo {
   font-size: 1.4em;
-  color: $claridad;
+  color: var(--claridad);
   font-weight: 400;
   text-transform: uppercase;
   width: 400px;
   text-align: center;
-  font-family: $fuenteMenu;
+  font-family: var(--fuenteMenu);
   letter-spacing: 5px;
   z-index: 10;
 }

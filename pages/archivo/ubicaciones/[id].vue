@@ -30,7 +30,7 @@ cerebroArchivo.paginaActual = 'Ubicaciones';
 const ObrasUbicacion = gql`
 query {
   ubicaciones_by_id(id: ${ruta.params.id}) {
-    obras(limit: 20) {
+    obras(limit: ${cerebroArchivo.obrasPorPagina}) {
       id
       registro
       titulo

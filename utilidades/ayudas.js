@@ -1,4 +1,5 @@
 import { apiBase, urlBase, nombre } from '../config/general';
+import { convertirEscala, hexARGB } from '@enflujo/alquimia';
 
 /**
  * Ayuda a construir la URL para pedir un archivo al API de Directus.
@@ -86,4 +87,36 @@ export function ordenarPorNombre(lista) {
 
     return 0;
   });
+}
+
+export function aplanarCategorias(datosCategoria, siguienteCategoria) {
+  const respuesta = {
+    nombre: datosCategoria.nombre,
+    slug: datosCategoria.slug,
+    numObras: datosCategoria.obras_func.count,
+    ancestro: datosCategoria.ancestro ? datosCategoria.ancestro.id : null,
+    id: datosCategoria.id,
+  };
+
+  if (siguienteCategoria <= 6) {
+    const siguienteNivel = `categorias${siguienteCategoria}`;
+
+    if (datosCategoria[siguienteNivel] && datosCategoria[siguienteNivel].length) {
+      const nivel = siguienteCategoria + 1;
+      respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria) => {
+        return aplanarCategorias(categoria, nivel);
+      });
+    }
+  }
+
+  return respuesta;
+}
+
+/**
+ *
+ * @param {string} nombre Nombre de la variable en css, por ejemplo '--verdeEsmeralda'
+ */
+export function obtenerVariablesCSS(nombre) {
+  const ele = window.getComputedStyle(document.body, '');
+  return ele.getPropertyValue(nombre);
 }

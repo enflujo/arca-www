@@ -26,14 +26,14 @@ export default {
 
 <style lang="scss" scoped>
 input {
-  border: 2px solid $dolor;
+  border: 2px solid var(--dolor);
   border-radius: 25px;
   width: 90%;
   display: flex;
   height: 40px;
   justify-content: center;
   background-color: #faf5ec;
-  font-family: $fuentePrincipal;
+  font-family: var(--fuentePrincipal);
   text-align: center;
   text-transform: uppercase;
   margin-left: 5%;

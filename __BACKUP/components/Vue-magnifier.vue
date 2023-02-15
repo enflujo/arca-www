@@ -173,7 +173,7 @@ $sizes: (
     .magnifying-glass {
       position: absolute;
       border-style: solid;
-      border-color: $dolor;
+      border-color:var(--dolor);
       border-radius: 50%;
       cursor: none;
       transform: translate((-1 * math.div($magnifier-width, 2)), (-1 * math.div($magnifier-width, 2)));

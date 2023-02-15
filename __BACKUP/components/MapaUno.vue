@@ -76,9 +76,9 @@ export default {
     left: 0;
     width: 50vw;
     height: 100vh;
-    background-color: $profundidad;
+    background-color:var(--profundidad);
     .contenedor-mitad {
-      color: $claridad;
+      color:var(--claridad);
       position: relative;
       top: 100px;
       display: flex;
@@ -90,7 +90,7 @@ export default {
 }
 
 .azul {
-  color: $profundidad !important;
+  color:var(--profundidad) !important;
 }
 
 .transparencia {
