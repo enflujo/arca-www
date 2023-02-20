@@ -68,6 +68,5 @@ function actualizarPagina(numeroPagina) {
   <Cargador v-if="pending" />
   <GraficaContador :numeroObras="datos.obras_func.count" />
   <GaleriaMosaico :obras="obras" />
-
   <MenuPaginas :actualizarPagina="actualizarPagina" :numeroPaginas="numeroPaginas" />
 </template>
