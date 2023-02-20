@@ -197,6 +197,8 @@ ul {
   .nombre {
     text-align: right;
     padding-right: 0.5em;
+    font-family: var(--fuenteMenu);
+    font-weight: var(--fuenteMenuPeso);
   }
 }
 
