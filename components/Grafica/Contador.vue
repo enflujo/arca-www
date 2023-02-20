@@ -5,7 +5,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <p>Numero de obras: {{ props.numeroObras }}</p>
+  <p class="nombre">Numero de obras: {{ props.numeroObras }}</p>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.contenedor {
+}
+
+.nombre {
+}
+</style>
