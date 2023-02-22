@@ -31,11 +31,13 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 <template>
   <h1>Descriptores</h1>
   <Cargador v-if="pending" />
-  <ul v-else>
+  <!--<ul v-else>
     <li v-for="descriptor in descriptores" :key="descriptor.slug">
       <NuxtLink :to="`/archivo/descriptores/${descriptor.slug}`"
         >{{ descriptor.nombre }} ({{ descriptor.obras_func.count }})</NuxtLink
       >
     </li>
   </ul>
+  -->
+  <GraficaColombinas v-else :datos="descriptores" coleccion="descriptores" />
 </template>

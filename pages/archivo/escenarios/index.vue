@@ -31,11 +31,13 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 <template>
   <h1>Escenarios</h1>
   <Cargador v-if="pending" />
-  <ul v-else>
+  <!--  <ul v-else>
     <li v-for="escenario in escenarios" :key="escenario.slug">
       <NuxtLink :to="`/archivo/escenarios/${escenario.slug}`"
         >{{ escenario.nombre }} ({{ escenario.obras_func.count }})</NuxtLink
       >
     </li>
   </ul>
+S-->
+  <GraficaColombinas v-else :datos="escenarios" coleccion="escenarios" />
 </template>

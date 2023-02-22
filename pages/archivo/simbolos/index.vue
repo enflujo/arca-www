@@ -31,11 +31,13 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 <template>
   <h1>Simbolos</h1>
   <Cargador v-if="pending" />
-  <ul v-else>
+  <!--<ul v-else>
     <li v-for="simbolo in simbolos" :key="simbolo.slug">
       <NuxtLink :to="`/archivo/simbolos/${simbolo.slug}`"
         >{{ simbolo.nombre }} ({{ simbolo.obras_func.count }})</NuxtLink
       >
     </li>
   </ul>
+-->
+  <GraficaColombinas v-else :datos="simbolos" coleccion="simbolos" />
 </template>

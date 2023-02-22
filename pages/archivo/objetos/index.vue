@@ -26,9 +26,11 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 <template>
   <h1>Objetos</h1>
-  <ul class="opciones">
+  <!--<ul class="opciones">
     <li v-for="objeto in objetos" :key="objeto.slug">
       <NuxtLink :to="`/archivo/objetos/${objeto.slug}`">{{ objeto.nombre }} ({{ objeto.obras_func.count }})</NuxtLink>
     </li>
   </ul>
+-->
+  <GraficaColombinas :datos="objetos" coleccion="objetos" />
 </template>
