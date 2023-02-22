@@ -1,7 +1,7 @@
 <script setup>
 import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerVariablesCSS } from '~~/utilidades/ayudas';
-import { convertirEscala, escalaColores } from '@enflujo/alquimia';
+import { escalaColores } from '@enflujo/alquimia';
 
 const posiblesVistas = ['mapa', 'lista', 'colombinas'];
 let buscarColor;
@@ -11,8 +11,7 @@ const cerebroArchivo = usarArchivo();
 const datos = ref(null);
 const paises = ref(null);
 const ubicaciones = ref(null);
-const vista = ref(ruta.query.vista && posiblesVistas.includes(ruta.query.vista) ? ruta.query.vista : 'mapa');
-const anchoPantalla = ref(0);
+const vista = ref('mapa');
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
 
@@ -78,7 +77,7 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   /**
    * Ordenar por cantidad de obras en el país.
    */
-  datos.value = datosPaises.sort((a, b) => b.obras_func.count - a.obras_func.count);
+  datos.value = datosPaises;
 
   const maximoObras = datos.value[0].obras_func.count;
   paises.value = paisesGeojson;
@@ -91,11 +90,6 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
     obtenerVariablesCSS('--amarilloArena2'),
     obtenerVariablesCSS('--rojoCerezo')
   );
-});
-
-onUpdated(() => {
-  if (vista.value !== 'colombinas') return;
-  anchoPantalla.value = contenedorUbicaciones.value.clientWidth;
 });
 
 function cambiarVista(llave) {
@@ -151,53 +145,13 @@ function cambiarVista(llave) {
       </li>
     </ul>
 
-    <ul v-if="vista === 'colombinas'">
-      <li v-for="pais in datos" :key="pais.slug">
-        <NuxtLink class="nombre fila" :to="`/archivo/paises/${pais.slug}`">{{ pais.nombre }}</NuxtLink>
-
-        <NuxtLink class="elementoColombina fila" :to="`/archivo/paises/${pais.slug}`">
-          <div class="colombina">
-            <span
-              class="lineaColombina"
-              :style="`width:${convertirEscala(
-                pais.obras_func.count,
-                1,
-                valorMaximoObras,
-                0,
-                anchoPantalla / 1.5
-              )}px; background-color:${buscarColor(pais.obras_func.count)}`"
-            ></span>
-            <span class="circuloColombina" :style="`background-color:${buscarColor(pais.obras_func.count)}`"></span>
-            <span class="conteoObras">{{ pais.obras_func.count }}</span>
-          </div>
-        </NuxtLink>
-      </li>
-    </ul>
+    <GraficaColombinas v-if="vista === 'colombinas'" :datos="datos" coleccion="paises" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 #contenedorUbicaciones {
   overflow-x: hidden;
-}
-
-ul {
-  display: table;
-  width: 100%;
-
-  li {
-    display: table-row;
-  }
-
-  .fila {
-    display: table-cell;
-    vertical-align: middle;
-  }
-
-  .nombre {
-    text-align: right;
-    padding-right: 0.5em;
-  }
 }
 
 #filtros {
@@ -218,42 +172,6 @@ ul {
 
   &:hover {
     opacity: 0.8;
-  }
-}
-
-.nombre {
-  text-transform: uppercase;
-  font-size: 0.8em;
-
-  &:hover {
-    font-weight: bold;
-  }
-
-  &:hover::before {
-    content: '+ ';
-  }
-}
-
-// Colombinas
-.colombina {
-  display: flex;
-  align-items: center;
-
-  .lineaColombina {
-    display: block;
-    height: 3px;
-  }
-  .circuloColombina {
-    display: block;
-    height: 7px;
-    width: 7px;
-    border-radius: 50%;
-  }
-
-  .conteoObras {
-    color: #788989;
-    font-size: 0.75em;
-    padding-left: 0.4em;
   }
 }
 </style>

@@ -28,11 +28,13 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 <template>
   <h1>Relatos Visuales</h1>
 
-  <ul class="opciones">
+  <!--<ul class="opciones">
     <li v-for="relato in relatos" :key="relato.slug">
       <NuxtLink :to="`/archivo/relatos-visuales/${relato.slug}`"
         >{{ relato.nombre }} ({{ relato.obras_func.count }})</NuxtLink
       >
     </li>
   </ul>
+  -->
+  <GraficaColombinas :datos="relatos" coleccion="relatos-visuales" />
 </template>
