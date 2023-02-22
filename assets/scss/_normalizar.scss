@@ -40,8 +40,8 @@ h1 {
 }
 
 h2 {
-  font-family:var(--fuenteMenu);
-  color:var(--profundidad);
+  font-family: var(--fuenteMenu);
+  color: var(--profundidad);
 }
 
 p {
@@ -96,7 +96,7 @@ body {
 a,
 a:link {
   text-decoration: none;
-  color:var(--profundidad);
+  color: var(--profundidad);
 
   &:hover {
     transition: 0.2s ease-out;
@@ -109,7 +109,7 @@ a:link {
 }
 
 .texto-claro {
-  color:var(--claridad);
+  color: var(--claridad);
 }
 
 main {

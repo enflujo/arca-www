@@ -1,6 +1,6 @@
 # Sitio principal de ARCA
 
-![Estilos Código](https://github.com/enflujo/arca-www/actions/workflows/codigo.yml/badge.svg)
+![Estilos Código](https://github.com/enflujo/arca-www/actions/workflows/estilo-codigo.yml/badge.svg)
 ![Despliegue](https://github.com/enflujo/arca-www/actions/workflows/despliegue.yml/badge.svg)
 
 Creado con [Nuxt.js](https://nuxtjs.org) (Vue con _Server-Side-Rendering_)

@@ -153,8 +153,7 @@ function cambiarVista(llave) {
                 anchoPantalla / 1.5
               )}px; background-color:${buscarColor(pais.obras_func.count)}`"
             ></span>
-            <span class="circuloColombina"
-            :style="`background-color:${buscarColor(pais.obras_func.count)}`"></span>
+            <span class="circuloColombina" :style="`background-color:${buscarColor(pais.obras_func.count)}`"></span>
             <span class="conteoObras">{{ pais.obras_func.count }}</span>
           </div>
         </NuxtLink>

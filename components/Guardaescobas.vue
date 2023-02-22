@@ -16,9 +16,6 @@ const props = defineProps({
     <div class="texto-f-uno">
       <span class="copy" v-html="general.guardaescobas"></span>
     </div>
-    <!-- <div class="texto-f-dos">
-      <p>Bibliografía general <br />Recursos derivados <br />Contacto</p>
-    </div> -->
   </footer>
 </template>
 
@@ -33,7 +30,7 @@ footer {
   align-items: center;
   justify-content: space-evenly;
   position: relative;
-  
+
   .texto-f-uno {
     display: flex;
     width: 350px;

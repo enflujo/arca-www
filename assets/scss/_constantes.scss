@@ -1,5 +1,5 @@
 :root {
-//Fuentes
+  //Fuentes
   --fuenteTitulo: 'Unbounded', italic;
   --fuenteMenu: 'Nunito', sans-serif;
   --fuenteMenuPeso: 600;
@@ -8,50 +8,50 @@
   --fuentePrincipalBold: 700;
   --fuenteParrafos: 'Lora', serif;
 
-//Tamaños
+  //Tamaños
   --tamanoMenu: 80px;
-  --tamanoDashAl:30vh;
+  --tamanoDashAl: 30vh;
   --tamanoDashAn: 25vw;
 
   //Colores
-  --verdeEsmeralda: #0C4D51;
-  --verdeEsmeralda2: #0E5E62;
-  --verdeEsmeralda3: #2D9B97;
-  --verdeMenta:#49C5B6;
+  --verdeEsmeralda: #0c4d51;
+  --verdeEsmeralda2: #0e5e62;
+  --verdeEsmeralda3: #2d9b97;
+  --verdeMenta: #49c5b6;
 
-  --naranjaPlantaRodadora:#EAB28C;
-  --naranjaLino:#F4E9E1;
+  --naranjaPlantaRodadora: #eab28c;
+  --naranjaLino: #f4e9e1;
 
-// (Comentaario en archivo) -> // width: 81vw;
-  
-  --amarilloArena2:#ECD06F;
-  --amarilloJengibre: #FFE485;
-  --amarilloCrema:#FFF0C2;
-  --amarilloPetalo:#FFFBF0;
+  // (Comentaario en archivo) -> // width: 81vw;
 
-  --rojoCerezo:#9E171F;
-  --rojoRaspon:#D14836;
-  --rojoOxido:#D86A45;
+  --amarilloArena2: #ecd06f;
+  --amarilloJengibre: #ffe485;
+  --amarilloCrema: #fff0c2;
+  --amarilloPetalo: #fffbf0;
 
-//ColoresLindosJeann
-  --claridad:#FFFDF8;
-  --mediana:#FAF5EC;
-  --profundidad:#08173E;
-  --dolor:#AF2828;
-  --amarilloBase:#ECD06F;
-  --amarilloClaro:#F5EBC6;
-  }
-
-// Tamaños Pantallas 🖥️ 📺 📱
-  $minCelular:576px;
-  $minTablet:768px;
-  $minPantalla:992px;
-  $minPantallaGrande:1200px;
+  --rojoCerezo: #9e171f;
+  --rojoRaspon: #d14836;
+  --rojoOxido: #d86a45;
 
   //ColoresLindosJeann
-  $claridad:#FFFDF8;
-  $mediana:#FAF5EC;
-  $profundidad:#08173E;
-  $dolor:#AF2828;
-  $amarilloBase:#ECD06F;
-  $amarilloClaro:#F5EBC6;
+  --claridad: #fffdf8;
+  --mediana: #faf5ec;
+  --profundidad: #08173e;
+  --dolor: #af2828;
+  --amarilloBase: #ecd06f;
+  --amarilloClaro: #f5ebc6;
+}
+
+// Tamaños Pantallas 🖥️ 📺 📱
+$minCelular: 576px;
+$minTablet: 768px;
+$minPantalla: 992px;
+$minPantallaGrande: 1200px;
+
+//ColoresLindosJeann
+$claridad: #fffdf8;
+$mediana: #faf5ec;
+$profundidad: #08173e;
+$dolor: #af2828;
+$amarilloBase: #ecd06f;
+$amarilloClaro: #f5ebc6;

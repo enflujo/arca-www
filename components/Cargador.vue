@@ -29,7 +29,7 @@ export default {
 }
 
 .logo {
-  fill:var(--dolor);
+  fill: var(--dolor);
 }
 
 .texto-cargador {
@@ -38,7 +38,7 @@ export default {
   .letra-cargador {
     display: inline-block;
     margin: 0 5px;
-    color:var(--dolor);
+    color: var(--dolor);
     font-size: 32px;
     font-family: var(--fuentePrincipal);
     @for $i from 0 through 6 {

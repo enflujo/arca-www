@@ -103,7 +103,7 @@ a {
   margin-top: 3vw;
   color: var(--mediana);
   letter-spacing: 0.15em;
-  font-size: 2.0em;
+  font-size: 2em;
   overflow: hidden;
 }
 
@@ -115,7 +115,7 @@ a {
 
 .listaMenu {
   margin-left: 2.5em;
-//  letter-spacing: -.01rem;
+  //  letter-spacing: -.01rem;
   position: relative;
 }
 
@@ -148,7 +148,6 @@ a {
 
   a,
   a:link {
-
     color: var(--mediana);
 
     &:hover {
