@@ -275,4 +275,19 @@ $menuRayaColor: var(--claridad);
     }
   }
 }
+
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
+  .abierto {
+    .menuPrincipal {
+      .menuContenido {
+        max-width: 384px;
+        font-size: 1.1em;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+      }
+    }
+  }
+}
 </style>
