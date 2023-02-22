@@ -39,5 +39,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
     </li>
   </ul>
 -->
-  <GraficaColombinas v-else :datos="cartelaFilacteria" coleccion="cartelaFilacteria" />
+  <GraficaColombinas v-else :datos="cartelaFilacteria" coleccion="cartela-filacteria" />
 </template>

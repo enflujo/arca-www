@@ -39,5 +39,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
     </li>
   </ul>
 -->
-  <GraficaColombinas v-else :datos="caracteristicas" coleccion="caracteristicas" />
+  <GraficaColombinas v-else :datos="caracteristicas" coleccion="caracteristicas-particulares" />
 </template>

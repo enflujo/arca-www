@@ -36,5 +36,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
     </li>
   </ul>
   -->
-  <GraficaColombinas :datos="relatos" coleccion="relatos" />
+  <GraficaColombinas :datos="relatos" coleccion="relatos-visuales" />
 </template>
