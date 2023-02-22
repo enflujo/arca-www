@@ -3,17 +3,18 @@ import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerVariablesCSS } from '~~/utilidades/ayudas';
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 
+const posiblesVistas = ['mapa', 'lista', 'colombinas'];
+let buscarColor;
+const ruta = useRoute();
+const enrutador = useRouter();
 const cerebroArchivo = usarArchivo();
 const datos = ref(null);
 const paises = ref(null);
 const ubicaciones = ref(null);
-const vista = ref('mapa');
+const vista = ref(ruta.query.vista && posiblesVistas.includes(ruta.query.vista) ? ruta.query.vista : 'mapa');
 const anchoPantalla = ref(0);
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
-const colorGraficaMin = ref('');
-const colorGraficaMax = ref('');
-let buscarColor;
 
 cerebroArchivo.paginaActual = 'Ubicaciones';
 
@@ -46,6 +47,15 @@ const ObrasPorPaises = gql`
 `;
 
 const { data, pending } = obtenerDatosAsinc('obrasPorPais', ObrasPorPaises);
+
+watch(
+  () => ruta.query,
+  () => {
+    if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
+      vista.value = ruta.query.vista;
+    }
+  }
+);
 
 watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   /**
@@ -91,6 +101,10 @@ onUpdated(() => {
 function cambiarVista(llave) {
   if (llave !== vista.value) {
     vista.value = llave;
+    enrutador.push({
+      path: ruta.path,
+      query: { vista: llave },
+    });
   }
 }
 </script>
@@ -131,9 +145,9 @@ function cambiarVista(llave) {
 
     <ul v-if="vista === 'lista'">
       <li v-for="pais in datos" :key="pais.slug">
-        <NuxtLink class="nombre" :to="`/archivo/paises/${pais.slug}`"
-          >{{ pais.nombre }} ({{ pais.obras_func.count }})</NuxtLink
-        >
+        <NuxtLink class="nombre" :to="`/archivo/paises/${pais.slug}`">
+          {{ pais.nombre }} ({{ pais.obras_func.count }})
+        </NuxtLink>
       </li>
     </ul>
 
@@ -153,8 +167,7 @@ function cambiarVista(llave) {
                 anchoPantalla / 1.5
               )}px; background-color:${buscarColor(pais.obras_func.count)}`"
             ></span>
-            <span class="circuloColombina"
-            :style="`background-color:${buscarColor(pais.obras_func.count)}`"></span>
+            <span class="circuloColombina" :style="`background-color:${buscarColor(pais.obras_func.count)}`"></span>
             <span class="conteoObras">{{ pais.obras_func.count }}</span>
           </div>
         </NuxtLink>
