@@ -1,7 +1,5 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
-
-const cerebroArchivo = usarArchivo();
+const ruta = useRoute();
 
 const opciones = [
   { nombre: 'Autores', slug: 'autores' },
@@ -23,7 +21,16 @@ const opciones = [
   { nombre: 'Rostros', slug: 'rostros' },
 ];
 
-const paginaActual = computed(() => cerebroArchivo.paginaActual);
+const esRutaActual = (slug) => {
+  const partes = ruta.path.split('/');
+
+  if (partes[2].includes('categorias')) {
+    return slug === 'categorias';
+  } else if (partes[2] === 'paises') {
+    return slug === 'ubicaciones';
+  }
+  return partes.includes(slug);
+};
 </script>
 
 <template>
@@ -36,7 +43,7 @@ const paginaActual = computed(() => cerebroArchivo.paginaActual);
           v-for="opcion in opciones"
           :key="opcion.slug"
           class="opcion"
-          :class="paginaActual === opcion.nombre ? 'activo' : ''"
+          :class="esRutaActual(opcion.slug) ? 'activo' : ''"
         >
           <NuxtLink class="coleccion" :to="`/archivo/${opcion.slug}`">{{ opcion.nombre }}</NuxtLink>
         </li>
