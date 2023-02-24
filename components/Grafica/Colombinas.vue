@@ -7,7 +7,6 @@ const anchoPantalla = ref(0);
 const datos = ref([]);
 const maximoObras = ref(0);
 const divisionesGrilla = [...Array(10).keys()];
-//const longitudGrilla = ref(0);
 
 const props = defineProps({
   datos: Array,
@@ -31,28 +30,37 @@ onMounted(() => {
   maximoObras.value = datosOrdenados[0].obras_func.count;
   datos.value = datosOrdenados;
   anchoPantalla.value = contenedor.value.clientWidth;
-
-  // let calcularGrilla = function () {
-  //   let l = maximoObras.value < 10000 ? 100 : 200;
-  //   console.log(maximoObras.value);
-  //   return l;
-  // };
-
-  // longitudGrilla.value = calcularGrilla();
 });
 </script>
 
 <template>
   <div id="contenedorGrafica">
-    <div id="grilla" :style="`width:${convertirEscala(maximoObras, 1, maximoObras, 0, anchoPantalla / 1.5)}px`">
+    <div
+      id="grilla"
+      :style="`width:${convertirEscala(
+        Math.ceil(maximoObras / 1000) * 1000,
+        1,
+        Math.ceil(maximoObras / 1000) * 1000,
+        0,
+        anchoPantalla / 1.5
+      )}px`"
+    >
       <span
         class="divisionGrilla"
         v-for="i in divisionesGrilla"
         :key="`división ${i}`"
-        :style="`width:${convertirEscala(maximoObras, 1, maximoObras, 0, anchoPantalla / 1.5) / 10}px`"
+        :style="`width:${
+          convertirEscala(
+            Math.ceil(maximoObras / 1000) * 1000,
+            1,
+            Math.ceil(maximoObras / 1000) * 1000,
+            0,
+            anchoPantalla / 1.5
+          ) / 10
+        }px`"
       >
         <p class="valorGrilla">
-          {{ Math.ceil((maximoObras / 10) * i) }}
+          {{ ((Math.ceil(maximoObras / 1000) * 1000) / 10) * i }}
         </p>
       </span>
     </div>
@@ -69,7 +77,7 @@ onMounted(() => {
               :style="`width:${convertirEscala(
                 elemento.obras_func.count,
                 1,
-                maximoObras,
+                Math.ceil(maximoObras / 1000) * 1000,
                 0,
                 anchoPantalla / 1.5
               )}px; background-color:${buscarColor(elemento.obras_func.count)}`"
