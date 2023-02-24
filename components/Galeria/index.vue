@@ -24,7 +24,6 @@ const props = defineProps({
  */
 const ruta = useRoute();
 const datos = ref(null);
-const numeroPaginaActual = ref(0);
 const respuesta = await obtenerDatos(props.coleccion, nombrePorSlug(props.coleccion, ruta.params.slug));
 const numeroPaginas = computed(() => {
   if (datos.value && datos.value.obras_func) {
@@ -47,10 +46,6 @@ const { data, pending, refresh } = obtenerDatosAsinc(
   obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional, ruta.query.pagina)
 );
 
-onMounted(() => {
-  cerebroArchivo.paginaActual = props.paginaActual;
-});
-
 watch(data, (datosObras) => {
   // // Extraer las obras de colección directamente o de la tabla relacional.
   obras.value = !props.enTablaRelacional
@@ -64,7 +59,7 @@ function actualizarPagina(numeroPagina) {
 </script>
 
 <template>
-  <h1>{{ `${singular || props.paginaActual} - ${datos.nombre}` }}</h1>
+  <h1>{{ `${singular} - ${datos.nombre}` }}</h1>
   <Cargador v-if="pending" />
   <GraficaContador :numeroObras="datos.obras_func.count" />
   <GaleriaMosaico :obras="obras" />

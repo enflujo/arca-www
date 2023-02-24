@@ -1,12 +1,7 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
 const fisiognomicaImagen = ref([]);
-const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Fisiognómica Imagen';
-
 const ObrasPorFisiognomicaImagen = gql`
   query {
     fisiognomicas_imagen(sort: ["nombre"], limit: -1) {

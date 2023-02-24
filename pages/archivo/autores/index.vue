@@ -1,11 +1,7 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
 const autores = ref([]);
-const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Autores';
 
 const Autores = gql`
   query {

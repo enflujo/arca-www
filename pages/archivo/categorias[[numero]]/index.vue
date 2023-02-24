@@ -1,9 +1,7 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { aplanarCategorias, gql } from '~~/utilidades/ayudas';
 
 const categorias = ref([]);
-const cerebroArchivo = usarArchivo();
 
 const camposCategoria = (nivel, respuesta) => {
   if (nivel === 1) {
@@ -44,7 +42,6 @@ watch(data, ({ categorias1 }) => {
   });
 });
 
-cerebroArchivo.paginaActual = 'Categorías';
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 

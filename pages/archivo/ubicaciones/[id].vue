@@ -25,8 +25,6 @@ useHead(elementosCabeza(datosUbicacion, ruta.path)); // SEO
 const obras = ref([]);
 const cerebroArchivo = usarArchivo();
 
-cerebroArchivo.paginaActual = 'Ubicaciones';
-
 const ObrasUbicacion = gql`
 query {
   ubicaciones_by_id(id: ${ruta.params.id}) {

@@ -1,13 +1,8 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const total = ref(0);
-const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Obras';
-
 const Obras = gql`
   query {
     obras_aggregated {

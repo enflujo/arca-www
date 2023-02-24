@@ -1,14 +1,8 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
-import { extraerPrimeraLetra, gql } from '~~/utilidades/ayudas';
-
-const cerebroArchivo = usarArchivo();
-const inicialSeleccionada = ref('');
-const autores = ref(null);
-const inicialesAutores = new Set();
+const ruta = useRoute();
 
 const opciones = [
-  { nombre: 'Autores', slug: 'autores', iniciales: inicialesAutores },
+  { nombre: 'Autores', slug: 'autores' },
   { nombre: 'Categorías', slug: 'categorias' },
   { nombre: 'Escenarios', slug: 'escenarios' },
   { nombre: 'Técnicas', slug: 'tecnicas' },
@@ -27,65 +21,39 @@ const opciones = [
   { nombre: 'Rostros', slug: 'rostros' },
 ];
 
-const paginaActual = computed(() => cerebroArchivo.paginaActual);
+const esRutaActual = (slug) => {
+  const partes = ruta.path.split('/');
 
-const ArchivoMenuBuscador = gql`
-  query {
-    autores(limit: -1, sort: ["apellido"]) {
-      apellido
-    }
+  if (partes[2].includes('categorias')) {
+    return slug === 'categorias';
+  } else if (partes[2] === 'paises') {
+    return slug === 'ubicaciones';
   }
-`;
-const { autores: datosAutores } = await obtenerDatos('archivoMenuBuscador', ArchivoMenuBuscador);
-
-datosAutores.forEach((autor) => {
-  const inicial = extraerPrimeraLetra(autor.apellido).toUpperCase();
-  inicialesAutores.add(inicial);
-});
-
-autores.value = Array.from(inicialesAutores).sort();
+  return partes.includes(slug);
+};
 </script>
 
 <template>
-  <div id="contenedorBuscador">
-    <NuxtLink :to="'/'">
-      <h2 class="logo-texto">ARCA</h2>
-    </NuxtLink>
+  <aside id="contenedorBuscador">
+    <h2 class="nombreProyecto"><NuxtLink :to="'/'">ARCA</NuxtLink></h2>
 
-    <Buscador />
-
-    <nav class="opcionesBuscador">
+    <nav id="opciones">
       <ul class="listaMenu">
         <li
           v-for="opcion in opciones"
           :key="opcion.slug"
           class="opcion"
-          :class="paginaActual === opcion.nombre ? 'activo' : ''"
+          :class="esRutaActual(opcion.slug) ? 'activo' : ''"
         >
           <NuxtLink class="coleccion" :to="`/archivo/${opcion.slug}`">{{ opcion.nombre }}</NuxtLink>
-
-          <ul v-if="opcion.iniciales" class="iniciales">
-            <li
-              v-for="(inicial, i) in opcion.iniciales"
-              :key="`inicial${i}`"
-              :class="`inicial ${inicialSeleccionada === inicial ? 'activo' : ''}`"
-              @click="elegirInicial(inicial)"
-            >
-              {{ inicial }}
-            </li>
-          </ul>
         </li>
       </ul>
     </nav>
-  </div>
+  </aside>
 </template>
 
 <style lang="scss" scoped>
 @use 'sass:color';
-
-a {
-  font-family: var(--fuenteMenu);
-}
 
 #contenedorBuscador {
   background-color: var(--verdeEsmeralda);
@@ -96,31 +64,32 @@ a {
   height: 100vh;
 }
 
-.logo-texto {
-  font-family: var(--fuentePrincipal);
-  margin: 2.5vw;
-  margin-bottom: 2vw;
-  margin-top: 3vw;
-  color: var(--mediana);
-  letter-spacing: 0.15em;
-  font-size: 2em;
-  overflow: hidden;
+.nombreProyecto {
+  padding: 1.3em 0 1em 0;
+
+  a {
+    font-family: var(--fuentePrincipal);
+    font-weight: bold;
+    margin-left: 1.3em;
+    color: var(--mediana);
+    letter-spacing: 0.15em;
+    font-size: 1.35em;
+    overflow: hidden;
+  }
 }
 
-.opcionesBuscador {
+#opciones {
   text-transform: uppercase;
-  margin-top: 2em;
+  margin: 0 0 3em 2.5em;
   padding: 0;
-}
-
-.listaMenu {
-  margin-left: 2.5em;
-  //  letter-spacing: -.01rem;
   position: relative;
+
+  li {
+    padding: 0;
+  }
 }
 
 .opcion {
-  // height: 1em;
   font-size: 0.9em;
   margin-top: 0.9em;
   overflow: hidden;
@@ -131,53 +100,21 @@ a {
     .iniciales {
       height: auto;
     }
-  }
 
-  // &::before {
-  //   content: '';
-  //   width: 3px;
-  //   height: 3px;
-  //   border-radius: 50%;
-  //   display: block;
-  //   background-color: var(--dolor);
-  //   position: absolute;
-  //   left: 0.3em;
-  //   top: 0.5em;
-  //   z-index: 9;
-  // }
+    a {
+      color: darken($mediana, 20%);
+    }
+  }
 
   a,
   a:link {
     color: var(--mediana);
+    font-family: var(--fuenteMenu);
+    font-weight: bold;
 
     &:hover {
       color: darken($mediana, 10%);
     }
   }
-}
-
-.iniciales {
-  font-size: 1em;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
-  height: 0;
-  transition: all 0.25s ease-out;
-
-  .inicial {
-    cursor: pointer;
-    font-size: 0.8em;
-    margin: 0;
-    padding: 0 0.3em 0 0;
-
-    &.activo {
-      font-weight: bold;
-    }
-  }
-}
-
-.activo .coleccion,
-.router-link-exact-active {
-  font-weight: bold;
 }
 </style>
