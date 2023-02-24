@@ -1,11 +1,7 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
 const personajes = ref([]);
-const cerebroArchivo = usarArchivo();
-cerebroArchivo.paginaActual = 'Personajes';
-
 const ObrasPorPersonajes = gql`
   query {
     personajes(sort: ["nombre"], limit: -1) {
@@ -26,13 +22,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 
 <template>
   <h1>Personajes</h1>
-  <!--<ul class="opciones">
-    <li v-for="personaje in personajes" :key="personaje.slug">
-      <NuxtLink :to="`/archivo/personajes/${personaje.slug}`">
-        {{ personaje.nombre }} ({{ personaje.obras_func.count }})
-      </NuxtLink>
-    </li>
-  </ul>
--->
   <GraficaColombinas :datos="personajes" coleccion="personajes" />
 </template>

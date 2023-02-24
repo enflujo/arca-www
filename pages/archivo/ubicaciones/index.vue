@@ -1,5 +1,4 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, obtenerVariablesCSS } from '~~/utilidades/ayudas';
 import { escalaColores } from '@enflujo/alquimia';
 
@@ -7,15 +6,12 @@ const posiblesVistas = ['mapa', 'lista', 'colombinas'];
 let buscarColor;
 const ruta = useRoute();
 const enrutador = useRouter();
-const cerebroArchivo = usarArchivo();
 const datos = ref(null);
 const paises = ref(null);
 const ubicaciones = ref(null);
 const vista = ref('mapa');
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
-
-cerebroArchivo.paginaActual = 'Ubicaciones';
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
 

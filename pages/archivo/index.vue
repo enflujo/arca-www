@@ -1,8 +1,6 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
-const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 
 const { paginas } = await obtenerDatos(
@@ -27,7 +25,6 @@ useHead(elementosCabeza(paginas[0] ? paginas[0] : {}, ruta.path));
 
 const pagina = ref(null);
 pagina.value = paginas[0];
-cerebroArchivo.paginaActual = '';
 
 // Nuxt normaliza los nombres de "layouts" a kebab-case.
 definePageMeta({ layout: 'con-buscador', keepalive: true });
