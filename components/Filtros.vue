@@ -4,17 +4,23 @@ import { usarArchivo } from '~~/cerebros/archivo';
 const ruta = useRoute();
 const enrutador = useRouter();
 const props = defineProps({
-  primera: { type: String, default: '' },
+  vistaInicial: { type: String, default: '' },
   vistas: { type: Array, default: () => [] },
 });
 const cerebroArchivo = usarArchivo();
 const posiblesVistas = ['mapa', 'abc', 'colombinas'];
+const listaImgs = import.meta.glob('~~/assets/imgs/botones/*.svg', { eager: true });
+const imagenDinamica = (vista) => {
+  const img = listaImgs[`/assets/imgs/botones/boton_${vista}.svg`];
+  if (!img) return null;
+  return img.default;
+};
 
 onMounted(() => {
   if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
     cerebroArchivo.vistaActual = ruta.query.vista;
   } else {
-    cerebroArchivo.vistaActual = props.primera;
+    cerebroArchivo.vistaActual = props.vistaInicial;
   }
 });
 
@@ -45,7 +51,7 @@ function cambiarVista(llave) {
       :key="vista"
       class="filtro"
       :class="cerebroArchivo.vistaActual === vista ? 'activo' : ''"
-      :src="`~~/assets/imgs/boton_${vista}.svg`"
+      :src="imagenDinamica(vista)"
       @click="cambiarVista(vista)"
     />
   </div>
