@@ -1,26 +1,11 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
-
-const rostros = ref([]);
-const ObrasPorRostros = gql`
-  query {
-    rostros(sort: ["nombre"], limit: -1) {
-      nombre
-      slug
-      obras_func {
-        count
-      }
-    }
-  }
-`;
-
-const { rostros: datosRostros } = await obtenerDatos('obrasPorRostros', ObrasPorRostros);
-rostros.value = datosRostros;
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
+const ruta = useRoute();
+const titulo = 'Rostros';
+useHead(elementosCabeza({ titulo }, ruta.path));
 </script>
 
 <template>
-  <h1>Rostros</h1>
-  <GraficaColombinas :datos="rostros" coleccion="rostros" />
+  <h1>{{ titulo }}</h1>
+  <VistasGenerales coleccion="rostros" />
 </template>

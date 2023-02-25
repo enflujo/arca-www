@@ -1,26 +1,11 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
-
-const relatos = ref([]);
-const ObrasPorRelatos = gql`
-  query {
-    relatos_visuales(sort: ["nombre"], limit: -1) {
-      nombre
-      slug
-      obras_func {
-        count
-      }
-    }
-  }
-`;
-
-const { relatos_visuales: datosRelatos } = await obtenerDatos('obrasPorRelatos', ObrasPorRelatos);
-relatos.value = datosRelatos;
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
+const ruta = useRoute();
+const titulo = 'Relatos Visuales';
+useHead(elementosCabeza({ titulo }, ruta.path));
 </script>
 
 <template>
-  <h1>Relatos Visuales</h1>
-  <GraficaColombinas :datos="relatos" coleccion="relatos-visuales" />
+  <h1>{{ titulo }}</h1>
+  <VistasGenerales coleccion="relatos_visuales" ruta="relatos-visuales" />
 </template>

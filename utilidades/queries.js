@@ -58,3 +58,17 @@ export const obrasPorSlug = (coleccion, slug, m2m = false, pagina = 1) => {
   }
   `;
 };
+
+export const indiceColeccion = (coleccion) => {
+  return gql`
+  query {
+    ${coleccion}(sort: ["nombre"], limit: -1) {
+      nombre
+      slug
+      obras_func {
+        count
+      }
+    }
+  }
+  `;
+};

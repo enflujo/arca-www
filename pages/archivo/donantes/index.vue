@@ -1,31 +1,11 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
-
-const donantes = ref([]);
-
-const ObrasPorDonantes = gql`
-  query {
-    donantes(sort: ["nombre"], limit: -1) {
-      nombre
-      slug
-      obras_func {
-        count
-      }
-    }
-  }
-`;
-
-const { data, pending } = obtenerDatosAsinc('obrasPorDonantes', ObrasPorDonantes);
-
-watch(data, ({ donantes: datosDonantes }) => {
-  donantes.value = datosDonantes;
-});
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
+const ruta = useRoute();
+const titulo = 'Donantes';
+useHead(elementosCabeza({ titulo }, ruta.path));
 </script>
 
 <template>
-  <h1>Donantes</h1>
-  <Cargador v-if="pending" />
-  <GraficaColombinas v-else :datos="donantes" coleccion="donantes" />
+  <h1>{{ titulo }}</h1>
+  <VistasGenerales coleccion="donantes" />
 </template>

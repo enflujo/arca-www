@@ -1,30 +1,11 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
-
-const simbolos = ref([]);
-const ObrasPorSimbolos = gql`
-  query {
-    simbolos(sort: ["nombre"], limit: -1) {
-      nombre
-      slug
-      obras_func {
-        count
-      }
-    }
-  }
-`;
-
-const { data, pending } = obtenerDatosAsinc('obrasPorSimbolos', ObrasPorSimbolos);
-
-watch(data, ({ simbolos: datosSimbolos }) => {
-  simbolos.value = datosSimbolos;
-});
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
+const ruta = useRoute();
+const titulo = 'Símbolos';
+useHead(elementosCabeza({ titulo }, ruta.path));
 </script>
 
 <template>
-  <h1>Simbolos</h1>
-  <Cargador v-if="pending" />
-  <GraficaColombinas v-else :datos="simbolos" coleccion="simbolos" />
+  <h1>{{ titulo }}</h1>
+  <VistasGenerales coleccion="simbolos" />
 </template>

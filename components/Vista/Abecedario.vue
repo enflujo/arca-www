@@ -1,7 +1,7 @@
 <script setup>
 import { eliminarTildes } from '~~/utilidades/ayudas';
 
-const abc = reactive({});
+const abc = ref([]);
 
 const props = defineProps({
   coleccion: String,
@@ -10,46 +10,53 @@ const props = defineProps({
 
 onMounted(() => {
   if (props.coleccion === 'autores') {
-    procesarAutores();
+    procesarDatos('apellido');
   } else {
-    procesar();
+    procesarDatos('slug');
   }
 });
 
-function procesarAutores() {
-  props.datos.forEach((autor) => {
-    const primeraLetraApellido = eliminarTildes(autor.apellido[0]).toLowerCase();
-    if (!abc[primeraLetraApellido]) {
-      abc[primeraLetraApellido] = [];
+function procesarDatos(llave) {
+  const respuesta = [];
+
+  props.datos.forEach((instancia) => {
+    const primeraLetra = eliminarTildes(instancia[llave].charAt(0)).toLowerCase();
+    let elementosLetra = respuesta.find((obj) => obj.letra === primeraLetra);
+
+    if (!elementosLetra) {
+      elementosLetra = { letra: primeraLetra, elementos: [] };
+      respuesta.push(elementosLetra);
     }
 
-    abc[primeraLetraApellido].push({
-      url: `/archivo/${props.coleccion}/${autor.id}`,
-      texto: `${autor.apellido}, ${autor.nombre} (${autor.obras_func.count})`,
-    });
-  });
-}
+    let texto = '';
+    let url = '';
 
-function procesar() {
-  props.datos.forEach((elemento) => {
-    const primeraLetra = eliminarTildes(elemento.slug[0]);
-    if (!abc[primeraLetra]) {
-      abc[primeraLetra] = [];
+    if (llave === 'apellido') {
+      url = `/archivo/${props.coleccion}/${instancia.id}`;
+      texto = `${instancia.apellido}, ${instancia.nombre} (${instancia.obras_func.count})`;
+    } else {
+      url = `/archivo/${props.coleccion}/${instancia.slug}`;
+      texto = `${instancia.nombre} (${instancia.obras_func.count})`;
     }
 
-    abc[primeraLetra].push({
-      url: `/archivo/${props.coleccion}/${elemento.slug}`,
-      texto: `${elemento.nombre} (${elemento.obras_func.count})`,
-    });
+    elementosLetra.elementos.push({ url, texto });
   });
+
+  respuesta.sort((a, b) => {
+    if (a.letra < b.letra) return -1;
+    if (a.letra > b.letra) return 1;
+    return 0;
+  });
+
+  abc.value = respuesta;
 }
 </script>
 
 <template>
-  <section v-for="(seccion, letra) in abc" :key="`seccion${letra}`">
-    <h2 class="tituloLetra">{{ letra }}</h2>
+  <section v-for="seccion in abc" :key="`seccion${seccion.letra}`">
+    <h2 class="tituloLetra">{{ seccion.letra }}</h2>
     <ul class="elementos">
-      <li v-for="(elemento, i) in seccion" :key="`elemento${i}`" class="elemento">
+      <li v-for="(elemento, i) in seccion.elementos" :key="`elemento${i}`" class="elemento">
         <NuxtLink :to="elemento.url">{{ elemento.texto }}</NuxtLink>
       </li>
     </ul>

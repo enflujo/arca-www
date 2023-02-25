@@ -1,26 +1,11 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
-
-const tecnicas = ref([]);
-const ObrasPorTecnicas = gql`
-  query {
-    tecnicas(sort: ["nombre"], limit: -1) {
-      nombre
-      slug
-      obras_func {
-        count
-      }
-    }
-  }
-`;
-
-const { tecnicas: datosTecnicas } = await obtenerDatos('obrasPorTecnicas', ObrasPorTecnicas);
-tecnicas.value = datosTecnicas;
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
+const ruta = useRoute();
+const titulo = 'Técnicas';
+useHead(elementosCabeza({ titulo }, ruta.path));
 </script>
 
 <template>
-  <h1>Técnicas</h1>
-  <GraficaColombinas :datos="tecnicas" coleccion="tecnicas" />
+  <h1>{{ titulo }}</h1>
+  <VistasGenerales coleccion="tecnicas" />
 </template>
