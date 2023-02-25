@@ -1,14 +1,10 @@
 <script setup>
-import { gql, obtenerVariablesCSS } from '~~/utilidades/ayudas';
-import { escalaColores } from '@enflujo/alquimia';
+import { gql } from '~~/utilidades/ayudas';
 import { usarArchivo } from '~~/cerebros/archivo';
 
-let buscarColor;
-const ruta = useRoute();
 const datos = ref(null);
 const paises = ref(null);
 const ubicaciones = ref(null);
-const vista = ref('mapa');
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
 
@@ -70,13 +66,6 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   paises.value = paisesGeojson;
   ubicaciones.value = ubicacionesGeojson;
   valorMaximoObras.value = maximoObras;
-
-  buscarColor = escalaColores(
-    1,
-    maximoObras,
-    obtenerVariablesCSS('--amarilloArena2'),
-    obtenerVariablesCSS('--rojoCerezo')
-  );
 });
 </script>
 
@@ -86,27 +75,7 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   <Cargador v-if="pending" />
 
   <div v-else id="contenedorUbicaciones" ref="contenedorUbicaciones">
-    <Filtros primera="mapa" :vistas="['mapa', 'lista', 'colombinas']" />
-    <!-- <div id="filtros">
-      <img
-        class="filtro"
-        :class="vista === 'mapa' ? 'activo' : ''"
-        src="~~/assets/imgs/boton_geo.svg"
-        @click="cambiarVista('mapa')"
-      />
-      <img
-        class="filtro"
-        :class="vista === 'lista' ? 'activo' : ''"
-        src="~~/assets/imgs/boton_alfabetico.svg"
-        @click="cambiarVista('lista')"
-      />
-      <img
-        class="filtro"
-        :class="vista === 'colombinas' ? 'activo' : ''"
-        src="~~/assets/imgs/boton_colombinas.svg"
-        @click="cambiarVista('colombinas')"
-      />
-    </div> -->
+    <Filtros vistaInicial="mapa" :vistas="['mapa', 'abc', 'colombinas']" />
 
     <Mapa
       v-if="paises && ubicaciones && cerebroArchivo.vistaActual === 'mapa'"
@@ -115,7 +84,7 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
       :max="valorMaximoObras"
     />
 
-    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'lista'" :datos="datos" coleccion="paises" />
+    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" coleccion="paises" />
 
     <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" coleccion="paises" />
   </div>

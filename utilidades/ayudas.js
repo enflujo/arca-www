@@ -1,5 +1,4 @@
-import { apiBase, urlBase, nombre } from '../config/general';
-import { convertirEscala, hexARGB } from '@enflujo/alquimia';
+import { apiBase } from '../config/general';
 
 /**
  * Ayuda a construir la URL para pedir un archivo al API de Directus.
