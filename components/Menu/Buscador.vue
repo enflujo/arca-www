@@ -24,6 +24,8 @@ const opciones = [
 const esRutaActual = (slug) => {
   const partes = ruta.path.split('/');
 
+  if (!partes[2]) return false;
+
   if (partes[2].includes('categorias')) {
     return slug === 'categorias';
   } else if (partes[2] === 'paises') {
