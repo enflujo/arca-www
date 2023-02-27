@@ -11,41 +11,87 @@ if (!cerebro.datosCargados) {
 <template>
   <div id="contenedor">
     <MenuGeneral />
-    <MenuBuscador />
-    <main role="main">
-      <slot />
-    </main>
-    <Guardaescobas :completo="false" />
+    <MenuBuscador id="contenedorBuscador" />
+
+    <div id="contenido">
+      <main role="main">
+        <slot />
+      </main>
+      <Guardaescobas :completo="false" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@use 'sass:color';
-
 #contenedor {
   color: var(--profundidad);
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 86vh;
+  justify-content: flex-end;
+}
+
+#contenedorBuscador {
+  background-color: var(--verdeEsmeralda);
+  position: fixed;
+  overflow: auto;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  z-index: 9;
 }
 
 main {
-  margin-left: 19vw;
-  padding: 2em 5em 2em 3em;
   background-color: var(--amarilloPetalo);
 }
 
-// Teléfonos horizontal
-@media (min-width: $minCelular) {
+#contenido {
+  min-height: 86vh;
+  width: 100vw;
+  z-index: 1;
 }
+
 // Pantallas medianas (Tablets)
-// @media (min-width: $minTablet) {
-// }
+@media (min-width: $minTablet) {
+  #contenedorBuscador {
+    width: 60vw;
+    max-width: 450px;
+  }
+}
+
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
+  #contenedorBuscador {
+    width: 40vw;
+  }
 }
-// Pantallas grandes
+
+// Pantallas grandes - Ahora si el menú y el contenido son visibles al tiempo.
 @media (min-width: $minPantallaGrande) {
+  #contenedorBuscador {
+    width: 30vw;
+  }
+
+  #contenido {
+    width: 70vw;
+    min-width: calc(100vw - 450px);
+  }
+
+  main {
+    padding: 2em 1em 2em 1em;
+  }
+}
+
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
+  #contenedorBuscador {
+    width: 20vw;
+  }
+
+  #contenido {
+    width: 80vw;
+  }
+
+  main {
+    padding: 2em 5em 2em 3em;
+  }
 }
 </style>

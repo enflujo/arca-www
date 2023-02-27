@@ -36,7 +36,7 @@ const esRutaActual = (slug) => {
 </script>
 
 <template>
-  <aside id="contenedorBuscador">
+  <aside>
     <h2 class="nombreProyecto"><NuxtLink :to="'/'">ARCA</NuxtLink></h2>
 
     <nav id="opciones">
@@ -56,15 +56,6 @@ const esRutaActual = (slug) => {
 
 <style lang="scss" scoped>
 @use 'sass:color';
-
-#contenedorBuscador {
-  background-color: var(--verdeEsmeralda);
-  border-right: 0px solid var(--verdeEsmeralda);
-  position: fixed;
-  overflow: auto;
-  width: 20vw;
-  height: 100vh;
-}
 
 .nombreProyecto {
   padding: 1.3em 0 1em 0;
@@ -99,10 +90,6 @@ const esRutaActual = (slug) => {
   padding-left: 1.4em;
 
   &.activo {
-    .iniciales {
-      height: auto;
-    }
-
     a {
       color: darken($mediana, 20%);
     }

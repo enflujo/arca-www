@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <footer :class="`${completo ? 'completo' : 'pequeno'}`">
+  <footer :class="`${completo ? 'completo' : 'dimensiones'}`">
     <div class="texto-f-uno">
       <span class="copy" v-html="general.guardaescobas"></span>
     </div>
@@ -20,31 +20,13 @@ const props = defineProps({
 </template>
 
 <style lang="scss">
-@use 'sass:color';
 footer {
   background-color: var(--dolor);
   color: var(--claridad);
-  height: 14vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  position: relative;
-
-  .texto-f-uno {
-    display: flex;
-    width: 350px;
-    text-align: center;
-  }
-  .texto-f-dos {
-    display: flex;
-    width: 150px;
-    text-align: center;
-  }
-}
-
-.pequeno {
-  width: calc(100% - 20vw);
-  left: 20vw;
+  padding: 2em;
 }
 </style>
