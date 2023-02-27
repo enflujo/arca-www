@@ -1,39 +1,11 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
-
-const descriptores = ref([]);
-
-const ObrasPorDescriptores = gql`
-  query {
-    descriptores(sort: ["nombre"], limit: -1) {
-      nombre
-      slug
-      obras_func {
-        count
-      }
-    }
-  }
-`;
-
-const { data, pending } = obtenerDatosAsinc('obrasPorDescriptores', ObrasPorDescriptores);
-
-watch(data, ({ descriptores: datosDescriptores }) => {
-  descriptores.value = datosDescriptores;
-});
-
 definePageMeta({ layout: 'con-buscador', keepalive: true });
+const ruta = useRoute();
+const titulo = 'Descriptores';
+useHead(elementosCabeza({ titulo }, ruta.path));
 </script>
 
 <template>
-  <h1>Descriptores</h1>
-  <Cargador v-if="pending" />
-  <!--<ul v-else>
-    <li v-for="descriptor in descriptores" :key="descriptor.slug">
-      <NuxtLink :to="`/archivo/descriptores/${descriptor.slug}`"
-        >{{ descriptor.nombre }} ({{ descriptor.obras_func.count }})</NuxtLink
-      >
-    </li>
-  </ul>
-  -->
-  <GraficaColombinas v-else :datos="descriptores" coleccion="descriptores" />
+  <h1>{{ titulo }}</h1>
+  <VistasGenerales coleccion="descriptores" />
 </template>

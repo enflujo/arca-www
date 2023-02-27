@@ -1,15 +1,10 @@
 <script setup>
-import { gql, obtenerVariablesCSS } from '~~/utilidades/ayudas';
-import { escalaColores } from '@enflujo/alquimia';
+import { gql } from '~~/utilidades/ayudas';
+import { usarArchivo } from '~~/cerebros/archivo';
 
-const posiblesVistas = ['mapa', 'lista', 'colombinas'];
-let buscarColor;
-const ruta = useRoute();
-const enrutador = useRouter();
 const datos = ref(null);
 const paises = ref(null);
 const ubicaciones = ref(null);
-const vista = ref('mapa');
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
 
@@ -42,15 +37,7 @@ const ObrasPorPaises = gql`
 `;
 
 const { data, pending } = obtenerDatosAsinc('obrasPorPais', ObrasPorPaises);
-
-watch(
-  () => ruta.query,
-  () => {
-    if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
-      vista.value = ruta.query.vista;
-    }
-  }
-);
+const cerebroArchivo = usarArchivo();
 
 watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   /**
@@ -79,24 +66,7 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
   paises.value = paisesGeojson;
   ubicaciones.value = ubicacionesGeojson;
   valorMaximoObras.value = maximoObras;
-
-  buscarColor = escalaColores(
-    1,
-    maximoObras,
-    obtenerVariablesCSS('--amarilloArena2'),
-    obtenerVariablesCSS('--rojoCerezo')
-  );
 });
-
-function cambiarVista(llave) {
-  if (llave !== vista.value) {
-    vista.value = llave;
-    enrutador.push({
-      path: ruta.path,
-      query: { vista: llave },
-    });
-  }
-}
 </script>
 
 <template>
@@ -105,69 +75,23 @@ function cambiarVista(llave) {
   <Cargador v-if="pending" />
 
   <div v-else id="contenedorUbicaciones" ref="contenedorUbicaciones">
-    <div id="filtros">
-      <img
-        class="filtro"
-        :class="vista === 'mapa' ? 'activo' : ''"
-        src="~~/assets/imgs/boton_geo.svg"
-        @click="cambiarVista('mapa')"
-      />
-      <img
-        class="filtro"
-        :class="vista === 'lista' ? 'activo' : ''"
-        src="~~/assets/imgs/boton_alfabetico.svg"
-        @click="cambiarVista('lista')"
-      />
-      <img
-        class="filtro"
-        :class="vista === 'colombinas' ? 'activo' : ''"
-        src="~~/assets/imgs/boton_colombinas.svg"
-        @click="cambiarVista('colombinas')"
-      />
-    </div>
+    <Filtros vistaInicial="mapa" :vistas="['mapa', 'abc', 'colombinas']" />
 
     <Mapa
-      v-if="paises && ubicaciones && vista === 'mapa'"
+      v-if="paises && ubicaciones && cerebroArchivo.vistaActual === 'mapa'"
       :paises="paises"
       :ubicaciones="ubicaciones"
       :max="valorMaximoObras"
     />
 
-    <ul v-if="vista === 'lista'">
-      <li v-for="pais in datos" :key="pais.slug">
-        <NuxtLink class="nombre" :to="`/archivo/paises/${pais.slug}`">
-          {{ pais.nombre }} ({{ pais.obras_func.count }})
-        </NuxtLink>
-      </li>
-    </ul>
+    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" coleccion="paises" />
 
-    <GraficaColombinas v-if="vista === 'colombinas'" :datos="datos" coleccion="paises" />
+    <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" coleccion="paises" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 #contenedorUbicaciones {
   overflow-x: hidden;
-}
-
-#filtros {
-  display: flex;
-}
-
-.filtro {
-  height: 25px;
-  width: auto;
-  cursor: pointer;
-  opacity: 0.3;
-  transition: opacity 0.3s ease-in-out;
-  margin: 0.3em;
-
-  &.activo {
-    opacity: 1;
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
 }
 </style>

@@ -424,8 +424,4 @@ definePageMeta({ layout: 'default', keepalive: true });
   font-weight: bold;
   margin-right: 0.5em;
 }
-.lista {
-  // list-style-type: disc;
-  // list-style-position: inside;
-}
 </style>
