@@ -12,6 +12,7 @@ if (!cerebro.datosCargados) {
   <div id="contenedor">
     <MenuGeneral />
     <MenuBuscador id="contenedorBuscador" />
+
     <div id="contenido">
       <main role="main">
         <slot />
@@ -22,59 +23,75 @@ if (!cerebro.datosCargados) {
 </template>
 
 <style lang="scss" scoped>
-@use 'sass:color';
-$margenMenu: 20vw;
-
 #contenedor {
   color: var(--profundidad);
+  display: flex;
+  justify-content: flex-end;
 }
 
 #contenedorBuscador {
   background-color: var(--verdeEsmeralda);
   position: fixed;
   overflow: auto;
-  width: $margenMenu;
+  width: 100vw;
   height: 100vh;
+  left: 0;
+  z-index: 9;
 }
 
 main {
   background-color: var(--amarilloPetalo);
-  padding: 2em 5em 2em 3em;
 }
 
 #contenido {
-  margin-left: $margenMenu;
   min-height: 86vh;
+  width: 100vw;
+  z-index: 1;
 }
 
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   #contenedorBuscador {
-    max-width: 15vw;
+    width: 60vw;
+    max-width: 450px;
   }
 }
 
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
   #contenedorBuscador {
-    max-width: 400px;
+    width: 40vw;
   }
 }
 
-// Pantallas grandes
+// Pantallas grandes - Ahora si el menú y el contenido son visibles al tiempo.
 @media (min-width: $minPantallaGrande) {
   #contenedorBuscador {
-    max-width: 20vw;
+    width: 30vw;
+  }
+
+  #contenido {
+    width: 70vw;
+    min-width: calc(100vw - 450px);
+  }
+
+  main {
+    padding: 2em 1em 2em 1em;
   }
 }
 
 //Pantallas gigantes
 @media (min-width: $minPantallaGigante) {
   #contenedorBuscador {
-    max-width: 400px;
+    width: 20vw;
+  }
+
+  #contenido {
+    width: 80vw;
   }
 
   main {
+    padding: 2em 5em 2em 3em;
   }
 }
 </style>

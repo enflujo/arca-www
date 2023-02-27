@@ -20,26 +20,13 @@ const props = defineProps({
 </template>
 
 <style lang="scss">
-@use 'sass:color';
 footer {
   background-color: var(--dolor);
   color: var(--claridad);
-  height: 14vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  position: relative;
-
-  .texto-f-uno {
-    display: flex;
-    width: 350px;
-    text-align: center;
-  }
-  .texto-f-dos {
-    display: flex;
-    width: 150px;
-    text-align: center;
-  }
+  padding: 2em;
 }
 </style>

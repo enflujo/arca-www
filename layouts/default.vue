@@ -12,20 +12,23 @@ if (!cerebro.datosCargados) {
   <div id="contenedor">
     <MenuGeneral />
 
-    <main role="main">
-      <slot />
-    </main>
-    <Guardaescobas />
+    <div id="contenido">
+      <main role="main">
+        <slot />
+      </main>
+      <Guardaescobas :completo="false" />
+    </div>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use 'sass:color';
 
 main {
   display: flex;
   flex-direction: column;
 }
+
 #contenedor {
   display: flex;
   flex-direction: column;
