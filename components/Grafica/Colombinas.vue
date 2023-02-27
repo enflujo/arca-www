@@ -8,23 +8,19 @@ const anchoPantalla = ref(0);
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
 const divisionesGrilla = [...Array(10).keys()];
+const anchoGrilla = ref(0);
+const seccionGrilla = ref(0);
+let buscarColor;
 
 const props = defineProps({
   datos: Array,
   coleccion: String,
 });
 
-const buscarColor = computed(() => {
-  return escalaColores(
-    1,
-    maximoObras.value,
-    obtenerVariablesCSS('--amarilloArena2'),
-    obtenerVariablesCSS('--rojoCerezo')
-  );
-});
 function anchoLinea(cantidad) {
-  const ancho = convertirEscala(cantidad, 1, Math.ceil(maximoObras.value / 1000) * 1000, 0, anchoPantalla.value / 1.5);
-  return ancho;
+  const maximo = Math.ceil(maximoObras.value / 1000) * 1000;
+  const ancho = anchoPantalla.value / 1.5;
+  return convertirEscala(cantidad, 1, maximo, 0, ancho) | 0;
 }
 
 onMounted(() => {
@@ -32,41 +28,32 @@ onMounted(() => {
    * Ordenar por cantidad de obras en el país.
    */
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
-  maximoObras.value = ordenados[0].obras_func.count;
+  const maximo = ordenados[0].obras_func.count;
+  const ancho = contenedor.value.clientWidth;
+  const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
+  const anchoGrillaTotal = convertirEscala(maximoGrilla, 1, maximoGrilla, 0, ancho / 1.5);
+
+  buscarColor = escalaColores(1, maximo, obtenerVariablesCSS('--amarilloArena2'), obtenerVariablesCSS('--rojoCerezo'));
+  anchoGrilla.value = anchoGrillaTotal;
+  seccionGrilla.value = maximoGrilla / 10;
+  maximoObras.value = maximo;
   datosOrdenados.value = ordenados;
-  anchoPantalla.value = contenedor.value.clientWidth;
+  anchoPantalla.value = ancho;
 });
 </script>
 
 <template>
   <div id="contenedorGrafica">
     <div id="contenedorGrilla">
-      <div
-        id="grilla"
-        :style="`width:${convertirEscala(
-          Math.ceil(maximoObras / 1000) * 1000,
-          1,
-          Math.ceil(maximoObras / 1000) * 1000,
-          0,
-          anchoPantalla / 1.5
-        )}px`"
-      >
+      <div id="grilla" :style="`width:${anchoGrilla}px`">
         <span
           class="divisionGrilla"
           v-for="i in divisionesGrilla"
           :key="`división ${i}`"
-          :style="`width:${
-            convertirEscala(
-              Math.ceil(maximoObras / 1000) * 1000,
-              1,
-              Math.ceil(maximoObras / 1000) * 1000,
-              0,
-              anchoPantalla / 1.5
-            ) / 10
-          }px`"
+          :style="`width:${seccionGrilla}px`"
         >
           <p class="valorGrilla">
-            {{ ((Math.ceil(maximoObras / 1000) * 1000) / 10) * i }}
+            {{ seccionGrilla * i }}
           </p>
         </span>
       </div>
@@ -99,6 +86,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 #contenedorGrafica {
   position: relative;
+  margin-top: 2em;
 }
 ul {
   display: table;
@@ -124,8 +112,8 @@ ul {
   }
 }
 .nombre {
-  text-transform: uppercase;
   font-size: 0.8em;
+  line-height: 1.8;
 
   &:hover {
     font-weight: bold;
@@ -160,31 +148,31 @@ ul {
 }
 
 #grilla {
-  border-top: #78898955 dashed 1px;
+  border-top: #788989d2 dashed 1px;
   display: flex;
   height: 100%;
   position: absolute;
-  left: 204px;
+  left: 200px;
   font-size: 0.7em;
   overflow: visible;
-  top: -1em;
-  color: #78898955;
+  color: #788989d2;
 
   .divisionGrilla {
     display: block;
-    border-right: #78898955 solid 1px;
+    border-right: #788989d2 solid 1px;
   }
 
   .valorGrilla {
     position: absolute;
-    top: -2em;
+    top: -1.5em;
   }
 }
 #leyendaEjeX {
   position: absolute;
-  top: -0.7em;
-  left: 157px;
+  top: -0.6em;
+  width: 190px;
+  text-align: right;
   font-size: 0.8em;
-  color: #78898955;
+  color: #788989d2;
 }
 </style>
