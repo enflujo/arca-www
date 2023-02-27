@@ -47,7 +47,7 @@ function cambiarVista(llave) {
 <template>
   <div id="filtros">
     <img
-      v-for="(vista, i) in vistas"
+      v-for="vista in vistas"
       :key="vista"
       class="filtro"
       :class="cerebroArchivo.vistaActual === vista ? 'activo' : ''"

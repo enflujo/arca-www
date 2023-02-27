@@ -1,68 +1,98 @@
 <script setup>
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
+import { usarArchivo } from '~~/cerebros/archivo';
 import { obtenerVariablesCSS } from '~~/utilidades/ayudas';
 
 const contenedor = ref(null);
 const anchoPantalla = ref(0);
-const datos = ref([]);
+const datosOrdenados = ref([]);
 const maximoObras = ref(0);
+const divisionesGrilla = [...Array(10).keys()];
+const anchoGrilla = ref(0);
+const seccionGrilla = ref(0);
+let buscarColor;
 
 const props = defineProps({
   datos: Array,
   coleccion: String,
 });
 
-const buscarColor = computed(() => {
-  return escalaColores(
-    1,
-    maximoObras.value,
-    obtenerVariablesCSS('--amarilloArena2'),
-    obtenerVariablesCSS('--rojoCerezo')
-  );
-});
+function anchoLinea(cantidad) {
+  const maximo = Math.ceil(maximoObras.value / 1000) * 1000;
+  const ancho = anchoPantalla.value / 1.5;
+  return convertirEscala(cantidad, 1, maximo, 0, ancho) | 0;
+}
 
 onMounted(() => {
   /**
    * Ordenar por cantidad de obras en el país.
    */
-  const datosOrdenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
-  maximoObras.value = datosOrdenados[0].obras_func.count;
-  datos.value = datosOrdenados;
-  anchoPantalla.value = contenedor.value.clientWidth;
+  const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
+  const maximo = ordenados[0].obras_func.count;
+  const ancho = contenedor.value.clientWidth;
+  const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
+  const anchoGrillaTotal = convertirEscala(maximoGrilla, 1, maximoGrilla, 0, ancho / 1.5);
+
+  buscarColor = escalaColores(1, maximo, obtenerVariablesCSS('--amarilloArena2'), obtenerVariablesCSS('--rojoCerezo'));
+  anchoGrilla.value = anchoGrillaTotal;
+  seccionGrilla.value = maximoGrilla / 10;
+  maximoObras.value = maximo;
+  datosOrdenados.value = ordenados;
+  anchoPantalla.value = ancho;
 });
 </script>
 
 <template>
-  <ul ref="contenedor">
-    <li v-for="elemento in datos" :key="elemento.slug">
-      <NuxtLink class="nombre fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">{{
-        elemento.nombre
-      }}</NuxtLink>
+  <div id="contenedorGrafica">
+    <div id="contenedorGrilla">
+      <div id="grilla" :style="`width:${anchoGrilla}px`">
+        <span
+          class="divisionGrilla"
+          v-for="i in divisionesGrilla"
+          :key="`división ${i}`"
+          :style="`width:${seccionGrilla}px`"
+        >
+          <p class="valorGrilla">
+            {{ seccionGrilla * i }}
+          </p>
+        </span>
+      </div>
+      <p id="leyendaEjeX">Cantidad de obras</p>
+    </div>
 
-      <NuxtLink class="elementoColombina fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">
-        <div class="colombina">
-          <span
-            class="lineaColombina"
-            :style="`width:${convertirEscala(
-              elemento.obras_func.count,
-              1,
-              maximoObras,
-              0,
-              anchoPantalla / 1.5
-            )}px; background-color:${buscarColor(elemento.obras_func.count)}`"
-          ></span>
-          <span class="circuloColombina" :style="`background-color:${buscarColor(elemento.obras_func.count)}`"></span>
-          <span class="conteoObras">{{ elemento.obras_func.count }}</span>
-        </div>
-      </NuxtLink>
-    </li>
-  </ul>
+    <ul ref="contenedor">
+      <li v-for="elemento in datosOrdenados" :key="elemento.slug">
+        <NuxtLink class="nombre fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">{{
+          elemento.nombre
+        }}</NuxtLink>
+
+        <NuxtLink class="elementoColombina fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">
+          <div class="colombina">
+            <span
+              class="lineaColombina"
+              :style="`width:${anchoLinea(elemento.obras_func.count)}px; background-color:${buscarColor(
+                elemento.obras_func.count
+              )}`"
+            ></span>
+            <span class="circuloColombina" :style="`background-color:${buscarColor(elemento.obras_func.count)}`"></span>
+            <span class="conteoObras">{{ elemento.obras_func.count }}</span>
+          </div>
+        </NuxtLink>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+#contenedorGrafica {
+  position: relative;
+  margin-top: 2em;
+}
 ul {
   display: table;
   width: 100%;
+  position: relative;
+  margin-top: 2em;
 
   li {
     display: table-row;
@@ -78,20 +108,18 @@ ul {
     padding-right: 0.5em;
     font-family: var(--fuenteMenu);
     font-weight: var(--fuenteMenuPeso);
+    width: 200px;
   }
 }
 .nombre {
-  text-transform: uppercase;
   font-size: 0.8em;
+  line-height: 1.8;
 
   &:hover {
     font-weight: bold;
   }
-
-  &:hover::before {
-    content: '+ ';
-  }
 }
+
 .colombina {
   display: flex;
   align-items: center;
@@ -102,8 +130,8 @@ ul {
   }
   .circuloColombina {
     display: block;
-    height: 7px;
-    width: 7px;
+    height: 8px;
+    width: 8px;
     border-radius: 50%;
   }
 
@@ -112,5 +140,39 @@ ul {
     font-size: 0.75em;
     padding-left: 0.4em;
   }
+}
+
+#contenedorGrilla {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#grilla {
+  border-top: #788989d2 dashed 1px;
+  display: flex;
+  height: 100%;
+  position: absolute;
+  left: 200px;
+  font-size: 0.7em;
+  overflow: visible;
+  color: #788989d2;
+
+  .divisionGrilla {
+    display: block;
+    border-right: #788989d2 solid 1px;
+  }
+
+  .valorGrilla {
+    position: absolute;
+    top: -1.5em;
+  }
+}
+#leyendaEjeX {
+  position: absolute;
+  top: -0.6em;
+  width: 190px;
+  text-align: right;
+  font-size: 0.8em;
+  color: #788989d2;
 }
 </style>
