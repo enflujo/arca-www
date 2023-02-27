@@ -13,7 +13,7 @@ query {
     nombre
     apellido
     biografia
-     obras_func {
+    obras_func {
         count
       }
   }
@@ -51,8 +51,6 @@ useHead(
  */
 const obras = ref([]);
 const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Autores';
 
 const ObrasAutor = gql`
 query {

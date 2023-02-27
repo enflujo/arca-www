@@ -1,11 +1,7 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
 const descriptores = ref([]);
-const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Descriptores';
 
 const ObrasPorDescriptores = gql`
   query {

@@ -3,10 +3,5 @@ definePageMeta({ layout: 'con-buscador', keepalive: true });
 </script>
 
 <template>
-  <Galeria
-    coleccion="caracteristicas"
-    paginaActual="Características Particulares"
-    singular="Característica Particular"
-    :enTablaRelacional="true"
-  />
+  <Galeria coleccion="caracteristicas" singular="Característica Particular" :enTablaRelacional="true" />
 </template>

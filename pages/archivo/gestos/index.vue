@@ -1,11 +1,7 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql } from '~~/utilidades/ayudas';
 
 const gestos = ref([]);
-const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Gestos';
 
 const ObrasPorGestos = gql`
   query {

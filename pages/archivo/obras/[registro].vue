@@ -1,16 +1,9 @@
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { gql, urlImagen } from '~~/utilidades/ayudas';
 
 const cargando = ref(true);
 const obra = ref(null);
-const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
-
-// Para cambiar de pestaña y mostrar otros datos
-const pestana = ref('');
-
-cerebroArchivo.paginaActual = 'Obras';
 
 const Obra = gql`
   query {

@@ -20,23 +20,11 @@ query {
 const respuesta = await obtenerDatos(`categorias${ruta.params.numero}-${ruta.params.id}`, Categoria);
 const datos = respuesta[llave];
 
-// useHead(
-//   elementosCabeza(
-//     {
-//       nombre: crearNombre(),
-//       descripcion: datosAutor.biografia,
-//     },
-//     ruta.path
-//   )
-// ); // SEO
-
 /**
  * Operaciones en el cliente
  */
 const obras = ref([]);
 const cerebroArchivo = usarArchivo();
-
-cerebroArchivo.paginaActual = 'Categorías';
 
 const ObrasCategoria = gql`
 query {
@@ -60,14 +48,10 @@ query {
 }
 `;
 
-const { data, error, pending } = obtenerDatosAsinc(`obrasCategoria${datos.id}`, ObrasCategoria);
+const { data, pending } = obtenerDatosAsinc(`obrasCategoria${datos.id}`, ObrasCategoria);
 
 watch(data, (respuesta) => {
   obras.value = respuesta[llave].obras;
-});
-
-watch(error, (errores) => {
-  console.error(errores);
 });
 
 definePageMeta({ layout: 'con-buscador', keepalive: true });
