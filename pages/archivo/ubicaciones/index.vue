@@ -89,9 +89,3 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
     <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" coleccion="paises" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-#contenedorUbicaciones {
-  overflow-x: hidden;
-}
-</style>
