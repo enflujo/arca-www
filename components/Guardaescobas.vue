@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <footer :class="`${completo ? 'completo' : 'pequeno'}`">
+  <footer :class="`${completo ? 'completo' : 'dimensiones'}`">
     <div class="texto-f-uno">
       <span class="copy" v-html="general.guardaescobas"></span>
     </div>
@@ -41,10 +41,5 @@ footer {
     width: 150px;
     text-align: center;
   }
-}
-
-.pequeno {
-  width: calc(100% - 20vw);
-  left: 20vw;
 }
 </style>

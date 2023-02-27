@@ -11,41 +11,70 @@ if (!cerebro.datosCargados) {
 <template>
   <div id="contenedor">
     <MenuGeneral />
-    <MenuBuscador />
-    <main role="main">
-      <slot />
-    </main>
-    <Guardaescobas :completo="false" />
+    <MenuBuscador id="contenedorBuscador" />
+    <div id="contenido">
+      <main role="main">
+        <slot />
+      </main>
+      <Guardaescobas :completo="false" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @use 'sass:color';
+$margenMenu: 20vw;
 
 #contenedor {
   color: var(--profundidad);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 86vh;
+}
+
+#contenedorBuscador {
+  background-color: var(--verdeEsmeralda);
+  position: fixed;
+  overflow: auto;
+  width: $margenMenu;
+  height: 100vh;
 }
 
 main {
-  margin-left: 19vw;
-  padding: 2em 5em 2em 3em;
   background-color: var(--amarilloPetalo);
+  padding: 2em 5em 2em 3em;
 }
 
-// Teléfonos horizontal
-@media (min-width: $minCelular) {
+#contenido {
+  margin-left: $margenMenu;
+  min-height: 86vh;
 }
+
 // Pantallas medianas (Tablets)
-// @media (min-width: $minTablet) {
-// }
+@media (min-width: $minTablet) {
+  #contenedorBuscador {
+    max-width: 15vw;
+  }
+}
+
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
+  #contenedorBuscador {
+    max-width: 400px;
+  }
 }
+
 // Pantallas grandes
 @media (min-width: $minPantallaGrande) {
+  #contenedorBuscador {
+    max-width: 20vw;
+  }
+}
+
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
+  #contenedorBuscador {
+    max-width: 400px;
+  }
+
+  main {
+  }
 }
 </style>
