@@ -124,8 +124,18 @@ ul {
         color: white;
       }
     }
-  }
 
+    &:hover {
+      background-color: var(--verdeResaltar);
+      .nombre {
+        font-weight: 800;
+      }
+      .circuloColombina {
+        height: 16px;
+        width: 16px;
+      }
+    }
+  }
   .fila {
     display: table-cell;
     vertical-align: middle;
