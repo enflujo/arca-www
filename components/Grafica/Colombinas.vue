@@ -23,10 +23,6 @@ function anchoLinea(cantidad) {
   return convertirEscala(cantidad, 1, maximo, 0, ancho) | 0;
 }
 
-function resaltar() {
-  resaltado.value = !resaltado.value;
-}
-
 onMounted(() => {
   /**
    * Ordenar por cantidad de obras en el país.
