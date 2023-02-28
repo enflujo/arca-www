@@ -7,13 +7,10 @@ const contenedor = ref(null);
 const anchoPantalla = ref(0);
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
-const resaltado = ref(false);
 const divisionesGrilla = [...Array(10).keys()];
 const anchoGrilla = ref(0);
 const seccionGrilla = ref(0);
 let buscarColor;
-
-const colorPrueba = 'blue';
 
 const props = defineProps({
   datos: Array,
