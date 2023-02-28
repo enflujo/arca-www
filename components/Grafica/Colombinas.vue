@@ -127,9 +127,6 @@ ul {
 
     &:hover {
       background-color: var(--verdeResaltar);
-      .nombre {
-        font-weight: 800;
-      }
       .circuloColombina {
         height: 16px;
         width: 16px;
@@ -147,17 +144,15 @@ ul {
     font-family: var(--fuenteMenu);
     font-weight: var(--fuenteMenuPeso);
     width: 200px;
+    font-size: 0.8em;
+    line-height: 1.8;
+
+    // Usamos sombra para no tener que usar "bold" ya que este hace que se partan las lineas. No es una solución perfecta pero mejor que calcular anchos para usar bold.
+    &:hover {
+      text-shadow: -0.5px 0px 0px #000000;
+    }
   }
 }
-.nombre {
-  font-size: 0.8em;
-  line-height: 1.8;
-
-  &:hover {
-    font-weight: bold;
-  }
-}
-
 .colombina {
   display: flex;
   align-items: center;
