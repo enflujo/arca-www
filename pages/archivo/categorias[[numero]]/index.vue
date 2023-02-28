@@ -42,7 +42,7 @@ watch(data, ({ categorias1 }) => {
   });
 });
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'con-buscador' });
 </script>
 
 <template>
