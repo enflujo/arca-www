@@ -8,7 +8,7 @@ const ubicaciones = ref(null);
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'con-buscador' });
 
 const ObrasPorPaises = gql`
   query {

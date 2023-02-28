@@ -89,12 +89,6 @@ const esRutaActual = (slug) => {
   position: relative;
   padding-left: 1.4em;
 
-  &.activo {
-    a {
-      color: darken($mediana, 20%);
-    }
-  }
-
   a,
   a:link {
     color: var(--mediana);
@@ -103,6 +97,12 @@ const esRutaActual = (slug) => {
 
     &:hover {
       color: darken($mediana, 10%);
+    }
+  }
+
+  &.activo {
+    a {
+      color: darken($mediana, 20%);
     }
   }
 }

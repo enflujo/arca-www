@@ -18,7 +18,7 @@ const { obras_aggregated } = await obtenerDatos('obras', Obras);
 total.value = obras_aggregated[0].count.id;
 cargando.value = false;
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'con-buscador' });
 </script>
 
 <template>

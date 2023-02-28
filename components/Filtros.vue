@@ -17,10 +17,12 @@ const imagenDinamica = (vista) => {
 };
 
 onMounted(() => {
-  if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
-    cerebroArchivo.vistaActual = ruta.query.vista;
-  } else {
-    cerebroArchivo.vistaActual = props.vistaInicial;
+  if (!cerebroArchivo.vistaActual) {
+    if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
+      cerebroArchivo.vistaActual = ruta.query.vista;
+    } else {
+      cerebroArchivo.vistaActual = props.vistaInicial;
+    }
   }
 });
 

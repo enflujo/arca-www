@@ -1,6 +1,5 @@
 <script setup>
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
-import { usarArchivo } from '~~/cerebros/archivo';
 import { obtenerVariablesCSS } from '~~/utilidades/ayudas';
 
 const contenedor = ref(null);
@@ -10,12 +9,25 @@ const maximoObras = ref(0);
 const divisionesGrilla = [...Array(10).keys()];
 const anchoGrilla = ref(0);
 const seccionGrilla = ref(0);
+
 let buscarColor;
 
 const props = defineProps({
   datos: Array,
   coleccion: String,
 });
+
+watch(
+  () => contenedor.value,
+  () => {
+    const ancho = contenedor.value.clientWidth;
+    const maximoGrilla = Math.ceil(maximoObras.value / 1000) * 1000;
+    const anchoGrillaTotal = convertirEscala(maximoGrilla, 1, maximoGrilla, 0, ancho / 1.5);
+    anchoGrilla.value = anchoGrillaTotal;
+    seccionGrilla.value = maximoGrilla / 10;
+    anchoPantalla.value = ancho;
+  }
+);
 
 function anchoLinea(cantidad) {
   const maximo = Math.ceil(maximoObras.value / 1000) * 1000;
@@ -29,22 +41,15 @@ onMounted(() => {
    */
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
   const maximo = ordenados[0].obras_func.count;
-  const ancho = contenedor.value.clientWidth;
-  const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
-  const anchoGrillaTotal = convertirEscala(maximoGrilla, 1, maximoGrilla, 0, ancho / 1.5);
 
   buscarColor = escalaColores(1, maximo, obtenerVariablesCSS('--amarilloArena2'), obtenerVariablesCSS('--rojoCerezo'));
-  anchoGrilla.value = anchoGrillaTotal;
-  seccionGrilla.value = maximoGrilla / 10;
   maximoObras.value = maximo;
   datosOrdenados.value = ordenados;
-  anchoPantalla.value = ancho;
 });
 
 function activar(evento, color) {
   const elemento = evento.target;
   const conteo = elemento.querySelector('.conteoObras');
-
   conteo.style.backgroundColor = color;
   elemento.classList.add('activo');
 }
@@ -58,24 +63,8 @@ function desactivar(evento) {
 </script>
 
 <template>
-  <div id="contenedorGrafica">
-    <div id="contenedorGrilla">
-      <div id="grilla" :style="`width:${anchoGrilla}px`">
-        <span
-          class="divisionGrilla"
-          v-for="i in divisionesGrilla"
-          :key="`división ${i}`"
-          :style="`width:${seccionGrilla}px`"
-        >
-          <p class="valorGrilla">
-            {{ seccionGrilla * i }}
-          </p>
-        </span>
-      </div>
-      <p id="leyendaEjeX">Cantidad de obras</p>
-    </div>
-
-    <ul ref="contenedor">
+  <div id="contenedorGrafica" ref="contenedor">
+    <ul>
       <li
         v-for="elemento in datosOrdenados"
         :key="elemento.slug"
@@ -87,7 +76,7 @@ function desactivar(evento) {
         }}</NuxtLink>
 
         <NuxtLink class="elementoColombina fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">
-          <div class="colombina">
+          <span class="colombina">
             <span
               class="lineaColombina"
               :style="`width:${anchoLinea(elemento.obras_func.count)}px; background-color:${buscarColor(
@@ -95,13 +84,27 @@ function desactivar(evento) {
               )}`"
             ></span>
             <span class="circuloColombina" :style="`background-color:${buscarColor(elemento.obras_func.count)}`"></span>
-            <div class="conteoObras">
+            <span class="conteoObras">
               {{ elemento.obras_func.count }}
-            </div>
-          </div>
+            </span>
+          </span>
         </NuxtLink>
       </li>
     </ul>
+
+    <div id="grilla" :style="`width:${anchoGrilla}px`">
+      <p id="leyendaEjeX">Cantidad de obras</p>
+      <span
+        class="divisionGrilla"
+        v-for="i in divisionesGrilla"
+        :key="`división ${i}`"
+        :style="`width:${seccionGrilla}px`"
+      >
+        <span class="valorGrilla">
+          {{ seccionGrilla * i }}
+        </span>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -110,11 +113,13 @@ function desactivar(evento) {
   position: relative;
   margin-top: 2em;
 }
+
 ul {
   display: table;
   width: 100%;
   position: relative;
   margin-top: 2em;
+  padding-top: 0.7em;
 
   li {
     display: table-row;
@@ -122,6 +127,11 @@ ul {
     &.activo {
       .conteoObras {
         color: white;
+      }
+
+      .nombre {
+        // Usamos sombra para no tener que usar "bold" ya que este hace que se partan las lineas. No es una solución perfecta pero mejor que calcular anchos para usar bold.
+        text-shadow: -0.5px 0px 0px #000000;
       }
     }
 
@@ -146,11 +156,6 @@ ul {
     width: 200px;
     font-size: 0.8em;
     line-height: 1.8;
-
-    // Usamos sombra para no tener que usar "bold" ya que este hace que se partan las lineas. No es una solución perfecta pero mejor que calcular anchos para usar bold.
-    &:hover {
-      text-shadow: -0.5px 0px 0px #000000;
-    }
   }
 }
 .colombina {
@@ -178,20 +183,19 @@ ul {
   }
 }
 
-#contenedorGrilla {
-  display: flex;
-  justify-content: flex-start;
-}
-
 #grilla {
   border-top: #788989d2 dashed 1px;
   display: flex;
+  justify-content: flex-start;
+  width: calc(100vw / 1.5);
   height: 100%;
   position: absolute;
+  top: 0;
   left: 200px;
   font-size: 0.7em;
   overflow: visible;
   color: #788989d2;
+  pointer-events: none;
 
   .divisionGrilla {
     display: block;
@@ -203,10 +207,13 @@ ul {
     top: -1.5em;
   }
 }
+
 #leyendaEjeX {
   position: absolute;
-  top: -0.6em;
+  top: -0.8em;
+  left: -5px;
   width: 190px;
+  transform: translateX(-100%);
   text-align: right;
   font-size: 0.8em;
   color: #788989d2;
