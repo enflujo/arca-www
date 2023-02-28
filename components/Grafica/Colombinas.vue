@@ -7,10 +7,13 @@ const contenedor = ref(null);
 const anchoPantalla = ref(0);
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
+const resaltado = ref(false);
 const divisionesGrilla = [...Array(10).keys()];
 const anchoGrilla = ref(0);
 const seccionGrilla = ref(0);
 let buscarColor;
+
+const colorPrueba = 'blue';
 
 const props = defineProps({
   datos: Array,
@@ -21,6 +24,10 @@ function anchoLinea(cantidad) {
   const maximo = Math.ceil(maximoObras.value / 1000) * 1000;
   const ancho = anchoPantalla.value / 1.5;
   return convertirEscala(cantidad, 1, maximo, 0, ancho) | 0;
+}
+
+function resaltar() {
+  resaltado.value = !resaltado.value;
 }
 
 onMounted(() => {
@@ -40,6 +47,21 @@ onMounted(() => {
   datosOrdenados.value = ordenados;
   anchoPantalla.value = ancho;
 });
+
+function activar(evento, color) {
+  const elemento = evento.target;
+  const conteo = elemento.querySelector('.conteoObras');
+
+  conteo.style.backgroundColor = color;
+  elemento.classList.add('activo');
+}
+
+function desactivar(evento) {
+  const elemento = evento.target;
+  const conteo = elemento.querySelector('.conteoObras');
+  conteo.style.backgroundColor = 'transparent';
+  elemento.classList.remove('activo');
+}
 </script>
 
 <template>
@@ -61,7 +83,12 @@ onMounted(() => {
     </div>
 
     <ul ref="contenedor">
-      <li v-for="elemento in datosOrdenados" :key="elemento.slug">
+      <li
+        v-for="elemento in datosOrdenados"
+        :key="elemento.slug"
+        @mouseenter="activar($event, buscarColor(elemento.obras_func.count))"
+        @mouseleave="desactivar"
+      >
         <NuxtLink class="nombre fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">{{
           elemento.nombre
         }}</NuxtLink>
@@ -75,7 +102,9 @@ onMounted(() => {
               )}`"
             ></span>
             <span class="circuloColombina" :style="`background-color:${buscarColor(elemento.obras_func.count)}`"></span>
-            <span class="conteoObras">{{ elemento.obras_func.count }}</span>
+            <div class="conteoObras">
+              {{ elemento.obras_func.count }}
+            </div>
           </div>
         </NuxtLink>
       </li>
@@ -96,6 +125,12 @@ ul {
 
   li {
     display: table-row;
+
+    &.activo {
+      .conteoObras {
+        color: white;
+      }
+    }
   }
 
   .fila {
@@ -138,7 +173,10 @@ ul {
   .conteoObras {
     color: #788989;
     font-size: 0.75em;
-    padding-left: 0.4em;
+    background-color: transparent;
+    padding: 0.4em;
+    margin-left: 0.7em;
+    border-radius: 6px;
   }
 }
 
