@@ -19,13 +19,14 @@
   },
   "dependencies": {
     "@enflujo/alquimia": "^1.0.5",
-    "@pinia/nuxt": "^0.4.6",
-    "mapbox-gl": "^2.12.1",
-    "nuxt": "^3.2.0"
+    "@pinia/nuxt": "^0.4.7",
+    "mapbox-gl": "^2.13.0",
+    "nuxt": "^3.2.3"
   },
   "devDependencies": {
+    "@types/node": "^18.14.2",
     "prettier": "^2.8.4",
-    "sass": "^1.58.1"
+    "sass": "^1.58.3"
   },
   "browserslist": {
     "production": [
