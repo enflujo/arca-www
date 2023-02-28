@@ -8,7 +8,7 @@ const props = defineProps({
 
 <template>
   <div class="contenedorGaleria">
-    <div v-for="obra in obras" :key="obra.registro" class="obra" @mouseover="resaltarObra">
+    <div v-for="obra in obras" :key="obra.registro" class="obra">
       <span class="registro">{{ obra.registro }}</span>
 
       <NuxtLink :to="`/archivo/obras/${obra.registro}`">

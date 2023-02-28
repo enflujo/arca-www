@@ -40,6 +40,21 @@ onMounted(() => {
   datosOrdenados.value = ordenados;
   anchoPantalla.value = ancho;
 });
+
+function activar(evento, color) {
+  const elemento = evento.target;
+  const conteo = elemento.querySelector('.conteoObras');
+
+  conteo.style.backgroundColor = color;
+  elemento.classList.add('activo');
+}
+
+function desactivar(evento) {
+  const elemento = evento.target;
+  const conteo = elemento.querySelector('.conteoObras');
+  conteo.style.backgroundColor = 'transparent';
+  elemento.classList.remove('activo');
+}
 </script>
 
 <template>
@@ -61,7 +76,12 @@ onMounted(() => {
     </div>
 
     <ul ref="contenedor">
-      <li v-for="elemento in datosOrdenados" :key="elemento.slug">
+      <li
+        v-for="elemento in datosOrdenados"
+        :key="elemento.slug"
+        @mouseenter="activar($event, buscarColor(elemento.obras_func.count))"
+        @mouseleave="desactivar"
+      >
         <NuxtLink class="nombre fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">{{
           elemento.nombre
         }}</NuxtLink>
@@ -75,7 +95,9 @@ onMounted(() => {
               )}`"
             ></span>
             <span class="circuloColombina" :style="`background-color:${buscarColor(elemento.obras_func.count)}`"></span>
-            <span class="conteoObras">{{ elemento.obras_func.count }}</span>
+            <div class="conteoObras">
+              {{ elemento.obras_func.count }}
+            </div>
           </div>
         </NuxtLink>
       </li>
@@ -96,6 +118,12 @@ ul {
 
   li {
     display: table-row;
+
+    &.activo {
+      .conteoObras {
+        color: white;
+      }
+    }
   }
 
   .fila {
@@ -138,7 +166,10 @@ ul {
   .conteoObras {
     color: #788989;
     font-size: 0.75em;
-    padding-left: 0.4em;
+    background-color: transparent;
+    padding: 0.4em;
+    margin-left: 0.7em;
+    border-radius: 6px;
   }
 }
 
