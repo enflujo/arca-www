@@ -13,9 +13,7 @@ const props = defineProps({
 
 <template>
   <footer :class="`${completo ? 'completo' : 'dimensiones'}`">
-    <div class="texto-f-uno">
-      <span class="copy" v-html="general.guardaescobas"></span>
-    </div>
+    <div class="copy" v-html="general.guardaescobas"></div>
   </footer>
 </template>
 
