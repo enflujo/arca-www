@@ -9,12 +9,6 @@ const props = defineProps({
 });
 const cerebroArchivo = usarArchivo();
 const posiblesVistas = ['mapa', 'abc', 'colombinas'];
-const listaImgs = import.meta.glob('~~/assets/imgs/botones/*.svg', { eager: true });
-const imagenDinamica = (vista) => {
-  const img = listaImgs[`/assets/imgs/botones/boton_${vista}.svg`];
-  if (!img) return null;
-  return img.default;
-};
 
 onMounted(() => {
   if (!cerebroArchivo.vistaActual) {
@@ -48,13 +42,12 @@ function cambiarVista(llave) {
 
 <template>
   <div id="filtros">
-    <img
+    <VistaIconos
       v-for="vista in vistas"
       :key="vista"
       class="filtro"
       :class="cerebroArchivo.vistaActual === vista ? 'activo' : ''"
-      :src="imagenDinamica(vista)"
-      :alt="`Icono ${vista}`"
+      :vista="vista"
       @click="cambiarVista(vista)"
     />
   </div>
