@@ -32,7 +32,6 @@ watch(data, ({ general }) => {
   <div v-else id="portada" :style="`background-image:url(${imgPortada})`">
     <Logo class="svgClaro" />
     <h1 class="titulo logo-texto claridad">{{ general.titulo }}</h1>
-    <h2 class="subtitulo">{{ general.descripcion }}</h2>
   </div>
 </template>
 
