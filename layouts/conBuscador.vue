@@ -76,7 +76,7 @@ main {
   }
 
   main {
-    padding: 2em 1em 2em 1em;
+    padding: 2em 1em 2em 2em;
   }
 }
 
