@@ -14,7 +14,7 @@ if (!cerebro.datosCargados) {
     <MenuBuscador id="contenedorBuscador" />
 
     <div id="contenido">
-      <main role="main">
+      <main>
         <slot />
       </main>
       <Guardaescobas :completo="false" />

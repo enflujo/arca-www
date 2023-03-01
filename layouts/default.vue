@@ -13,7 +13,7 @@ if (!cerebro.datosCargados) {
     <MenuGeneral />
 
     <div id="contenido">
-      <main role="main">
+      <main>
         <slot />
       </main>
       <Guardaescobas :completo="false" />
