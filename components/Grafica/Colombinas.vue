@@ -57,7 +57,7 @@ function activar(evento, color) {
 function desactivar(evento) {
   const elemento = evento.target;
   const conteo = elemento.querySelector('.conteoObras');
-  conteo.style.backgroundColor = 'transparent';
+  conteo.style.backgroundColor = 'rgba(252, 252, 252, 0.65)';
   elemento.classList.remove('activo');
 }
 </script>
@@ -120,6 +120,7 @@ ul {
   position: relative;
   margin-top: 2em;
   padding-top: 0.7em;
+  z-index: 2;
 
   li {
     display: table-row;
@@ -176,7 +177,7 @@ ul {
   .conteoObras {
     color: #788989;
     font-size: 0.75em;
-    background-color: transparent;
+    background-color: rgba(252, 252, 252, 0.65);
     padding: 0.4em;
     margin-left: 0.7em;
     border-radius: 6px;
@@ -196,6 +197,7 @@ ul {
   overflow: visible;
   color: #788989d2;
   pointer-events: none;
+  z-index: 1;
 
   .divisionGrilla {
     display: block;
