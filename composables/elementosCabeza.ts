@@ -79,5 +79,6 @@ export default function (datosPagina: DatosPagina, ruta: string) {
       { property: 'twitter:image', content: img },
       { property: 'twitter:image:alt', content: datosPagina.banner.title },
     ],
+    link: [{ rel: 'canonical', href: url }],
   };
 }

@@ -61,7 +61,9 @@ function actualizarPagina(numeroPagina) {
 <template>
   <h1>{{ `${singular} - ${datos.nombre}` }}</h1>
   <Cargador v-if="pending" />
-  <GraficaContador :numeroObras="datos.obras_func.count" />
-  <GaleriaMosaico :obras="obras" />
-  <MenuPaginas :actualizarPagina="actualizarPagina" :numeroPaginas="numeroPaginas" />
+  <div v-else>
+    <GraficaContador :numeroObras="datos.obras_func.count" />
+    <GaleriaMosaico :obras="obras" />
+    <MenuPaginas :actualizarPagina="actualizarPagina" :numeroPaginas="numeroPaginas" />
+  </div>
 </template>

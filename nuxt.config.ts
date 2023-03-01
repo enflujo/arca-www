@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'es',
+      },
       link: [
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
         { rel: 'icon', href: '/arca-icono.svg', type: 'image/svg+xml' },
