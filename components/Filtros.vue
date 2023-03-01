@@ -54,6 +54,7 @@ function cambiarVista(llave) {
       class="filtro"
       :class="cerebroArchivo.vistaActual === vista ? 'activo' : ''"
       :src="imagenDinamica(vista)"
+      :alt="`Icono ${vista}`"
       @click="cambiarVista(vista)"
     />
   </div>
