@@ -27,11 +27,10 @@ const pagina = ref(null);
 pagina.value = paginas[0];
 
 // Nuxt normaliza los nombres de "layouts" a kebab-case.
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>
-  <MenuVistas />
   <h1>{{ pagina.titulo }}</h1>
 </template>
 

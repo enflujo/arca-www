@@ -53,7 +53,7 @@ watch(data, ({ ubicaciones_by_id }) => {
   obras.value = ubicaciones_by_id.obras;
 });
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>

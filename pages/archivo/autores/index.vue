@@ -22,7 +22,7 @@ watch(data, ({ autores: datosAutores }) => {
   autores.value = datosAutores;
 });
 
-definePageMeta({ layout: 'con-buscador' });
+definePageMeta({ layout: 'archivo' });
 </script>
 
 <template>
