@@ -51,7 +51,7 @@ watch(data, ({ general }) => {
   background-size: cover;
 }
 
-#logoArca {
+.logoArca {
   width: 125px;
   margin-top: 10px;
   display: block;
