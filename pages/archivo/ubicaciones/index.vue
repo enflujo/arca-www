@@ -8,7 +8,7 @@ const ubicaciones = ref(null);
 const valorMaximoObras = ref(0);
 const contenedorUbicaciones = ref(null);
 
-definePageMeta({ layout: 'con-buscador' });
+definePageMeta({ layout: 'archivo' });
 
 const ObrasPorPaises = gql`
   query {
@@ -76,7 +76,7 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
     <Cargador v-if="pending" />
 
     <div v-else id="contenedorUbicaciones" ref="contenedorUbicaciones">
-      <Filtros vistaInicial="mapa" :vistas="['mapa', 'abc', 'colombinas']" />
+      <VistaFiltros vistaInicial="mapa" :vistas="['mapa', 'abc', 'colombinas']" />
 
       <Mapa
         v-if="paises && ubicaciones && cerebroArchivo.vistaActual === 'mapa'"
