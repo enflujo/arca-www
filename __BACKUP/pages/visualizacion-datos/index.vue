@@ -9,7 +9,7 @@
     </template>
 
     <template v-else>
-      <Filtros paises="paises" filtro="filtro" />
+      <VistaFiltros paises="paises" filtro="filtro" />
       <!-- <div class="seleccionadas"> -->
       <div class="tercer-cuadro">
         <div class="circulo"></div>
