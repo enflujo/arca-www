@@ -37,19 +37,16 @@ const esRutaActual = (slug) => {
 
 <template>
   <aside>
-    <h2 class="nombreProyecto"><NuxtLink :to="'/'">ARCA</NuxtLink></h2>
-
     <nav id="opciones">
-      <ul class="listaMenu">
-        <li
-          v-for="opcion in opciones"
-          :key="opcion.slug"
-          class="opcion"
-          :class="esRutaActual(opcion.slug) ? 'activo' : ''"
-        >
-          <NuxtLink class="coleccion" :to="`/archivo/${opcion.slug}`">{{ opcion.nombre }}</NuxtLink>
-        </li>
-      </ul>
+      <NuxtLink
+        :to="`/archivo/${opcion.slug}`"
+        v-for="opcion in opciones"
+        :key="opcion.slug"
+        class="opcion"
+        :class="esRutaActual(opcion.slug) ? 'activo' : ''"
+      >
+        {{ opcion.nombre }}
+      </NuxtLink>
     </nav>
   </aside>
 </template>
@@ -57,53 +54,29 @@ const esRutaActual = (slug) => {
 <style lang="scss" scoped>
 @use 'sass:color';
 
-.nombreProyecto {
-  padding: 1.3em 0 1em 0;
-
-  a {
-    font-family: var(--fuentePrincipal);
-    font-weight: bold;
-    margin-left: 1.3em;
-    color: var(--mediana);
-    letter-spacing: 0.15em;
-    font-size: 1.35em;
-    overflow: hidden;
-  }
-}
-
 #opciones {
   text-transform: uppercase;
-  margin: 0 0 3em 2.5em;
-  padding: 0;
-  position: relative;
-
-  li {
-    padding: 0;
-  }
+  margin: 0 0 3em 1.8em;
+  display: flex;
+  flex-direction: column;
+  padding: 2em 0 3em 0;
 }
 
 .opcion {
   font-size: 0.9em;
   margin-top: 0.9em;
   overflow: hidden;
-  position: relative;
   padding-left: 1.4em;
+  color: var(--mediana);
+  font-family: var(--fuenteMenu);
+  font-weight: bold;
 
-  a,
-  a:link {
-    color: var(--mediana);
-    font-family: var(--fuenteMenu);
-    font-weight: bold;
-
-    &:hover {
-      color: darken($mediana, 10%);
-    }
+  &:hover {
+    color: darken($mediana, 10%);
   }
 
   &.activo {
-    a {
-      color: darken($mediana, 20%);
-    }
+    color: darken($mediana, 20%);
   }
 }
 </style>
