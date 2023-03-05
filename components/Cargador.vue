@@ -12,35 +12,31 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ElementoCargador',
-};
-</script>
-
 <style lang="scss" scoped>
 @use 'sass:math';
 
 .cargador {
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -100%);
   left: 50%;
   top: 50%;
-  position: fixed;
+  position: absolute;
+  text-align: center;
 }
 
 .logo {
   fill: var(--dolor);
+  height: 60px;
 }
 
 .texto-cargador {
   text-align: center;
+  color: var(--dolor);
+  font-size: 20px;
+  font-family: var(--fuentePrincipal);
 
   .letra-cargador {
-    display: inline-block;
-    margin: 0 5px;
-    color: var(--dolor);
-    font-size: 32px;
-    font-family: var(--fuentePrincipal);
+    margin: 0 3px;
+
     @for $i from 0 through 6 {
       &:nth-child(#{$i + 1}) {
         filter: blur(0px);
