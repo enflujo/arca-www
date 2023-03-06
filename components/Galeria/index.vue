@@ -3,7 +3,6 @@
   la misma estructura con el título en el campo `nombre`.
 -->
 <script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
 import { nombrePorSlug, obrasPorSlug } from '~~/utilidades/queries';
 
 const props = defineProps({
@@ -25,11 +24,6 @@ const props = defineProps({
 const ruta = useRoute();
 const datos = ref(null);
 const respuesta = await obtenerDatos(props.coleccion, nombrePorSlug(props.coleccion, ruta.params.slug));
-const numeroPaginas = computed(() => {
-  if (datos.value && datos.value.obras_func) {
-    return Math.ceil(datos.value.obras_func.count / cerebroArchivo.obrasPorPagina);
-  }
-});
 
 useHead(elementosCabeza(respuesta[props.coleccion][0], ruta.path)); // SEO
 
@@ -39,9 +33,8 @@ datos.value = respuesta[props.coleccion][0];
  * Operaciones en el cliente
  */
 const obras = ref([]);
-const cerebroArchivo = usarArchivo();
 
-const { data, pending, refresh } = obtenerDatosAsinc(
+const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
   obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional, ruta.query.pagina)
 );
@@ -52,10 +45,6 @@ watch(data, (datosObras) => {
     ? datosObras[props.coleccion][0].obras
     : datosObras[props.coleccion][0].obras.map((obra) => obra.obras_id);
 });
-
-function actualizarPagina(numeroPagina) {
-  refresh(obrasPorSlug(props.coleccion, ruta.params.slug, props.enTablaRelacional, numeroPagina));
-}
 </script>
 
 <template>
@@ -64,6 +53,5 @@ function actualizarPagina(numeroPagina) {
   <div v-else>
     <GraficaContador :numeroObras="datos.obras_func.count" />
     <GaleriaMosaico :obras="obras" />
-    <MenuPaginas :actualizarPagina="actualizarPagina" :numeroPaginas="numeroPaginas" />
   </div>
 </template>

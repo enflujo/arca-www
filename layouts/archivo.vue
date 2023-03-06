@@ -9,9 +9,10 @@ if (!cerebro.datosCargados) {
 </script>
 
 <template>
+  <Encabezado />
+
   <div id="contenedor">
-    <MenuGeneral />
-    <MenuBuscador id="contenedorBuscador" />
+    <MenuArchivo id="contenedorMenu" />
 
     <div id="contenido">
       <main>
@@ -27,9 +28,10 @@ if (!cerebro.datosCargados) {
   color: var(--profundidad);
   display: flex;
   justify-content: flex-end;
+  margin-top: $altoEncabezado;
 }
 
-#contenedorBuscador {
+#contenedorMenu {
   background-color: var(--verdeEsmeralda);
   position: fixed;
   overflow: auto;
@@ -47,32 +49,33 @@ main {
   min-height: 86vh;
   width: 100vw;
   z-index: 1;
+  position: relative;
 }
 
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
-  #contenedorBuscador {
+  #contenedorMenu {
     width: 60vw;
-    max-width: 450px;
+    max-width: 380px;
   }
 }
 
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
-  #contenedorBuscador {
+  #contenedorMenu {
     width: 40vw;
   }
 }
 
 // Pantallas grandes - Ahora si el menú y el contenido son visibles al tiempo.
 @media (min-width: $minPantallaGrande) {
-  #contenedorBuscador {
+  #contenedorMenu {
     width: 30vw;
   }
 
   #contenido {
     width: 70vw;
-    min-width: calc(100vw - 450px);
+    min-width: calc(100vw - 380px);
   }
 
   main {
@@ -82,7 +85,7 @@ main {
 
 //Pantallas gigantes
 @media (min-width: $minPantallaGigante) {
-  #contenedorBuscador {
+  #contenedorMenu {
     width: 20vw;
   }
 

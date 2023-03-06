@@ -18,6 +18,16 @@ export default defineNuxtConfig({
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Nunito:wght@700;800&family=Unbounded:wght@500&display=swap',
+          crossorigin: '',
+        },
+      ],
+      script: [
+        {
+          async: true,
+          defer: true,
+          src: 'https://analiticaarca.uniandes.edu.co/umami.js',
+          'data-website-id': 'bc6c51bf-8938-47db-9a3a-228fa9d14ff3',
+          'data-domains': 'arca.uniandes.edu.co',
         },
       ],
     },

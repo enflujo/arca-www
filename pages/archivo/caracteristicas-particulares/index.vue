@@ -1,5 +1,5 @@
 <script setup>
-definePageMeta({ layout: 'con-buscador' });
+definePageMeta({ layout: 'archivo' });
 const ruta = useRoute();
 const titulo = 'Características Particulares';
 useHead(elementosCabeza({ titulo }, ruta.path));

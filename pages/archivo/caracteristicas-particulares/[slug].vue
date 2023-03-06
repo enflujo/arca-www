@@ -1,5 +1,5 @@
 <script setup>
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>

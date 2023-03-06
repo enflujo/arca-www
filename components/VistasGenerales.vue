@@ -18,7 +18,7 @@ watch(data, (respuesta) => {
     <Cargador v-if="pending" />
 
     <div v-else>
-      <Filtros :vistas="['abc', 'colombinas']" vistaInicial="abc" />
+      <VistaFiltros :vistas="['abc', 'colombinas']" vistaInicial="abc" />
       <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="ruta || coleccion" />
 
       <GraficaColombinas

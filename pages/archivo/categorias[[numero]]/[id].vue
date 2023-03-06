@@ -54,7 +54,7 @@ watch(data, (respuesta) => {
   obras.value = respuesta[llave].obras;
 });
 
-definePageMeta({ layout: 'con-buscador', keepalive: true });
+definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>

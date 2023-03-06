@@ -4,7 +4,7 @@ const obras = ref([]);
 const pages = [...Array(11).keys()].splice(1);
 const pais = ref('');
 // import { crearHead } from '../../utilidades/ayudas';
-definePageMeta({ layout: 'con-buscador' });
+definePageMeta({ layout: 'archivo' });
 
 // export default {
 //   async fetch() {

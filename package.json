@@ -19,12 +19,14 @@
   },
   "dependencies": {
     "@enflujo/alquimia": "^1.0.5",
+    "@meilisearch/instant-meilisearch": "^0.11.1",
     "@pinia/nuxt": "^0.4.7",
     "mapbox-gl": "^2.13.0",
-    "nuxt": "^3.2.3"
+    "nuxt": "^3.2.3",
+    "vue-instantsearch": "^4.8.5"
   },
   "devDependencies": {
-    "@types/node": "^18.14.2",
+    "@types/node": "^18.14.6",
     "prettier": "^2.8.4",
     "sass": "^1.58.3"
   },
