@@ -79,4 +79,14 @@ const esRutaActual = (slug) => {
     color: darken($mediana, 20%);
   }
 }
+
+a,
+a:link {
+  text-decoration: none;
+  color: var(--claridad);
+
+  &:hover {
+    transition: 0.2s ease-out;
+  }
+}
 </style>
