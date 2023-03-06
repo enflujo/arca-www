@@ -17,7 +17,7 @@ const general = usarGeneral();
       </NuxtLink>
     </nav>
 
-    <Buscador />
+    <!-- <Buscador /> -->
   </div>
 </template>
 
