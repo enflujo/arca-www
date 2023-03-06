@@ -9,9 +9,8 @@ if (!cerebro.datosCargados) {
 </script>
 
 <template>
+  <Encabezado />
   <div id="contenedor">
-    <MenuGeneral />
-
     <div id="contenido">
       <main>
         <slot />
@@ -33,6 +32,8 @@ main {
   display: flex;
   flex-direction: column;
   color: var(--profundidad);
+  margin-top: $altoEncabezado;
+  position: relative;
 }
 .contenedor {
   display: flex;
