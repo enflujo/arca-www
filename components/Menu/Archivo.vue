@@ -62,7 +62,8 @@ const esRutaActual = (slug) => {
   padding: 2em 0 3em 0;
 }
 
-.opcion {
+a,
+a:link {
   font-size: 0.9em;
   margin-top: 0.9em;
   overflow: hidden;
@@ -77,16 +78,6 @@ const esRutaActual = (slug) => {
 
   &.activo {
     color: darken($mediana, 20%);
-  }
-}
-
-a,
-a:link {
-  text-decoration: none;
-  color: var(--claridad);
-
-  &:hover {
-    transition: 0.2s ease-out;
   }
 }
 </style>
