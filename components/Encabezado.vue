@@ -7,7 +7,7 @@ const general = usarGeneral();
 <template>
   <div id="encabezado">
     <NuxtLink class="nombreProyecto" :to="'/'">
-      <Logo />
+      <Logo class="logoArca" />
       <span>{{ general.titulo }}</span>
     </NuxtLink>
 
@@ -35,14 +35,6 @@ const general = usarGeneral();
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-}
-
-a,
-a:link {
-  color: $claridad;
-
-  &:hover {
-  }
 }
 
 .logoArca {
@@ -73,8 +65,10 @@ a:link {
 
   a,
   a:link {
-    border-bottom: 1px transparent;
+    border-bottom: 1px solid transparent;
     margin-right: 1em;
+    font-family: var(--fuenteMenu);
+    color: $claridad;
 
     &:hover {
       border-bottom: 1px dotted;
