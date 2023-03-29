@@ -11,12 +11,10 @@ const cerebroArchivo = usarArchivo();
 const posiblesVistas = ['mapa', 'abc', 'colombinas'];
 
 onMounted(() => {
-  if (!cerebroArchivo.vistaActual) {
-    if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
-      cerebroArchivo.vistaActual = ruta.query.vista;
-    } else {
-      cerebroArchivo.vistaActual = props.vistaInicial;
-    }
+  if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
+    cerebroArchivo.vistaActual = ruta.query.vista;
+  } else {
+    cerebroArchivo.vistaActual = props.vistaInicial;
   }
 });
 
@@ -25,6 +23,8 @@ watch(
   () => {
     if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
       cerebroArchivo.vistaActual = ruta.query.vista;
+    } else {
+      cerebroArchivo.vistaActual = '';
     }
   }
 );
