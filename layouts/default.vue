@@ -12,6 +12,7 @@ if (!cerebro.datosCargados) {
   <Encabezado />
   <div id="contenedor">
     <div id="contenido">
+      <Buscador v-if="cerebro.buscadorVisible" />
       <main>
         <slot />
       </main>

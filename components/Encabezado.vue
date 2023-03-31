@@ -17,7 +17,7 @@ const general = usarGeneral();
       </NuxtLink>
     </nav>
 
-    <!-- <Buscador /> -->
+    <BuscadorBoton />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ const general = usarGeneral();
   width: 100vw;
   background-color: rgba($color: $dolor, $alpha: 0.85);
   color: $claridad;
-  z-index: 999;
+  z-index: 8;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

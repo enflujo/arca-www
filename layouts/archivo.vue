@@ -15,6 +15,7 @@ if (!cerebro.datosCargados) {
     <MenuArchivo id="contenedorMenu" />
 
     <div id="contenido">
+      <Buscador v-if="cerebro.buscadorVisible" />
       <main>
         <slot />
       </main>
@@ -48,7 +49,6 @@ main {
 #contenido {
   min-height: 86vh;
   width: 100vw;
-  z-index: 1;
   position: relative;
 }
 

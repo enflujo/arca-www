@@ -10,6 +10,7 @@ export const usarGeneral = defineStore('general', {
     banner: null,
     descripcion: '',
     guardaescobas: '',
+    buscadorVisible: false,
   }),
 
   actions: {
