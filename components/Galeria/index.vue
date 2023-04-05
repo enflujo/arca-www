@@ -40,7 +40,7 @@ const { data, pending } = obtenerDatosAsinc(
 );
 
 watch(data, (datosObras) => {
-  // // Extraer las obras de colección directamente o de la tabla relacional.
+  // Extraer las obras de colección directamente o de la tabla relacional.
   obras.value = !props.enTablaRelacional
     ? datosObras[props.coleccion][0].obras
     : datosObras[props.coleccion][0].obras.map((obra) => obra.obras_id);

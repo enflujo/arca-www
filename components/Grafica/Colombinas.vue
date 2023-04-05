@@ -37,7 +37,7 @@ function anchoLinea(cantidad) {
 
 onMounted(() => {
   /**
-   * Ordenar por cantidad de obras en el país.
+   * Ordenar por cantidad de obras.
    */
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
   const maximo = ordenados[0].obras_func.count;
@@ -71,11 +71,17 @@ function desactivar(evento) {
         @mouseenter="activar($event, buscarColor(elemento.obras_func.count))"
         @mouseleave="desactivar"
       >
-        <NuxtLink class="nombre fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">{{
-          elemento.nombre
-        }}</NuxtLink>
+        <NuxtLink
+          class="nombre fila"
+          :to="elemento.url ? elemento.url : `/archivo/${props.coleccion}/${elemento.slug}`"
+        >
+          {{ elemento.nombreCompleto ? elemento.nombreCompleto : elemento.nombre }}
+        </NuxtLink>
 
-        <NuxtLink class="elementoColombina fila" :to="`/archivo/${props.coleccion}/${elemento.slug}`">
+        <NuxtLink
+          class="elementoColombina fila"
+          :to="elemento.url ? elemento.url : `/archivo/${props.coleccion}/${elemento.slug}`"
+        >
           <span class="colombina">
             <span
               class="lineaColombina"

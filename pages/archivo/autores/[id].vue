@@ -58,6 +58,7 @@ query {
           id,
           title
         }
+        
         autores {
           autores_id {
             nombre
@@ -86,5 +87,9 @@ definePageMeta({ layout: 'archivo', keepalive: true });
 <template>
   <h1>Autor: {{ datosAutor.nombre }} {{ datosAutor.apellido }}</h1>
   <Cargador v-if="pending" />
-  <GaleriaMosaico v-else :obras="obras" />
+
+  <div v-else>
+    <GraficaContador :numeroObras="datosAutor.obras_func.count" />
+    <GaleriaMosaico :obras="obras" />
+  </div>
 </template>

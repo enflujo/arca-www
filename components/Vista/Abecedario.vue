@@ -32,8 +32,8 @@ function procesarDatos(llave) {
     let url = '';
 
     if (llave === 'apellido') {
-      url = `/archivo/${props.coleccion}/${instancia.id}`;
-      texto = `${instancia.apellido}, ${instancia.nombre} (${instancia.obras_func.count})`;
+      url = instancia.url;
+      texto = `${instancia.nombreCompleto} (${instancia.obras_func.count})`;
     } else {
       url = `/archivo/${props.coleccion}/${instancia.slug}`;
       texto = `${instancia.nombre} (${instancia.obras_func.count})`;
