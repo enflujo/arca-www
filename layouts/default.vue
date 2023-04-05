@@ -22,8 +22,6 @@ if (!cerebro.datosCargados) {
 </template>
 
 <style lang="scss" scoped>
-@use 'sass:color';
-
 main {
   display: flex;
   flex-direction: column;
@@ -36,9 +34,7 @@ main {
   margin-top: $altoEncabezado;
   position: relative;
 }
-.contenedor {
-  display: flex;
-}
+
 // Teléfonos horizontal
 @media (min-width: $minCelular) {
 }
