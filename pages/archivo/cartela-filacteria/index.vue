@@ -7,5 +7,5 @@ useHead(elementosCabeza({ titulo }, ruta.path));
 
 <template>
   <h1>{{ titulo }}</h1>
-  <VistasGenerales coleccion="cartelas_filacterias" ruta="cartela-filacteria" />
+  <Vista coleccion="cartelas_filacterias" ruta="cartela-filacteria" />
 </template>
