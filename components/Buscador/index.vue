@@ -42,6 +42,10 @@ function cerrar(evento) {
     cerebroGeneral.buscadorVisible = false;
   }
 }
+
+function salir() {
+  cerebroGeneral.buscadorVisible = false;
+}
 </script>
 
 <template>
@@ -73,7 +77,6 @@ function cerrar(evento) {
       />
 
       <ais-pagination
-        :padding="8"
         :class-names="{
           'ais-Pagination': 'contenedorPaginas',
           'ais-Pagination-list': 'listaPaginas',
@@ -91,7 +94,7 @@ function cerrar(evento) {
       >
         <template v-slot:item="{ item }">
           <div class="campoImagen" v-if="item.imagen">
-            <NuxtLink :to="`/archivo/obras/${item.registro}`">
+            <NuxtLink :to="`/archivo/obras/${item.registro}`" @click.native="salir">
               <img class="imagen" :src="urlImagen(item.imagen, 'galeria')" :alt="item.titulo" />
             </NuxtLink>
           </div>
@@ -125,11 +128,14 @@ function cerrar(evento) {
   left: 0;
   background-color: rgba($dolor, 0.75);
 
+  :deep(.buscadorContenedor) {
+    width: 80vw;
+    margin: 2em auto 1em auto;
+  }
+
   :deep(.buscadorFormulario) {
     position: relative;
     display: block;
-    width: 80vw;
-    margin: 2em auto 1em auto;
   }
 
   :deep(.buscadorElemento) {
@@ -167,7 +173,7 @@ function cerrar(evento) {
 #resultado {
   padding: 2em;
   width: 80vw;
-  height: 100%;
+  height: calc(100vh - 180px);
   overflow: auto;
   margin: 0 auto;
   background-color: var(--claridad);
@@ -178,8 +184,6 @@ function cerrar(evento) {
   margin-bottom: 1em;
 
   .campoImagen {
-    padding: 1em;
-
     margin-right: 2em;
 
     .imagen {
@@ -196,11 +200,8 @@ function cerrar(evento) {
   }
 
   .campos {
-    // width: 80%;
-    // line-height: 1.2;
-
-    .campo {
-    }
+    flex: 1;
+    font-size: 0.85em;
 
     .titulo {
       font-weight: bold;
@@ -213,18 +214,20 @@ mark {
   background-color: yellow;
 }
 
+:deep(.contenedorPaginas) {
+  width: 80vw;
+  margin: 0 auto;
+  background-color: var(--claridad);
+  padding: 1em 0;
+}
+
 :deep(.listaPaginas) {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background-color: var(--claridad);
-  width: 80vw;
-  padding: 1em 0;
-  margin: 0 auto;
 
   .pagina {
     padding: 0.3em;
-    // background-color: var(--verdeEsmeralda3);
     border: 1px solid;
     margin: 0 0.3em 0 0.3em;
 
