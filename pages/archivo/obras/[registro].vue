@@ -1,7 +1,6 @@
 <script setup>
 import { gql, urlImagen } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const obra = ref(null);
 const ruta = useRoute();
 
@@ -9,146 +8,60 @@ const Obra = gql`
   query {
     obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
       titulo
+      fecha_inicial
+      fecha_final
       sintesis
       comentario_bibliografico
       iconotexto
-      categoria1 {
-        nombre
-        descripcion
-      }
-      categoria2 {
-        nombre
-      }
-      categoria3 {
-        nombre
-      }
-      categoria4 {
-        nombre
-      }
-      categoria5 {
-        nombre
-      }
-      categoria6 {
-        nombre
-      }
-      fecha_inicial
-      fecha_final
-      fuente {
-        descripcion
-      }
-      imagen {
-        id
-        title
-      }
-      donante {
-        slug
-        nombre
-      }
-      ciudad_origen {
-        nombre
-        pais {
-          slug
-          nombre
-        }
-      }
-      ubicacion {
-        nombre
-        ciudad {
-          nombre
-          pais {
-            slug
-            nombre
-          }
-        }
-      }
-      autores {
-        autores_id {
-          id
-          nombre
-          apellido
-        }
-      }
-      relato_visual {
-        slug
-        nombre
-      }
-      fisiognomica {
-        slug
-        nombre
-      }
-      fisiognomica_imagen {
-        slug
-        nombre
-      }
-      cartela_filacteria {
-        slug
-        nombre
-      }
-      rostro {
-        slug
-        nombre
-      }
-      tipo_gestual {
-        nombre
-      }
-      complejo_gestual {
-        nombre
-      }
-      gestos {
-        gestos_id {
-          slug
-          nombre
-        }
-      }
-      tecnicas {
-        tecnicas_id {
-          slug
-          nombre
-        }
-      }
-      objetos{
-        objetos_id {
-          slug
-          nombre
-        }
-      }
-      personajes{
-        personajes_id {
-          slug
-          nombre
-        }
-      }
-      simbolos{
-        simbolos_id {
-          slug
-          nombre
-        }
-      }
-      escenarios{
-        escenarios_id {
-          slug
-          nombre
-        }
-      }
-      descriptores{
-        descriptores_id {
-          slug
-          nombre
-        }
-      }
-      caracteristicas{
-        caracteristicas_id {
-          slug
-          nombre
-        }
-      }
+      fuente { descripcion }
+      imagen { id title }
+
+      categoria1 { id nombre }
+      categoria2 { id nombre }
+      categoria3 { id nombre }
+      categoria4 { id nombre }
+      categoria5 { id nombre }
+      categoria6 { id nombre }
+      
+      donante { slug nombre }
+      relato_visual { slug nombre }
+      fisiognomica { slug nombre }
+      fisiognomica_imagen { slug nombre }
+      cartela_filacteria { slug nombre }
+      rostro { slug nombre }
+      tipo_gestual { slug nombre }
+      complejo_gestual { slug nombre }
+
+      ciudad_origen { nombre pais { slug nombre } }
+      ubicacion { nombre ciudad { nombre pais { slug nombre } } }
+      
+      autores { autores_id { id nombre apellido } }
+      gestos { gestos_id { slug nombre } }
+      tecnicas { tecnicas_id { slug nombre } }
+      objetos { objetos_id { slug nombre } }
+      personajes { personajes_id { slug nombre } }
+      simbolos { simbolos_id { slug nombre } }
+      escenarios { escenarios_id { slug nombre } }
+      descriptores { descriptores_id { slug nombre } }
+      caracteristicas { caracteristicas_id { slug nombre } }
     }
   }
 `;
 
 const { obras } = await obtenerDatos('obra', Obra);
+
+// Aplanar categorias en una sola lista/array
+obras[0].categorias = [];
+
+for (let i = 1; i <= 6; i++) {
+  const coleccion = `categoria${i}`;
+  if (obras[0][coleccion]) {
+    obras[0][coleccion].ruta = coleccion;
+    obras[0].categorias.push(obras[0][coleccion]);
+  }
+}
+
 obra.value = obras[0];
-cargando.value = false;
 
 definePageMeta({ layout: 'default', keepalive: true });
 </script>
@@ -158,12 +71,13 @@ definePageMeta({ layout: 'default', keepalive: true });
     <h1>{{ obra.titulo }}</h1>
     <NuxtLink :to="`/archivo/autores/${obra.autores[0].autores_id.id}`">
       <h2>
-        <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }} </span>
+        <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }}</span>
         {{ obra.autores[0].autores_id.apellido }}
       </h2></NuxtLink
     >
 
     <div id="contenedorImagen"><img class="imagen" :src="urlImagen(obra.imagen.id)" :alt="obra.titulo" /></div>
+
     <div id="contenedorInfo">
       <div class="datos">
         <span class="tituloDato">Fecha:</span> {{ obra.fecha_inicial }}
@@ -173,9 +87,9 @@ definePageMeta({ layout: 'default', keepalive: true });
       <div class="datos" v-if="obra.tecnicas.length">
         <span class="tituloDato">Técnica:</span>
         <span v-for="tecnica in obra.tecnicas" :key="tecnica.tecnicas_id.nombre">
-          <NuxtLink :to="`/archivo/tecnicas/${tecnica.tecnicas_id.slug}`">{{
-            tecnica.tecnicas_id.nombre
-          }}</NuxtLink></span
+          <NuxtLink :to="`/archivo/tecnicas/${tecnica.tecnicas_id.slug}`">
+            {{ tecnica.tecnicas_id.nombre }}
+          </NuxtLink></span
         >
       </div>
 
@@ -183,9 +97,9 @@ definePageMeta({ layout: 'default', keepalive: true });
       <div class="datos">
         <span class="tituloDato">Ubicación actual:</span>
         <span v-if="obra.ubicacion.nombre">
-          {{ obra.ubicacion.nombre }} ({{ obra.ubicacion.ciudad.nombre
-          }}<NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`"
-            >, {{ obra.ubicacion.ciudad.pais.nombre }}</NuxtLink
+          {{ obra.ubicacion.nombre }} ({{ obra.ubicacion.ciudad.nombre }}
+          <NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">
+            , {{ obra.ubicacion.ciudad.pais.nombre }} </NuxtLink
           >)</span
         >
       </div>
@@ -204,80 +118,75 @@ definePageMeta({ layout: 'default', keepalive: true });
         "
       >
         <span class="tituloDato">Ciudad de origen:</span> {{ obra.ciudad_origen.nombre }},
-        <NuxtLink v-if="obra.ciudad_origen.pais" :to="`/archivo/paises/${obra.ciudad_origen.pais.slug}`"
-          >{{ obra.ciudad_origen.pais.nombre }}
+        <NuxtLink v-if="obra.ciudad_origen.pais" :to="`/archivo/paises/${obra.ciudad_origen.pais.slug}`">
+          {{ obra.ciudad_origen.pais.nombre }}
         </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.donante.nombre">
         <span class="tituloDato">Donante:</span>
-        <NuxtLink :to="`/archivo/donantes/${obra.donante.slug}`"> {{ obra.donante.nombre }} </NuxtLink>
+        <NuxtLink :to="`/archivo/donantes/${obra.donante.slug}`">
+          {{ obra.donante.nombre }}
+        </NuxtLink>
       </div>
 
-      <!-- POR HACER: Arreglar enlaces -->
-      <div class="datos" v-if="obra.categoria1.nombre">
+      <div class="datos" v-if="obra.categorias.length">
         <span class="tituloDato">Categorías:</span>
+
         <ul class="lista">
-          <li v-if="obra.categoria1.nombre">
-            <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria1.nombre }}</NuxtLink>
-          </li>
-          <li v-if="obra.categoria2 && obra.categoria2.nombre">
-            <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria2.nombre }}</NuxtLink>
-          </li>
-          <li v-if="obra.categoria3 && obra.categoria3.nombre">
-            <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria3.nombre }}</NuxtLink>
-          </li>
-          <li v-if="obra.categoria4 && obra.categoria4.nombre">
-            <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria4.nombre }}</NuxtLink>
-          </li>
-          <li v-if="obra.categoria5 && obra.categoria5.nombre">
-            <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria5.nombre }}</NuxtLink>
-          </li>
-          <li v-if="obra.categoria6 && obra.categoria6.nombre">
-            <NuxtLink :to="`/archivo/categorias/`">{{ obra.categoria6.nombre }}</NuxtLink>
+          <li v-for="(categoria, i) in obra.categorias" :key="`categoria${categoria.id}`">
+            <NuxtLink :to="`/archivo/categorias${i + 1}/${obra[categoria.ruta].id}`">{{
+              obra[categoria.ruta].nombre
+            }}</NuxtLink>
           </li>
         </ul>
       </div>
 
       <div class="datos" v-if="obra.relato_visual.nombre">
         <span class="tituloDato">Relato visual:</span>
-        <NuxtLink :to="`/archivo/relatos-visuales/${obra.relato_visual.slug}`">{{
-          obra.relato_visual.nombre
-        }}</NuxtLink>
+        <NuxtLink :to="`/archivo/relatos-visuales/${obra.relato_visual.slug}`">
+          {{ obra.relato_visual.nombre }}
+        </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.fisiognomica.nombre">
         <span class="tituloDato">Fisiognómica:</span>
-        <NuxtLink :to="`/archivo/fisiognomica/${obra.fisiognomica.slug}`"> {{ obra.fisiognomica.nombre }}</NuxtLink>
+        <NuxtLink :to="`/archivo/fisiognomica/${obra.fisiognomica.slug}`">
+          {{ obra.fisiognomica.nombre }}
+        </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.fisiognomica_imagen.nombre">
         <span class="tituloDato">Fisiognómica Imagen:</span>
         <NuxtLink :to="`/archivo/fisiognomica-imagen/${obra.fisiognomica_imagen.slug}`">
-          {{ obra.fisiognomica_imagen.nombre }}</NuxtLink
-        >
+          {{ obra.fisiognomica_imagen.nombre }}
+        </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.cartela_filacteria.nombre">
         <span class="tituloDato">Cartela - Filacteria:</span>
         <NuxtLink :to="`/archivo/cartela-filacteria/${obra.cartela_filacteria.slug}`">
-          {{ obra.cartela_filacteria.nombre }}</NuxtLink
-        >
+          {{ obra.cartela_filacteria.nombre }}
+        </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.rostro.nombre">
         <span class="tituloDato">Rostro:</span>
-        <NuxtLink :to="`/archivo/rostros/${obra.rostro.slug}`"> {{ obra.rostro.nombre }} </NuxtLink>
+        <NuxtLink :to="`/archivo/rostros/${obra.rostro.slug}`">
+          {{ obra.rostro.nombre }}
+        </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.tipo_gestual.nombre">
         <span class="tituloDato">Tipo gestual:</span>
-        <span> {{ obra.tipo_gestual.nombre }}</span>
+        <NuxtLink :to="`/archivo/tipo-gestual/${obra.tipo_gestual.slug}`">{{ obra.tipo_gestual.nombre }}</NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.complejo_gestual.nombre">
         <span class="tituloDato">Complejo gestual:</span>
-        <span> {{ obra.complejo_gestual.nombre }}</span>
+        <NuxtLink :to="`/archivo/complejo-gestual/${obra.complejo_gestual.slug}`">
+          {{ obra.complejo_gestual.nombre }}
+        </NuxtLink>
       </div>
 
       <!--El 'v-if' comprueba que la lista de gestos contenga elementos y que no todos sean "No". 
@@ -305,8 +214,8 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Objetos:</span>
         <ul class="lista">
           <li v-for="objeto in obra.objetos" :key="objeto.objetos_id.nombre">
-            <NuxtLink v-if="objeto.objetos_id.nombre" :to="`/archivo/objetos/${objeto.objetos_id.slug}`"
-              >{{ objeto.objetos_id.nombre }}
+            <NuxtLink v-if="objeto.objetos_id.nombre" :to="`/archivo/objetos/${objeto.objetos_id.slug}`">
+              {{ objeto.objetos_id.nombre }}
             </NuxtLink>
           </li>
         </ul>
@@ -387,7 +296,7 @@ definePageMeta({ layout: 'default', keepalive: true });
       </div>
 
       <div class="datos" v-if="obra.sintesis">
-        <span class="tituloDato">Síntesis:</span> <span> {{ obra.sintesis }}</span>
+        <span class="tituloDato">Síntesis:</span> <span>{{ obra.sintesis }}</span>
       </div>
 
       <div class="datos" v-if="obra.fuente.descripcion">
@@ -404,22 +313,26 @@ definePageMeta({ layout: 'default', keepalive: true });
   margin: 2em auto;
   text-align: center;
 }
+
 #contenedorInfo {
   margin: 0 auto;
   width: 95%;
   display: flex;
   flex-direction: column;
 }
+
 .imagen {
   height: auto;
   width: 50vw;
   margin: 1em;
 }
+
 .datos {
   display: flex;
   text-align: left;
   font-family: var(--fuenteParrafos);
 }
+
 .tituloDato {
   font-weight: bold;
   margin-right: 0.5em;
