@@ -10,7 +10,7 @@ function abrirBuscador() {
 <template>
   <div id="botonBuscar" @click="abrirBuscador">
     <span>Buscar...</span>
-    <img id="lupa" src="~~/assets/imgs/lupa.svg" />
+    <img id="lupa" src="~~/assets/imgs/lupa.svg" alt="Icono de lupa en buscador" />
   </div>
 </template>
 

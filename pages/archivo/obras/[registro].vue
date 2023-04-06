@@ -301,7 +301,7 @@ definePageMeta({ layout: 'default', keepalive: true });
 
       <div class="datos" v-if="obra.fuente.descripcion">
         <span class="tituloDato">Fuente:</span>
-        <span v-html="obra.fuente.descripcion"></span>
+        <div v-html="obra.fuente.descripcion"></div>
       </div>
     </div>
   </div>

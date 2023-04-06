@@ -16,9 +16,11 @@ const props = defineProps({
       </NuxtLink>
 
       <div class="infoImagen">
-        <NuxtLink :to="`/archivo/obras/${obra.registro}`">
-          <h3 class="titulo">{{ obra.titulo }}</h3>
-        </NuxtLink>
+        <h3 class="titulo">
+          <NuxtLink :to="`/archivo/obras/${obra.registro}`">
+            {{ obra.titulo }}
+          </NuxtLink>
+        </h3>
 
         <NuxtLink v-if="obra.autores.length" class="autor" :to="`/archivo/autores/${obra.autores[0].autores_id.id}`">
           {{ obra.autores[0].autores_id.nombre }} {{ obra.autores[0].autores_id.apellido }}
