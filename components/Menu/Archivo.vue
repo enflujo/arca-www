@@ -1,5 +1,7 @@
 <script setup>
+const props = defineProps({ visible: Boolean, cerrar: Function });
 const ruta = useRoute();
+const contenedorMenu = ref(null);
 
 const opciones = [
   { nombre: 'Autores', slug: 'autores' },
@@ -33,10 +35,24 @@ const esRutaActual = (slug) => {
   }
   return partes.includes(slug);
 };
+
+onMounted(() => {
+  document.body.addEventListener('click', clicFuera);
+});
+
+onUnmounted(() => {
+  document.body.removeEventListener('click', clicFuera);
+});
+
+function clicFuera(evento) {
+  if (!(contenedorMenu.value === evento.target || contenedorMenu.value.contains(evento.target))) {
+    props.cerrar();
+  }
+}
 </script>
 
 <template>
-  <aside>
+  <aside ref="contenedorMenu" :class="visible ? 'visible' : ''">
     <nav id="opciones">
       <NuxtLink
         :to="`/archivo/${opcion.slug}`"
@@ -44,6 +60,7 @@ const esRutaActual = (slug) => {
         :key="opcion.slug"
         class="opcion"
         :class="esRutaActual(opcion.slug) ? 'activo' : ''"
+        @click.native="cerrar"
       >
         {{ opcion.nombre }}
       </NuxtLink>

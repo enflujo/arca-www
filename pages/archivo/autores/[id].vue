@@ -71,14 +71,10 @@ query {
 }
 `;
 
-const { data, error, pending } = obtenerDatosAsinc(`obrasAutor${datosAutor.id}`, ObrasAutor);
+const { data, pending } = obtenerDatosAsinc(`obrasAutor${datosAutor.id}`, ObrasAutor);
 
 watch(data, ({ autores_by_id }) => {
   obras.value = autores_by_id.obras.map((obra) => obra.obras_id);
-});
-
-watch(error, (errores) => {
-  console.error(errores);
 });
 
 definePageMeta({ layout: 'archivo', keepalive: true });

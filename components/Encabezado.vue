@@ -8,7 +8,7 @@ const general = usarGeneral();
   <div id="encabezado">
     <NuxtLink class="nombreProyecto" :to="'/'">
       <Logo class="logoArca" />
-      <span>{{ general.titulo }}</span>
+      <span id="titulo">{{ general.titulo }}</span>
     </NuxtLink>
 
     <nav id="menuPrincipal">
@@ -40,7 +40,10 @@ const general = usarGeneral();
 .logoArca {
   fill: $claridad;
   height: 0.8em;
-  padding-right: 0.3em;
+}
+
+#titulo {
+  display: none;
 }
 
 .nombreProyecto {
@@ -78,5 +81,28 @@ const general = usarGeneral();
       border-bottom: 1px solid;
     }
   }
+}
+
+// Pantallas medianas (Tablets)
+@media (min-width: $minTablet) {
+  .logoArca {
+    padding-right: 0.3em;
+  }
+
+  #titulo {
+    display: block;
+  }
+}
+
+// Dispositivos grandes y pantallas medianas
+@media (min-width: $minPantalla) {
+}
+
+// Pantallas grandes
+@media (min-width: $minPantallaGrande) {
+}
+
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
 }
 </style>
