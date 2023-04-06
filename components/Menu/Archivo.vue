@@ -14,6 +14,8 @@ const opciones = [
   { nombre: 'Descriptores', slug: 'descriptores' },
   { nombre: 'Objetos', slug: 'objetos' },
   { nombre: 'Gestos', slug: 'gestos' },
+  { nombre: 'Tipo Gestual', slug: 'tipo-gestual' },
+  { nombre: 'Complejo Gestual', slug: 'complejo-gestual' },
   { nombre: 'Cartela - Filacteria', slug: 'cartela-filacteria' },
   { nombre: 'Símbolos', slug: 'simbolos' },
   { nombre: 'Características Particulares', slug: 'caracteristicas-particulares' },
