@@ -64,6 +64,7 @@ for (let i = 1; i <= 6; i++) {
 obra.value = obras[0];
 
 definePageMeta({ layout: 'default', keepalive: true });
+useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }, ruta.path));
 </script>
 
 <template>

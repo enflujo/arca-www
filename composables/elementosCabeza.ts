@@ -23,8 +23,8 @@ const cerebroGeneral = usarGeneral();
  * @returns Título para el head con estilos personalizados.
  */
 const crearTitulo = (subtitulo: string | undefined) => {
-  const cabeza = `..:: ${cerebroGeneral.titulo} ::..`;
-  return subtitulo ? `${cabeza} | ${subtitulo}` : cabeza;
+  const cabeza = `: ${cerebroGeneral.titulo} :`;
+  return subtitulo ? `${subtitulo} | ${cabeza}` : cabeza;
 };
 
 /**
@@ -36,12 +36,12 @@ const crearTitulo = (subtitulo: string | undefined) => {
  *   return elementosCabeza({nombre, descripcion, banner}, ruta.path);
  * }
  * ```
- * @param {object} datosPagina Los datos para SEO.
- * @param {string} datosPagina.nombre El título de la página actual.
- * @param {string} datosPagina.descripcion La descripción corta de la página actual.
- * @param {object} datosPagina.banner Objeto con `id` y `title` que describe la imagen en el API.
- * @param {string} ruta Ruta de la página actual, se puede sacar con `ruta.path`.
- * @returns {object} El objeto con todas las partes de meta tags.
+ * @param datosPagina Los datos para SEO.
+ * @param datosPagina.nombre El título de la página actual.
+ * @param datosPagina.descripcion La descripción corta de la página actual.
+ * @param datosPagina.banner Objeto con `id` y `title` que describe la imagen en el API.
+ * @param ruta Ruta de la página actual, se puede sacar con `ruta.path`.
+ * @returns El objeto con todas las partes de meta tags.
  */
 
 export default function (datosPagina: DatosPagina, ruta: string) {
@@ -72,7 +72,6 @@ export default function (datosPagina: DatosPagina, ruta: string) {
       { property: 'og:image', content: img },
       // Twitter
       { property: 'twitter:card', content: 'summary_large_image' },
-      { property: 'twitter:site', content: '@labenflujo' },
       { property: 'twitter:url', content: url },
       { property: 'twitter:title', content: title },
       { property: 'twitter:description', content: datosPagina.descripcion },

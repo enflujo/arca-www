@@ -59,20 +59,6 @@ export const extraerPrimeraLetra = (texto) => {
 
 export const gql = String.raw;
 
-// export const obtenerDatos = async (query) => {
-//   const peticion = await fetch(`${apiBase}/graphql`, {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({ query }),
-//   }).then((respuesta) => respuesta.json());
-
-//   if (peticion.errors) {
-//     throw new Error(JSON.stringify(peticion.errors, null, 2));
-//   }
-
-//   return peticion.data;
-// };
-
 export function ordenarPorNombre(lista) {
   lista.sort((a, b) => {
     const nombreA = a.nombre.toUpperCase(); // ignorar mayúsculas y minúsculas
