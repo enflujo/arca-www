@@ -2,9 +2,19 @@
 import { usarGeneral } from '~~/cerebros/general';
 
 const cerebro = usarGeneral();
+const menuVisible = ref(false);
 
 if (!cerebro.datosCargados) {
   await useAsyncData('general', cerebro.cargarGeneral);
+}
+
+function abrirOCerrar(evento) {
+  evento.stopPropagation();
+  menuVisible.value = !menuVisible.value;
+}
+
+function cerrar() {
+  menuVisible.value = false;
 }
 </script>
 
@@ -12,7 +22,13 @@ if (!cerebro.datosCargados) {
   <Encabezado />
 
   <div id="contenedor">
-    <MenuArchivo id="contenedorMenu" />
+    <div class="botonMenu" @click="abrirOCerrar" :class="menuVisible ? 'cerrar' : 'abrir'">
+      <span class="linea linea1"></span>
+      <span class="linea linea2"></span>
+      <span class="linea linea3"></span>
+    </div>
+
+    <MenuArchivo id="contenedorMenu" :visible="menuVisible" :cerrar="cerrar" />
 
     <div id="contenido">
       <Buscador v-if="cerebro.buscadorVisible" />
@@ -33,17 +49,22 @@ if (!cerebro.datosCargados) {
 }
 
 #contenedorMenu {
-  background-color: var(--verdeEsmeralda);
+  background-color: rgba($color: $verdeEsmeralda, $alpha: 0.92);
   position: fixed;
   overflow: auto;
-  width: 100vw;
+  width: 0;
   height: 100vh;
   left: 0;
   z-index: 9;
+
+  &.visible {
+    width: 100vw;
+  }
 }
 
 main {
   background-color: var(--amarilloPetalo);
+  padding: 2em 1em 2em 5em;
 }
 
 #contenido {
@@ -52,49 +73,101 @@ main {
   position: relative;
 }
 
+.botonMenu {
+  height: 3rem;
+  width: 3rem;
+  position: fixed;
+  top: 5.6em;
+  left: 1em;
+  padding: 0.5rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 0.25em;
+  cursor: pointer;
+  z-index: 10;
+
+  .linea {
+    background-color: $profundidad;
+    border-radius: 1em;
+    width: 2rem;
+    height: 0.25rem;
+  }
+
+  .linea1 {
+    transform-origin: 0% 0%;
+    transition: transform 100ms ease-in-out;
+  }
+
+  .linea3 {
+    transform-origin: 0% 100%;
+    transition: transform 100ms ease-in-out;
+  }
+
+  &.cerrar {
+    top: 4em;
+    left: 85vw;
+    .linea {
+      background-color: $claridad;
+    }
+
+    .linea1 {
+      display: block;
+      transform: rotate(45deg);
+    }
+
+    .linea2 {
+      opacity: 0;
+    }
+
+    .linea3 {
+      display: block;
+      transform: rotate(-45deg);
+    }
+  }
+}
+
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   #contenedorMenu {
-    width: 60vw;
-    max-width: 380px;
+    &.visible {
+      width: 380px;
+    }
+  }
+
+  .botonMenu {
+    &.cerrar {
+      left: 300px;
+    }
   }
 }
 
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
-  #contenedorMenu {
-    width: 40vw;
-  }
 }
 
 // Pantallas grandes - Ahora si el menú y el contenido son visibles al tiempo.
 @media (min-width: $minPantallaGrande) {
   #contenedorMenu {
-    width: 30vw;
+    width: 380px;
+    background-color: $verdeEsmeralda;
   }
 
   #contenido {
-    width: 70vw;
-    min-width: calc(100vw - 380px);
+    width: calc(100vw - 380px);
   }
 
-  main {
-    padding: 2em 1em 2em 2em;
-  }
-}
-
-//Pantallas gigantes
-@media (min-width: $minPantallaGigante) {
-  #contenedorMenu {
-    width: 20vw;
-  }
-
-  #contenido {
-    width: 80vw;
+  .botonMenu {
+    display: none;
   }
 
   main {
     padding: 2em 5em 2em 3em;
   }
+}
+
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
 }
 </style>
