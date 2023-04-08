@@ -4,10 +4,14 @@ import { usarGeneral } from '~~/cerebros/general';
 import { urlImagen } from '~~/utilidades/ayudas';
 const clienteBuscador = instantMeiliSearch(
   'https://apiarca.uniandes.edu.co/arca-buscador',
-  '0dad4b83-fc4f-48ce-a656-f5ec7e6c3f49'
+  '0dad4b83-fc4f-48ce-a656-f5ec7e6c3f49',
+  {
+    // placeholderSearch: false,
+    primaryKey: 'registro',
+  }
 );
 const cerebroGeneral = usarGeneral();
-const buscador = ref(null);
+const resultados = ref(null);
 
 const campos = [
   ['registro', 'Registro'],
@@ -46,17 +50,17 @@ function cerrar(evento) {
 function salir() {
   cerebroGeneral.buscadorVisible = false;
 }
+
+function cambioDePagina() {
+  if (resultados.value && resultados.value.$el) {
+    resultados.value.$el.scrollTop = 0;
+  }
+}
 </script>
 
 <template>
   <ClientOnly>
-    <ais-instant-search
-      id="buscador"
-      ref="buscador"
-      :search-client="clienteBuscador"
-      index-name="obras"
-      @click="cerrar"
-    >
+    <ais-instant-search id="buscador" :search-client="clienteBuscador" index-name="obras" @click="cerrar">
       <ais-configure :attributesToSnippet="['sintesis:20']" :snippetEllipsisText="'...'" :hits-per-page.camel="11" />
 
       <ais-search-box
@@ -77,6 +81,7 @@ function salir() {
       />
 
       <ais-pagination
+        @page-change="cambioDePagina"
         :class-names="{
           'ais-Pagination': 'contenedorPaginas',
           'ais-Pagination-list': 'listaPaginas',
@@ -85,8 +90,10 @@ function salir() {
           'ais-Pagination-item--disabled': 'paginaDesabilitada',
         }"
       />
+
       <ais-hits
-        id="resultado"
+        id="resultados"
+        ref="resultados"
         :class-names="{
           'ais-Hits-list': 'listaResultados',
           'ais-Hits-item': 'resultado',
@@ -170,7 +177,7 @@ function salir() {
   }
 }
 
-#resultado {
+#resultados {
   padding: 2em;
   width: 80vw;
   height: calc(100vh - 180px);
@@ -227,9 +234,12 @@ mark {
   justify-content: center;
 
   .pagina {
-    padding: 0.3em;
     border: 1px solid;
     margin: 0 0.3em 0 0.3em;
+
+    a {
+      padding: 0.3em;
+    }
 
     &:hover,
     &.paginaActual {
@@ -237,7 +247,7 @@ mark {
     }
 
     &.paginaDesabilitada {
-      opacity: 0.2;
+      opacity: 0.1;
     }
   }
 }
