@@ -14,18 +14,16 @@ watch(data, (respuesta) => {
 </script>
 
 <template>
-  <ClientOnly>
-    <Cargador v-if="pending" />
+  <Cargador v-if="pending" />
 
-    <div v-else>
-      <VistaFiltros :vistas="['abc', 'colombinas']" vistaInicial="abc" />
-      <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="ruta || coleccion" />
+  <div v-else>
+    <VistaFiltros :vistas="['abc', 'colombinas']" vistaInicial="abc" />
+    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="ruta || coleccion" />
 
-      <GraficaColombinas
-        v-if="cerebroArchivo.vistaActual === 'colombinas'"
-        :datos="datos"
-        :coleccion="ruta || coleccion"
-      />
-    </div>
-  </ClientOnly>
+    <GraficaColombinas
+      v-if="cerebroArchivo.vistaActual === 'colombinas'"
+      :datos="datos"
+      :coleccion="ruta || coleccion"
+    />
+  </div>
 </template>

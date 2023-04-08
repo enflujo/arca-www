@@ -70,24 +70,22 @@ watch(data, ({ paises: datosPaises, ubicaciones: datosUbicaciones }) => {
 </script>
 
 <template>
-  <ClientOnly>
-    <h1>Ubicaciones</h1>
+  <h1>Ubicaciones</h1>
 
-    <Cargador v-if="pending" />
+  <Cargador v-if="pending" />
 
-    <div v-else id="contenedorUbicaciones" ref="contenedorUbicaciones">
-      <VistaFiltros vistaInicial="mapa" :vistas="['mapa', 'abc', 'colombinas']" />
+  <div v-else id="contenedorUbicaciones" ref="contenedorUbicaciones">
+    <VistaFiltros vistaInicial="mapa" :vistas="['mapa', 'abc', 'colombinas']" />
 
-      <Mapa
-        v-if="paises && ubicaciones && cerebroArchivo.vistaActual === 'mapa'"
-        :paises="paises"
-        :ubicaciones="ubicaciones"
-        :max="valorMaximoObras"
-      />
+    <Mapa
+      v-if="paises && ubicaciones && cerebroArchivo.vistaActual === 'mapa'"
+      :paises="paises"
+      :ubicaciones="ubicaciones"
+      :max="valorMaximoObras"
+    />
 
-      <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" coleccion="paises" />
+    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" coleccion="paises" />
 
-      <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" coleccion="paises" />
-    </div>
-  </ClientOnly>
+    <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" coleccion="paises" />
+  </div>
 </template>

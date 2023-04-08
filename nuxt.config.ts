@@ -44,4 +44,8 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
+
+  build: {
+    transpile: ['@enflujo/alquimia'],
+  },
 });
