@@ -77,7 +77,9 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
       </h2></NuxtLink
     >
 
-    <div id="contenedorImagen"><img class="imagen" :src="urlImagen(obra.imagen.id)" :alt="obra.titulo" /></div>
+    <div id="contenedorImagen">
+      <img class="imagen" :src="urlImagen(obra.imagen.id, 'obra')" :alt="obra.titulo" />
+    </div>
 
     <div id="contenedorInfo">
       <div class="datos">
