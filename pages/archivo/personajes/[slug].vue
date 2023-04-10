@@ -28,8 +28,51 @@ query {
 `;
 
 const respuesta = await obtenerDatos(`personaje${ruta.params.slug}`, queryPersonaje);
+// Procesar datos generales
+
+function procesarDatosGenerales(datos) {
+  const {
+    beatificacion_canonizacion_desde,
+    beatificacion_canonizacion_desde_anotacion,
+    beatificacion_canonizacion_hasta,
+    beatificacion_canonizacion_hasta_anotacion,
+  } = datos;
+
+  datos.fechas = [];
+
+  if (beatificacion_canonizacion_desde || beatificacion_canonizacion_desde_anotacion) {
+    let desde = beatificacion_canonizacion_desde;
+
+    if (desde && beatificacion_canonizacion_desde_anotacion) {
+      desde += ` (${beatificacion_canonizacion_desde_anotacion})`;
+    } else if (beatificacion_canonizacion_desde_anotacion) {
+      desde = beatificacion_canonizacion_desde_anotacion;
+    }
+
+    datos.fechas.push(desde);
+  }
+
+  if (beatificacion_canonizacion_hasta || beatificacion_canonizacion_hasta_anotacion) {
+    if (datos.fechas.length === 0) {
+      datos.fechas.push('?');
+    }
+
+    let hasta = beatificacion_canonizacion_hasta;
+
+    if (hasta && beatificacion_canonizacion_hasta_anotacion) {
+      hasta += ` (${beatificacion_canonizacion_hasta_anotacion})`;
+    } else if (beatificacion_canonizacion_hasta_anotacion) {
+      hasta = beatificacion_canonizacion_hasta_anotacion;
+    }
+
+    datos.fechas.push(hasta);
+  }
+}
+
+procesarDatosGenerales(respuesta.personajes[0]);
+
 datosGenerales.value = respuesta.personajes[0];
-console.log(datosGenerales.value);
+
 const { data, pending } = obtenerDatosAsinc(
   `personajeObras${ruta.params.slug}`,
   obrasPorSlug('personajes', ruta.params.slug, true)
@@ -46,26 +89,30 @@ watch(data, ({ personajes }) => {
   <Cargador v-if="pending" />
   <div v-else>
     <GraficaContador :numeroObras="datosGenerales.obras_func.count" />
-    <p v-if="datosGenerales.descripcion" class="info">
-      <span class="infoTitulo">Descripción: </span><span v-html="datosGenerales.descripcion"></span>
-    </p>
 
-    <p v-if="datosGenerales.fuente" class="info">
-      <span class="infoTitulo">Fuente:</span><span v-html="datosGenerales.fuente"></span>
-    </p>
-    <p v-if="datosGenerales.muerte" class="info">
-      <span class="infoTitulo">Muerte:</span> {{ datosGenerales.muerte }} {{ datosGenerales.muerte_anotacion }}
-    </p>
-    <p v-if="datosGenerales.beatificacion_canonizacion_desde">
-      <span class="infoTitulo">Beatificación-canonización desde:</span>
-      {{ datosGenerales.beatificacion_canonizacion_desde }}
-      {{ datosGenerales.beatificacion_canonizacion_desde_anotacion }}
-    </p>
-    <p v-if="datosGenerales.beatificacion_canonizacion_hasta">
-      <span class="infoTitulo">Beatificación-canonización hasta:</span>
-      {{ datosGenerales.beatificacion_canonizacion_hasta }}
-      {{ datosGenerales.beatificacion_canonizacion_hasta_anotacion }}
-    </p>
+    <div v-if="datosGenerales.descripcion" class="info">
+      <h3 class="infoTitulo">Descripción:</h3>
+      <div v-html="datosGenerales.descripcion" class="infoContenido"></div>
+    </div>
+
+    <div v-if="datosGenerales.fuente" class="info">
+      <h3 class="infoTitulo">Fuente:</h3>
+      <div v-html="datosGenerales.fuente" class="infoContenido"></div>
+    </div>
+
+    <div v-if="datosGenerales.muerte" class="info">
+      <h3 class="infoTitulo">Muerte:</h3>
+      <div class="infoContenido">
+        <p>{{ datosGenerales.muerte }} {{ datosGenerales.muerte_anotacion }}</p>
+      </div>
+    </div>
+
+    <div v-if="datosGenerales.fechas.length" class="info">
+      <h3 class="infoTitulo">Beatificación / Canonización:</h3>
+      <div class="infoContenido">
+        <p>{{ datosGenerales.fechas.join(' - ') }}</p>
+      </div>
+    </div>
 
     <GaleriaMosaico :obras="obras" />
   </div>
@@ -74,10 +121,16 @@ watch(data, ({ personajes }) => {
 <style lang="scss" scoped>
 .info {
   font-family: var(--fuenteParrafos);
-  margin: 0.5em 0;
-  text-align: justify;
+  margin: 0.5em 1em 0.5em 0;
+  display: flex;
 }
 .infoTitulo {
   font-weight: bold;
+  font-size: 1.1em;
+}
+
+.infoContenido {
+  margin-left: 0.5em;
+  padding-top: 0.1em;
 }
 </style>
