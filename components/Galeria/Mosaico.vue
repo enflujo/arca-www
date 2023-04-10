@@ -35,15 +35,19 @@ const props = defineProps({
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: 0 2em;
   background-color: var(--amarilloPetalo);
+
+  &::after {
+    content: '';
+    flex: auto;
+  }
 }
 
 .obra {
   display: flex;
   flex-direction: column;
   min-width: 250px;
-  margin: 0.5em;
+  margin: 0 1em 1em 0;
   padding: 0;
   position: relative;
   border: transparent solid 7px;
@@ -65,6 +69,11 @@ const props = defineProps({
     text-align: left;
     padding: 0.8em;
     font-size: 0.85em;
+
+    a,
+    a:link {
+      color: var(--profundidad);
+    }
 
     .titulo {
       font-size: 1em;

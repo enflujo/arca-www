@@ -46,7 +46,7 @@ definePageMeta({ layout: 'archivo' });
 </script>
 
 <template>
-  <h1>Categorias</h1>
+  <h1>Categorías</h1>
   <Cargador v-if="pending" />
 
   <GraficaArbol v-else :datos="categorias" />
