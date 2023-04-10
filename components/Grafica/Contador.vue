@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <p class="nombre">Numero de obras: {{ props.numeroObras }}</p>
+  <p class="nombre">{{ props.numeroObras }} obras en la colección</p>
 </template>
 
 <style lang="scss" scoped>

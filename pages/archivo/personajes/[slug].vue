@@ -46,18 +46,24 @@ watch(data, ({ personajes }) => {
   <Cargador v-if="pending" />
   <div v-else>
     <GraficaContador :numeroObras="datosGenerales.obras_func.count" />
+    <p v-if="datosGenerales.descripcion" class="info">
+      <span class="infoTitulo">Descripción: </span><span v-html="datosGenerales.descripcion"></span>
+    </p>
 
-    <p v-html="datosGenerales.descripcion" class="info"></p>
-    <p v-if="datosGenerales.fuente" v-html="`Fuente: ${datosGenerales.fuente}`" class="info"></p>
+    <p v-if="datosGenerales.fuente" class="info">
+      <span class="infoTitulo">Fuente:</span><span v-html="datosGenerales.fuente"></span>
+    </p>
     <p v-if="datosGenerales.muerte" class="info">
-      Muerte: {{ datosGenerales.muerte }} {{ datosGenerales.muerte_anotacion }}
+      <span class="infoTitulo">Muerte:</span> {{ datosGenerales.muerte }} {{ datosGenerales.muerte_anotacion }}
     </p>
     <p v-if="datosGenerales.beatificacion_canonizacion_desde">
-      Beatificación-canonización desde: {{ datosGenerales.beatificacion_canonizacion_desde }}
+      <span class="infoTitulo">Beatificación-canonización desde:</span>
+      {{ datosGenerales.beatificacion_canonizacion_desde }}
       {{ datosGenerales.beatificacion_canonizacion_desde_anotacion }}
     </p>
     <p v-if="datosGenerales.beatificacion_canonizacion_hasta">
-      Beatificación-canonización hasta: {{ datosGenerales.beatificacion_canonizacion_hasta }}
+      <span class="infoTitulo">Beatificación-canonización hasta:</span>
+      {{ datosGenerales.beatificacion_canonizacion_hasta }}
       {{ datosGenerales.beatificacion_canonizacion_hasta_anotacion }}
     </p>
 
@@ -69,5 +75,9 @@ watch(data, ({ personajes }) => {
 .info {
   font-family: var(--fuenteParrafos);
   margin: 0.5em 0;
+  text-align: justify;
+}
+.infoTitulo {
+  font-weight: bold;
 }
 </style>
