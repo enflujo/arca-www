@@ -39,7 +39,7 @@ const Obra = gql`
       gestos { gestos_id { slug nombre } }
       tecnicas { tecnicas_id { slug nombre } }
       objetos { objetos_id { slug nombre } }
-      personajes { personajes_id { slug nombre } }
+      personajes { personajes_id { slug nombre muerte} }
       simbolos { simbolos_id { slug nombre } }
       escenarios { escenarios_id { slug nombre } }
       descriptores { descriptores_id { slug nombre } }
@@ -233,6 +233,7 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
               :to="`/archivo/personajes/${personaje.personajes_id.slug}`"
             >
               {{ personaje.personajes_id.nombre }}
+              <span v-if="personaje.personajes_id.muerte">(m. {{ personaje.personajes_id.muerte }})</span>
             </NuxtLink>
           </li>
         </ul>

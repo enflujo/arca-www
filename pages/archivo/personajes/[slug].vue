@@ -47,9 +47,27 @@ watch(data, ({ personajes }) => {
   <div v-else>
     <GraficaContador :numeroObras="datosGenerales.obras_func.count" />
 
-    <div v-html="datosGenerales.descripcion" class="descripcion"></div>
-    <div v-html="datosGenerales.fuente" class="fuente"></div>
-    <p v-if="datosGenerales.muerte">{{ datosGenerales.muerte }}</p>
+    <p v-html="datosGenerales.descripcion" class="info"></p>
+    <p v-if="datosGenerales.fuente" v-html="`Fuente: ${datosGenerales.fuente}`" class="info"></p>
+    <p v-if="datosGenerales.muerte" class="info">
+      Muerte: {{ datosGenerales.muerte }} {{ datosGenerales.muerte_anotacion }}
+    </p>
+    <p v-if="datosGenerales.beatificacion_canonizacion_desde">
+      Beatificación-canonización desde: {{ datosGenerales.beatificacion_canonizacion_desde }}
+      {{ datosGenerales.beatificacion_canonizacion_desde_anotacion }}
+    </p>
+    <p v-if="datosGenerales.beatificacion_canonizacion_hasta">
+      Beatificación-canonización hasta: {{ datosGenerales.beatificacion_canonizacion_hasta }}
+      {{ datosGenerales.beatificacion_canonizacion_hasta_anotacion }}
+    </p>
+
     <GaleriaMosaico :obras="obras" />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.info {
+  font-family: var(--fuenteParrafos);
+  margin: 0.5em 0;
+}
+</style>
