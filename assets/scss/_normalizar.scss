@@ -95,10 +95,11 @@ body {
 a,
 a:link {
   text-decoration: none;
-  color: var(--profundidad);
+  color: var(--dolor);
+  transition: color 0.2s ease-out;
 
   &:hover {
-    transition: 0.2s ease-out;
+    color: var(--rojoOxido);
   }
 }
 
