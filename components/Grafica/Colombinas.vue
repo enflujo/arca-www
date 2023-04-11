@@ -6,7 +6,6 @@ const contenedor = ref(null);
 
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
-const divisionesGrilla = [...Array(10).keys()];
 const seccionGrilla = ref(0);
 const seccionGrillaAncho = ref(0);
 
@@ -89,14 +88,9 @@ function desactivar(evento) {
 
     <div id="grilla">
       <p id="leyendaEjeX">Cantidad de obras</p>
-      <span
-        class="divisionGrilla"
-        v-for="i in divisionesGrilla"
-        :key="`división ${i}`"
-        :style="`width:${seccionGrillaAncho}px`"
-      >
+      <span class="divisionGrilla" v-for="i in 10" :key="`división ${i}`" :style="`width:${seccionGrillaAncho}px`">
         <span class="valorGrilla">
-          {{ seccionGrilla * i }}
+          {{ seccionGrilla * (i - 1) }}
         </span>
       </span>
     </div>
@@ -180,7 +174,8 @@ ul {
 }
 
 #grilla {
-  border-top: #788989d2 dashed 1px;
+  border-top: rgba($profundidad, 0.1) dashed 1px;
+  border-left: rgba($profundidad, 0.1) solid 1px;
   display: flex;
   justify-content: flex-start;
   height: 100%;
@@ -195,7 +190,7 @@ ul {
 
   .divisionGrilla {
     display: block;
-    border-right: #788989d2 solid 1px;
+    border-right: rgba($profundidad, 0.1) solid 1px;
   }
 
   .valorGrilla {
