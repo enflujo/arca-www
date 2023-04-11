@@ -65,38 +65,6 @@ obra.value = obras[0];
 
 definePageMeta({ layout: 'default', keepalive: true });
 useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }, ruta.path));
-
-// Traer obras para galería de imágenes relacionadas
-
-//console.log(obra.value.categoria1.slug);
-
-// const datos = ref(null);
-// const respuesta = await obtenerDatos('categorias', nombrePorSlug('categorias', obra.value.categoria1.slug));
-
-// datos.value = respuesta['categorias'][0];
-
-/**
- * Operaciones en el cliente
- */
-const obrasRelacionadas = ref([]);
-
-onMounted(() => {
-  obrasRelacionadas.value = obrasPorSlug('categorias', obra.value.categoria1.slug, false);
-
-  // console.log(obrasRelacionadas.value);
-});
-
-// const { data, pending } = obtenerDatosAsinc(
-//   `obras-${datos.value.id}`,´
-//   obrasPorSlug('categorias', obra.value.categoria1.slug, false)
-// );
-
-// watch(data, (datosObras) => {
-//   // Extraer las obras de colección directamente o de la tabla relacional.
-//   obrasRelacionadas.value = !false
-//     ? datosObras['categorias'][0].obras
-//     : datosObras['categorias'][0].obras.map((obra) => obra.obras_id);
-// });
 </script>
 
 <template>
