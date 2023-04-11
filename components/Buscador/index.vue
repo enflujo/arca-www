@@ -42,7 +42,7 @@ const campos = [
 ];
 
 function cerrar(evento) {
-  if (evento.target.id === 'buscador') {
+  if (evento.target.id === 'buscador' || evento.target.id === 'botonCerrar') {
     cerebroGeneral.buscadorVisible = false;
   }
 }
@@ -59,6 +59,7 @@ function cambioDePagina() {
 </script>
 
 <template>
+  <div id="botonCerrar" @click="cerrar">x</div>
   <ClientOnly>
     <ais-instant-search id="buscador" :search-client="clienteBuscador" index-name="obras" @click="cerrar">
       <ais-configure :attributesToSnippet="['sintesis:20']" :snippetEllipsisText="'...'" :hits-per-page.camel="11" />
@@ -249,6 +250,57 @@ mark {
     &.paginaDesabilitada {
       opacity: 0.1;
     }
+  }
+}
+
+#botonCerrar {
+  background-color: var(--claridad);
+  color: rgba($dolor, 0.7);
+  border-radius: 50%;
+  z-index: 99;
+  position: fixed;
+  font-size: 0.8em;
+  padding: 0.1em 0.3em;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    color: var(--claridad);
+    border: var(--claridad) solid 1px;
+    background-color: var(--dolor);
+  }
+}
+
+// Teléfonos horizontal
+@media (min-width: $minCelular) {
+}
+// Pantallas medianas (Tablets)
+@media (min-width: $minTablet) {
+  #botonCerrar {
+    padding: 0.2em 0.4em;
+    right: 20px;
+    top: 20px;
+    font-size: 1em;
+  }
+}
+// Dispositivos grandes y pantallas medianas
+@media (min-width: $minPantalla) {
+  #botonCerrar {
+    padding: 0.2em 0.4em;
+    right: 20px;
+    top: 20px;
+    font-size: 1em;
+  }
+}
+// Pantallas grandes
+@media (min-width: $minPantallaGrande) {
+  #botonCerrar {
+    padding: 0.2em 0.4em;
+    right: 20px;
+    top: 20px;
+    font-size: 1em;
   }
 }
 </style>
