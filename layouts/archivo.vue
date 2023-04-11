@@ -63,8 +63,9 @@ function cerrar() {
 }
 
 main {
-  background-color: var(--amarilloPetalo);
   padding: 2em 1em 2em 5em;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 #contenido {

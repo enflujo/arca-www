@@ -279,7 +279,7 @@ function cerrarCajon() {
 <template>
   <div id="contenedor">
     <div id="mapa" ref="contenedorMapa"></div>
-    <MapaCajon
+    <VistaMapaCajon
       v-if="coleccionActual"
       :coleccion="coleccionActual"
       :datos="datosCajon"

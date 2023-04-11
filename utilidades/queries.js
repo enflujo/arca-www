@@ -60,6 +60,47 @@ export const obrasPorSlug = (coleccion, slug, m2m = false, pagina = 1) => {
 };
 
 export const indiceColeccion = (coleccion) => {
+  if (coleccion === 'paises') {
+    return gql`
+      query {
+        paises(filter: { obras_func: { count: { _neq: 0 } } }, limit: -1) {
+          id
+          nombre
+          slug
+          geo
+          obras(limit: -1) {
+            id
+          }
+          obras_func {
+            count
+          }
+        }
+
+        ubicaciones(limit: -1) {
+          id
+          nombre
+          geo
+          obras_func {
+            count
+          }
+        }
+      }
+    `;
+  } else if (coleccion === 'autores') {
+    return gql`
+      query {
+        autores(limit: -1, sort: ["apellido"]) {
+          id
+          nombre
+          apellido
+          obras_func {
+            count
+          }
+        }
+      }
+    `;
+  }
+
   return gql`
   query {
     ${coleccion}(sort: ["nombre"], limit: -1) {
