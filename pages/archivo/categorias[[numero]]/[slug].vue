@@ -6,19 +6,19 @@ import { gql } from '~~/utilidades/ayudas';
  * Operaciones en el servidor
  */
 const ruta = useRoute();
-const llave = `categorias${ruta.params.numero}_by_id`;
+const llave = `categorias${ruta.params.numero}`;
 
 const Categoria = gql`
 query {
-  ${llave}(id: ${ruta.params.id}) {
+  ${llave}(filter: { slug: {_eq: "${ruta.params.slug}" } }) {
     id
     nombre
   }
 }
 `;
 
-const respuesta = await obtenerDatos(`categorias${ruta.params.numero}-${ruta.params.id}`, Categoria);
-const datos = respuesta[llave];
+const respuesta = await obtenerDatos(`categorias${ruta.params.numero}-${ruta.params.slug}`, Categoria);
+const datos = respuesta[llave][0];
 
 /**
  * Operaciones en el cliente
@@ -28,7 +28,7 @@ const cerebroArchivo = usarArchivo();
 
 const ObrasCategoria = gql`
 query {
-  ${llave}(id: ${ruta.params.id}) {
+  ${llave}(filter: { slug: {_eq: "${ruta.params.slug}" } }) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}) {
       id
       registro
@@ -51,7 +51,7 @@ query {
 const { data, pending } = obtenerDatosAsinc(`obrasCategoria${datos.id}`, ObrasCategoria);
 
 watch(data, (respuesta) => {
-  obras.value = respuesta[llave].obras;
+  obras.value = respuesta[llave][0].obras;
 });
 
 definePageMeta({ layout: 'archivo', keepalive: true });
