@@ -118,11 +118,6 @@ ul {
       .conteoObras {
         color: white;
       }
-
-      .nombre {
-        // Usamos sombra para no tener que usar "bold" ya que este hace que se partan las lineas. No es una solución perfecta pero mejor que calcular anchos para usar bold.
-        text-shadow: -0.5px 0px 0px #000000;
-      }
     }
 
     &:hover {
