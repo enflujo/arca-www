@@ -6,19 +6,21 @@ import { gql } from '~~/utilidades/ayudas';
  * Operaciones en el servidor
  */
 const ruta = useRoute();
-const Ubicacion = gql`
+const Ciudad = gql`
 query {
-  ubicaciones_by_id(id: ${ruta.params.id}) {
+  ciudades_by_id(id: ${ruta.params.id}) {
     id
     nombre
+    pais {
+      nombre
+    }
   }
 }
 `;
 
-// ¿'autor' debería reemplazarse por 'ubicación'?
-const { ubicaciones_by_id: datosUbicacion } = await obtenerDatos('autor', Ubicacion);
+const { ciudades_by_id: datosCiudad } = await obtenerDatos('ciudad', Ciudad);
 
-useHead(elementosCabeza(datosUbicacion, ruta.path)); // SEO
+useHead(elementosCabeza(datosCiudad, ruta.path)); // SEO
 
 /**
  * Operaciones en el cliente
@@ -26,9 +28,9 @@ useHead(elementosCabeza(datosUbicacion, ruta.path)); // SEO
 const obras = ref([]);
 const cerebroArchivo = usarArchivo();
 
-const ObrasUbicacion = gql`
+const ObrasCiudad = gql`
 query {
-  ubicaciones_by_id(id: ${ruta.params.id}) {
+  ciudades_by_id(id: ${ruta.params.id}) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}) {
       id
       registro
@@ -48,18 +50,17 @@ query {
 }
 `;
 
-// ¿'obrasAutor' debería reemplazarse por 'obrasUbicación'?
-const { data, pending } = obtenerDatosAsinc(`obrasAutor${datosUbicacion.id}`, ObrasUbicacion);
+const { data, pending } = obtenerDatosAsinc(`obrasCiudad${datosCiudad.id}`, ObrasCiudad);
 
-watch(data, ({ ubicaciones_by_id }) => {
-  obras.value = ubicaciones_by_id.obras;
+watch(data, ({ ciudades_by_id }) => {
+  obras.value = ciudades_by_id.obras;
 });
 
 definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>
-  <h1>Ubicación: {{ datosUbicacion.nombre }}</h1>
+  <h1>Ciudad: {{ datosCiudad.nombre }}, {{ datosCiudad.pais.nombre }}</h1>
   <Cargador v-if="pending" />
   <GaleriaMosaico v-else :obras="obras" />
 </template>

@@ -33,8 +33,8 @@ const Obra = gql`
       complejo_gestual { slug nombre }
 
       ciudad_origen { nombre pais { slug nombre } }
-      ubicacion { nombre ciudad { nombre pais { slug nombre } } }
-      
+      ubicacion { id nombre ciudad { id nombre pais { slug nombre } } }
+
       autores { autores_id { id nombre apellido } }
       gestos { gestos_id { slug nombre } }
       tecnicas { tecnicas_id { slug nombre } }
@@ -65,6 +65,38 @@ obra.value = obras[0];
 
 definePageMeta({ layout: 'default', keepalive: true });
 useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }, ruta.path));
+
+// Traer obras para galería de imágenes relacionadas
+
+//console.log(obra.value.categoria1.slug);
+
+// const datos = ref(null);
+// const respuesta = await obtenerDatos('categorias', nombrePorSlug('categorias', obra.value.categoria1.slug));
+
+// datos.value = respuesta['categorias'][0];
+
+/**
+ * Operaciones en el cliente
+ */
+const obrasRelacionadas = ref([]);
+
+onMounted(() => {
+  obrasRelacionadas.value = obrasPorSlug('categorias', obra.value.categoria1.slug, false);
+
+  // console.log(obrasRelacionadas.value);
+});
+
+// const { data, pending } = obtenerDatosAsinc(
+//   `obras-${datos.value.id}`,´
+//   obrasPorSlug('categorias', obra.value.categoria1.slug, false)
+// );
+
+// watch(data, (datosObras) => {
+//   // Extraer las obras de colección directamente o de la tabla relacional.
+//   obrasRelacionadas.value = !false
+//     ? datosObras['categorias'][0].obras
+//     : datosObras['categorias'][0].obras.map((obra) => obra.obras_id);
+// });
 </script>
 
 <template>
@@ -100,10 +132,17 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
       <div class="datos">
         <span class="tituloDato">Ubicación actual:</span>
         <span v-if="obra.ubicacion.nombre">
-          {{ obra.ubicacion.nombre }} ({{ obra.ubicacion.ciudad.nombre }}
+          <NuxtLink v-if="obra.ubicacion.nombre" :to="`/archivo/ubicaciones/${obra.ubicacion.id}`">
+            {{ obra.ubicacion.nombre }}</NuxtLink
+          >
+          |
+          <NuxtLink v-if="obra.ubicacion.ciudad.id" :to="`/archivo/ciudades/${obra.ubicacion.ciudad.id}`">
+            {{ obra.ubicacion.ciudad.nombre }}
+          </NuxtLink>
+          |
           <NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">
-            , {{ obra.ubicacion.ciudad.pais.nombre }} </NuxtLink
-          >)</span
+            {{ obra.ubicacion.ciudad.pais.nombre }}
+          </NuxtLink></span
         >
       </div>
 
