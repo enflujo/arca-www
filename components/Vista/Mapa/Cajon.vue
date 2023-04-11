@@ -17,7 +17,6 @@ function crearQuery() {
         nombre
         
         obras(limit: 10) {
-          id
           registro
           titulo
           imagen {

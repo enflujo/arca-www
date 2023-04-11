@@ -38,7 +38,6 @@ export const obrasPorSlug = (coleccion, slug, m2m = false, pagina = 1) => {
     ${coleccion}(filter: { slug: { _eq: "${slug}" } }, limit: 1) {
       obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${pagina}) {
         ${m2m ? 'obras_id {' : ''}
-        id
         registro
         titulo
         imagen {

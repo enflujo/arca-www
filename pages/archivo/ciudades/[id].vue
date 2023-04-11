@@ -32,7 +32,6 @@ const ObrasCiudad = gql`
 query {
   ciudades_by_id(id: ${ruta.params.id}) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}) {
-      id
       registro
       titulo
       imagen {

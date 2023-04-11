@@ -51,7 +51,6 @@ query {
   autores_by_id(id: ${ruta.params.id}) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${ruta.query.pagina || 1}) {
       obras_id {
-        id
         registro
         titulo
         imagen {

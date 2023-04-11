@@ -30,7 +30,6 @@ const ObrasUbicacion = gql`
 query {
   ubicaciones_by_id(id: ${ruta.params.id}) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}) {
-      id
       registro
       titulo
       imagen {
