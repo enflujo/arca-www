@@ -59,6 +59,7 @@ const general = usarGeneral();
 
   &:hover {
     opacity: 0.85;
+    color: var(--mediana); // mantener el color para que no cambie al predeterminado en todos los enlaces.
   }
 }
 

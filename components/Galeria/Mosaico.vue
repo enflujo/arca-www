@@ -34,7 +34,7 @@ const props = defineProps({
 .contenedorGaleria {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   background-color: var(--amarilloPetalo);
 
   &::after {
