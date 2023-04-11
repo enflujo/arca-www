@@ -3,46 +3,35 @@ import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import { obtenerVariablesCSS } from '~~/utilidades/ayudas';
 
 const contenedor = ref(null);
-const anchoPantalla = ref(0);
+
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
 const divisionesGrilla = [...Array(10).keys()];
-const anchoGrilla = ref(0);
 const seccionGrilla = ref(0);
+const seccionGrillaAncho = ref(0);
 
 let buscarColor;
+let anchoLinea;
 
 const props = defineProps({
   datos: Array,
   coleccion: String,
 });
 
-watch(
-  () => contenedor.value,
-  () => {
-    const ancho = contenedor.value.clientWidth;
-    const maximoGrilla = Math.ceil(maximoObras.value / 1000) * 1000;
-    const anchoGrillaTotal = convertirEscala(maximoGrilla, 1, maximoGrilla, 0, ancho / 1.5);
-    anchoGrilla.value = anchoGrillaTotal;
-    seccionGrilla.value = maximoGrilla / 10;
-    anchoPantalla.value = ancho;
-  }
-);
-
-function anchoLinea(cantidad) {
-  const maximo = Math.ceil(maximoObras.value / 1000) * 1000;
-  const ancho = anchoPantalla.value / 1.5;
-  return convertirEscala(cantidad, 1, maximo, 0, ancho) | 0;
-}
-
 onMounted(() => {
   /**
    * Ordenar por cantidad de obras.
    */
+  const ancho = contenedor.value.clientWidth;
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
   const maximo = ordenados[0].obras_func.count;
+  const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
 
   buscarColor = escalaColores(1, maximo, obtenerVariablesCSS('--amarilloArena2'), obtenerVariablesCSS('--rojoCerezo'));
+  anchoLinea = (cantidad) => convertirEscala(cantidad, 1, maximoGrilla, 0, ancho / 1.5) | 0;
+
+  seccionGrilla.value = maximoGrilla / 10;
+  seccionGrillaAncho.value = anchoLinea(seccionGrilla.value);
   maximoObras.value = maximo;
   datosOrdenados.value = ordenados;
 });
@@ -98,13 +87,13 @@ function desactivar(evento) {
       </li>
     </ul>
 
-    <div id="grilla" :style="`width:${anchoGrilla}px`">
+    <div id="grilla">
       <p id="leyendaEjeX">Cantidad de obras</p>
       <span
         class="divisionGrilla"
         v-for="i in divisionesGrilla"
         :key="`división ${i}`"
-        :style="`width:${seccionGrilla}px`"
+        :style="`width:${seccionGrillaAncho}px`"
       >
         <span class="valorGrilla">
           {{ seccionGrilla * i }}
@@ -194,7 +183,6 @@ ul {
   border-top: #788989d2 dashed 1px;
   display: flex;
   justify-content: flex-start;
-  width: calc(100vw / 1.5);
   height: 100%;
   position: absolute;
   top: 0;
