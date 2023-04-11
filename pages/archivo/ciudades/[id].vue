@@ -59,7 +59,7 @@ definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>
-  <h1>Ciudad: {{ datosCiudad.nombre }}, {{ datosCiudad.pais.nombre }}</h1>
+  <h1>Ciudad: {{ datosCiudad.nombre }} {{ datosCiudad.pais ? `, ${datosCiudad.pais.nombre}` : '' }}</h1>
   <Cargador v-if="pending" />
   <GaleriaMosaico v-else :obras="obras" />
 </template>

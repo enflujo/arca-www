@@ -32,7 +32,7 @@ const Obra = gql`
       tipo_gestual { slug nombre }
       complejo_gestual { slug nombre }
 
-      ciudad_origen { nombre pais { slug nombre } }
+      ciudad_origen { id nombre pais { slug nombre } }
       ubicacion { id nombre ciudad { id nombre pais { slug nombre } } }
 
       autores { autores_id { id nombre apellido } }
@@ -61,10 +61,50 @@ for (let i = 1; i <= 6; i++) {
   }
 }
 
+procesarDatos(obras[0]);
 obra.value = obras[0];
 
 definePageMeta({ layout: 'default', keepalive: true });
 useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }, ruta.path));
+
+function procesarDatos(obra) {
+  // Limpiar ciudad de origen
+  if (obra.ciudad_origen) {
+    if (obra.ubicacion && obra.ubicacion.ciudad) {
+      if (obra.ciudad_origen.id === obra.ubicacion.ciudad.id) {
+        obra.ciudad_origen = null;
+      }
+    }
+  }
+
+  // Aplanar lugares
+  if (obra.ciudad_origen) {
+    const origen = [{ url: `/archivo/ciudades/${obra.ciudad_origen.id}`, nombre: obra.ciudad_origen.nombre }];
+
+    if (obra.ciudad_origen.pais) {
+      origen.push({ url: `/archivo/paises/${obra.ciudad_origen.pais.slug}`, nombre: obra.ciudad_origen.pais.nombre });
+    }
+
+    obra.ciudad_origen = origen;
+  }
+
+  if (obra.ubicacion) {
+    const ubicacion = [{ url: `/archivo/ubicaciones/${obra.ubicacion.id}`, nombre: obra.ubicacion.nombre }];
+
+    if (obra.ubicacion.ciudad) {
+      ubicacion.push({ url: `/archivo/ciudades/${obra.ubicacion.ciudad.id}`, nombre: obra.ubicacion.ciudad.nombre });
+
+      if (obra.ubicacion.ciudad.pais) {
+        ubicacion.push({
+          url: `/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`,
+          nombre: obra.ubicacion.ciudad.pais.nombre,
+        });
+      }
+    }
+
+    obra.ubicacion = ubicacion;
+  }
+}
 </script>
 
 <template>
@@ -96,45 +136,30 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
         >
       </div>
 
-      <!--POR HACER: link a ubicación además de país-->
-      <div class="datos">
+      <div class="datos" v-if="obra.ubicacion">
         <span class="tituloDato">Ubicación actual:</span>
-        <span v-if="obra.ubicacion.nombre">
-          <NuxtLink v-if="obra.ubicacion.nombre" :to="`/archivo/ubicaciones/${obra.ubicacion.id}`">
-            {{ obra.ubicacion.nombre }}</NuxtLink
-          >
-          |
-          <span v-if="obra.ubicacion.ciudad.nombre !== '(Sin datos)'">
-            <NuxtLink v-if="obra.ubicacion.ciudad.id" :to="`/archivo/ciudades/${obra.ubicacion.ciudad.id}`">
-              {{ obra.ubicacion.ciudad.nombre }}
-            </NuxtLink>
-            |
-          </span>
-          <span v-else>{{ obra.ubicacion.ciudad.nombre }}</span>
 
-          <NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">
-            {{ obra.ubicacion.ciudad.pais.nombre }}
-          </NuxtLink></span
-        >
+        <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
+          <span v-if="i > 0" class="separador">|</span>
+
+          <NuxtLink :to="lugar.url">
+            {{ lugar.nombre }}
+          </NuxtLink>
+        </span>
       </div>
 
       <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
       si existen y son distintas, muestra la ciudad de origen-->
-      <div
-        class="datos"
-        v-if="
-          obra.ubicacion.ciudad.nombre &&
-          obra.ciudad_origen &&
-          obra.ubicacion.ciudad.pais &&
-          obra.ciudad_origen.pais.nombre &&
-          obra.ubicacion.ciudad.nombre !== obra.ciudad_origen.nombre &&
-          obra.ubicacion.ciudad.pais.nombre !== obra.ciudad_origen.pais.nombre
-        "
-      >
-        <span class="tituloDato">Ciudad de origen:</span> {{ obra.ciudad_origen.nombre }},
-        <NuxtLink v-if="obra.ciudad_origen.pais" :to="`/archivo/paises/${obra.ciudad_origen.pais.slug}`">
-          {{ obra.ciudad_origen.pais.nombre }}
-        </NuxtLink>
+      <div class="datos" v-if="obra.ciudad_origen">
+        <span class="tituloDato">Ciudad de origen:</span>
+
+        <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
+          <span v-if="i > 0" class="separador">|</span>
+
+          <NuxtLink :to="lugar.url">
+            {{ lugar.nombre }}
+          </NuxtLink>
+        </span>
       </div>
 
       <div class="datos" v-if="obra.donante.nombre">
@@ -351,5 +376,9 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
 .tituloDato {
   font-weight: bold;
   margin-right: 0.5em;
+}
+
+.separador {
+  padding: 0 0.3em;
 }
 </style>
