@@ -104,10 +104,14 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
             {{ obra.ubicacion.nombre }}</NuxtLink
           >
           |
-          <NuxtLink v-if="obra.ubicacion.ciudad.id" :to="`/archivo/ciudades/${obra.ubicacion.ciudad.id}`">
-            {{ obra.ubicacion.ciudad.nombre }}
-          </NuxtLink>
-          |
+          <span v-if="obra.ubicacion.ciudad.nombre !== '(Sin datos)'">
+            <NuxtLink v-if="obra.ubicacion.ciudad.id" :to="`/archivo/ciudades/${obra.ubicacion.ciudad.id}`">
+              {{ obra.ubicacion.ciudad.nombre }}
+            </NuxtLink>
+            |
+          </span>
+          <span v-else>{{ obra.ubicacion.ciudad.nombre }}</span>
+
           <NuxtLink v-if="obra.ubicacion.ciudad.pais" :to="`/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`">
             {{ obra.ubicacion.ciudad.pais.nombre }}
           </NuxtLink></span
@@ -303,7 +307,7 @@ useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }
 
       <div class="datos" v-if="obra.comentario_bibliografico">
         <span class="tituloDato">Comentario bibliográfico:</span>
-        <span> {{ obra.comentario_bibliografico }}</span>
+        <span v-html="obra.comentario_bibliografico"></span>
       </div>
 
       <div class="datos" v-if="obra.sintesis">
