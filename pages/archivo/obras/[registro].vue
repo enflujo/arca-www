@@ -25,6 +25,7 @@ const relacionadas = ref(null);
 const Obra = gql`
   query {
     obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
+      registro
       fecha_inicial
       fecha_final
       sintesis
@@ -167,6 +168,7 @@ definePageMeta({ layout: 'default', keepalive: true });
     </div>
 
     <div id="contenedorInfo">
+      <div class="datos"><span class="tituloDato">Registro:</span> {{ obra.registro }}</div>
       <div class="datos">
         <span class="tituloDato">Fecha:</span> {{ obra.fecha_inicial }}
         <span v-if="obra.fecha_final">- {{ obra.fecha_final }}</span>
