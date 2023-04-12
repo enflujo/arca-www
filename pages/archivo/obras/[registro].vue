@@ -20,6 +20,7 @@ useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGeneral
 
 // En el cliente
 const obra = ref(null);
+const relacionadas = ref(null);
 
 const Obra = gql`
   query {
@@ -31,13 +32,13 @@ const Obra = gql`
       iconotexto
       fuente { descripcion }
 
-      categoria1 { id nombre }
-      categoria2 { id nombre }
-      categoria3 { id nombre }
-      categoria4 { id nombre }
-      categoria5 { id nombre }
-      categoria6 { id nombre }
-      
+      categoria1 { nombre slug }
+      categoria2 { nombre slug }
+      categoria3 { nombre slug }
+      categoria4 { nombre slug }
+      categoria5 { nombre slug }
+      categoria6 { nombre slug }
+
       donante { slug nombre }
       relato_visual { slug nombre }
       fisiognomica { slug nombre }
@@ -117,7 +118,34 @@ watch(data, ({ obras }) => {
   }
 
   obra.value = _obra;
+
+  buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1].ruta);
 });
+
+async function buscarRelacionadas(ultimaCategoria) {
+  const Relacionadas = gql`
+    query {
+      obras(sort: ["${ultimaCategoria}"], limit: 10) {
+        registro
+        titulo
+        imagen {
+          id,
+          title
+        }
+        autores {
+          autores_id {
+            id
+            nombre
+            apellido
+          }
+        }
+      }
+    }
+    `;
+
+  const { obras } = await obtenerDatos(`relacionadas${ruta.params.registro}`, Relacionadas);
+  relacionadas.value = obras;
+}
 
 definePageMeta({ layout: 'default', keepalive: true });
 </script>
@@ -190,8 +218,8 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Categorías:</span>
 
         <ul class="lista">
-          <li v-for="(categoria, i) in obra.categorias" :key="`categoria${categoria.id}`">
-            <NuxtLink :to="`/archivo/categorias${i + 1}/${obra[categoria.ruta].id}`">{{
+          <li v-for="(categoria, i) in obra.categorias" :key="`categoria${categoria.slug}`">
+            <NuxtLink :to="`/archivo/categorias${i + 1}/${obra[categoria.ruta].slug}`">{{
               obra[categoria.ruta].nombre
             }}</NuxtLink>
           </li>
@@ -361,6 +389,8 @@ definePageMeta({ layout: 'default', keepalive: true });
         <div v-html="obra.fuente.descripcion"></div>
       </div>
     </div>
+
+    <div id="contenedorGaleria"><GaleriaMosaico v-if="relacionadas" :obras="relacionadas" /></div>
   </div>
 </template>
 
@@ -397,5 +427,10 @@ definePageMeta({ layout: 'default', keepalive: true });
 
 .separador {
   padding: 0 0.3em;
+}
+
+#contenedorGaleria {
+  max-width: 90%;
+  margin: 0 auto;
 }
 </style>
