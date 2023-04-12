@@ -15,8 +15,7 @@ query {
 }
 `;
 
-// ¿'autor' debería reemplazarse por 'ubicación'?
-const { ubicaciones_by_id: datosUbicacion } = await obtenerDatos('autor', Ubicacion);
+const { ubicaciones_by_id: datosUbicacion } = await obtenerDatos(`ubicacion${ruta.params.id}`, Ubicacion);
 
 useHead(elementosCabeza(datosUbicacion, ruta.path)); // SEO
 
@@ -47,8 +46,7 @@ query {
 }
 `;
 
-// ¿'obrasAutor' debería reemplazarse por 'obrasUbicación'?
-const { data, pending } = obtenerDatosAsinc(`obrasAutor${datosUbicacion.id}`, ObrasUbicacion);
+const { data, pending } = obtenerDatosAsinc(`obrasUbicacion${datosUbicacion.id}`, ObrasUbicacion);
 
 watch(data, ({ ubicaciones_by_id }) => {
   obras.value = ubicaciones_by_id.obras;
