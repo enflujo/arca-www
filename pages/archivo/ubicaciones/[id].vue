@@ -11,6 +11,7 @@ query {
   ubicaciones_by_id(id: ${ruta.params.id}) {
     id
     nombre
+    anotacion
   }
 }
 `;
@@ -57,6 +58,7 @@ definePageMeta({ layout: 'archivo', keepalive: true });
 
 <template>
   <h1>Ubicación: {{ datosUbicacion.nombre }}</h1>
+  <h2 v-if="datosUbicacion.anotacion">{{ datosUbicacion.anotacion }}</h2>
   <Cargador v-if="pending" />
   <GaleriaMosaico v-else :obras="obras" />
 </template>

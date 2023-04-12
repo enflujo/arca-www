@@ -50,7 +50,7 @@ const Obra = gql`
       complejo_gestual { slug nombre }
 
       ciudad_origen { id nombre pais { slug nombre } }
-      ubicacion { id nombre ciudad { id nombre pais { slug nombre } } }
+      ubicacion { id nombre anotacion ciudad { id nombre pais { slug nombre } } }
 
       autores { autores_id { id nombre apellido } }
       gestos { gestos_id { slug nombre } }
@@ -102,7 +102,12 @@ watch(data, ({ obras }) => {
   }
 
   if (_obra.ubicacion) {
-    const ubicacion = [{ url: `/archivo/ubicaciones/${_obra.ubicacion.id}`, nombre: _obra.ubicacion.nombre }];
+    const ubicacion = [
+      {
+        url: `/archivo/ubicaciones/${_obra.ubicacion.id}`,
+        nombre: _obra.ubicacion.nombre + `${_obra.ubicacion.anotacion ? ' (' + _obra.ubicacion.anotacion + ')' : ''}`,
+      },
+    ];
 
     if (_obra.ubicacion.ciudad) {
       ubicacion.push({ url: `/archivo/ciudades/${_obra.ubicacion.ciudad.id}`, nombre: _obra.ubicacion.ciudad.nombre });
@@ -189,9 +194,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
           <span v-if="i > 0" class="separador">|</span>
 
-          <NuxtLink :to="lugar.url">
-            {{ lugar.nombre }}
-          </NuxtLink>
+          <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
         </span>
       </div>
 
