@@ -1,20 +1,35 @@
 <script setup>
 import { gql, urlImagen } from '~~/utilidades/ayudas';
 
-const obra = ref(null);
+/**
+ * Operaciones en el servidor
+ */
 const ruta = useRoute();
+const ObraGeneral = gql`
+query {
+  obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
+    titulo,
+    imagen { id title }
+  }
+}
+`;
+
+const { obras: datosGenerales } = await obtenerDatos(`obraGeneral${ruta.params.registro}`, ObraGeneral);
+
+useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
+
+// En el cliente
+const obra = ref(null);
 
 const Obra = gql`
   query {
     obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
-      titulo
       fecha_inicial
       fecha_final
       sintesis
       comentario_bibliografico
       iconotexto
       fuente { descripcion }
-      imagen { id title }
 
       categoria1 { id nombre }
       categoria2 { id nombre }
@@ -48,68 +63,70 @@ const Obra = gql`
   }
 `;
 
-const { obras } = await obtenerDatos('obra', Obra);
+const { data, pending } = obtenerDatosAsinc(`obra${ruta.params.registro}`, Obra);
 
-// Aplanar categorias en una sola lista/array
-obras[0].categorias = [];
+watch(data, ({ obras }) => {
+  const _obra = obras[0];
 
-for (let i = 1; i <= 6; i++) {
-  const coleccion = `categoria${i}`;
-  if (obras[0][coleccion]) {
-    obras[0][coleccion].ruta = coleccion;
-    obras[0].categorias.push(obras[0][coleccion]);
+  // Aplanar categorías en una sola lista/array
+  _obra.categorias = [];
+
+  for (let i = 1; i <= 6; i++) {
+    const coleccion = `categoria${i}`;
+    if (_obra[coleccion]) {
+      _obra[coleccion].ruta = coleccion;
+      _obra.categorias.push(_obra[coleccion]);
+    }
   }
-}
 
-procesarDatos(obras[0]);
-obra.value = obras[0];
-
-definePageMeta({ layout: 'default', keepalive: true });
-useHead(elementosCabeza({ titulo: obra.value.titulo, banner: obra.value.imagen }, ruta.path));
-
-function procesarDatos(obra) {
   // Limpiar ciudad de origen
-  if (obra.ciudad_origen) {
-    if (obra.ubicacion && obra.ubicacion.ciudad) {
-      if (obra.ciudad_origen.id === obra.ubicacion.ciudad.id) {
-        obra.ciudad_origen = null;
+  if (_obra.ciudad_origen) {
+    if (_obra.ubicacion && _obra.ubicacion.ciudad) {
+      if (_obra.ciudad_origen.id === _obra.ubicacion.ciudad.id) {
+        _obra.ciudad_origen = null;
       }
     }
   }
 
   // Aplanar lugares
-  if (obra.ciudad_origen) {
-    const origen = [{ url: `/archivo/ciudades/${obra.ciudad_origen.id}`, nombre: obra.ciudad_origen.nombre }];
+  if (_obra.ciudad_origen) {
+    const origen = [{ url: `/archivo/ciudades/${_obra.ciudad_origen.id}`, nombre: _obra.ciudad_origen.nombre }];
 
-    if (obra.ciudad_origen.pais) {
-      origen.push({ url: `/archivo/paises/${obra.ciudad_origen.pais.slug}`, nombre: obra.ciudad_origen.pais.nombre });
+    if (_obra.ciudad_origen.pais) {
+      origen.push({ url: `/archivo/paises/${_obra.ciudad_origen.pais.slug}`, nombre: _obra.ciudad_origen.pais.nombre });
     }
 
-    obra.ciudad_origen = origen;
+    _obra.ciudad_origen = origen;
   }
 
-  if (obra.ubicacion) {
-    const ubicacion = [{ url: `/archivo/ubicaciones/${obra.ubicacion.id}`, nombre: obra.ubicacion.nombre }];
+  if (_obra.ubicacion) {
+    const ubicacion = [{ url: `/archivo/ubicaciones/${_obra.ubicacion.id}`, nombre: _obra.ubicacion.nombre }];
 
-    if (obra.ubicacion.ciudad) {
-      ubicacion.push({ url: `/archivo/ciudades/${obra.ubicacion.ciudad.id}`, nombre: obra.ubicacion.ciudad.nombre });
+    if (_obra.ubicacion.ciudad) {
+      ubicacion.push({ url: `/archivo/ciudades/${_obra.ubicacion.ciudad.id}`, nombre: _obra.ubicacion.ciudad.nombre });
 
-      if (obra.ubicacion.ciudad.pais) {
+      if (_obra.ubicacion.ciudad.pais) {
         ubicacion.push({
-          url: `/archivo/paises/${obra.ubicacion.ciudad.pais.slug}`,
-          nombre: obra.ubicacion.ciudad.pais.nombre,
+          url: `/archivo/paises/${_obra.ubicacion.ciudad.pais.slug}`,
+          nombre: _obra.ubicacion.ciudad.pais.nombre,
         });
       }
     }
 
-    obra.ubicacion = ubicacion;
+    _obra.ubicacion = ubicacion;
   }
-}
+
+  obra.value = _obra;
+});
+
+definePageMeta({ layout: 'default', keepalive: true });
 </script>
 
 <template>
-  <div id="contenedorObra" v-if="obra">
-    <h1>{{ obra.titulo }}</h1>
+  <Cargador v-if="pending" />
+
+  <div id="contenedorObra" v-else>
+    <h1>{{ datosGenerales[0].titulo }}</h1>
     <NuxtLink :to="`/archivo/autores/${obra.autores[0].autores_id.id}`">
       <h2>
         <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }}</span>
@@ -118,7 +135,7 @@ function procesarDatos(obra) {
     >
 
     <div id="contenedorImagen">
-      <img class="imagen" :src="urlImagen(obra.imagen.id, 'obra')" :alt="obra.titulo" />
+      <Lupa :src="urlImagen(datosGenerales[0].imagen.id, 'obra')" :alt="datosGenerales[0].titulo" />
     </div>
 
     <div id="contenedorInfo">
