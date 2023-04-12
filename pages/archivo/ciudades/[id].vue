@@ -6,19 +6,21 @@ import { gql } from '~~/utilidades/ayudas';
  * Operaciones en el servidor
  */
 const ruta = useRoute();
-const llave = `categorias${ruta.params.numero}`;
-
-const Categoria = gql`
+const Ciudad = gql`
 query {
-  ${llave}(filter: { slug: {_eq: "${ruta.params.slug}" } }) {
+  ciudades_by_id(id: ${ruta.params.id}) {
     id
     nombre
+    pais {
+      nombre
+    }
   }
 }
 `;
 
-const respuesta = await obtenerDatos(`categorias${ruta.params.numero}-${ruta.params.slug}`, Categoria);
-const datos = respuesta[llave][0];
+const { ciudades_by_id: datosCiudad } = await obtenerDatos('ciudad', Ciudad);
+
+useHead(elementosCabeza(datosCiudad, ruta.path)); // SEO
 
 /**
  * Operaciones en el cliente
@@ -26,11 +28,10 @@ const datos = respuesta[llave][0];
 const obras = ref([]);
 const cerebroArchivo = usarArchivo();
 
-const ObrasCategoria = gql`
+const ObrasCiudad = gql`
 query {
-  ${llave}(filter: { slug: {_eq: "${ruta.params.slug}" } }) {
+  ciudades_by_id(id: ${ruta.params.id}) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}) {
-      id
       registro
       titulo
       imagen {
@@ -48,17 +49,17 @@ query {
 }
 `;
 
-const { data, pending } = obtenerDatosAsinc(`obrasCategoria${datos.id}`, ObrasCategoria);
+const { data, pending } = obtenerDatosAsinc(`obrasCiudad${datosCiudad.id}`, ObrasCiudad);
 
-watch(data, (respuesta) => {
-  obras.value = respuesta[llave][0].obras;
+watch(data, ({ ciudades_by_id }) => {
+  obras.value = ciudades_by_id.obras;
 });
 
 definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>
-  <h1>Categoría: {{ datos.nombre }}</h1>
+  <h1>Ciudad: {{ datosCiudad.nombre }} {{ datosCiudad.pais ? `, ${datosCiudad.pais.nombre}` : '' }}</h1>
   <Cargador v-if="pending" />
   <GaleriaMosaico v-else :obras="obras" />
 </template>

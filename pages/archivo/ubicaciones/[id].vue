@@ -15,7 +15,7 @@ query {
 }
 `;
 
-const { ubicaciones_by_id: datosUbicacion } = await obtenerDatos('autor', Ubicacion);
+const { ubicaciones_by_id: datosUbicacion } = await obtenerDatos(`ubicacion${ruta.params.id}`, Ubicacion);
 
 useHead(elementosCabeza(datosUbicacion, ruta.path)); // SEO
 
@@ -29,7 +29,6 @@ const ObrasUbicacion = gql`
 query {
   ubicaciones_by_id(id: ${ruta.params.id}) {
     obras(limit: ${cerebroArchivo.obrasPorPagina}) {
-      id
       registro
       titulo
       imagen {
@@ -47,7 +46,7 @@ query {
 }
 `;
 
-const { data, pending } = obtenerDatosAsinc(`obrasAutor${datosUbicacion.id}`, ObrasUbicacion);
+const { data, pending } = obtenerDatosAsinc(`obrasUbicacion${datosUbicacion.id}`, ObrasUbicacion);
 
 watch(data, ({ ubicaciones_by_id }) => {
   obras.value = ubicaciones_by_id.obras;
