@@ -21,6 +21,7 @@ useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGeneral
 // En el cliente
 const obra = ref(null);
 const relacionadas = ref(null);
+const ubicacionMapa = ref(null);
 
 const Obra = gql`
   query {
@@ -50,7 +51,7 @@ const Obra = gql`
       complejo_gestual { slug nombre }
 
       ciudad_origen { id nombre pais { slug nombre } }
-      ubicacion { id nombre anotacion ciudad { id nombre pais { slug nombre } } }
+      ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
       autores { autores_id { id nombre apellido } }
       gestos { gestos_id { slug nombre } }
@@ -106,6 +107,7 @@ watch(data, ({ obras }) => {
       {
         url: `/archivo/ubicaciones/${_obra.ubicacion.id}`,
         nombre: _obra.ubicacion.nombre + `${_obra.ubicacion.anotacion ? ' (' + _obra.ubicacion.anotacion + ')' : ''}`,
+        geo: _obra.ubicacion.geo,
       },
     ];
 
@@ -119,6 +121,10 @@ watch(data, ({ obras }) => {
         });
       }
     }
+
+    ubicacionMapa.value = procesarUbicaciones(_obra);
+
+    console.log(ubicacionMapa.value);
 
     _obra.ubicacion = ubicacion;
   }
@@ -151,6 +157,22 @@ async function buscarRelacionadas(ultimaCategoria) {
 
   const { obras } = await obtenerDatos(`relacionadas${ruta.params.registro}`, Relacionadas);
   relacionadas.value = obras;
+}
+
+function procesarUbicaciones(obra) {
+  console.log(obra);
+  /**
+   * Creamos Geojson agregando todas las ubicaciones
+   */
+  const ubicacionGeojson = {
+    type: 'FeatureCollection',
+    features: {
+      type: 'Feature',
+      properties: { id: obra.ubicacion.id, nombre: obra.ubicacion.nombre, geometry: obra.ubicacion.geo },
+    },
+  };
+
+  return ubicacionGeojson;
 }
 
 definePageMeta({ layout: 'default', keepalive: true });
@@ -206,7 +228,8 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
           <span v-if="i > 0" class="separador">|</span>
 
-          <NuxtLink :to="lugar.url">
+          <NuxtLink :to="lugar.url"
+            >ubicacionGeojson
             {{ lugar.nombre }}
           </NuxtLink>
         </span>
@@ -393,6 +416,8 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Fuente:</span>
         <div v-html="obra.fuente.descripcion"></div>
       </div>
+
+      <VistaMapaPunto :ubicaciones="ubicacionMapa" />
     </div>
 
     <div id="contenedorGaleria"><GaleriaMosaico v-if="relacionadas" :obras="relacionadas" /></div>
