@@ -8,6 +8,8 @@ const props = defineProps({
   ubicaciones: Object,
 });
 
+const punto = props.ubicaciones.features.properties;
+
 onMounted(() => {
   const estilo = 'mapbox://styles/enflujo/clbmr4ink000314lg4hi2hcm1/draft';
   mapbox.accessToken = 'pk.eyJ1IjoiZW5mbHVqbyIsImEiOiJjbDNrOXNndXQwMnZsM2lvNDd4N2x0M3dvIn0.eWs4BHs67PcETEUI00T66Q';
@@ -16,71 +18,81 @@ onMounted(() => {
     container: contenedorMapa.value,
     style: estilo,
     zoom: 2,
+    center: punto.geometry.coordinates,
   });
-  console.log(props.ubicaciones);
+  console.log(props.ubicaciones.features);
   mapa.on('load', () => {
     mapa.addSource('ubicaciones', {
       type: 'geojson',
       data: props.ubicaciones,
-      cluster: true,
-      clusterRadius: 100,
-      clusterProperties: {
-        // Esto suma la cantidad de obras que tiene un grupo,
-        // para poder actualizar los círculos a medida que se hace zoom
-        obras: ['+', ['get', 'obras']],
-      },
+      cluster: false,
     });
 
     /**
-     * Cargar icono de imágenes al mapa
-     */
-    const icono = new Image(15, 15);
-    // Agregar icono a la instancia del mapa (se necesita para usarlo más adelante en las capas).
-    icono.onload = () => mapa.addImage('icono', icono);
-    icono.src = iconoImagen;
-    console.log(props, mapa);
-    /**
-     * ⭕ Punto cuando es 1 lugar y no un "cluster".
-     */
-    mapa.addLayer({
-      id: 'punto',
-      type: 'circle',
-      source: 'ubicaciones',
-      filter: ['!', ['has', 'point_count']], // Cuando NO tiene "point_count" ya no es un grupo y es sólo 1 punto.
-      paint: {
-        'circle-color': 'white',
-        'circle-radius': 5,
-        'circle-opacity': 0.7,
-      },
-    });
+     * Agregar marcador del lugar
+     * */
+    const marcador = new mapbox.Marker({
+      color: '#9e171f',
+      draggable: true,
+    })
+      .setLngLat(punto.geometry.coordinates)
+      .addTo(mapa);
+
+    const alturaMarcador = 50;
+    const radioMarcador = 10;
+    const desplazamientoLinear = 25;
+    const popupOffsets = {
+      top: [0, 0],
+      'top-left': [0, 0],
+      'top-right': [0, 0],
+      bottom: [0, -alturaMarcador],
+      'bottom-left': [desplazamientoLinear, (alturaMarcador - radioMarcador + desplazamientoLinear) * -1],
+      'bottom-right': [-desplazamientoLinear, (alturaMarcador - radioMarcador + desplazamientoLinear) * -1],
+      left: [radioMarcador, (alturaMarcador - radioMarcador) * -1],
+      right: [-radioMarcador, (alturaMarcador - radioMarcador) * -1],
+    };
 
     /**
      * 🏛 Nombre del lugar
      */
-    mapa.addLayer({
-      id: 'nombre',
-      type: 'symbol',
-      source: 'ubicaciones',
-      filter: ['!', ['has', 'point_count']],
-      layout: {
-        'text-field': [
-          'format',
-          ['get', 'nombre'],
-          { 'font-scale': 0.8 },
-          '\n',
-          ['image', 'icono'],
-          ' ',
-          ['get', 'obras'],
-          { 'font-scale': 0.75 },
-        ],
-      },
-      paint: {
-        'text-color': '#202',
-        'text-halo-color': '#fff',
-        'text-halo-width': ['case', ['boolean', ['feature-state', 'activo'], false], 3, 0],
-        'text-halo-blur': 2,
-      },
-    });
+    const etiqueta = new mapbox.Popup({ offset: popupOffsets, className: 'etiqueta', closeOnClick: false })
+      .setLngLat(punto.geometry.coordinates)
+      .setHTML(punto.nombre)
+      .setMaxWidth('300px')
+      .addTo(mapa);
+
+    // /**
+    //  * Cargar icono de imágenes al mapa
+    //  */
+    // const icono = new Image(15, 15);
+    // // Agregar icono a la instancia del mapa (se necesita para usarlo más adelante en las capas).
+    // icono.onload = () => mapa.addImage('icono', icono);
+    // icono.src = iconoImagen;
+
+    // mapa.addLayer({
+    //   id: 'nombre',
+    //   type: 'symbol',
+    //   source: 'ubicaciones',
+    //   filter: ['!', ['has', 'point_count']],
+    //   layout: {
+    //     'text-field': [
+    //       'format',
+    //       ['get', 'nombre'],
+    //       { 'font-scale': 0.8 },
+    //       '\n',
+    //       ['image', 'icono'],punto
+    //       ' ',
+    //       ['get', 'obras'],
+    //       { 'font-scale': 0.75 },
+    //     ],
+    //   },
+    //   paint: {
+    //     'text-color': '#202',
+    //     'text-halo-color': '#fff',
+    //     'text-halo-width': ['case', ['boolean', ['feature-state', 'activo'], false], 3, 0],
+    //     'text-halo-blur': 2,
+    //   },
+    // });
 
     // Lienzo donde están pintados los datos.
     const lienzo = mapa.getCanvas();
@@ -98,8 +110,13 @@ onMounted(() => {
 
 <style lang="scss">
 #mapa {
+  margin: 1em;
   display: block;
-  min-height: 90vh;
+  min-height: 50vh;
+  width: 20vw;
+  .etiqueta {
+    color: var(--dolor);
+  }
 }
 </style>
 
