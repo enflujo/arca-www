@@ -105,3 +105,33 @@ export function obtenerVariablesCSS(nombre) {
   const ele = window.getComputedStyle(document.body, '');
   return ele.getPropertyValue(nombre);
 }
+
+export const esperar = (funcion, tiempoEspera) => {
+  let temporizador = null;
+  return (evento) => {
+    window.clearTimeout(temporizador);
+
+    temporizador = window.setTimeout(() => {
+      funcion(evento);
+    }, tiempoEspera);
+  };
+};
+
+export const demorar = (funcion, esperar) => {
+  let temporizador = null;
+  let anterior = 0;
+
+  return (evento) => {
+    const ahora = Date.now();
+    const restante = esperar - (ahora - anterior);
+
+    if (restante <= 0 || restante > esperar) {
+      if (temporizador) {
+        clearTimeout(temporizador);
+        temporizador = null;
+      }
+      anterior = ahora;
+      funcion(evento);
+    }
+  };
+};

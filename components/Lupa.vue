@@ -1,33 +1,5 @@
 <script setup>
-const esperar = (funcion, tiempoEspera) => {
-  let temporizador = null;
-  return (evento) => {
-    window.clearTimeout(temporizador);
-
-    temporizador = window.setTimeout(() => {
-      funcion(evento);
-    }, tiempoEspera);
-  };
-};
-
-const demorar = (funcion, esperar) => {
-  let temporizador = null;
-  let anterior = 0;
-
-  return (evento) => {
-    const ahora = Date.now();
-    const restante = esperar - (ahora - anterior);
-
-    if (restante <= 0 || restante > esperar) {
-      if (temporizador) {
-        clearTimeout(temporizador);
-        temporizador = null;
-      }
-      anterior = ahora;
-      funcion(evento);
-    }
-  };
-};
+import { demorar, esperar } from '~/utilidades/ayudas';
 
 const props = defineProps({
   src: String,
