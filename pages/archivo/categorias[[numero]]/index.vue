@@ -159,7 +159,8 @@ function clicSubCategorias(nivel, datosCategoria) {
             :radio="6"
             fondoConteo="transparent"
           />
-          <div v-html="categoria1.descripcion"></div>
+
+          <div v-html="categoria1.descripcion" class="descripcion"></div>
 
           <span
             class="mostrar"
@@ -208,6 +209,10 @@ function clicSubCategorias(nivel, datosCategoria) {
 
   .informacionTarjeta {
     padding-left: 1em;
+  }
+
+  .descripcion {
+    margin-bottom: 0.5em;
   }
 }
 
