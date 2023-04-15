@@ -27,7 +27,7 @@ onMounted(() => {
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
 
   buscarColor = escalaColores(1, maximo, obtenerVariablesCSS('--amarilloArena2'), obtenerVariablesCSS('--rojoCerezo'));
-  anchoLinea = (cantidad) => convertirEscala(cantidad, 1, maximoGrilla, 0, ancho / 1.5) | 0;
+  anchoLinea = (cantidad) => convertirEscala(cantidad, 0, maximoGrilla, 0, 100) | 0;
 
   seccionGrilla.value = maximoGrilla / 10;
   seccionGrillaAncho.value = anchoLinea(seccionGrilla.value);
@@ -70,25 +70,18 @@ function desactivar(evento) {
           class="elementoColombina fila"
           :to="elemento.url ? elemento.url : `/archivo/${props.coleccion}/${elemento.slug}`"
         >
-          <span class="colombina">
-            <span
-              class="lineaColombina"
-              :style="`width:${anchoLinea(elemento.obras_func.count)}px; background-color:${buscarColor(
-                elemento.obras_func.count
-              )}`"
-            ></span>
-            <span class="circuloColombina" :style="`background-color:${buscarColor(elemento.obras_func.count)}`"></span>
-            <span class="conteoObras">
-              {{ elemento.obras_func.count }}
-            </span>
-          </span>
+          <GraficaColombina
+            :ancho="anchoLinea(elemento.obras_func.count)"
+            :color="buscarColor(elemento.obras_func.count)"
+            :total="elemento.obras_func.count"
+          />
         </NuxtLink>
       </li>
     </ul>
 
     <div id="grilla">
       <p id="leyendaEjeX">Cantidad de obras</p>
-      <span class="divisionGrilla" v-for="i in 10" :key="`división ${i}`" :style="`width:${seccionGrillaAncho}px`">
+      <span class="divisionGrilla" v-for="i in 10" :key="`división ${i}`" :style="`width:${seccionGrillaAncho}%`">
         <span class="valorGrilla">
           {{ seccionGrilla * (i - 1) }}
         </span>
@@ -114,18 +107,8 @@ ul {
   li {
     display: table-row;
 
-    &.activo {
-      .conteoObras {
-        color: white;
-      }
-    }
-
     &:hover {
       background-color: var(--verdeResaltar);
-      .circuloColombina {
-        height: 16px;
-        width: 16px;
-      }
     }
   }
   .fila {
@@ -143,30 +126,6 @@ ul {
     line-height: 1.8;
   }
 }
-.colombina {
-  display: flex;
-  align-items: center;
-
-  .lineaColombina {
-    display: block;
-    height: 3px;
-  }
-  .circuloColombina {
-    display: block;
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-  }
-
-  .conteoObras {
-    color: #788989;
-    font-size: 0.75em;
-    background-color: rgba(252, 252, 252, 0.65);
-    padding: 0.4em;
-    margin-left: 0.7em;
-    border-radius: 6px;
-  }
-}
 
 #grilla {
   border-top: rgba($profundidad, 0.1) dashed 1px;
@@ -174,6 +133,7 @@ ul {
   display: flex;
   justify-content: flex-start;
   height: 100%;
+  width: calc(100% - 200px);
   position: absolute;
   top: 0;
   left: 200px;
