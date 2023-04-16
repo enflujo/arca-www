@@ -1,8 +1,21 @@
 <script setup>
-import { urlImagen } from '~~/utilidades/ayudas';
-
 const props = defineProps({
   obras: Array,
+  pagina: Number,
+  cargarPagina: Function,
+  cargando: Boolean,
+});
+
+const siguientePagina = ref(null);
+
+onMounted(() => {
+  duranteInterseccion(
+    siguientePagina.value,
+    () => {
+      props.cargarPagina(props.pagina + 1);
+    },
+    false
+  );
 });
 </script>
 
@@ -12,7 +25,7 @@ const props = defineProps({
       <span class="registro">{{ obra.registro }}</span>
 
       <NuxtLink :to="`/archivo/obras/${obra.registro}`">
-        <img class="imagen" :src="urlImagen(obra.imagen.id, 'galeria')" :alt="obra.titulo" />
+        <ImagenArca class="imagen" :datos="obra.imagen" :titulo="obra.titulo" llave="galeria" />
       </NuxtLink>
 
       <div class="infoImagen">
@@ -27,6 +40,7 @@ const props = defineProps({
         </NuxtLink>
       </div>
     </div>
+    <div class="siguientePagina" ref="siguientePagina">{{ cargando ? `Cargando página ${props.pagina}...` : '' }}</div>
   </div>
 </template>
 
@@ -44,14 +58,10 @@ const props = defineProps({
 }
 
 .obra {
-  display: flex;
-  flex-direction: column;
   min-width: 250px;
   margin: 0 1em 1em 0;
-  padding: 0;
+  padding: 7px;
   position: relative;
-  border: transparent solid 7px;
-  border-style: outset;
   background-color: var(--amarilloBase);
 
   .registro {
@@ -108,10 +118,18 @@ const props = defineProps({
 }
 
 .imagen {
-  width: auto;
+  width: inherit;
   max-height: 200px;
-  text-align: center;
   margin: 0 auto;
   display: block;
+}
+
+.siguientePagina {
+  flex-basis: 100%;
+  margin-top: 1em;
+  background-color: red;
+  color: white;
+  padding: 1em;
+  text-align: center;
 }
 </style>

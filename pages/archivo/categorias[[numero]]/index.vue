@@ -141,9 +141,12 @@ function clicSubCategorias(nivel, datosCategoria) {
       >
         <div v-if="categoria1.imagen" class="imagen">
           <NuxtLink :to="`/archivo/categorias1/${categoria1.slug}`">
-            <img
-              :src="urlImagen(categoria1.imagen.id, 'categoria')"
-              :alt="categoria1.imagen.title || categoria1.nombre"
+            <ImagenArca
+              class="imagen"
+              :datos="categoria1.imagen"
+              :titulo="categoria1.nombre"
+              llave="categoria"
+              rutaIcono="/arca-icono.svg"
             />
           </NuxtLink>
         </div>
