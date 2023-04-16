@@ -122,7 +122,7 @@ watch(data, ({ obras }) => {
       }
     }
 
-    ubicacionMapa.value = procesarUbicaciones(_obra);
+    ubicacionMapa.value = { id: _obra.ubicacion.id, nombre: _obra.ubicacion.nombre, geometry: _obra.ubicacion.geo };
 
     _obra.ubicacion = ubicacion;
   }
@@ -155,20 +155,6 @@ async function buscarRelacionadas(ultimaCategoria) {
 
   const { obras } = await obtenerDatos(`relacionadas${ruta.params.registro}`, Relacionadas);
   relacionadas.value = obras;
-}
-
-function procesarUbicaciones(obra) {
-  /**
-   * Creamos Geojson agregando todas las ubicaciones
-   */
-  const ubicacionGeojson = {
-    type: 'FeatureCollection',
-    features: {
-      type: 'Feature',
-      properties: { id: obra.ubicacion.id, nombre: obra.ubicacion.nombre, geometry: obra.ubicacion.geo },
-    },
-  };
-  return ubicacionGeojson;
 }
 
 definePageMeta({ layout: 'default', keepalive: true });
@@ -412,7 +398,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         </span>
       </div>
 
-      <VistaMapaPunto :ubicaciones="ubicacionMapa" />
+      <VistaMapaPunto :punto="ubicacionMapa" />
     </div>
 
     <div id="contenedorGaleria"><GaleriaMosaico v-if="relacionadas" :obras="relacionadas" /></div>
