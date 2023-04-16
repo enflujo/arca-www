@@ -4,18 +4,60 @@ import { usarArchivo } from '~~/cerebros/archivo';
 const cerebroArchivo = usarArchivo();
 
 /**
- * Datos básicos para cargar página con campo `nombre` rápidamente.
+ * Datos básicos de una colección.
  *
  * @param {string} coleccion Nombre de la colección.
- * @param {string} slug Slug de la entrada.
+ * @param {string} busqueda Slug o ID de la entrada.
  * @returns
  */
-export const nombrePorSlug = (coleccion, slug) => {
+export const datosGeneralesColeccion = (coleccion, busqueda) => {
+  if (coleccion === 'personajes') {
+    return gql`
+    query {
+      personajes(filter: { slug: {_eq: "${busqueda}"} }) {
+        id
+        nombre
+        descripcion
+        fuente
+        muerte
+        muerte_anotacion
+        beatificacion_canonizacion_desde
+        beatificacion_canonizacion_desde_anotacion
+        beatificacion_canonizacion_hasta
+        beatificacion_canonizacion_hasta_anotacion
+        obras_func {
+          count
+        }
+      }
+    }
+    `;
+  } else if (coleccion === 'autores') {
+    return gql`
+    query {
+      autores_by_id(id: ${busqueda}) {
+        id
+        nombre
+        apellido
+        biografia
+        referencia
+        desde
+        desde_anotacion
+        hasta
+        hasta_anotacion
+        obras_func {
+            count
+          }
+      }
+    }
+    `;
+  }
+
   return gql`
   query {
-    ${coleccion}(filter: { slug: { _eq: "${slug}" } }, limit: 1) {
+    ${coleccion}(filter: { slug: { _eq: "${busqueda}" } }, limit: 1) {
       id
       nombre
+      descripcion
       obras_func {
         count
       }
@@ -24,18 +66,49 @@ export const nombrePorSlug = (coleccion, slug) => {
   `;
 };
 
+const camposAutores = () => {
+  return `autores {
+    autores_id {
+      id
+      nombre
+      apellido
+    }
+  }`;
+};
 /**
  * Obras para galería.
  *
  * @param {string} coleccion Nombre de la colección.
- * @param {string} slug Slug de la entrada.
+ * @param {string} busqueda Slug o ID de la entrada.
  * @param {boolean} m2m  ¿Es de una relación M2M?
  * @returns
  */
-export const obrasPorSlug = (coleccion, slug, m2m = false, pagina = 1) => {
+export const datosObras = (coleccion, busqueda, m2m = false, pagina = 1) => {
+  if (coleccion === 'autores') {
+    return gql`
+    query {
+      autores_by_id(id: ${busqueda}) {
+        obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${pagina}) {
+          obras_id {
+            registro
+            titulo
+            imagen {
+              id,
+              title
+              width
+              height
+            }
+            ${camposAutores()}
+          }
+        }
+      }
+    }
+    `;
+  }
+
   return gql`
   query {
-    ${coleccion}(filter: { slug: { _eq: "${slug}" } }, limit: 1) {
+    ${coleccion}(filter: { slug: { _eq: "${busqueda}" } }, limit: 1) {
       obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${pagina}) {
         ${m2m ? 'obras_id {' : ''}
         registro
@@ -43,14 +116,10 @@ export const obrasPorSlug = (coleccion, slug, m2m = false, pagina = 1) => {
         imagen {
           id,
           title
+          width
+          height
         }
-        autores {
-          autores_id {
-            id
-            nombre
-            apellido
-          }
-        }
+        ${camposAutores()}
         ${m2m ? '}' : ''}
       }
     }
