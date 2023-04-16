@@ -21,6 +21,7 @@ useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGeneral
 // En el cliente
 const obra = ref(null);
 const relacionadas = ref(null);
+const ubicacionMapa = ref(null);
 
 const Obra = gql`
   query {
@@ -50,7 +51,7 @@ const Obra = gql`
       complejo_gestual { slug nombre }
 
       ciudad_origen { id nombre pais { slug nombre } }
-      ubicacion { id nombre anotacion ciudad { id nombre pais { slug nombre } } }
+      ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
       autores { autores_id { id nombre apellido } }
       gestos { gestos_id { slug nombre } }
@@ -106,6 +107,7 @@ watch(data, ({ obras }) => {
       {
         url: `/archivo/ubicaciones/${_obra.ubicacion.id}`,
         nombre: _obra.ubicacion.nombre + `${_obra.ubicacion.anotacion ? ' (' + _obra.ubicacion.anotacion + ')' : ''}`,
+        geo: _obra.ubicacion.geo,
       },
     ];
 
@@ -119,6 +121,8 @@ watch(data, ({ obras }) => {
         });
       }
     }
+
+    ubicacionMapa.value = { id: _obra.ubicacion.id, nombre: _obra.ubicacion.nombre, geometry: _obra.ubicacion.geo };
 
     _obra.ubicacion = ubicacion;
   }
@@ -186,30 +190,6 @@ definePageMeta({ layout: 'default', keepalive: true });
             {{ tecnica.tecnicas_id.nombre }}
           </NuxtLink></span
         >
-      </div>
-
-      <div class="datos" v-if="obra.ubicacion">
-        <span class="tituloDato">Ubicación actual:</span>
-
-        <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
-          <span v-if="i > 0" class="separador">|</span>
-
-          <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
-        </span>
-      </div>
-
-      <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
-      si existen y son distintas, muestra la ciudad de origen-->
-      <div class="datos" v-if="obra.ciudad_origen">
-        <span class="tituloDato">Ciudad de origen:</span>
-
-        <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
-          <span v-if="i > 0" class="separador">|</span>
-
-          <NuxtLink :to="lugar.url">
-            {{ lugar.nombre }}
-          </NuxtLink>
-        </span>
       </div>
 
       <div class="datos" v-if="obra.donante.nombre">
@@ -393,6 +373,32 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Fuente:</span>
         <div v-html="obra.fuente.descripcion"></div>
       </div>
+
+      <div class="datos" v-if="obra.ubicacion">
+        <span class="tituloDato">Ubicación actual:</span>
+
+        <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
+          <span v-if="i > 0" class="separador">|</span>
+
+          <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
+        </span>
+      </div>
+
+      <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
+      si existen y son distintas, muestra la ciudad de origen-->
+      <div class="datos" v-if="obra.ciudad_origen">
+        <span class="tituloDato">Ciudad de origen:</span>
+
+        <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
+          <span v-if="i > 0" class="separador">|</span>
+
+          <NuxtLink :to="lugar.url">
+            {{ lugar.nombre }}
+          </NuxtLink>
+        </span>
+      </div>
+
+      <VistaMapaPunto :punto="ubicacionMapa" />
     </div>
 
     <div id="contenedorGaleria"><GaleriaMosaico v-if="relacionadas" :obras="relacionadas" /></div>

@@ -21,6 +21,7 @@ onMounted(() => {
     container: contenedorMapa.value,
     style: estilo,
     zoom: 2,
+    attributionControl: false,
   });
 
   /**
@@ -299,5 +300,6 @@ function cerrarCajon() {
 <style lang="scss" scoped>
 #contenedor {
   position: relative;
+  overflow: hidden;
 }
 </style>
