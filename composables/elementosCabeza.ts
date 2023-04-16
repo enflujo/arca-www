@@ -56,25 +56,23 @@ export default function (datosPagina: DatosPagina, ruta: string) {
     datosPagina.banner = { title: cerebroGeneral.titulo };
   }
 
-  if (!datosPagina.descripcion) {
-    datosPagina.descripcion = cerebroGeneral.descripcion;
-  }
+  const descripcion = datosPagina.descripcion ? datosPagina.descripcion : cerebroGeneral.descripcion;
 
   return {
     title,
     meta: [
-      { name: 'description', content: datosPagina.descripcion },
+      { name: 'description', content: descripcion },
       // Open Graph: Facebook
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: url },
       { property: 'og:title', content: title },
-      { property: 'og:description', content: datosPagina.descripcion },
+      { property: 'og:description', content: descripcion },
       { property: 'og:image', content: img },
       // Twitter
       { property: 'twitter:card', content: 'summary_large_image' },
       { property: 'twitter:url', content: url },
       { property: 'twitter:title', content: title },
-      { property: 'twitter:description', content: datosPagina.descripcion },
+      { property: 'twitter:description', content: descripcion },
       { property: 'twitter:image', content: img },
       { property: 'twitter:image:alt', content: datosPagina.banner.title },
     ],
