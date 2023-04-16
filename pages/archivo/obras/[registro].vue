@@ -124,8 +124,6 @@ watch(data, ({ obras }) => {
 
     ubicacionMapa.value = procesarUbicaciones(_obra);
 
-    console.log(ubicacionMapa.value);
-
     _obra.ubicacion = ubicacion;
   }
 
@@ -160,7 +158,6 @@ async function buscarRelacionadas(ultimaCategoria) {
 }
 
 function procesarUbicaciones(obra) {
-  console.log(obra);
   /**
    * Creamos Geojson agregando todas las ubicaciones
    */
@@ -171,7 +168,6 @@ function procesarUbicaciones(obra) {
       properties: { id: obra.ubicacion.id, nombre: obra.ubicacion.nombre, geometry: obra.ubicacion.geo },
     },
   };
-
   return ubicacionGeojson;
 }
 
@@ -208,31 +204,6 @@ definePageMeta({ layout: 'default', keepalive: true });
             {{ tecnica.tecnicas_id.nombre }}
           </NuxtLink></span
         >
-      </div>
-
-      <div class="datos" v-if="obra.ubicacion">
-        <span class="tituloDato">Ubicación actual:</span>
-
-        <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
-          <span v-if="i > 0" class="separador">|</span>
-
-          <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
-        </span>
-      </div>
-
-      <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
-      si existen y son distintas, muestra la ciudad de origen-->
-      <div class="datos" v-if="obra.ciudad_origen">
-        <span class="tituloDato">Ciudad de origen:</span>
-
-        <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
-          <span v-if="i > 0" class="separador">|</span>
-
-          <NuxtLink :to="lugar.url"
-            >ubicacionGeojson
-            {{ lugar.nombre }}
-          </NuxtLink>
-        </span>
       </div>
 
       <div class="datos" v-if="obra.donante.nombre">
@@ -415,6 +386,30 @@ definePageMeta({ layout: 'default', keepalive: true });
       <div class="datos" v-if="obra.fuente.descripcion">
         <span class="tituloDato">Fuente:</span>
         <div v-html="obra.fuente.descripcion"></div>
+      </div>
+
+      <div class="datos" v-if="obra.ubicacion">
+        <span class="tituloDato">Ubicación actual:</span>
+
+        <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
+          <span v-if="i > 0" class="separador">|</span>
+
+          <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
+        </span>
+      </div>
+
+      <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
+      si existen y son distintas, muestra la ciudad de origen-->
+      <div class="datos" v-if="obra.ciudad_origen">
+        <span class="tituloDato">Ciudad de origen:</span>
+
+        <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
+          <span v-if="i > 0" class="separador">|</span>
+
+          <NuxtLink :to="lugar.url">
+            {{ lugar.nombre }}
+          </NuxtLink>
+        </span>
       </div>
 
       <VistaMapaPunto :ubicaciones="ubicacionMapa" />

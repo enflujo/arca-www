@@ -18,8 +18,6 @@ watch(data, (respuesta) => {
   } else {
     datos.value = respuesta[props.coleccion];
   }
-
-  console.log(respuesta);
 });
 
 onMounted(() => {

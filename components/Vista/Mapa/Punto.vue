@@ -1,14 +1,18 @@
 <script setup>
 import mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import iconoImagen from '~~/assets/imgs/icono-imagen.svg';
 
 const contenedorMapa = ref(null);
+
 const props = defineProps({
   ubicaciones: Object,
 });
 
 const punto = props.ubicaciones.features.properties;
+
+// Ícono personalizado en no Vue. En Vue cómo???!!!
+/* const el = document.createElement('div');
+el.className = 'icono'; */
 
 onMounted(() => {
   const estilo = 'mapbox://styles/enflujo/clbmr4ink000314lg4hi2hcm1/draft';
@@ -20,7 +24,7 @@ onMounted(() => {
     zoom: 2,
     center: punto.geometry.coordinates,
   });
-  console.log(props.ubicaciones.features);
+
   mapa.on('load', () => {
     mapa.addSource('ubicaciones', {
       type: 'geojson',
@@ -33,15 +37,15 @@ onMounted(() => {
      * */
     const marcador = new mapbox.Marker({
       color: '#9e171f',
-      draggable: true,
+      draggable: false,
     })
       .setLngLat(punto.geometry.coordinates)
       .addTo(mapa);
 
-    const alturaMarcador = 50;
-    const radioMarcador = 10;
-    const desplazamientoLinear = 25;
-    const popupOffsets = {
+    const alturaMarcador = 30;
+    const radioMarcador = 20;
+    const desplazamientoLinear = 35;
+    const desplazamientosEtiqueta = {
       top: [0, 0],
       'top-left': [0, 0],
       'top-right': [0, 0],
@@ -55,49 +59,14 @@ onMounted(() => {
     /**
      * 🏛 Nombre del lugar
      */
-    const etiqueta = new mapbox.Popup({ offset: popupOffsets, className: 'etiqueta', closeOnClick: false })
+    const etiqueta = new mapbox.Popup({ offset: desplazamientosEtiqueta, className: 'etiqueta', closeOnClick: false })
       .setLngLat(punto.geometry.coordinates)
       .setHTML(punto.nombre)
       .setMaxWidth('300px')
       .addTo(mapa);
 
-    // /**
-    //  * Cargar icono de imágenes al mapa
-    //  */
-    // const icono = new Image(15, 15);
-    // // Agregar icono a la instancia del mapa (se necesita para usarlo más adelante en las capas).
-    // icono.onload = () => mapa.addImage('icono', icono);
-    // icono.src = iconoImagen;
-
-    // mapa.addLayer({
-    //   id: 'nombre',
-    //   type: 'symbol',
-    //   source: 'ubicaciones',
-    //   filter: ['!', ['has', 'point_count']],
-    //   layout: {
-    //     'text-field': [
-    //       'format',
-    //       ['get', 'nombre'],
-    //       { 'font-scale': 0.8 },
-    //       '\n',
-    //       ['image', 'icono'],punto
-    //       ' ',
-    //       ['get', 'obras'],
-    //       { 'font-scale': 0.75 },
-    //     ],
-    //   },
-    //   paint: {
-    //     'text-color': '#202',
-    //     'text-halo-color': '#fff',
-    //     'text-halo-width': ['case', ['boolean', ['feature-state', 'activo'], false], 3, 0],
-    //     'text-halo-blur': 2,
-    //   },
-    // });
-
     // Lienzo donde están pintados los datos.
     const lienzo = mapa.getCanvas();
-    let idElementoEncima = null;
-    let fuenteElementoEncima = null;
   });
 });
 </script>
@@ -116,6 +85,14 @@ onMounted(() => {
   width: 20vw;
   .etiqueta {
     color: var(--dolor);
+  }
+  .icono {
+    background-image: url('~~/assets/imgs/icono-imagen.svg');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
   }
 }
 </style>
