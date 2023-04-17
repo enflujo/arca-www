@@ -58,6 +58,7 @@ export const datosGeneralesColeccion = (coleccion, busqueda) => {
       id
       nombre
       descripcion
+      ${coleccion === 'gestos' ? 'codigo' : ''}
       obras_func {
         count
       }

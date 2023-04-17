@@ -55,6 +55,22 @@ defineProps({
     </div>
   </template>
 
+  <template v-else-if="coleccion === 'gestos'">
+    <div id="informacion">
+      <section v-if="datos.codigo" class="seccion medio">
+        <h2>Código</h2>
+        <div class="infoContenido">
+          <p>{{ datos.codigo }}</p>
+        </div>
+      </section>
+
+      <section v-if="datos.descripcion" class="seccion">
+        <h2>Descripción</h2>
+        <div v-html="datos.descripcion" class="infoContenido"></div>
+      </section>
+    </div>
+  </template>
+
   <template v-else>
     <div v-if="datos.descripcion" id="informacion">
       <section class="seccion">
@@ -92,11 +108,6 @@ defineProps({
   &.medio {
     vertical-align: top;
     flex-basis: 48%;
-
-    &:last-child {
-      margin-right: 0;
-      color: yellow;
-    }
   }
 }
 
