@@ -9,7 +9,7 @@ function abrirBuscador() {
 
 <template>
   <div id="botonBuscar" @click="abrirBuscador">
-    <span>Buscar...</span>
+    <span class="indicacion">Buscar...</span>
     <img id="lupa" src="~~/assets/imgs/lupa.svg" alt="Icono de lupa en buscador" />
   </div>
 </template>
@@ -23,7 +23,7 @@ function abrirBuscador() {
   position: relative;
   color: rgba($profundidad, 0.6);
   font-size: 0.9em;
-  padding: 0.5em 0 0 1em;
+
   cursor: pointer;
   transition: opacity 0.25s ease-in-out;
   opacity: 0.85;
@@ -33,11 +33,17 @@ function abrirBuscador() {
   }
 }
 
+.indicacion {
+  position: absolute;
+  top: 0.5em;
+  left: 1em;
+}
+
 #lupa {
   position: absolute;
   height: 15px;
   width: auto;
-  right: 10px;
-  top: 7px;
+  right: 13px;
+  top: 8px;
 }
 </style>
