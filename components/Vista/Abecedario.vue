@@ -42,7 +42,7 @@ function procesarDatos(llave) {
 </script>
 
 <template>
-  <section v-for="seccion in abc" :key="`seccion${seccion.letra}`">
+  <section v-for="seccion in abc" :key="`seccion${seccion.letra}`" class="grupoLetras">
     <h2 class="tituloLetra">{{ seccion.letra }}</h2>
     <ul class="elementos">
       <li v-for="(elemento, i) in seccion.elementos" :key="`elemento${i}`" class="elemento">
@@ -53,8 +53,15 @@ function procesarDatos(llave) {
 </template>
 
 <style lang="scss" scoped>
+.grupoLetras {
+  border-top: 3px solid $rojoCerezo;
+}
 .tituloLetra {
   text-transform: uppercase;
+  border-top: none;
+  display: inline-block;
+  padding: 0.3em;
+  margin-right: 0.5em;
 }
 
 .elementos {
@@ -65,6 +72,19 @@ function procesarDatos(llave) {
 }
 
 .elemento {
-  padding: 0.3em 1.3em 0.3em 0;
+  padding: 0.4em;
+  border: 1px solid $profundidad;
+  line-height: 1.2;
+  margin: 0.2em;
+  background-color: transparent;
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    background-color: $rojoCerezo;
+    a,
+    a:link {
+      color: $claridad;
+    }
+  }
 }
 </style>
