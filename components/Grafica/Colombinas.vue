@@ -7,7 +7,6 @@ const contenedor = ref(null);
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
 const seccionGrilla = ref(0);
-const seccionGrillaAncho = ref(0);
 
 let buscarColor;
 let anchoLinea;
@@ -24,12 +23,13 @@ onMounted(() => {
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
   const maximo = ordenados[0].obras_func.count;
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
+  const colorMin = obtenerVariablesCSS('--amarilloArena2');
+  const colorMax = obtenerVariablesCSS('--rojoCerezo');
 
-  buscarColor = escalaColores(1, maximo, obtenerVariablesCSS('--amarilloArena2'), obtenerVariablesCSS('--rojoCerezo'));
+  buscarColor = escalaColores(1, maximo, colorMin, colorMax);
   anchoLinea = (cantidad) => convertirEscala(cantidad, 0, maximoGrilla, 0, 100) | 0;
 
   seccionGrilla.value = maximoGrilla / 10;
-  seccionGrillaAncho.value = anchoLinea(seccionGrilla.value);
   maximoObras.value = maximo;
   datosOrdenados.value = ordenados;
 });
@@ -80,7 +80,7 @@ function desactivar(evento) {
 
     <div id="grilla">
       <p id="leyendaEjeX">Cantidad de obras</p>
-      <span class="divisionGrilla" v-for="i in 10" :key="`división ${i}`" :style="`width:${seccionGrillaAncho}%`">
+      <span class="divisionGrilla" v-for="i in 10" :key="`división ${i}`">
         <span class="valorGrilla">
           {{ seccionGrilla * (i - 1) }}
         </span>
@@ -145,6 +145,7 @@ ul {
   .divisionGrilla {
     display: block;
     border-right: rgba($profundidad, 0.1) solid 1px;
+    width: 10%;
   }
 
   .valorGrilla {
