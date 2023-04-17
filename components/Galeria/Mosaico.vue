@@ -9,13 +9,15 @@ const props = defineProps({
 const siguientePagina = ref(null);
 
 onMounted(() => {
-  duranteInterseccion(
-    siguientePagina.value,
-    () => {
-      props.cargarPagina(props.pagina + 1);
-    },
-    false
-  );
+  if (props.cargarPagina) {
+    duranteInterseccion(
+      siguientePagina.value,
+      () => {
+        props.cargarPagina(props.pagina + 1);
+      },
+      false
+    );
+  }
 });
 </script>
 
@@ -40,7 +42,9 @@ onMounted(() => {
         </NuxtLink>
       </div>
     </div>
-    <div class="siguientePagina" ref="siguientePagina">{{ cargando ? `Cargando página ${props.pagina}...` : '' }}</div>
+    <div ref="siguientePagina" class="siguientePagina" :class="cargando ? 'activo' : ''">
+      <p class="textoCargando">{{ `Cargando página ${props.pagina + 1}` }}</p>
+    </div>
   </div>
 </template>
 
@@ -127,9 +131,48 @@ onMounted(() => {
 .siguientePagina {
   flex-basis: 100%;
   margin-top: 1em;
-  background-color: red;
-  color: white;
+  background-color: $dolor;
   padding: 1em;
   text-align: center;
+  opacity: 0;
+
+  &.activo {
+    opacity: 1;
+    animation: palpito 0.5s alternate infinite;
+  }
+
+  .textoCargando {
+    color: $amarilloClaro;
+    font-style: italic;
+    font-weight: bold;
+
+    &::before,
+    &::after {
+      content: '';
+      background-image: url(/arca-icono-amarillo.svg);
+      background-repeat: no-repeat;
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 1em;
+    }
+    // <img class="iconoCargador" src="/arca-icono-amarillo.svg" alt="Icono Arca" width="28" height="28" />
+  }
+
+  .iconoCargador {
+    width: 28px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+@keyframes palpito {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>
