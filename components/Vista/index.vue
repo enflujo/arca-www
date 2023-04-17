@@ -102,7 +102,7 @@ function procesarDatos(nuevosDatos) {
   <div v-else>
     <VistaFiltros :vistas="vistas" :vistaInicial="vistaInicial" />
     <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="coleccion" />
-    <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" :coleccion="coleccion" />
+    <VistaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" :coleccion="coleccion" />
     <VistaMapa
       v-if="cerebroArchivo.vistaActual === 'mapa' && datosUbicaciones"
       :paises="datosUbicaciones.paises"
