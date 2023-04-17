@@ -24,7 +24,7 @@ watch(
     if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
       cerebroArchivo.vistaActual = ruta.query.vista;
     } else {
-      cerebroArchivo.vistaActual = '';
+      cerebroArchivo.vistaActual = props.vistaInicial;
     }
   }
 );
@@ -56,6 +56,7 @@ function cambiarVista(llave) {
 <style lang="scss" scoped>
 #filtros {
   display: flex;
+  margin-bottom: 1em;
 }
 
 .filtro {
