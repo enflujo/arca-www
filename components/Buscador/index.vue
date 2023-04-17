@@ -102,7 +102,7 @@ function cambioDePagina() {
       >
         <template v-slot:item="{ item }">
           <div class="campoImagen" v-if="item.imagen">
-            <NuxtLink :to="`/archivo/obras/${item.registro}`" @click.native="salir">
+            <NuxtLink :to="`/obras/${item.registro}`" @click.native="salir">
               <img class="imagen" :src="urlImagen(item.imagen, 'galeria')" :alt="item.titulo" />
             </NuxtLink>
           </div>

@@ -58,16 +58,13 @@ function desactivar(evento) {
         @mouseenter="activar($event, buscarColor(elemento.obras_func.count))"
         @mouseleave="desactivar"
       >
-        <NuxtLink
-          class="nombre fila"
-          :to="elemento.url ? elemento.url : `/archivo/${props.coleccion}/${elemento.slug}`"
-        >
+        <NuxtLink class="nombre fila" :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`">
           {{ elemento.nombreCompleto ? elemento.nombreCompleto : elemento.nombre }}
         </NuxtLink>
 
         <NuxtLink
           class="elementoColombina fila"
-          :to="elemento.url ? elemento.url : `/archivo/${props.coleccion}/${elemento.slug}`"
+          :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`"
         >
           <GraficaColombina
             :ancho="anchoLinea(elemento.obras_func.count)"

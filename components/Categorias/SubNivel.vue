@@ -19,7 +19,7 @@ defineProps({
       />
       <span v-else class="mostrar sinSubNivel"></span>
 
-      <NuxtLink :to="`/archivo/categorias${nivel}/${categoria.slug}`" class="subCategoriaTitulo">
+      <NuxtLink :to="`/categorias${nivel}/${categoria.slug}`" class="subCategoriaTitulo">
         {{ categoria.nombre }}
       </NuxtLink>
 

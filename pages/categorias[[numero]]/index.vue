@@ -140,7 +140,7 @@ function clicSubCategorias(nivel, datosCategoria) {
         class="tarjetaCategoria"
       >
         <div v-if="categoria1.imagen" class="imagen">
-          <NuxtLink :to="`/archivo/categorias1/${categoria1.slug}`">
+          <NuxtLink :to="`/categorias1/${categoria1.slug}`">
             <ImagenArca
               class="imagen"
               :datos="categoria1.imagen"
@@ -152,7 +152,7 @@ function clicSubCategorias(nivel, datosCategoria) {
         </div>
         <div class="informacionTarjeta">
           <h2>
-            <NuxtLink :to="`/archivo/categorias1/${categoria1.slug}`">{{ categoria1.nombre }}</NuxtLink>
+            <NuxtLink :to="`/categorias1/${categoria1.slug}`">{{ categoria1.nombre }}</NuxtLink>
           </h2>
           <GraficaColombina
             :color="color(categoria1.obras_func.count)"

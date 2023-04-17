@@ -39,7 +39,7 @@ function procesarUbicaciones({ paises, ubicaciones }) {
     features: paises.map((pais) => {
       const { id, nombre, slug, obras_func, geo } = pais;
 
-      pais.url = `/archivo/paises/${slug}`;
+      pais.url = `/paises/${slug}`;
       pais.texto = `${nombre} (${obras_func.count})`;
       return { type: 'Feature', properties: { id, nombre, slug, obras: obras_func.count }, geometry: geo, id };
     }),
@@ -57,7 +57,7 @@ function procesarUbicaciones({ paises, ubicaciones }) {
 
 function procesarAutores({ autores }) {
   return autores.map((autor) => {
-    autor.url = `/archivo/autores/${autor.id}`;
+    autor.url = `/autores/${autor.id}`;
     const partesNombre = [];
 
     if (autor.apellido) {
@@ -84,9 +84,9 @@ function procesarDatos(nuevosDatos) {
 
   return nuevosDatos[props.coleccion].map((instancia) => {
     if (props.coleccion === 'paises') {
-      instancia.url = `/archivo/${props.coleccion}/${instancia.slug}`;
+      instancia.url = `/${props.coleccion}/${instancia.slug}`;
     } else {
-      instancia.url = `/archivo/${props.ruta || props.coleccion}/${instancia.slug}`;
+      instancia.url = `/${props.ruta || props.coleccion}/${instancia.slug}`;
     }
 
     instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;

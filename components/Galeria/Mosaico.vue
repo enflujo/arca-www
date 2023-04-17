@@ -26,18 +26,18 @@ onMounted(() => {
     <div v-for="obra in obras" :key="obra.registro" class="obra">
       <span class="registro">{{ obra.registro }}</span>
 
-      <NuxtLink :to="`/archivo/obras/${obra.registro}`">
+      <NuxtLink :to="`/obras/${obra.registro}`">
         <ImagenArca class="imagen" :datos="obra.imagen" :titulo="obra.titulo" llave="galeria" />
       </NuxtLink>
 
       <div class="infoImagen">
         <h3 class="titulo">
-          <NuxtLink :to="`/archivo/obras/${obra.registro}`">
+          <NuxtLink :to="`/obras/${obra.registro}`">
             {{ obra.titulo }}
           </NuxtLink>
         </h3>
 
-        <NuxtLink v-if="obra.autores.length" class="autor" :to="`/archivo/autores/${obra.autores[0].autores_id.id}`">
+        <NuxtLink v-if="obra.autores.length" class="autor" :to="`/autores/${obra.autores[0].autores_id.id}`">
           {{ obra.autores[0].autores_id.nombre }} {{ obra.autores[0].autores_id.apellido }}
         </NuxtLink>
       </div>

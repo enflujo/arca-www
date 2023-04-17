@@ -22,6 +22,7 @@ useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGeneral
 const obra = ref(null);
 const relacionadas = ref(null);
 const ubicacionMapa = ref(null);
+const sinGesto = ref(null);
 
 const Obra = gql`
   query {
@@ -93,10 +94,10 @@ watch(data, ({ obras }) => {
 
   // Aplanar lugares
   if (_obra.ciudad_origen) {
-    const origen = [{ url: `/archivo/ciudades/${_obra.ciudad_origen.id}`, nombre: _obra.ciudad_origen.nombre }];
+    const origen = [{ url: `/ciudades/${_obra.ciudad_origen.id}`, nombre: _obra.ciudad_origen.nombre }];
 
     if (_obra.ciudad_origen.pais) {
-      origen.push({ url: `/archivo/paises/${_obra.ciudad_origen.pais.slug}`, nombre: _obra.ciudad_origen.pais.nombre });
+      origen.push({ url: `/paises/${_obra.ciudad_origen.pais.slug}`, nombre: _obra.ciudad_origen.pais.nombre });
     }
 
     _obra.ciudad_origen = origen;
@@ -105,18 +106,18 @@ watch(data, ({ obras }) => {
   if (_obra.ubicacion) {
     const ubicacion = [
       {
-        url: `/archivo/ubicaciones/${_obra.ubicacion.id}`,
+        url: `/ubicaciones/${_obra.ubicacion.id}`,
         nombre: _obra.ubicacion.nombre + `${_obra.ubicacion.anotacion ? ' (' + _obra.ubicacion.anotacion + ')' : ''}`,
         geo: _obra.ubicacion.geo,
       },
     ];
 
     if (_obra.ubicacion.ciudad) {
-      ubicacion.push({ url: `/archivo/ciudades/${_obra.ubicacion.ciudad.id}`, nombre: _obra.ubicacion.ciudad.nombre });
+      ubicacion.push({ url: `/ciudades/${_obra.ubicacion.ciudad.id}`, nombre: _obra.ubicacion.ciudad.nombre });
 
       if (_obra.ubicacion.ciudad.pais) {
         ubicacion.push({
-          url: `/archivo/paises/${_obra.ubicacion.ciudad.pais.slug}`,
+          url: `/paises/${_obra.ubicacion.ciudad.pais.slug}`,
           nombre: _obra.ubicacion.ciudad.pais.nombre,
         });
       }
@@ -128,6 +129,7 @@ watch(data, ({ obras }) => {
   }
 
   obra.value = _obra;
+  sinGesto.value = (gesto) => gesto.gestos_id.nombre !== 'No';
 
   buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1].ruta);
 });
@@ -168,7 +170,7 @@ definePageMeta({ layout: 'default', keepalive: true });
 
   <div id="contenedorObra" v-else>
     <h1>{{ datosGenerales[0].titulo }}</h1>
-    <NuxtLink :to="`/archivo/autores/${obra.autores[0].autores_id.id}`">
+    <NuxtLink :to="`/autores/${obra.autores[0].autores_id.id}`">
       <h2>
         <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }}</span>
         {{ obra.autores[0].autores_id.apellido }}
@@ -189,7 +191,7 @@ definePageMeta({ layout: 'default', keepalive: true });
       <div class="datos" v-if="obra.tecnicas.length">
         <span class="tituloDato">Técnica:</span>
         <span v-for="tecnica in obra.tecnicas" :key="tecnica.tecnicas_id.nombre">
-          <NuxtLink :to="`/archivo/tecnicas/${tecnica.tecnicas_id.slug}`">
+          <NuxtLink :to="`/tecnicas/${tecnica.tecnicas_id.slug}`">
             {{ tecnica.tecnicas_id.nombre }}
           </NuxtLink></span
         >
@@ -197,7 +199,7 @@ definePageMeta({ layout: 'default', keepalive: true });
 
       <div class="datos" v-if="obra.donante.nombre">
         <span class="tituloDato">Donante:</span>
-        <NuxtLink :to="`/archivo/donantes/${obra.donante.slug}`">
+        <NuxtLink :to="`/donantes/${obra.donante.slug}`">
           {{ obra.donante.nombre }}
         </NuxtLink>
       </div>
@@ -207,7 +209,7 @@ definePageMeta({ layout: 'default', keepalive: true });
 
         <ul class="lista">
           <li v-for="(categoria, i) in obra.categorias" :key="`categoria${categoria.slug}`">
-            <NuxtLink :to="`/archivo/categorias${i + 1}/${obra[categoria.ruta].slug}`">{{
+            <NuxtLink :to="`/categorias${i + 1}/${obra[categoria.ruta].slug}`">{{
               obra[categoria.ruta].nombre
             }}</NuxtLink>
           </li>
@@ -216,66 +218,58 @@ definePageMeta({ layout: 'default', keepalive: true });
 
       <div class="datos" v-if="obra.relato_visual.nombre">
         <span class="tituloDato">Relato visual:</span>
-        <NuxtLink :to="`/archivo/relatos-visuales/${obra.relato_visual.slug}`">
+        <NuxtLink :to="`/relatos-visuales/${obra.relato_visual.slug}`">
           {{ obra.relato_visual.nombre }}
         </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.fisiognomica.nombre">
         <span class="tituloDato">Fisiognómica:</span>
-        <NuxtLink :to="`/archivo/fisiognomica/${obra.fisiognomica.slug}`">
+        <NuxtLink :to="`/fisiognomica/${obra.fisiognomica.slug}`">
           {{ obra.fisiognomica.nombre }}
         </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.fisiognomica_imagen.nombre">
         <span class="tituloDato">Fisiognómica Imagen:</span>
-        <NuxtLink :to="`/archivo/fisiognomica-imagen/${obra.fisiognomica_imagen.slug}`">
+        <NuxtLink :to="`/fisiognomica-imagen/${obra.fisiognomica_imagen.slug}`">
           {{ obra.fisiognomica_imagen.nombre }}
         </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.cartela_filacteria.nombre">
         <span class="tituloDato">Cartela - Filacteria:</span>
-        <NuxtLink :to="`/archivo/cartela-filacteria/${obra.cartela_filacteria.slug}`">
+        <NuxtLink :to="`/cartela-filacteria/${obra.cartela_filacteria.slug}`">
           {{ obra.cartela_filacteria.nombre }}
         </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.rostro.nombre">
         <span class="tituloDato">Rostro:</span>
-        <NuxtLink :to="`/archivo/rostros/${obra.rostro.slug}`">
+        <NuxtLink :to="`/rostros/${obra.rostro.slug}`">
           {{ obra.rostro.nombre }}
         </NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.tipo_gestual.nombre">
         <span class="tituloDato">Tipo gestual:</span>
-        <NuxtLink :to="`/archivo/tipo-gestual/${obra.tipo_gestual.slug}`">{{ obra.tipo_gestual.nombre }}</NuxtLink>
+        <NuxtLink :to="`/tipo-gestual/${obra.tipo_gestual.slug}`">{{ obra.tipo_gestual.nombre }}</NuxtLink>
       </div>
 
       <div class="datos" v-if="obra.complejo_gestual.nombre">
         <span class="tituloDato">Complejo gestual:</span>
-        <NuxtLink :to="`/archivo/complejo-gestual/${obra.complejo_gestual.slug}`">
+        <NuxtLink :to="`/complejo-gestual/${obra.complejo_gestual.slug}`">
           {{ obra.complejo_gestual.nombre }}
         </NuxtLink>
       </div>
 
       <!--El 'v-if' comprueba que la lista de gestos contenga elementos y que no todos sean "No". 
         Si todos son "No", omite el campo-->
-      <div
-        class="datos"
-        v-if="
-          obra.gestos.length &&
-          obra.gestos.every((gesto) => {
-            gesto !== 'No';
-          })
-        "
-      >
+      <div class="datos" v-if="obra.gestos.length && obra.gestos.some(sinGesto)">
         <span class="tituloDato">Gestos:</span>
         <ul class="lista">
           <li v-for="gesto in obra.gestos" :key="gesto.gestos_id.nombre">
-            <NuxtLink v-if="gesto.gestos_id.nombre !== 'No'" :to="`/archivo/gestos/${gesto.gestos_id.slug}`">
+            <NuxtLink v-if="gesto.gestos_id.nombre !== 'No'" :to="`/gestos/${gesto.gestos_id.slug}`">
               {{ gesto.gestos_id.nombre }}
             </NuxtLink>
           </li>
@@ -286,7 +280,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Objetos:</span>
         <ul class="lista">
           <li v-for="objeto in obra.objetos" :key="objeto.objetos_id.nombre">
-            <NuxtLink v-if="objeto.objetos_id.nombre" :to="`/archivo/objetos/${objeto.objetos_id.slug}`">
+            <NuxtLink v-if="objeto.objetos_id.nombre" :to="`/objetos/${objeto.objetos_id.slug}`">
               {{ objeto.objetos_id.nombre }}
             </NuxtLink>
           </li>
@@ -299,7 +293,7 @@ definePageMeta({ layout: 'default', keepalive: true });
           <li v-for="personaje in obra.personajes" :key="personaje.personajes_id.nombre">
             <NuxtLink
               v-if="personaje.personajes_id.nombre !== 'No'"
-              :to="`/archivo/personajes/${personaje.personajes_id.slug}`"
+              :to="`/personajes/${personaje.personajes_id.slug}`"
             >
               {{ personaje.personajes_id.nombre }}
               <span v-if="personaje.personajes_id.muerte">(m. {{ personaje.personajes_id.muerte }})</span>
@@ -312,7 +306,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Símbolos:</span>
         <ul class="lista">
           <li v-for="simbolo in obra.simbolos" :key="simbolo.simbolos_id.nombre">
-            <NuxtLink v-if="simbolo.simbolos_id.nombre" :to="`/archivo/simbolos/${simbolo.simbolos_id.slug}`">
+            <NuxtLink v-if="simbolo.simbolos_id.nombre" :to="`/simbolos/${simbolo.simbolos_id.slug}`">
               {{ simbolo.simbolos_id.nombre }}
             </NuxtLink>
           </li>
@@ -323,7 +317,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Escenarios:</span>
         <ul class="lista">
           <li v-for="escenario in obra.escenarios" :key="escenario.escenarios_id.nombre">
-            <NuxtLink v-if="escenario.escenarios_id.nombre" :to="`/archivo/escenarios/${escenario.escenarios_id.slug}`">
+            <NuxtLink v-if="escenario.escenarios_id.nombre" :to="`/escenarios/${escenario.escenarios_id.slug}`">
               {{ escenario.escenarios_id.nombre }}
             </NuxtLink>
           </li>
@@ -334,10 +328,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <span class="tituloDato">Descriptores:</span>
         <ul class="lista">
           <li v-for="descriptor in obra.descriptores" :key="descriptor.descriptores_id.nombre">
-            <NuxtLink
-              v-if="descriptor.descriptores_id.nombre"
-              :to="`/archivo/descriptores/${descriptor.descriptores_id.slug}`"
-            >
+            <NuxtLink v-if="descriptor.descriptores_id.nombre" :to="`/descriptores/${descriptor.descriptores_id.slug}`">
               {{ descriptor.descriptores_id.nombre }}
             </NuxtLink>
           </li>
@@ -350,7 +341,7 @@ definePageMeta({ layout: 'default', keepalive: true });
           <li v-for="caracteristica in obra.caracteristicas" :key="caracteristica.caracteristicas_id.nombre">
             <NuxtLink
               v-if="caracteristica.caracteristicas_id.nombre"
-              :to="`/archivo/caracteristicas-particulares/${caracteristica.caracteristicas_id.slug}`"
+              :to="`/caracteristicas-particulares/${caracteristica.caracteristicas_id.slug}`"
             >
               {{ caracteristica.caracteristicas_id.nombre }}
             </NuxtLink>
