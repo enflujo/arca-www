@@ -69,8 +69,9 @@ function procesarAutores({ autores }) {
     if (autor.nombre) {
       partesNombre.push(autor.nombre);
     }
-
-    autor.texto = `${partesNombre.join(', ')} (${autor.obras_func.count})`;
+    const nombreCompleto = partesNombre.join(', ');
+    autor.texto = `${nombreCompleto} (${autor.obras_func.count})`;
+    autor.nombreCompleto = nombreCompleto;
 
     return autor;
   });
