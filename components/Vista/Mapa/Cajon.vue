@@ -59,7 +59,7 @@ watch(data, (respuesta) => {
     <div v-else>
       <div id="cerrar" @click="cerrarCajon">X</div>
       <h3 class="titulo">
-        <NuxtLink :to="`/archivo/${coleccion}/${coleccion === 'paises' ? datosColeccion.slug : datosColeccion.id}`">{{
+        <NuxtLink :to="`/${coleccion}/${coleccion === 'paises' ? datosColeccion.slug : datosColeccion.id}`">{{
           datosColeccion.nombre
         }}</NuxtLink>
       </h3>
