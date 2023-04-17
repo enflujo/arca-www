@@ -2,7 +2,7 @@ import { gql } from './ayudas';
 import { usarArchivo } from '~~/cerebros/archivo';
 
 const cerebroArchivo = usarArchivo();
-
+const coleccionesSinDescripcion = ['paises', 'ciudades', 'ubicaciones'];
 /**
  * Datos básicos de una colección.
  *
@@ -10,7 +10,7 @@ const cerebroArchivo = usarArchivo();
  * @param {string} busqueda Slug o ID de la entrada.
  * @returns
  */
-export const datosGeneralesColeccion = (coleccion, busqueda) => {
+export const datosGeneralesColeccion = (coleccion, busqueda, porId) => {
   if (coleccion === 'personajes') {
     return gql`
     query {
@@ -34,7 +34,7 @@ export const datosGeneralesColeccion = (coleccion, busqueda) => {
   } else if (coleccion === 'autores') {
     return gql`
     query {
-      autores_by_id(id: ${busqueda}) {
+      autores(filter: { id: {_eq: ${busqueda} } }, limit: 1)  {
         id
         nombre
         apellido
@@ -45,8 +45,8 @@ export const datosGeneralesColeccion = (coleccion, busqueda) => {
         hasta
         hasta_anotacion
         obras_func {
-            count
-          }
+          count
+        }
       }
     }
     `;
@@ -54,10 +54,10 @@ export const datosGeneralesColeccion = (coleccion, busqueda) => {
 
   return gql`
   query {
-    ${coleccion}(filter: { slug: { _eq: "${busqueda}" } }, limit: 1) {
+    ${coleccion}(filter: { ${porId ? 'id' : 'slug'}: { _eq: "${busqueda}" } }, limit: 1) {
       id
       nombre
-      descripcion
+      ${!coleccionesSinDescripcion.includes(coleccion) ? 'descripcion' : ''}
       ${coleccion === 'gestos' ? 'codigo' : ''}
       obras_func {
         count
@@ -67,15 +67,6 @@ export const datosGeneralesColeccion = (coleccion, busqueda) => {
   `;
 };
 
-const camposAutores = () => {
-  return `autores {
-    autores_id {
-      id
-      nombre
-      apellido
-    }
-  }`;
-};
 /**
  * Obras para galería.
  *
@@ -84,32 +75,10 @@ const camposAutores = () => {
  * @param {boolean} m2m  ¿Es de una relación M2M?
  * @returns
  */
-export const datosObras = (coleccion, busqueda, m2m = false, pagina = 1) => {
-  if (coleccion === 'autores') {
-    return gql`
-    query {
-      autores_by_id(id: ${busqueda}) {
-        obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${pagina}) {
-          obras_id {
-            registro
-            titulo
-            imagen {
-              id,
-              title
-              width
-              height
-            }
-            ${camposAutores()}
-          }
-        }
-      }
-    }
-    `;
-  }
-
+export const datosObrasGaleria = (coleccion, busqueda, m2m = false, pagina = 1, porId) => {
   return gql`
   query {
-    ${coleccion}(filter: { slug: { _eq: "${busqueda}" } }, limit: 1) {
+    ${coleccion}(filter: { ${porId ? 'id' : 'slug'}: { _eq: "${busqueda}" } }, limit: 1) {
       obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${pagina}) {
         ${m2m ? 'obras_id {' : ''}
         registro
@@ -120,7 +89,13 @@ export const datosObras = (coleccion, busqueda, m2m = false, pagina = 1) => {
           width
           height
         }
-        ${camposAutores()}
+        autores {
+          autores_id {
+            id
+            nombre
+            apellido
+          }
+        }
         ${m2m ? '}' : ''}
       }
     }
@@ -137,9 +112,6 @@ export const indiceColeccion = (coleccion) => {
           nombre
           slug
           geo
-          obras(limit: -1) {
-            id
-          }
           obras_func {
             count
           }

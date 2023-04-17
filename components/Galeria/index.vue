@@ -1,7 +1,7 @@
 <script setup>
 import { usarArchivo } from '~/cerebros/archivo';
 import { definirDimsImagen } from '~/utilidades/ayudas';
-import { datosGeneralesColeccion, datosObras } from '~~/utilidades/queries';
+import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/queries';
 
 const props = defineProps({
   coleccion: String,
@@ -32,28 +32,28 @@ const paginaActual = ref(ruta.query.pagina || 1);
 
 const respuesta = await obtenerDatos(
   props.coleccion,
-  datosGeneralesColeccion(props.coleccion, ruta.params.slug || ruta.params.id)
+  datosGeneralesColeccion(props.coleccion, ruta.params.slug || ruta.params.id, !!ruta.params.id)
 );
 
 const datosMeta =
   props.coleccion === 'autores'
     ? {
-        nombre: crearNombre(respuesta.autores_by_id),
-        descripcion: respuesta.autores_by_id.biografia,
+        nombre: crearNombre(respuesta.autores[0]),
+        descripcion: respuesta.autores[0].biografia,
       }
     : respuesta[props.coleccion][0];
 
 useHead(elementosCabeza(datosMeta, ruta.path)); // SEO
 
+titulo.value = respuesta[props.coleccion][0].nombre;
+
 if (props.coleccion === 'personajes') {
   datos.value = limpiarFechas(respuesta.personajes[0]);
-  titulo.value = respuesta.personajes[0].nombre;
 } else if (props.coleccion === 'autores') {
-  datos.value = limpiarFechas(respuesta.autores_by_id);
-  titulo.value = crearNombre(respuesta.autores_by_id);
+  datos.value = limpiarFechas(respuesta.autores[0]);
+  titulo.value = crearNombre(respuesta.autores[0]);
 } else {
   datos.value = respuesta[props.coleccion][0];
-  titulo.value = respuesta[props.coleccion][0].nombre;
 }
 
 function limpiarFechas(datosGenerales) {
@@ -111,7 +111,13 @@ const cargando = ref(false);
 
 const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
-  datosObras(props.coleccion, ruta.params.slug || ruta.params.id, props.enTablaRelacional, paginaActual.value)
+  datosObrasGaleria(
+    props.coleccion,
+    ruta.params.slug || ruta.params.id,
+    props.enTablaRelacional,
+    paginaActual.value,
+    !!ruta.params.id
+  )
 );
 
 watch(data, (datosObras) => {
@@ -128,13 +134,7 @@ const numeroPaginas = computed(() => {
 
 function limpiarDatos(nuevosDatos) {
   let respuesta;
-  let datosObras;
-
-  if (props.coleccion === 'autores') {
-    datosObras = nuevosDatos.autores_by_id.obras;
-  } else {
-    datosObras = nuevosDatos[props.coleccion][0].obras;
-  }
+  const datosObras = nuevosDatos[props.coleccion][0].obras;
 
   // Extraer las obras de colección directamente o de la tabla relacional.
   respuesta = !props.enTablaRelacional
@@ -150,14 +150,19 @@ function cargarPagina(pagina) {
 
     obtenerDatos(
       `obras-${datos.value.id}${pagina}`,
-      datosObras(props.coleccion, ruta.params.slug || ruta.params.id, props.enTablaRelacional, pagina)
+      datosObrasGaleria(
+        props.coleccion,
+        ruta.params.slug || ruta.params.id,
+        props.enTablaRelacional,
+        pagina,
+        !!ruta.params.id
+      )
     ).then((respuesta) => {
       obras.value = [...obras.value, ...limpiarDatos(respuesta)];
       paginaActual.value = pagina;
       cargando.value = false;
     });
   } else {
-    console.log('fin');
     cargando.value = false;
   }
 }

@@ -28,18 +28,7 @@ function procesarDatos(llave) {
       respuesta.push(elementosLetra);
     }
 
-    let texto = '';
-    let url = '';
-
-    if (llave === 'apellido') {
-      url = instancia.url;
-      texto = `${instancia.nombreCompleto} (${instancia.obras_func.count})`;
-    } else {
-      url = `/archivo/${props.coleccion}/${instancia.slug}`;
-      texto = `${instancia.nombre} (${instancia.obras_func.count})`;
-    }
-
-    elementosLetra.elementos.push({ url, texto });
+    elementosLetra.elementos.push({ url: instancia.url, texto: instancia.texto });
   });
 
   respuesta.sort((a, b) => {

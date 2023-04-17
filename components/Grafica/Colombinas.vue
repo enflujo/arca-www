@@ -21,7 +21,6 @@ onMounted(() => {
   /**
    * Ordenar por cantidad de obras.
    */
-  const ancho = contenedor.value.clientWidth;
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
   const maximo = ordenados[0].obras_func.count;
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;

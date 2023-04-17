@@ -11,17 +11,11 @@ const datosUbicaciones = ref(null);
 const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
 
 watch(data, (respuesta) => {
-  if (props.ruta && props.ruta === 'ubicaciones') {
-    procesarUbicaciones(respuesta);
-  } else if (props.coleccion === 'autores') {
-    procesarAutores(respuesta);
-  } else {
-    datos.value = respuesta[props.coleccion];
-  }
+  datos.value = procesarDatos(respuesta);
 });
 
 onMounted(() => {
-  if (props.ruta && props.ruta === 'ubicaciones') {
+  if (props.ruta === 'ubicaciones') {
     vistas.value = ['mapa', 'abc', 'colombinas'];
     vistaInicial.value = 'mapa';
   } else {
@@ -35,14 +29,20 @@ function procesarUbicaciones({ paises, ubicaciones }) {
    */
   const ubicacionesGeojson = {
     type: 'FeatureCollection',
-    features: ubicaciones.map(({ id, nombre, obras_func, geo }) => {
+    features: ubicaciones.map((ubicacion) => {
+      const { id, nombre, obras_func, geo } = ubicacion;
+
       return { type: 'Feature', properties: { id, nombre, obras: obras_func.count }, geometry: geo, id };
     }),
   };
   // Geojson para países.
   const paisesGeojson = {
     type: 'FeatureCollection',
-    features: paises.map(({ id, nombre, slug, obras_func, geo }) => {
+    features: paises.map((pais) => {
+      const { id, nombre, slug, obras_func, geo } = pais;
+
+      pais.url = `/archivo/paises/${slug}`;
+      pais.texto = `${nombre} (${obras_func.count})`;
       return { type: 'Feature', properties: { id, nombre, slug, obras: obras_func.count }, geometry: geo, id };
     }),
   };
@@ -53,11 +53,12 @@ function procesarUbicaciones({ paises, ubicaciones }) {
   const max = paises[0].obras_func.count;
 
   datosUbicaciones.value = { paises: paisesGeojson, ubicaciones: ubicacionesGeojson, max };
-  datos.value = paises;
+
+  return paises;
 }
 
 function procesarAutores({ autores }) {
-  datos.value = autores.map((autor) => {
+  return autores.map((autor) => {
     autor.url = `/archivo/autores/${autor.id}`;
     const partesNombre = [];
 
@@ -68,9 +69,30 @@ function procesarAutores({ autores }) {
     if (autor.nombre) {
       partesNombre.push(autor.nombre);
     }
-    autor.nombreCompleto = partesNombre.join(', ');
+
+    autor.texto = `${partesNombre.join(', ')} (${autor.obras_func.count})`;
 
     return autor;
+  });
+}
+
+function procesarDatos(nuevosDatos) {
+  if (props.ruta === 'ubicaciones') {
+    return procesarUbicaciones(nuevosDatos);
+  } else if (props.coleccion === 'autores') {
+    return procesarAutores(nuevosDatos);
+  }
+
+  return nuevosDatos[props.coleccion].map((instancia) => {
+    if (props.coleccion === 'paises') {
+      instancia.url = `/archivo/${props.coleccion}/${instancia.slug}`;
+    } else {
+      instancia.url = `/archivo/${props.ruta || props.coleccion}/${instancia.slug}`;
+    }
+
+    instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;
+
+    return instancia;
   });
 }
 </script>
@@ -80,12 +102,8 @@ function procesarAutores({ autores }) {
 
   <div v-else>
     <VistaFiltros :vistas="vistas" :vistaInicial="vistaInicial" />
-    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="ruta || coleccion" />
-    <GraficaColombinas
-      v-if="cerebroArchivo.vistaActual === 'colombinas'"
-      :datos="datos"
-      :coleccion="ruta || coleccion"
-    />
+    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="coleccion" />
+    <GraficaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" :coleccion="coleccion" />
     <VistaMapa
       v-if="cerebroArchivo.vistaActual === 'mapa' && datosUbicaciones"
       :paises="datosUbicaciones.paises"
