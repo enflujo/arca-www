@@ -1,5 +1,5 @@
 <script setup>
-import { gql, urlImagen } from '~~/utilidades/ayudas';
+import { definirDimsImagen, gql, urlImagen } from '~~/utilidades/ayudas';
 
 /**
  * Operaciones en el servidor
@@ -141,6 +141,8 @@ async function buscarRelacionadas(ultimaCategoria) {
         imagen {
           id,
           title
+          width
+          height
         }
         autores {
           autores_id {
@@ -154,7 +156,8 @@ async function buscarRelacionadas(ultimaCategoria) {
     `;
 
   const { obras } = await obtenerDatos(`relacionadas${ruta.params.registro}`, Relacionadas);
-  relacionadas.value = obras;
+
+  relacionadas.value = obras.map(definirDimsImagen);
 }
 
 definePageMeta({ layout: 'default', keepalive: true });
@@ -401,7 +404,10 @@ definePageMeta({ layout: 'default', keepalive: true });
       <VistaMapaPunto :punto="ubicacionMapa" />
     </div>
 
-    <div id="contenedorGaleria"><GaleriaMosaico v-if="relacionadas" :obras="relacionadas" /></div>
+    <div id="contenedorGaleria">
+      <h2>Obras Relacionadas</h2>
+      <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" />
+    </div>
   </div>
 </template>
 
@@ -410,6 +416,11 @@ definePageMeta({ layout: 'default', keepalive: true });
   display: block;
   margin: 2em auto;
   text-align: center;
+
+  h2 {
+    text-align: left;
+    margin: 1em 0;
+  }
 }
 
 #contenedorInfo {
@@ -417,12 +428,6 @@ definePageMeta({ layout: 'default', keepalive: true });
   width: 95%;
   display: flex;
   flex-direction: column;
-}
-
-.imagen {
-  height: auto;
-  width: 50vw;
-  margin: 1em;
 }
 
 .datos {

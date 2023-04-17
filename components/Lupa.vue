@@ -130,7 +130,7 @@ onUnmounted(() => {
   position: relative;
   display: inline-block;
   line-height: 0;
-  width: '100%';
+  width: 40%;
   height: 'auto';
 }
 

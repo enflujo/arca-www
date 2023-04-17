@@ -135,3 +135,10 @@ export const demorar = (funcion, esperar) => {
     }
   };
 };
+
+export function definirDimsImagen(obra) {
+  if (!obra.imagen && !obra.imagen.width && !obra.imagen.height) return;
+  obra.imagen.ancho = Math.round((obra.imagen.width / obra.imagen.height) * 200);
+  obra.imagen.alto = 200;
+  return obra;
+}

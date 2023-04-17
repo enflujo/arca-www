@@ -1,5 +1,6 @@
 <script setup>
 import { usarArchivo } from '~/cerebros/archivo';
+import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObras } from '~~/utilidades/queries';
 
 const props = defineProps({
@@ -140,12 +141,6 @@ function limpiarDatos(nuevosDatos) {
     ? datosObras.map(definirDimsImagen)
     : datosObras.map((obra) => definirDimsImagen(obra.obras_id));
 
-  function definirDimsImagen(obra) {
-    obra.imagen.ancho = Math.round((obra.imagen.width / obra.imagen.height) * 200);
-    obra.imagen.alto = 200;
-    return obra;
-  }
-
   return respuesta;
 }
 
@@ -163,6 +158,7 @@ function cargarPagina(pagina) {
     });
   } else {
     console.log('fin');
+    cargando.value = false;
   }
 }
 </script>
