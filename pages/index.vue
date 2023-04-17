@@ -16,22 +16,38 @@ const Portada = gql`
         title
       }
     }
+    paginas(filter: { slug: { _eq: "sobre-arca" } }, limit: 1) {
+      titulo
+      slug
+      descripcion
+      banner {
+        id
+        title
+      }
+      secciones
+    }
   }
 `;
 
 const { data, pending } = obtenerDatosAsinc('portada', Portada);
 const imgPortada = ref(null);
+const pagina = ref(null);
 
-watch(data, ({ general }) => {
+watch(data, ({ general, paginas }) => {
   imgPortada.value = urlImagen(general.portada.id, 'portada');
+  pagina.value = paginas[0];
 });
 </script>
 
 <template>
   <Cargador v-if="pending" />
   <div v-else id="portada" :style="`background-image:url(${imgPortada})`">
-    <Logo class="svgClaro" />
-    <h1 class="titulo logo-texto claridad">{{ general.titulo }}</h1>
+    <!-- <Logo class="svgClaro" />
+    <h1 class="titulo logo-texto claridad">{{ general.titulo }}</h1> -->
+    <div v-for="(seccion, i) in pagina.secciones" :key="`seccion${i}`" class="seccion">
+      <h2 class="tituloSeccion">{{ seccion.titulo }}</h2>
+      <div class="contenidoSeccion" v-html="pagina.secciones[i].texto"></div>
+    </div>
   </div>
 </template>
 
@@ -43,7 +59,7 @@ watch(data, ({ general }) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 99vh;
+  height: 90vh;
   width: 100%;
   z-index: 1;
   background-attachment: fixed;
@@ -78,18 +94,18 @@ watch(data, ({ general }) => {
   fill: var(--claridad);
 }
 
-.subtitulo {
-  font-size: 1.4em;
+.seccion {
   color: var(--claridad);
-  font-weight: 400;
-  text-transform: uppercase;
-  width: 400px;
+  width: 50%;
+  margin: 1em;
   text-align: center;
-  font-family: var(--fuenteMenu);
-  letter-spacing: 5px;
-  z-index: 10;
 }
 
+.contenidoSeccion {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+}
 // Teléfonos horizontal
 @media (min-width: $minCelular) {
 }
