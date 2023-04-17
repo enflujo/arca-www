@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <footer :class="`${completo ? 'completo' : 'dimensiones'}`">
+  <footer>
     <div class="copy" v-html="general.guardaescobas"></div>
   </footer>
 </template>
@@ -21,7 +21,6 @@ const props = defineProps({
 footer {
   background-color: var(--dolor);
   color: var(--claridad);
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
