@@ -55,7 +55,7 @@ const Obra = gql`
       ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
       autores { autores_id { id nombre apellido } }
-      gestos { gestos_id { slug nombre } }
+      gestos { gestos_id { codigo slug nombre } }
       tecnicas { tecnicas_id { slug nombre } }
       objetos { objetos_id { slug nombre } }
       personajes { personajes_id { slug nombre muerte} }
@@ -270,7 +270,7 @@ definePageMeta({ layout: 'default', keepalive: true });
         <ul class="lista">
           <li v-for="gesto in obra.gestos" :key="gesto.gestos_id.nombre">
             <NuxtLink v-if="gesto.gestos_id.nombre !== 'No'" :to="`/gestos/${gesto.gestos_id.slug}`">
-              {{ gesto.gestos_id.nombre }}
+              {{ gesto.gestos_id.codigo }} | {{ gesto.gestos_id.nombre }}
             </NuxtLink>
           </li>
         </ul>
