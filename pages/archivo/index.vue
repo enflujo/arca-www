@@ -3,7 +3,7 @@ import { gql } from '~~/utilidades/ayudas';
 
 const ruta = useRoute();
 
-const { paginas } = await obtenerDatos(
+const { paginas, obras_aggregated } = await obtenerDatos(
   'indiceArchivo',
   gql`
     query {
@@ -15,6 +15,11 @@ const { paginas } = await obtenerDatos(
         banner {
           id
           title
+        }
+      }
+      obras_aggregated {
+        count {
+          id
         }
       }
     }
@@ -54,13 +59,6 @@ const obrasOrdenadas = ref([]);
 const max = ref(0);
 
 watch(data, ({ obras }) => {
-  // console.log(
-  //   obras_aggregated.map((grupo) => {
-  //     return { cantidad: grupo.count.id, fecha: grupo.group.fecha_inicial };
-  //   })
-  // );
-
-  // respuesta.
   let fechaMax = 0;
   const respuesta = {};
   let cielo = 0;
@@ -93,6 +91,8 @@ definePageMeta({ layout: 'archivo', keepalive: true });
 
 <template>
   <h1>{{ pagina.titulo }}</h1>
+
+  <GraficaContador v-if="obras_aggregated.length" :numeroObras="obras_aggregated[0].count.id" />
 
   <Cargador v-if="pending" />
 
