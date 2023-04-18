@@ -72,12 +72,15 @@ function procesarDatos(llave) {
 }
 
 .elemento {
-  padding: 0.4em;
   border: 1px solid $profundidad;
-  line-height: 1.2;
   margin: 0.2em;
   background-color: transparent;
   transition: all 0.2s ease-in;
+
+  a {
+    padding: 0.4em;
+    display: block;
+  }
 
   &:hover {
     background-color: $rojoCerezo;
