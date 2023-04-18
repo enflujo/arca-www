@@ -1,0 +1,12 @@
+<script setup>
+defineProps({
+  datos: String,
+  titulo: String,
+});
+</script>
+<template>
+  <section v-if="datos">
+    <h3>{{ titulo }}</h3>
+    <div v-html="datos" class="contenido"></div>
+  </section>
+</template>
