@@ -7,6 +7,6 @@ defineProps({
 <template>
   <section v-if="datos" class="seccion">
     <h3>{{ titulo }}</h3>
-    <div v-html="datos" class="contenido"></div>
+    <div v-html="datos" class="contenido singular"></div>
   </section>
 </template>

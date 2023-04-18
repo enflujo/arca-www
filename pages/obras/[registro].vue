@@ -217,7 +217,7 @@ function cambiarVistaLupa() {
 
     <div id="contenedorDatos">
       <section id="contenedorPrimerBloque" class="seccion">
-        <div id="contenedorTituloAutor">
+        <div id="contenedorTituloAutor singular">
           <h1>{{ datosGenerales[0].titulo }}</h1>
 
           <div v-if="obra.autores && obra.autores.length" id="autores">
@@ -301,7 +301,7 @@ function cambiarVistaLupa() {
       <RegistroParrafos :datos="obra.fuente ? obra.fuente.descripcion : null" titulo="Fuente" />
     </div>
 
-    <section class="completo" v-if="obra.ubicacion.geo">
+    <section class="completo" v-if="ubicacionMapa">
       <h2>Ubicación</h2>
       <VistaMapaPunto :punto="ubicacionMapa" />
     </section>
@@ -409,6 +409,9 @@ function cambiarVistaLupa() {
 
     .contenido {
       flex: 1;
+    }
+    .singular {
+      padding-left: 0.4em;
     }
   }
 }

@@ -33,21 +33,25 @@ const url = (elemento) => {
   align-content: flex-start;
 
   li {
-    border: 1px solid $rojoCerezo;
+    border-right: 1px solid $rojoCerezo;
     margin: 0 0.2em 0.2em 0;
     height: fit-content;
+    vertical-align: top;
+    display: inline-block;
 
     a {
-      padding: 0.4em;
+      padding: 0 0.4em;
       display: block;
+      line-height: 1.1em;
     }
 
     &:hover {
-      background-color: $rojoCerezo;
+      // background-color: $rojoCerezo;
 
       a,
       a:link {
-        color: $claridad;
+        // color: $claridad;
+        color: var(--rojoOxido);
       }
     }
   }

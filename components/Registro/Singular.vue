@@ -12,11 +12,11 @@ defineProps({
     <h3>{{ titulo }}</h3>
 
     <template v-if="texto">
-      <p class="contenido">{{ texto }}</p>
+      <p class="contenido singular">{{ texto }}</p>
     </template>
 
     <template v-else-if="datos">
-      <NuxtLink :to="`/${ruta}/${datos.slug}`" class="contenido">
+      <NuxtLink :to="`/${ruta}/${datos.slug}`" class="contenido singular">
         {{ datos.nombre }}
       </NuxtLink>
     </template>

@@ -8,7 +8,7 @@ const props = defineProps({
 <template>
   <section v-if="datos && datos.length" class="seccion">
     <h3>{{ titulo }}</h3>
-    <p>
+    <p class="singular">
       <span v-for="(lugar, i) in datos" :key="`ubicacion${lugar.url}`">
         <span v-if="i > 0" class="separador">|</span>
 
