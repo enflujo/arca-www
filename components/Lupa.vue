@@ -112,6 +112,7 @@ onUnmounted(() => {
       :src="src"
       :alt="alt"
       class="imagen"
+      :style="`cursor:${activado ? 'none' : 'initial'}`"
       @load="calcularDimsImg"
       @mouseenter="calcularDimsImg"
       @mousemove="movimientoRaton"
@@ -134,7 +135,6 @@ onUnmounted(() => {
 }
 
 .imagen {
-  cursor: none;
   width: 100%;
   max-width: 90vw;
   height: auto;

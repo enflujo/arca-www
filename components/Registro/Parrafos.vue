@@ -5,7 +5,7 @@ defineProps({
 });
 </script>
 <template>
-  <section v-if="datos">
+  <section v-if="datos" class="seccion">
     <h3>{{ titulo }}</h3>
     <div v-html="datos" class="contenido"></div>
   </section>

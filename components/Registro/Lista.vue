@@ -13,7 +13,7 @@ const url = (elemento) => {
 </script>
 
 <template>
-  <section v-if="datos.length">
+  <section v-if="datos.length" class="seccion">
     <h3>{{ titulo }}</h3>
     <ul class="lista contenido">
       <li v-for="(elemento, i) in datos" :key="`elemento${ruta}${i}`">
@@ -25,4 +25,31 @@ const url = (elemento) => {
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.lista {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  li {
+    border: 1px solid $rojoCerezo;
+    margin: 0 0.2em 0.2em 0;
+    height: fit-content;
+
+    a {
+      padding: 0.4em;
+      display: block;
+    }
+
+    &:hover {
+      background-color: $rojoCerezo;
+
+      a,
+      a:link {
+        color: $claridad;
+      }
+    }
+  }
+}
+</style>

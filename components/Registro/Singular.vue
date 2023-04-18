@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="datos || texto">
+  <section v-if="datos || texto" class="seccion">
     <h3>{{ titulo }}</h3>
 
     <template v-if="texto">

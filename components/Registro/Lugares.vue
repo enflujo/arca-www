@@ -6,7 +6,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <section v-if="datos && datos.length">
+  <section v-if="datos && datos.length" class="seccion">
     <h3>{{ titulo }}</h3>
     <p>
       <span v-for="(lugar, i) in datos" :key="`ubicacion${lugar.url}`">
@@ -18,4 +18,8 @@ const props = defineProps({
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.separador {
+  padding: 0 0.3em;
+}
+</style>

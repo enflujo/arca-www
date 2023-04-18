@@ -1,4 +1,5 @@
 <script setup>
+import { apiBase } from '~/config/general';
 import { definirDimsImagen, gql, urlImagen } from '~~/utilidades/ayudas';
 
 /**
@@ -9,7 +10,7 @@ const ObraGeneral = gql`
 query {
   obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
     titulo,
-    imagen { id title }
+    imagen { id title filename_download }
   }
 }
 `;
@@ -23,6 +24,8 @@ const obra = ref(null);
 const relacionadas = ref(null);
 const ubicacionMapa = ref(null);
 const sinGesto = ref(null);
+const vistaCompleta = ref(false);
+const verLupa = ref(true);
 
 const Obra = gql`
   query {
@@ -103,6 +106,18 @@ watch(data, ({ obras }) => {
 
   _obra.fechas = fechas;
 
+  // Aplanar Autores
+  if (_obra.autores) {
+    _obra.autores.forEach((autor) => {
+      const partes = [];
+      const { nombre, apellido } = autor.autores_id;
+      if (nombre) partes.push(nombre);
+      if (apellido) partes.push(apellido);
+
+      autor.autores_id.nombreCompleto = partes.join(' ');
+    });
+  }
+
   // Aplanar lugares
   if (_obra.ciudad_origen) {
     const origen = [{ url: `/ciudades/${_obra.ciudad_origen.id}`, nombre: _obra.ciudad_origen.nombre }];
@@ -174,34 +189,47 @@ async function buscarRelacionadas(ultimaCategoria) {
 }
 
 definePageMeta({ layout: 'default', keepalive: true });
+
+function cambiarVistaImagen() {
+  vistaCompleta.value = !vistaCompleta.value;
+}
+function cambiarVistaLupa() {
+  verLupa.value = !verLupa.value;
+}
 </script>
 
 <template>
   <Cargador v-if="pending" />
   <div id="contenedorObra" v-else>
-    <div id="contenedorBotoneImagen">
-      <div id="contenedorBotones">
-        <button id="zoomAdentro"></button>
-        <button id="zoomAfuera"></button>
-        <button id="lupa"></button>
+    <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
+      <div class="opciones">
+        <div class="zoom" @click="cambiarVistaImagen" :class="vistaCompleta ? 'activo' : ''">zoom</div>
+        <div class="lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''">lupa</div>
+        <a
+          :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
+          target="_blank"
+          :download="datosGenerales[0].imagen.filename_download"
+          >descarga</a
+        >
       </div>
-      <div id="contenedorImagen">
-        <div id="imagen">
-          <Lupa :src="urlImagen(datosGenerales[0].imagen.id, 'obra')" :alt="datosGenerales[0].titulo" />
-        </div>
-      </div>
+      <Lupa :src="urlImagen(datosGenerales[0].imagen.id, 'obra')" :alt="datosGenerales[0].titulo" :activado="verLupa" />
     </div>
+
     <div id="contenedorDatos">
-      <section id="contenedorPrimerBloque">
+      <section id="contenedorPrimerBloque" class="seccion">
         <div id="contenedorTituloAutor">
           <h1>{{ datosGenerales[0].titulo }}</h1>
 
-          <NuxtLink :to="`/autores/${obra.autores[0].autores_id.id}`">
-            <h2 class="autor">
-              <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }}</span>
-              {{ obra.autores[0].autores_id.apellido }}
-            </h2></NuxtLink
-          >
+          <div v-if="obra.autores && obra.autores.length" id="autores">
+            <NuxtLink
+              v-for="autor in obra.autores"
+              :key="`autor${autor.autores_id.id}`"
+              :to="`/autores/${autor.autores_id.id}`"
+              class="autor"
+            >
+              {{ autor.autores_id.nombreCompleto }}
+            </NuxtLink>
+          </div>
         </div>
 
         <div id="registro">{{ obra.registro }}</div>
@@ -271,87 +299,111 @@ definePageMeta({ layout: 'default', keepalive: true });
       <RegistroParrafos :datos="obra.comentario_bibliografico" titulo="Comentario bibliográfico" />
       <RegistroParrafos :datos="obra.sintesis" titulo="Síntesis" />
       <RegistroParrafos :datos="obra.fuente ? obra.fuente.descripcion : null" titulo="Fuente" />
-
-      <div id="contenedorInfo">
-        <VistaMapaPunto :punto="ubicacionMapa" />
-      </div>
-
-      <div id="contenedorGaleria">
-        <h2>Obras Relacionadas</h2>
-        <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" />
-      </div>
     </div>
+
+    <section class="completo" v-if="obra.ubicacion.geo">
+      <h2>Ubicación</h2>
+      <VistaMapaPunto :punto="ubicacionMapa" />
+    </section>
+
+    <section id="contenedorGaleria" class="completo">
+      <h2>Obras Relacionadas</h2>
+      <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" />
+    </section>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #contenedorObra {
   display: flex;
   margin: 2em auto;
-  width: 95vw;
+  width: 85vw;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
-  #contenedorBotoneImagen {
-    display: flex;
-    width: 50vw;
-    height: 75vh;
-  }
+#contenedorImagen {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-  #contenedorBotones {
-    width: 14%;
-  }
-
-  #contenedorImagen {
-    display: flex;
-    justify-content: center;
-    width: 73%;
-  }
-
-  #imagen {
-    margin: 0;
-  }
-
-  #contenedorDatos {
-    width: 50vw;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  #contenedorPrimerBloque {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  #contenedorTituloAutor {
-    width: 75%;
-
-    h1 {
-      margin-bottom: 0;
-    }
-
-    .autor {
-      text-transform: uppercase;
-      font-size: 1.2em;
-    }
-  }
-
-  #registro {
-    padding: 0.5em;
-    font-family: var(--fuentePrincipal);
-    border: 1px solid var(--profundidad);
-    height: fit-content;
-  }
-
-  section {
-    display: flex;
+  &.grande {
     flex-basis: 100%;
-    border-top: 2px solid var(--dolor);
-    padding: 0.8em 0;
+  }
+  .opciones {
+    // position: absolute;
+    // left: 0;
+    // top: 0;
+  }
 
+  .contenedorLupa {
+    width: 50%;
+  }
+}
+
+#contenedorDatos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#contenedorPrimerBloque {
+  display: flex;
+  justify-content: space-between;
+  border: none;
+}
+
+#contenedorTituloAutor {
+  margin-right: 1em;
+
+  h1 {
+    margin-bottom: 0;
+    line-height: 1;
+    margin-bottom: 0.3em;
+  }
+
+  .autor {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: bold;
+    display: block;
+  }
+}
+
+#registro {
+  padding: 0.5em;
+  font-family: var(--fuentePrincipal);
+  border: 1px solid var(--profundidad);
+  height: fit-content;
+}
+
+/**
+  Estilos para componentes internos "hijos" de este.
+  Ver documentación de :deep() en:
+  https://vuejs.org/api/sfc-css-features.html#deep-selectors
+*/
+
+:deep(.seccion) {
+  display: flex;
+  flex-basis: 100%;
+  border-top: 2px solid var(--rojoCerezo);
+  padding: 0.8em 0;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  h3 {
+    font-weight: bold;
+    margin: 0 0.5em 0.5em 0;
+    font-size: 1em;
+  }
+
+  &.medio {
+    flex-basis: 48%;
+  }
+
+  // Dispositivos grandes y pantallas medianas
+  @media (min-width: $minPantalla) {
     h3 {
-      font-weight: bold;
-      margin-right: 0.5em;
-      font-size: 1em;
       width: 130px;
     }
 
@@ -359,60 +411,31 @@ definePageMeta({ layout: 'default', keepalive: true });
       flex: 1;
     }
   }
+}
 
-  .medio {
+.completo {
+  flex-basis: 100%;
+}
+
+// Dispositivos grandes y pantallas medianas
+@media (min-width: $minPantalla) {
+  #contenedorObra {
+    width: 95vw;
+  }
+}
+
+// Pantallas grandes
+@media (min-width: $minPantallaGrande) {
+  #contenedorImagen {
     flex-basis: 48%;
-    display: flex;
-    // margin-right: 3em;
   }
 
-  .lista {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: 0 0 1.5em;
-
-    li {
-      border: 1px solid $rojoCerezo;
-      margin: 0.2em 0.2em 0.2em 0;
-      height: fit-content;
-
-      a {
-        padding: 0.4em;
-        display: block;
-      }
-
-      &:hover {
-        background-color: $rojoCerezo;
-
-        a,
-        a:link {
-          color: $claridad;
-        }
-      }
-    }
+  #contenedorDatos {
+    flex-basis: 50%;
   }
+}
 
-  #contenedorInfo {
-    margin: 0 auto;
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .datos {
-    display: flex;
-    text-align: left;
-    font-family: var(--fuenteParrafos);
-  }
-
-  .separador {
-    padding: 0 0.3em;
-  }
-
-  #contenedorGaleria {
-    max-width: 90%;
-    margin: 0 auto;
-  }
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
 }
 </style>

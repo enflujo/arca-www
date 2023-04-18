@@ -21,6 +21,7 @@ onMounted(() => {
     center: coordenadas,
     attributionControl: false,
   });
+  mapa.scrollZoom.disable();
 
   mapa.on('load', () => {
     /**
