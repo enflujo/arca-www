@@ -46,14 +46,16 @@ const url = (elemento) => {
     }
 
     &:hover {
-      // background-color: $rojoCerezo;
-
       a,
       a:link {
         // color: $claridad;
         color: var(--rojoOxido);
       }
     }
+  }
+
+  li:nth-last-child(1) {
+    border-right: 0px solid $rojoCerezo;
   }
 }
 </style>
