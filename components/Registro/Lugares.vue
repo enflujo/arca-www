@@ -2,6 +2,7 @@
 const props = defineProps({
   datos: Array,
   titulo: String,
+  punto: Object,
 });
 </script>
 
@@ -15,6 +16,7 @@ const props = defineProps({
         <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
       </span>
     </p>
+    <VistaMapaPunto :punto="punto" />
   </section>
 </template>
 
