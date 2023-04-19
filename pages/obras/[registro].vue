@@ -1,4 +1,5 @@
 <script setup>
+import { apiBase } from '~/config/general';
 import { definirDimsImagen, gql, urlImagen } from '~~/utilidades/ayudas';
 
 /**
@@ -9,12 +10,18 @@ const ObraGeneral = gql`
 query {
   obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
     titulo,
-    imagen { id title }
+    imagen { id title width height filename_download }
   }
 }
 `;
 
 const { obras: datosGenerales } = await obtenerDatos(`obraGeneral${ruta.params.registro}`, ObraGeneral);
+
+if (datosGenerales[0].imagen) {
+  // Definir dims imagen
+  datosGenerales[0].imagen.ancho = Math.round((datosGenerales[0].imagen.width / datosGenerales[0].imagen.height) * 300);
+  datosGenerales[0].imagen.alto = 300;
+}
 
 useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
 
@@ -22,7 +29,8 @@ useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGeneral
 const obra = ref(null);
 const relacionadas = ref(null);
 const ubicacionMapa = ref(null);
-const sinGesto = ref(null);
+const vistaCompleta = ref(false);
+const verLupa = ref(true);
 
 const Obra = gql`
   query {
@@ -54,15 +62,15 @@ const Obra = gql`
       ciudad_origen { id nombre pais { slug nombre } }
       ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
-      autores { autores_id { id nombre apellido } }
-      gestos { gestos_id { codigo slug nombre } }
-      tecnicas { tecnicas_id { slug nombre } }
-      objetos { objetos_id { slug nombre } }
-      personajes { personajes_id { slug nombre muerte} }
-      simbolos { simbolos_id { slug nombre } }
-      escenarios { escenarios_id { slug nombre } }
-      descriptores { descriptores_id { slug nombre } }
-      caracteristicas { caracteristicas_id { slug nombre } }
+      autores(sort: ["autores_id.apellido"]) { autores_id { id nombre apellido } }
+      gestos(sort: ["gestos_id.slug"]) { gestos_id { codigo slug nombre } }
+      tecnicas(sort: ["tecnicas_id.slug"]) { tecnicas_id { slug nombre } }
+      objetos(sort: ["objetos_id.slug"]) { objetos_id { slug nombre } }
+      personajes(sort: ["personajes_id.slug"]) { personajes_id { slug nombre muerte} }
+      simbolos(sort: ["simbolos_id.slug"]) { simbolos_id { slug nombre } }
+      escenarios(sort: ["escenarios_id.slug"]) { escenarios_id { slug nombre } }
+      descriptores(sort: ["descriptores_id.slug"]) { descriptores_id { slug nombre } }
+      caracteristicas(sort: ["caracteristicas_id.slug"]) { caracteristicas_id { slug nombre } }
     }
   }
 `;
@@ -78,7 +86,8 @@ watch(data, ({ obras }) => {
   for (let i = 1; i <= 6; i++) {
     const coleccion = `categoria${i}`;
     if (_obra[coleccion]) {
-      _obra[coleccion].ruta = coleccion;
+      _obra[coleccion].ruta = `/categorias${i}/${_obra[coleccion].slug}`;
+      _obra[coleccion].coleccion = coleccion;
       _obra.categorias.push(_obra[coleccion]);
     }
   }
@@ -90,6 +99,28 @@ watch(data, ({ obras }) => {
         _obra.ciudad_origen = null;
       }
     }
+  }
+
+  // limpiar fechas
+  const fechas = [_obra.fecha_inicial ? _obra.fecha_inicial : '?'];
+  const hasta = _obra.fecha_final;
+
+  if (hasta) {
+    fechas.push(hasta);
+  }
+
+  _obra.fechas = fechas;
+
+  // Aplanar Autores
+  if (_obra.autores) {
+    _obra.autores.forEach((autor) => {
+      const partes = [];
+      const { nombre, apellido } = autor.autores_id;
+      if (nombre) partes.push(nombre);
+      if (apellido) partes.push(apellido);
+
+      autor.autores_id.nombreCompleto = partes.join(' ');
+    });
   }
 
   // Aplanar lugares
@@ -129,9 +160,8 @@ watch(data, ({ obras }) => {
   }
 
   obra.value = _obra;
-  sinGesto.value = (gesto) => gesto.gestos_id.nombre !== 'No';
 
-  buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1].ruta);
+  buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1].coleccion);
 });
 
 async function buscarRelacionadas(ultimaCategoria) {
@@ -163,281 +193,298 @@ async function buscarRelacionadas(ultimaCategoria) {
 }
 
 definePageMeta({ layout: 'default', keepalive: true });
+
+function cambiarVistaImagen() {
+  vistaCompleta.value = !vistaCompleta.value;
+}
+function cambiarVistaLupa() {
+  verLupa.value = !verLupa.value;
+}
 </script>
 
 <template>
   <Cargador v-if="pending" />
-
   <div id="contenedorObra" v-else>
-    <h1>{{ datosGenerales[0].titulo }}</h1>
-    <NuxtLink :to="`/autores/${obra.autores[0].autores_id.id}`">
-      <h2>
-        <span v-if="obra.autores[0].autores_id.nombre">{{ obra.autores[0].autores_id.nombre }}</span>
-        {{ obra.autores[0].autores_id.apellido }}
-      </h2></NuxtLink
-    >
+    <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
+      <div class="opciones">
+        <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
+        <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
 
-    <div id="contenedorImagen">
-      <Lupa :src="urlImagen(datosGenerales[0].imagen.id, 'obra')" :alt="datosGenerales[0].titulo" />
-    </div>
-
-    <div id="contenedorInfo">
-      <div class="datos"><span class="tituloDato">Registro:</span> {{ obra.registro }}</div>
-      <div class="datos">
-        <span class="tituloDato">Fecha:</span> {{ obra.fecha_inicial }}
-        <span v-if="obra.fecha_final">- {{ obra.fecha_final }}</span>
-      </div>
-
-      <div class="datos" v-if="obra.tecnicas.length">
-        <span class="tituloDato">Técnica:</span>
-        <span v-for="tecnica in obra.tecnicas" :key="tecnica.tecnicas_id.nombre">
-          <NuxtLink :to="`/tecnicas/${tecnica.tecnicas_id.slug}`">
-            {{ tecnica.tecnicas_id.nombre }}
-          </NuxtLink></span
+        <a
+          class="controlImg"
+          :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
+          target="_blank"
+          :download="datosGenerales[0].imagen.filename_download"
         >
+          <IconoDescarga class="controlImg descarga" />
+        </a>
       </div>
-
-      <div class="datos" v-if="obra.donante.nombre">
-        <span class="tituloDato">Donante:</span>
-        <NuxtLink :to="`/donantes/${obra.donante.slug}`">
-          {{ obra.donante.nombre }}
-        </NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.categorias.length">
-        <span class="tituloDato">Categorías:</span>
-
-        <ul class="lista">
-          <li v-for="(categoria, i) in obra.categorias" :key="`categoria${categoria.slug}`">
-            <NuxtLink :to="`/categorias${i + 1}/${obra[categoria.ruta].slug}`">{{
-              obra[categoria.ruta].nombre
-            }}</NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.relato_visual.nombre">
-        <span class="tituloDato">Relato visual:</span>
-        <NuxtLink :to="`/relatos-visuales/${obra.relato_visual.slug}`">
-          {{ obra.relato_visual.nombre }}
-        </NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.fisiognomica.nombre">
-        <span class="tituloDato">Fisiognómica:</span>
-        <NuxtLink :to="`/fisiognomica/${obra.fisiognomica.slug}`">
-          {{ obra.fisiognomica.nombre }}
-        </NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.fisiognomica_imagen.nombre">
-        <span class="tituloDato">Fisiognómica Imagen:</span>
-        <NuxtLink :to="`/fisiognomica-imagen/${obra.fisiognomica_imagen.slug}`">
-          {{ obra.fisiognomica_imagen.nombre }}
-        </NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.cartela_filacteria.nombre">
-        <span class="tituloDato">Cartela - Filacteria:</span>
-        <NuxtLink :to="`/cartela-filacteria/${obra.cartela_filacteria.slug}`">
-          {{ obra.cartela_filacteria.nombre }}
-        </NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.rostro.nombre">
-        <span class="tituloDato">Rostro:</span>
-        <NuxtLink :to="`/rostros/${obra.rostro.slug}`">
-          {{ obra.rostro.nombre }}
-        </NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.tipo_gestual.nombre">
-        <span class="tituloDato">Tipo gestual:</span>
-        <NuxtLink :to="`/tipo-gestual/${obra.tipo_gestual.slug}`">{{ obra.tipo_gestual.nombre }}</NuxtLink>
-      </div>
-
-      <div class="datos" v-if="obra.complejo_gestual.nombre">
-        <span class="tituloDato">Complejo gestual:</span>
-        <NuxtLink :to="`/complejo-gestual/${obra.complejo_gestual.slug}`">
-          {{ obra.complejo_gestual.nombre }}
-        </NuxtLink>
-      </div>
-
-      <!--El 'v-if' comprueba que la lista de gestos contenga elementos y que no todos sean "No". 
-        Si todos son "No", omite el campo-->
-      <div class="datos" v-if="obra.gestos.length && obra.gestos.some(sinGesto)">
-        <span class="tituloDato">Gestos:</span>
-        <ul class="lista">
-          <li v-for="gesto in obra.gestos" :key="gesto.gestos_id.nombre">
-            <NuxtLink v-if="gesto.gestos_id.nombre !== 'No'" :to="`/gestos/${gesto.gestos_id.slug}`">
-              {{ gesto.gestos_id.codigo }} | {{ gesto.gestos_id.nombre }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.objetos.length">
-        <span class="tituloDato">Objetos:</span>
-        <ul class="lista">
-          <li v-for="objeto in obra.objetos" :key="objeto.objetos_id.nombre">
-            <NuxtLink v-if="objeto.objetos_id.nombre" :to="`/objetos/${objeto.objetos_id.slug}`">
-              {{ objeto.objetos_id.nombre }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.personajes.length">
-        <span class="tituloDato">Personajes:</span>
-        <ul class="lista">
-          <li v-for="personaje in obra.personajes" :key="personaje.personajes_id.nombre">
-            <NuxtLink
-              v-if="personaje.personajes_id.nombre !== 'No'"
-              :to="`/personajes/${personaje.personajes_id.slug}`"
-            >
-              {{ personaje.personajes_id.nombre }}
-              <span v-if="personaje.personajes_id.muerte">(m. {{ personaje.personajes_id.muerte }})</span>
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.simbolos.length">
-        <span class="tituloDato">Símbolos:</span>
-        <ul class="lista">
-          <li v-for="simbolo in obra.simbolos" :key="simbolo.simbolos_id.nombre">
-            <NuxtLink v-if="simbolo.simbolos_id.nombre" :to="`/simbolos/${simbolo.simbolos_id.slug}`">
-              {{ simbolo.simbolos_id.nombre }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.escenarios.length">
-        <span class="tituloDato">Escenarios:</span>
-        <ul class="lista">
-          <li v-for="escenario in obra.escenarios" :key="escenario.escenarios_id.nombre">
-            <NuxtLink v-if="escenario.escenarios_id.nombre" :to="`/escenarios/${escenario.escenarios_id.slug}`">
-              {{ escenario.escenarios_id.nombre }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.descriptores.length">
-        <span class="tituloDato">Descriptores:</span>
-        <ul class="lista">
-          <li v-for="descriptor in obra.descriptores" :key="descriptor.descriptores_id.nombre">
-            <NuxtLink v-if="descriptor.descriptores_id.nombre" :to="`/descriptores/${descriptor.descriptores_id.slug}`">
-              {{ descriptor.descriptores_id.nombre }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.caracteristicas.length">
-        <span class="tituloDato">Características:</span>
-        <ul class="lista">
-          <li v-for="caracteristica in obra.caracteristicas" :key="caracteristica.caracteristicas_id.nombre">
-            <NuxtLink
-              v-if="caracteristica.caracteristicas_id.nombre"
-              :to="`/caracteristicas-particulares/${caracteristica.caracteristicas_id.slug}`"
-            >
-              {{ caracteristica.caracteristicas_id.nombre }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
-
-      <div class="datos" v-if="obra.iconotexto">
-        <span class="tituloDato">Iconotexto:</span>
-        <span> {{ obra.iconotexto }}</span>
-      </div>
-
-      <div class="datos" v-if="obra.comentario_bibliografico">
-        <span class="tituloDato">Comentario bibliográfico:</span>
-        <span v-html="obra.comentario_bibliografico"></span>
-      </div>
-
-      <div class="datos" v-if="obra.sintesis">
-        <span class="tituloDato">Síntesis:</span> <span>{{ obra.sintesis }}</span>
-      </div>
-
-      <div class="datos" v-if="obra.fuente.descripcion">
-        <span class="tituloDato">Fuente:</span>
-        <div v-html="obra.fuente.descripcion"></div>
-      </div>
-
-      <div class="datos" v-if="obra.ubicacion">
-        <span class="tituloDato">Ubicación actual:</span>
-
-        <span v-for="(lugar, i) in obra.ubicacion" :key="`ubicacion${lugar.url}`">
-          <span v-if="i > 0" class="separador">|</span>
-
-          <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
-        </span>
-      </div>
-
-      <!--Comprueba si existen la ciudad de ubicación actual y la ciudad de origen y, 
-      si existen y son distintas, muestra la ciudad de origen-->
-      <div class="datos" v-if="obra.ciudad_origen">
-        <span class="tituloDato">Ciudad de origen:</span>
-
-        <span v-for="(lugar, i) in obra.ciudad_origen" :key="`lugar${lugar.url}`">
-          <span v-if="i > 0" class="separador">|</span>
-
-          <NuxtLink :to="lugar.url">
-            {{ lugar.nombre }}
-          </NuxtLink>
-        </span>
-      </div>
-
-      <VistaMapaPunto :punto="ubicacionMapa" />
+      <Lupa
+        :datos="datosGenerales[0].imagen"
+        :alt="datosGenerales[0].titulo"
+        :activado="verLupa"
+        @click="cambiarVistaImagen"
+      />
     </div>
 
-    <div id="contenedorGaleria">
+    <div id="contenedorDatos">
+      <section id="contenedorPrimerBloque" class="seccion">
+        <div id="contenedorTituloAutor singular">
+          <h1>{{ datosGenerales[0].titulo }}</h1>
+
+          <div v-if="obra.autores && obra.autores.length" id="autores">
+            <NuxtLink
+              v-for="autor in obra.autores"
+              :key="`autor${autor.autores_id.id}`"
+              :to="`/autores/${autor.autores_id.id}`"
+              class="autor"
+            >
+              {{ autor.autores_id.nombreCompleto }}
+            </NuxtLink>
+          </div>
+        </div>
+
+        <div id="registro">{{ obra.registro }}</div>
+      </section>
+
+      <RegistroLugares :datos="obra.ubicacion" titulo="Ubicación actual" :punto="ubicacionMapa" />
+      <RegistroLugares :datos="obra.ciudad_origen" titulo="Ciudad de origen" />
+      <RegistroSingular class="medio" titulo="Fecha" :texto="obra.fechas.join(' - ')" />
+      <RegistroLista class="medio" titulo="Técnicas" :datos="obra.tecnicas" ruta="tecnicas" relacion="tecnicas_id" />
+      <RegistroLista class="medio" titulo="Categorías" :datos="obra.categorias" ruta="categorias" />
+      <RegistroSingular class="medio" titulo="Donante" :datos="obra.donante" ruta="donantes" />
+      <RegistroSingular class="medio" titulo="Relato visual" :datos="obra.relato_visual" ruta="relatos-visuales" />
+      <RegistroSingular
+        class="medio"
+        titulo="Cartela - Filacteria"
+        :datos="obra.cartela_filacteria"
+        ruta="cartela-filacteria"
+      />
+      <RegistroSingular class="medio" titulo="Fisiognómica" :datos="obra.fisiognomica" ruta="fisiognomica" />
+      <RegistroSingular
+        class="medio"
+        titulo="Fisiognómica Imagen"
+        :datos="obra.fisiognomica_imagen"
+        ruta="fisiognomica-imagen"
+      />
+      <RegistroSingular class="medio" titulo="Tipo gestual" :datos="obra.tipo_gestual" ruta="tipo-gestual" />
+      <RegistroSingular
+        class="medio"
+        titulo="Complejo gestual"
+        :datos="obra.complejo_gestual"
+        ruta="complejo-gestual"
+      />
+      <RegistroSingular class="medio" titulo="Rostro" :datos="obra.rostro" ruta="rostros" />
+      <RegistroLista titulo="Gestos" :datos="obra.gestos" class="medio" relacion="gestos_id" ruta="gestos" />
+      <RegistroLista titulo="Objetos" :datos="obra.objetos" class="medio" relacion="objetos_id" ruta="objetos" />
+      <RegistroLista
+        titulo="Personajes"
+        :datos="obra.personajes"
+        class="medio"
+        relacion="personajes_id"
+        ruta="personajes"
+      />
+      <RegistroLista titulo="Símbolos" :datos="obra.simbolos" class="medio" relacion="simbolos_id" ruta="simbolos" />
+      <RegistroLista
+        titulo="Escenarios"
+        :datos="obra.escenarios"
+        class="medio"
+        relacion="escenarios_id"
+        ruta="escenarios"
+      />
+      <RegistroLista
+        titulo="Descriptores"
+        :datos="obra.descriptores"
+        class="medio"
+        relacion="descriptores_id"
+        ruta="descriptores"
+      />
+      <RegistroLista
+        titulo="Características"
+        :datos="obra.caracteristicas"
+        class="medio"
+        relacion="caracteristicas_id"
+        ruta="caracteristicas-particulares"
+      />
+
+      <RegistroParrafos :datos="obra.iconotexto" titulo="Iconotexto" />
+      <RegistroParrafos :datos="obra.comentario_bibliografico" titulo="Comentario bibliográfico" />
+      <RegistroParrafos :datos="obra.sintesis" titulo="Síntesis" />
+      <RegistroParrafos :datos="obra.fuente ? obra.fuente.descripcion : null" titulo="Fuente" />
+    </div>
+
+    <section id="contenedorGaleria" class="completo">
       <h2>Obras Relacionadas</h2>
       <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" />
-    </div>
+    </section>
   </div>
 </template>
 
 <style lang="scss" scoped>
 #contenedorObra {
-  display: block;
+  display: flex;
   margin: 2em auto;
-  text-align: center;
+  width: 85vw;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  overflow: hidden;
+}
 
-  h2 {
-    text-align: left;
-    margin: 1em 0;
+#contenedorImagen {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  &.grande {
+    flex-basis: 100%;
+
+    .contenedorLupa {
+      width: 100%;
+    }
+  }
+
+  .opciones {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.5em;
+  }
+  .controlImg {
+    width: 30px;
+    margin-bottom: 1em;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .zoom {
+    display: none;
+  }
+
+  .lupa {
+    fill: rgb(204, 204, 204);
+    &.activo {
+      fill: black;
+    }
   }
 }
 
-#contenedorInfo {
-  margin: 0 auto;
-  width: 95%;
+#contenedorDatos {
   display: flex;
-  flex-direction: column;
-}
-
-.datos {
-  display: flex;
-  text-align: left;
-  font-family: var(--fuenteParrafos);
-}
-
-.tituloDato {
-  font-weight: bold;
-  margin-right: 0.5em;
-}
-
-.separador {
-  padding: 0 0.3em;
-}
-
-#contenedorGaleria {
-  max-width: 90%;
+  flex-wrap: wrap;
+  justify-content: space-between;
   margin: 0 auto;
+}
+
+#contenedorPrimerBloque {
+  display: flex;
+  justify-content: space-between;
+  border: none;
+}
+
+#contenedorTituloAutor {
+  margin-right: 1em;
+
+  h1 {
+    margin-bottom: 0;
+    line-height: 1;
+    margin-bottom: 0.3em;
+  }
+
+  .autor {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: bold;
+    display: block;
+  }
+}
+
+#registro {
+  padding: 0.5em;
+  font-family: var(--fuentePrincipal);
+  border: 1px solid var(--profundidad);
+  height: fit-content;
+}
+
+h2 {
+  margin: 1em 0;
+  border-bottom: 2px solid $rojoCerezo;
+  padding-bottom: 0.3em;
+}
+
+/**
+  Estilos para componentes internos "hijos" de este.
+  Ver documentación de :deep() en:
+  https://vuejs.org/api/sfc-css-features.html#deep-selectors
+*/
+
+:deep(.seccion) {
+  display: flex;
+  flex-basis: 100%;
+  border-top: 2px solid var(--rojoCerezo);
+  padding: 0.8em 0;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  h3 {
+    font-weight: bold;
+    margin: 0 0.5em 0.5em 0;
+    font-size: 1em;
+  }
+
+  &.medio {
+    flex-basis: 48%;
+  }
+
+  // Dispositivos grandes y pantallas medianas
+  @media (min-width: $minPantalla) {
+    h3 {
+      width: 130px;
+    }
+
+    .contenido {
+      flex: 1;
+    }
+    .singular {
+      padding-left: 0.4em;
+    }
+  }
+}
+
+.completo {
+  flex-basis: 95%;
+  margin: 0 auto;
+}
+
+// Dispositivos grandes y pantallas medianas
+@media (min-width: $minPantalla) {
+  #contenedorObra {
+    width: 95vw;
+  }
+}
+
+// Pantallas grandes
+@media (min-width: $minPantallaGrande) {
+  #contenedorImagen {
+    flex-basis: 48%;
+
+    .zoom {
+      display: block;
+    }
+
+    .contenedorLupa {
+      width: 70%;
+    }
+  }
+
+  #contenedorDatos {
+    flex-basis: 50%;
+  }
+}
+
+//Pantallas gigantes
+@media (min-width: $minPantallaGigante) {
 }
 </style>

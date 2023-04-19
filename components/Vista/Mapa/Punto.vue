@@ -21,19 +21,20 @@ onMounted(() => {
     center: coordenadas,
     attributionControl: false,
   });
+  mapa.scrollZoom.disable();
 
   mapa.on('load', () => {
-    /**
-     * 🏛 Nombre del lugar
-     */
-    const etiqueta = new mapbox.Popup({
-      className: 'etiqueta',
-      closeButton: false,
-      closeOnClick: false,
-    })
-      .setLngLat(coordenadas)
-      .setText(props.punto.nombre)
-      .setMaxWidth('300px');
+    // /**
+    //  * 🏛 Nombre del lugar
+    //  */
+    // const etiqueta = new mapbox.Popup({
+    //   className: 'etiqueta',
+    //   closeButton: false,
+    //   closeOnClick: false,
+    // })
+    //   .setLngLat(coordenadas)
+    //   .setText(props.punto.nombre)
+    //   .setMaxWidth('300px');
 
     /**
      * Agregar marcador del lugar
@@ -43,9 +44,9 @@ onMounted(() => {
       draggable: false,
     })
       .setLngLat(coordenadas)
-      .setPopup(etiqueta)
-      .addTo(mapa)
-      .togglePopup();
+      // .setPopup(etiqueta)
+      .addTo(mapa);
+    // .togglePopup();
   });
 });
 </script>
@@ -56,10 +57,10 @@ onMounted(() => {
 
 <style lang="scss">
 #mapaPunto {
-  margin: 1em;
+  // margin: 1em;
   display: block;
-  height: 50vh;
-  width: 20vw;
+  height: 200px;
+  width: 100%;
 
   .etiqueta {
     color: var(--profundidad);
