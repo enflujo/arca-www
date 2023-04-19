@@ -124,6 +124,7 @@ onMounted(() => {
 .imagen {
   width: inherit;
   max-height: 200px;
+  max-width: 100%;
   margin: 0 auto;
   display: block;
 }
