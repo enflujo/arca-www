@@ -30,16 +30,18 @@ dimsVis.altoVis = dimsVis.alto - dimsVis.marcoAbajo;
 dimsVis.base = dimsVis.alto - dimsVis.marcoAbajo;
 dimsVis.inicioX = dimsVis.marcoIz + dimsVis.margenIz;
 const pasoX = ref(20);
-const pasoY = ref(1000);
-const valorMax = ref(Math.ceil(props.max / 1000) * 1000);
-const añosDisponibles = ref(Object.keys(props.datos));
+const pasoY = computed(() => (props.max > 1000 ? 1000 : 100));
+// const pasoY = ref(1000);
+const valorMax = computed(() => datos.reduce((a, b) => (a.cantidad > b.cantidad ? a : b)).cantidad);
+const cielo = ref(Math.ceil(props.max / pasoY.value) * pasoY.value);
 
 const ejeX = (valor) => convertirEscala(valor, desde.value, hasta.value, dimsVis.inicioX, dimsVis.anchoVis);
 const ejeY = (valor) => convertirEscala(valor, 0, props.max, dimsVis.base - 5, dimsVis.margenArriba);
 const anchoX = (valor) => convertirEscala(valor, 0, hasta.value - desde.value, 0, dimsVis.anchoVis);
+
 const distancia = computed(() => props.fechaFinal - props.fechaInicial);
 const partesX = computed(() => Math.ceil(distancia.value / pasoX.value) + 1);
-const partesY = computed(() => Math.ceil(valorMax.value / pasoY.value) + 1);
+const partesY = computed(() => Math.ceil(cielo.value / pasoY.value) + 1);
 
 onMounted(() => {
   dimsVis.ancho = contenedor.value.clientWidth;
@@ -66,10 +68,9 @@ function controlHastaDeslizador(evento) {
   }
 }
 
-function mostrarInfo(año) {
-  const numeroObras = props.datos[año].length;
-  infoConteo.value = numeroObras;
-  infoAño.value = año;
+function mostrarInfo(d) {
+  infoConteo.value = d.cantidad;
+  infoAño.value = d.fecha;
   infoMostrar.value = true;
 }
 
@@ -137,14 +138,14 @@ function apagarInfo() {
         </g>
       </g>
 
-      <g v-for="(anno, i) in añosDisponibles" :key="`areaSensible${i}`" :style="`transform:translate(${ejeX(anno)}px)`">
+      <g v-for="(d, i) in datos" :key="`areaSensible${i}`" :style="`transform:translate(${ejeX(d.fecha)}px)`">
         <rect
           class="areaSensible"
           x="0"
           y="0"
-          :width="i < añosDisponibles.length - 1 ? `${anchoX(añosDisponibles[i + 1] - anno)}px` : `${anchoX(pasoX)}`"
+          :width="i < d.length - 1 ? `${anchoX(d[i + 1].fecha - d.fecha)}px` : `${anchoX(pasoX)}`"
           :height="dimsVis.altoVis"
-          @mouseenter="mostrarInfo(anno)"
+          @mouseenter="mostrarInfo(d)"
         />
       </g>
 
@@ -186,7 +187,7 @@ function apagarInfo() {
         />
       </div>
 
-      <div class="controlLinea">
+      <!-- <div class="controlLinea">
         <div class="contenedorControlLinea">
           <input
             id="desdeEntrada"
@@ -208,7 +209,7 @@ function apagarInfo() {
             :max="fechaFinal"
           />
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

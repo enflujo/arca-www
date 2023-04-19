@@ -11,20 +11,29 @@ const props = defineProps({
 
 const lineaSvg = computed(() => {
   let linea = '';
-  let contador = 0;
 
-  for (const año in props.datos) {
-    const x = props.ejeX(año);
-    const y = props.ejeY(props.datos[año].length);
+  props.datos.forEach((obj, i) => {
+    const x = props.ejeX(obj.fecha);
+    const y = props.ejeY(obj.cantidad);
 
-    if (contador === 0) {
+    if (i === 0) {
       linea += `M${x} ${y}`;
     } else {
       linea += ` L${x} ${y}`;
     }
+  });
+  // for (const año in props.datos) {
+  //   const x = props.ejeX(año);
+  //   const y = props.ejeY(props.datos[año].length);
 
-    contador++;
-  }
+  //   if (contador === 0) {
+  //     linea += `M${x} ${y}`;
+  //   } else {
+  //     linea += ` L${x} ${y}`;
+  //   }
+
+  //   contador++;
+  // }
 
   // props.datos.forEach((instancia, i) => {
   //   const x = props.posicionX(instancia.fecha_inicial);
@@ -55,11 +64,11 @@ const lineaSvg = computed(() => {
     />
 
     <circle
-      v-for="(grupo, año) in datos"
-      :key="`punto-${año}`"
+      v-for="d in datos"
+      :key="`punto-${d.fecha}`"
       class="puntoDatos"
-      :cx="ejeX(año)"
-      :cy="ejeY(grupo.length)"
+      :cx="ejeX(d.fecha)"
+      :cy="ejeY(d.cantidad)"
       :r="radioPuntos"
     />
   </g>

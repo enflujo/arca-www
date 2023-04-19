@@ -31,25 +31,25 @@ useHead(elementosCabeza(paginas[0] ? paginas[0] : {}, ruta.path));
 const pagina = ref(null);
 pagina.value = paginas[0];
 
-const Obras = gql`
-  query {
-    obras(limit: -1, sort: ["fecha_inicial"]) {
-      id
-      fecha_inicial
-      fecha_final
-    }
-  }
-`;
 // const Obras = gql`
 //   query {
-//     obras_aggregated(groupBy: ["fecha_inicial"], sort: ["fecha_inicial"]) {
-//       group
-//       count {
-//         id
-//       }
+//     obras(limit: -1, sort: ["fecha_inicial"]) {
+//       id
+//       fecha_inicial
+//       fecha_final
 //     }
 //   }
 // `;
+const Obras = gql`
+  query {
+    obras_aggregated(groupBy: ["fecha_inicial"], sort: ["fecha_inicial"], limit: -1) {
+      group
+      count {
+        id
+      }
+    }
+  }
+`;
 
 const { data, pending } = obtenerDatosAsinc('todasLineaTiempo', Obras);
 
@@ -58,31 +58,44 @@ const fechaFinal = ref(0);
 const obrasOrdenadas = ref([]);
 const max = ref(0);
 
-watch(data, ({ obras }) => {
-  let fechaMax = 0;
-  const respuesta = {};
+watch(data, (respuesta) => {
   let cielo = 0;
-
-  obras.forEach(({ id, fecha_inicial, fecha_final }) => {
-    if (fecha_final && fecha_final > fechaMax) {
-      fechaMax = fecha_final;
+  const datos = respuesta.obras_aggregated.map((obra) => {
+    const cantidad = obra.count.id;
+    if (cielo < cantidad) {
+      cielo = cantidad;
     }
-
-    if (!respuesta[fecha_inicial]) {
-      respuesta[fecha_inicial] = [];
-    }
-
-    respuesta[fecha_inicial].push({ id, fecha_inicial, fecha_final });
-
-    if (respuesta[fecha_inicial].length > cielo) {
-      cielo = respuesta[fecha_inicial].length;
-    }
+    return { fecha: obra.group.fecha_inicial, cantidad };
   });
-
-  fechaInicial.value = obras[0].fecha_inicial;
-  fechaFinal.value = fechaMax;
+  fechaInicial.value = datos[0].fecha;
+  fechaFinal.value = datos[datos.length - 1].fecha;
+  obrasOrdenadas.value = datos;
   max.value = cielo;
-  obrasOrdenadas.value = respuesta;
+
+  // let fechaMax = 0;
+  // const respuesta = {};
+  // let cielo = 0;
+
+  // obras.forEach(({ id, fecha_inicial, fecha_final }) => {
+  //   if (fecha_final && fecha_final > fechaMax) {
+  //     fechaMax = fecha_final;
+  //   }
+
+  //   if (!respuesta[fecha_inicial]) {
+  //     respuesta[fecha_inicial] = [];
+  //   }
+
+  //   respuesta[fecha_inicial].push({ id, fecha_inicial, fecha_final });
+
+  //   if (respuesta[fecha_inicial].length > cielo) {
+  //     cielo = respuesta[fecha_inicial].length;
+  //   }
+  // });
+
+  // fechaInicial.value = obras[0].fecha_inicial;
+  // fechaFinal.value = fechaMax;
+  // max.value = cielo;
+  // obrasOrdenadas.value = respuesta;
 });
 
 // Nuxt normaliza los nombres de "layouts" a kebab-case.
