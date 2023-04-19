@@ -1,11 +1,11 @@
 <script setup>
-import { demorar, esperar } from '~/utilidades/ayudas';
+import { demorar, esperar, urlImagen } from '~/utilidades/ayudas';
 
 const props = defineProps({
-  src: String,
+  datos: Object,
   alt: String,
-  ancho: { default: 150 },
-  alto: { default: 150 },
+  ancho: Number,
+  alto: Number,
   anchoBorde: { default: 1.2 },
   escala: { default: 1.5 },
   bordeColor: { default: '#fff' },
@@ -20,24 +20,30 @@ const dims = ref(null);
 const mostrarLupa = ref(false);
 const mov = ref({ x: 0, y: 0 });
 const pos = ref({ x: 0, y: 0 });
-const centro = ref({ x: 0, y: 0 });
 
 const definirLupa = computed(() => {
   if (!dims.value) return;
   const { escala, ancho, alto, anchoBorde, bordeColor } = props;
   const { x, y } = pos.value;
   const { width, height } = dims.value;
-  const { x: centroX, y: centroY } = centro.value;
+  const anchoLupa = ancho ? ancho : width / 2;
+  const altoLupa = alto ? alto : Math.min(window.innerHeight / 2, height / 2);
+  const centroX = anchoLupa / 2;
+  const centroY = altoLupa / 2;
+  const x2 = x * 100;
+  const y2 = y * 100;
 
   return {
-    left: `calc(${x * 100}% - ${centroX}px + ${mov.value.x}px - ${anchoBorde}px)`,
-    top: `calc(${y * 100}% - ${centroY}px + ${mov.value.y}px - ${anchoBorde}px)`,
-    backgroundPosition: `calc(${x * 100}% + ${centroX}px - ${x * ancho}px) calc(${y * 100}% + ${centroY}px - ${
-      y * alto
+    left: `calc(${x2}% - ${centroX}px + ${mov.value.x}px - ${anchoBorde}px)`,
+    top: `calc(${y2}% - ${centroY}px + ${mov.value.y}px - ${anchoBorde}px)`,
+    backgroundPosition: `calc(${x2}% + ${centroX}px - ${x * anchoLupa}px) calc(${y2}% + ${centroY}px - ${
+      y * altoLupa
     }px)`,
-    backgroundSize: `${escala * width}% ${escala * height}%`,
+    backgroundSize: `${escala * width}px ${escala * height}px`,
     borderWidth: `${anchoBorde}px`,
     backgroundColor: bordeColor,
+    width: `${anchoLupa}px`,
+    height: `${altoLupa}px`,
   };
 });
 
@@ -87,16 +93,18 @@ const movimientoTacto = demorar((e) => {
 const calcularDimsImgEsperando = esperar(calcularDimsImg, 200);
 
 onMounted(() => {
+  const imagen = new Image();
+  imagen.onload = () => {
+    img.value.src = imagen.src;
+  };
+  imagen.src = urlImagen(props.datos.id, 'obra');
+
   window.addEventListener('resize', calcularDimsImgEsperando);
   window.addEventListener('scroll', calcularDimsImgEsperando, true);
 
   Object.assign(lupa.value.style, {
-    backgroundImage: `url(${props.src})`,
-    width: `${props.ancho}px`,
-    height: `${props.alto}px`,
+    backgroundImage: `url(${imagen.src})`,
   });
-
-  centro.value = { x: props.ancho / 2, y: props.alto / 2 };
 });
 
 onUnmounted(() => {
@@ -109,11 +117,11 @@ onUnmounted(() => {
   <div :class="`contenedorLupa`" :style="`overflow: ${desbordar ? 'visible' : 'hidden'}`">
     <img
       ref="img"
-      :src="src"
+      :src="`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 ${datos.ancho} ${datos.alto}'%3E%3C/svg%3E`"
       :alt="alt"
       class="imagen"
       :style="`cursor:${activado ? 'none' : 'initial'}`"
-      @load="calcularDimsImg"
+      @click="calcularDimsImgEsperando"
       @mouseenter="calcularDimsImg"
       @mousemove="movimientoRaton"
       @mouseout="apagarLupa"
@@ -131,13 +139,17 @@ onUnmounted(() => {
   position: relative;
   display: inline-block;
   line-height: 0;
-  // width: 40%;
 }
 
 .imagen {
   width: 100%;
   max-width: 90vw;
   height: auto;
+  background-image: url(/arca-icono.svg);
+  background-repeat: no-repeat;
+  background-size: 50px;
+  background-position: center;
+  line-height: 0;
 }
 .lupa {
   position: absolute;

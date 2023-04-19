@@ -10,12 +10,18 @@ const ObraGeneral = gql`
 query {
   obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
     titulo,
-    imagen { id title filename_download }
+    imagen { id title width height filename_download }
   }
 }
 `;
 
 const { obras: datosGenerales } = await obtenerDatos(`obraGeneral${ruta.params.registro}`, ObraGeneral);
+
+if (datosGenerales[0].imagen) {
+  // Definir dims imagen
+  datosGenerales[0].imagen.ancho = Math.round((datosGenerales[0].imagen.width / datosGenerales[0].imagen.height) * 300);
+  datosGenerales[0].imagen.alto = 300;
+}
 
 useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
 
@@ -23,7 +29,6 @@ useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGeneral
 const obra = ref(null);
 const relacionadas = ref(null);
 const ubicacionMapa = ref(null);
-const sinGesto = ref(null);
 const vistaCompleta = ref(false);
 const verLupa = ref(true);
 
@@ -155,7 +160,6 @@ watch(data, ({ obras }) => {
   }
 
   obra.value = _obra;
-  // sinGesto.value = (gesto) => gesto.gestos_id.nombre !== 'No';
 
   buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1].coleccion);
 });
@@ -203,16 +207,24 @@ function cambiarVistaLupa() {
   <div id="contenedorObra" v-else>
     <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
       <div class="opciones">
-        <div class="zoom" @click="cambiarVistaImagen" :class="vistaCompleta ? 'activo' : ''">zoom</div>
-        <div class="lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''">lupa</div>
+        <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
+        <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
+
         <a
+          class="controlImg"
           :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
           target="_blank"
           :download="datosGenerales[0].imagen.filename_download"
-          >descarga</a
         >
+          <IconoDescarga class="controlImg descarga" />
+        </a>
       </div>
-      <Lupa :src="urlImagen(datosGenerales[0].imagen.id, 'obra')" :alt="datosGenerales[0].titulo" :activado="verLupa" />
+      <Lupa
+        :datos="datosGenerales[0].imagen"
+        :alt="datosGenerales[0].titulo"
+        :activado="verLupa"
+        @click="cambiarVistaImagen"
+      />
     </div>
 
     <div id="contenedorDatos">
@@ -235,7 +247,7 @@ function cambiarVistaLupa() {
         <div id="registro">{{ obra.registro }}</div>
       </section>
 
-      <RegistroLugares :datos="obra.ubicacion" titulo="Ubicación actual" />
+      <RegistroLugares :datos="obra.ubicacion" titulo="Ubicación actual" :punto="ubicacionMapa" />
       <RegistroLugares :datos="obra.ciudad_origen" titulo="Ciudad de origen" />
       <RegistroSingular class="medio" titulo="Fecha" :texto="obra.fechas.join(' - ')" />
       <RegistroLista class="medio" titulo="Técnicas" :datos="obra.tecnicas" ruta="tecnicas" relacion="tecnicas_id" />
@@ -301,11 +313,6 @@ function cambiarVistaLupa() {
       <RegistroParrafos :datos="obra.fuente ? obra.fuente.descripcion : null" titulo="Fuente" />
     </div>
 
-    <section class="completo" v-if="ubicacionMapa">
-      <h2>Ubicación</h2>
-      <VistaMapaPunto :punto="ubicacionMapa" />
-    </section>
-
     <section id="contenedorGaleria" class="completo">
       <h2>Obras Relacionadas</h2>
       <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" />
@@ -320,6 +327,8 @@ function cambiarVistaLupa() {
   width: 85vw;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: flex-start;
+  overflow: hidden;
 }
 
 #contenedorImagen {
@@ -329,15 +338,36 @@ function cambiarVistaLupa() {
 
   &.grande {
     flex-basis: 100%;
-  }
-  .opciones {
-    // position: absolute;
-    // left: 0;
-    // top: 0;
+
+    .contenedorLupa {
+      width: 100%;
+    }
   }
 
-  .contenedorLupa {
-    width: 50%;
+  .opciones {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0.5em;
+  }
+  .controlImg {
+    width: 30px;
+    margin-bottom: 1em;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  .zoom {
+    display: none;
+  }
+
+  .lupa {
+    fill: rgb(204, 204, 204);
+    &.activo {
+      fill: black;
+    }
   }
 }
 
@@ -345,6 +375,7 @@ function cambiarVistaLupa() {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin: 0 auto;
 }
 
 #contenedorPrimerBloque {
@@ -375,6 +406,12 @@ function cambiarVistaLupa() {
   font-family: var(--fuentePrincipal);
   border: 1px solid var(--profundidad);
   height: fit-content;
+}
+
+h2 {
+  margin: 1em 0;
+  border-bottom: 2px solid $rojoCerezo;
+  padding-bottom: 0.3em;
 }
 
 /**
@@ -417,7 +454,8 @@ function cambiarVistaLupa() {
 }
 
 .completo {
-  flex-basis: 100%;
+  flex-basis: 95%;
+  margin: 0 auto;
 }
 
 // Dispositivos grandes y pantallas medianas
@@ -431,6 +469,14 @@ function cambiarVistaLupa() {
 @media (min-width: $minPantallaGrande) {
   #contenedorImagen {
     flex-basis: 48%;
+
+    .zoom {
+      display: block;
+    }
+
+    .contenedorLupa {
+      width: 70%;
+    }
   }
 
   #contenedorDatos {
