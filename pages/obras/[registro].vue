@@ -229,7 +229,7 @@ function cambiarVistaLupa() {
 
     <div id="contenedorDatos">
       <section id="contenedorPrimerBloque" class="seccion">
-        <div id="contenedorTituloAutor singular">
+        <div id="contenedorTituloAutor">
           <h1>{{ datosGenerales[0].titulo }}</h1>
 
           <div v-if="obra.autores && obra.autores.length" id="autores">
@@ -329,6 +329,10 @@ function cambiarVistaLupa() {
   justify-content: space-between;
   align-items: flex-start;
   overflow: hidden;
+}
+
+#contenedorTituloAutor {
+  max-width: 80%;
 }
 
 #contenedorImagen {
@@ -446,9 +450,6 @@ h2 {
 
     .contenido {
       flex: 1;
-    }
-    .singular {
-      padding-left: 0.4em;
     }
   }
 }
