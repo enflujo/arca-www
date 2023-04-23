@@ -25,7 +25,7 @@ export default defineNuxtConfig({
         {
           async: true,
           defer: true,
-          src: 'https://analiticaarca.uniandes.edu.co/umami.js',
+          src: 'https://analiticaarca.uniandes.edu.co/script.js',
           'data-website-id': 'bc6c51bf-8938-47db-9a3a-228fa9d14ff3',
           'data-domains': 'arca.uniandes.edu.co',
         },
