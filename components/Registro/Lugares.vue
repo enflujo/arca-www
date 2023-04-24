@@ -16,7 +16,7 @@ const props = defineProps({
         <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
       </span>
     </p>
-    <VistaMapaPunto v-if="punto" :punto="punto" />
+    <VistaMapaPunto v-if="punto && punto.geometry" :punto="punto" />
   </section>
 </template>
 
