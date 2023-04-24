@@ -2,9 +2,18 @@
 import { usarGeneral } from '~~/cerebros/general';
 
 const cerebroGeneral = usarGeneral();
+const ruta = useRoute();
+
 function abrirBuscador() {
   cerebroGeneral.buscadorVisible = true;
 }
+
+onMounted(async () => {
+  if (ruta.query.buscar) {
+    cerebroGeneral.busquedaActual = ruta.query.buscar;
+    abrirBuscador();
+  }
+});
 </script>
 
 <template>

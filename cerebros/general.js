@@ -11,6 +11,7 @@ export const usarGeneral = defineStore('general', {
     descripcion: '',
     guardaescobas: '',
     buscadorVisible: false,
+    busquedaActual: '',
   }),
 
   actions: {

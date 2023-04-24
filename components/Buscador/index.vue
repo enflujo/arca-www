@@ -56,6 +56,12 @@ function cambioDePagina() {
     resultados.value.$el.scrollTop = 0;
   }
 }
+
+function entradaBuscador(evento) {
+  if (typeof evento === 'string') {
+    cerebroGeneral.busquedaActual = evento;
+  }
+}
 </script>
 
 <template>
@@ -67,6 +73,8 @@ function cambioDePagina() {
       <ais-search-box
         placeholder="Buscar..."
         reset-title="Borrar"
+        :value="cerebroGeneral.busquedaActual"
+        @input="entradaBuscador"
         :autofocus="true"
         :class-names="{
           'ais-SearchBox': 'buscadorContenedor',
@@ -179,12 +187,15 @@ function cambioDePagina() {
 }
 
 #resultados {
-  padding: 2em;
   width: 80vw;
   height: calc(100vh - 180px);
   overflow: auto;
   margin: 0 auto;
   background-color: var(--claridad);
+}
+
+:deep(.listaResultados) {
+  padding: 2em;
 }
 
 :deep(.resultado) {
