@@ -1,14 +1,56 @@
 <script setup>
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import { usarArchivo } from '~/cerebros/archivo';
-import { gql, obtenerVariablesCSS, urlImagen } from '~/utilidades/ayudas';
+import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';
 
+const ruta = useRoute();
+const enrutador = useRouter();
 const cerebroArchivo = usarArchivo();
 const pending = ref(true);
 let color;
 let ejeX;
 let colorMin;
 let colorMax;
+
+if (ruta.query.id) {
+  const { id } = ruta.query;
+
+  const BuscarCategoria = gql`
+      query {
+        categorias1(filter: { id: { _eq: ${id} } }) {
+          slug
+        }
+        categorias2(filter: { id: { _eq: ${id} } }) {
+          slug
+        }
+        categorias3(filter: { id: { _eq: ${id} } }) {
+          slug
+        }
+        categorias4(filter: { id: { _eq: ${id} } }) {
+          slug
+        }
+        categorias5(filter: { id: { _eq: ${id} } }) {
+          slug
+        }
+        categorias6(filter: { id: { _eq: ${id} } }) {
+          slug
+        }
+      }
+    `;
+
+  const busqueda = await obtenerDatos(`buscarCategoriaId${id}`, BuscarCategoria);
+
+  for (let i = 1; i < 7; i++) {
+    const coleccion = `categorias${i}`;
+    if (busqueda[coleccion].length) {
+      const { slug } = busqueda[coleccion][0];
+
+      enrutador.push({
+        path: `/${coleccion}/${slug}`,
+      });
+    }
+  }
+}
 
 definePageMeta({ layout: 'archivo', keepalive: true });
 
