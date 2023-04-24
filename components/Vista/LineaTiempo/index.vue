@@ -6,6 +6,7 @@ const props = defineProps({
   fechaInicial: Number,
   fechaFinal: Number,
   max: Number,
+  coleccion: String,
 });
 
 const contenedor = ref(null);
@@ -29,19 +30,19 @@ const dimsVis = reactive({
 dimsVis.altoVis = dimsVis.alto - dimsVis.marcoAbajo;
 dimsVis.base = dimsVis.alto - dimsVis.marcoAbajo;
 dimsVis.inicioX = dimsVis.marcoIz + dimsVis.margenIz;
+
+const seccionDatos = computed(() => props.datos.filter((obj) => obj.fecha >= desde.value && obj.fecha <= hasta.value));
+const valorMax = computed(() => seccionDatos.value.reduce((a, b) => (a.cantidad > b.cantidad ? a : b)).cantidad);
 const pasoX = ref(20);
-const pasoY = computed(() => (props.max > 1000 ? 1000 : 100));
-// const pasoY = ref(1000);
-const valorMax = computed(() => datos.reduce((a, b) => (a.cantidad > b.cantidad ? a : b)).cantidad);
-const cielo = ref(Math.ceil(props.max / pasoY.value) * pasoY.value);
+const pasoY = computed(() => Math.pow(10, Math.floor(Math.log10(valorMax.value))));
+const cielo = ref(Math.ceil(valorMax.value / pasoY.value) * pasoY.value);
 
 const ejeX = (valor) => convertirEscala(valor, desde.value, hasta.value, dimsVis.inicioX, dimsVis.anchoVis);
-const ejeY = (valor) => convertirEscala(valor, 0, props.max, dimsVis.base - 5, dimsVis.margenArriba);
+const ejeY = (valor) => convertirEscala(valor, 0, valorMax.value, dimsVis.base - 5, dimsVis.margenArriba);
 const anchoX = (valor) => convertirEscala(valor, 0, hasta.value - desde.value, 0, dimsVis.anchoVis);
 
 const distancia = computed(() => props.fechaFinal - props.fechaInicial);
 const partesX = computed(() => Math.ceil(distancia.value / pasoX.value) + 1);
-const partesY = computed(() => Math.ceil(cielo.value / pasoY.value) + 1);
 
 onMounted(() => {
   dimsVis.ancho = contenedor.value.clientWidth;
@@ -51,7 +52,7 @@ onMounted(() => {
 function controlDesdeDeslizador(evento) {
   const desdeValor = +evento.target.value;
 
-  if (desdeValor < hasta.value) {
+  if (desdeValor < hasta.value && desdeValor > props.fechaInicial) {
     desde.value = desdeValor;
   } else {
     evento.target.value = desde.value;
@@ -61,7 +62,7 @@ function controlDesdeDeslizador(evento) {
 function controlHastaDeslizador(evento) {
   const hastaValor = +evento.target.value;
 
-  if (hastaValor > desde.value) {
+  if (hastaValor > desde.value && hastaValor < props.fechaFinal) {
     hasta.value = hastaValor;
   } else {
     evento.target.value = hasta.value;
@@ -129,7 +130,7 @@ function apagarInfo() {
 
       <!-- Marcas EjeY -->
       <g class="referenciaY">
-        <g v-for="i in partesY" :key="`marcay-${i}`" :style="`transform:translateY(${ejeY((i - 1) * pasoY)}px)`">
+        <g v-for="i in 10" :key="`marcay-${i}`" :style="`transform:translateY(${ejeY((i - 1) * pasoY)}px)`">
           <line class="marcaMarco" :x1="dimsVis.inicioX - 7" y1="0" :x2="dimsVis.inicioX" y2="0" />
           <line class="referencia" :x1="dimsVis.inicioX" y1="0" x2="100%" y2="0" />
           <text class="textoEjeY textoEje" :x="dimsVis.inicioX - 10" y="0" shape-rendering="crispEdges">
@@ -187,12 +188,13 @@ function apagarInfo() {
         />
       </div>
 
-      <!-- <div class="controlLinea">
+      <div class="controlLinea">
         <div class="contenedorControlLinea">
           <input
             id="desdeEntrada"
             class="controlLineaTiempoEntrada"
             type="number"
+            @change.stop.prevent="controlDesdeDeslizador"
             :value="desde"
             :min="fechaInicial"
             :max="fechaFinal"
@@ -204,12 +206,13 @@ function apagarInfo() {
             id="hastaEntrada"
             class="controlLineaTiempoEntrada"
             type="number"
+            @change.stop.prevent="controlHastaDeslizador"
             :value="hasta"
             :min="fechaInicial"
             :max="fechaFinal"
           />
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>

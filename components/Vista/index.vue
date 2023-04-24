@@ -5,7 +5,7 @@ import { indiceColeccion } from '~~/utilidades/queries';
 const props = defineProps({ coleccion: String, ruta: String });
 const cerebroArchivo = usarArchivo();
 const datos = ref([]);
-const vistas = ref(['abc', 'colombinas']);
+const vistas = ref(['abc', 'colombinas', 'tiempo']);
 const vistaInicial = ref('abc');
 const datosUbicaciones = ref(null);
 const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
@@ -16,7 +16,7 @@ watch(data, (respuesta) => {
 
 onMounted(() => {
   if (props.ruta === 'ubicaciones') {
-    vistas.value = ['mapa', 'abc', 'colombinas'];
+    vistas.value = ['mapa', 'abc', 'colombinas', 'tiempo'];
     vistaInicial.value = 'mapa';
   }
 });
@@ -109,5 +109,7 @@ function procesarDatos(nuevosDatos) {
       :ubicaciones="datosUbicaciones.ubicaciones"
       :max="datosUbicaciones.max"
     />
+
+    <!-- <VistaLineaTiempo v-if="cerebroArchivo.vistaActual === 'tiempo'" :coleccion="coleccion" /> -->
   </div>
 </template>

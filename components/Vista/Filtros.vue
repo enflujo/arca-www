@@ -8,7 +8,7 @@ const props = defineProps({
   vistas: { type: Array, default: () => [] },
 });
 const cerebroArchivo = usarArchivo();
-const posiblesVistas = ['mapa', 'abc', 'colombinas'];
+const posiblesVistas = ['mapa', 'abc', 'colombinas', 'tiempo'];
 
 onMounted(() => {
   if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
