@@ -221,6 +221,8 @@ function entradaBuscador(evento) {
   .campos {
     flex: 1;
     font-size: 0.85em;
+    border-bottom: 2px solid $dolor;
+    padding-bottom: 1em;
 
     .titulo {
       font-weight: bold;
@@ -256,6 +258,11 @@ mark {
     &:hover,
     &.paginaActual {
       background-color: rgba($dolor, 0.7);
+
+      a,
+      a:link {
+        color: $claridad;
+      }
     }
 
     &.paginaDesabilitada {
@@ -265,22 +272,18 @@ mark {
 }
 
 #botonCerrar {
-  background-color: var(--claridad);
-  color: rgba($dolor, 0.7);
-  border-radius: 50%;
+  font-family: var(--fuenteMenu);
+  color: $claridad;
   z-index: 99;
   position: fixed;
-  font-size: 0.8em;
-  padding: 0.1em 0.3em;
-  right: 12px;
-  top: 12px;
+  font-size: 2em;
+  right: 1vw;
+  top: 0.8em;
   cursor: pointer;
-  font-weight: bold;
+  transition: opacity 0.25s ease-in-out;
 
   &:hover {
-    color: var(--claridad);
-    border: var(--claridad) solid 1px;
-    background-color: var(--dolor);
+    opacity: 0.7;
   }
 }
 
@@ -290,28 +293,13 @@ mark {
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   #botonCerrar {
-    padding: 0.2em 0.4em;
-    right: 20px;
-    top: 20px;
-    font-size: 1em;
+    right: 5vw;
   }
 }
 // Dispositivos grandes y pantallas medianas
 @media (min-width: $minPantalla) {
-  #botonCerrar {
-    padding: 0.2em 0.4em;
-    right: 20px;
-    top: 20px;
-    font-size: 1em;
-  }
 }
 // Pantallas grandes
 @media (min-width: $minPantallaGrande) {
-  #botonCerrar {
-    padding: 0.2em 0.4em;
-    right: 20px;
-    top: 20px;
-    font-size: 1em;
-  }
 }
 </style>
