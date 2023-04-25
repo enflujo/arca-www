@@ -39,7 +39,7 @@ const general = usarGeneral();
 
 .logoArca {
   fill: $claridad;
-  height: 0.8em;
+  height: 0.72em;
 }
 
 #titulo {
@@ -53,13 +53,18 @@ const general = usarGeneral();
   font-family: var(--fuentePrincipal);
   font-weight: bold;
   margin-left: 0.3em;
-  color: var(--mediana);
   letter-spacing: 0.15em;
   text-transform: uppercase;
 
+  &:link {
+    color: var(--mediana);
+  }
+
   &:hover {
     opacity: 0.85;
-    color: var(--mediana); // mantener el color para que no cambie al predeterminado en todos los enlaces.
+    &:link {
+      color: var(--mediana); // mantener el color para que no cambie al predeterminado en todos los enlaces.
+    }
   }
 }
 
