@@ -63,7 +63,9 @@ watch(data, (respuesta) => {
           datosColeccion.nombre
         }}</NuxtLink>
       </h3>
-      <p>{{ datos.numObras }}</p>
+      <p class="contador">
+        <span class="conteo">{{ datos.numObras }}</span> obras en la colección
+      </p>
       <GaleriaMosaico v-if="datosColeccion.obras" :obras="datosColeccion.obras" />
     </div>
   </div>
@@ -74,12 +76,14 @@ watch(data, (respuesta) => {
   position: absolute;
   top: 0;
   right: -100%;
-  width: 40vw;
-  background-color: rgb(241, 219, 159);
+  width: 60vw;
+  background-color: var(--amarilloPetalo);
   height: 90vh;
   transition: right 0.35s ease-out;
   overflow: auto;
-
+  padding: 1.5em;
+  border: 2px var(--profundidad) solid;
+  color: var(--profundidad);
   &.activo {
     right: 0;
   }
@@ -88,10 +92,36 @@ watch(data, (respuesta) => {
 #cerrar {
   font-size: 2em;
   cursor: pointer;
+  position: absolute;
+  right: 13px;
+  background-color: var(--claridad);
+  color: rgba(175, 40, 40, 0.7);
+  border: var(--claridad) solid 1px;
+  border-radius: 50%;
+  font-size: 1em;
+  padding: 0.1em 0.3em;
+  font-weight: bold;
+
+  &:hover {
+    color: var(--claridad);
+    background-color: var(--dolor);
+  }
 }
 
 .titulo {
   font-size: 2em;
+  margin-bottom: 0.2em;
+}
+
+.contador {
+  padding: 0.7em;
+  border: 2px solid #08173e;
+  display: inline-block;
+  margin: 0.3em 0 1em 0;
+}
+
+.conteo {
+  font-weight: bold;
 }
 
 .contenedorGaleria {
@@ -103,6 +133,13 @@ watch(data, (respuesta) => {
 
   &:deep(.imagen) {
     max-height: 150px;
+  }
+}
+
+// Pantallas grandes
+@media (min-width: $minPantallaGrande) {
+  #cajon {
+    width: 40vw;
   }
 }
 </style>
