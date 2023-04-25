@@ -3,5 +3,5 @@ definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>
-  <Galeria coleccion="fisiognomicas_imagen" singular="Fisiognómica Imagen" />
+  <Galeria coleccion="fisiognomicas_imagen" nombreCampo="fisiognomica_imagen" singular="Fisiognómica Imagen" />
 </template>
