@@ -151,10 +151,10 @@ onMounted(() => {
         ],
       },
       paint: {
-        'text-color': '#202',
-        'text-halo-color': '#fff',
-        'text-halo-width': ['case', ['boolean', ['feature-state', 'activo'], false], 3, 0],
-        'text-halo-blur': 2,
+        'text-color': '#fff',
+        'text-halo-color': '#716b6b',
+        'text-halo-width': ['case', ['boolean', ['feature-state', 'activo'], false], 3, 2],
+        'text-halo-blur': 0,
       },
     });
 

@@ -32,7 +32,7 @@ watch(data, (respuesta) => {
 <template>
   <div id="cajon" :class="abierto ? 'activo' : ''">
     <Cargador v-if="pending" />
-    <div v-else>
+    <div v-else class="contenido">
       <div id="cerrar" @click="cerrarCajon">X</div>
       <h3 class="titulo">
         <NuxtLink :to="`/${coleccion}/${coleccion === 'paises' ? datos.slug : datos.id}`">{{ datos.nombre }}</NuxtLink>
@@ -52,15 +52,18 @@ watch(data, (respuesta) => {
   right: -100%;
   width: 60vw;
   background-color: var(--amarilloPetalo);
-  height: 90vh;
+  height: calc(90vh - 4px);
   transition: right 0.35s ease-out;
   overflow: auto;
-  padding: 1.5em;
   border: 2px var(--profundidad) solid;
   color: var(--profundidad);
   &.activo {
     right: 0;
   }
+}
+
+.contenido {
+  padding: 1.5em;
 }
 
 #cerrar {
