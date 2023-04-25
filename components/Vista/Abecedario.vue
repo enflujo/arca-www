@@ -11,6 +11,8 @@ const props = defineProps({
 onMounted(() => {
   if (props.coleccion === 'autores') {
     procesarDatos('apellido');
+  } else if (props.coleccion === 'ciudades') {
+    procesarDatos('nombre');
   } else {
     procesarDatos('slug');
   }
