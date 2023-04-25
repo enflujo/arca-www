@@ -95,12 +95,20 @@ const camposObrasGaleria = () => {
  * @param {boolean} m2m  ¿Es de una relación M2M?
  * @returns
  */
-export const datosObrasGaleria = (coleccion, busqueda, m2m = false, pagina = 1, porId) => {
+export const datosObrasGaleria = (
+  coleccion,
+  nombreCampo = coleccion,
+  busqueda,
+  m2m = false,
+  pagina = 1,
+  porId = false,
+  numObras = cerebroArchivo.obrasPorPagina
+) => {
   if (m2m) {
     return gql`query {
-      obras_${coleccion}(filter: {${coleccion}_id: {${porId ? 'id' : 'slug'}: {_eq: "${busqueda}"}}}, limit: ${
-      cerebroArchivo.obrasPorPagina
-    }, page: ${pagina}) {
+      obras_${coleccion}(filter: {${nombreCampo}_id: {${
+      porId ? 'id' : 'slug'
+    }: {_eq: "${busqueda}"}}}, limit: ${numObras}, page: ${pagina}) {
         obras_id {
           ${camposObrasGaleria()}
         }
@@ -110,9 +118,9 @@ export const datosObrasGaleria = (coleccion, busqueda, m2m = false, pagina = 1, 
   }
 
   return gql`query {
-    obras(filter: {${coleccion}: {${porId ? 'id' : 'slug'}: { _eq: "${busqueda}" }}}, limit: ${
-    cerebroArchivo.obrasPorPagina
-  }, page: ${pagina}) {
+    obras(filter: {${nombreCampo}: {${
+    porId ? 'id' : 'slug'
+  }: { _eq: "${busqueda}" }}}, limit: ${numObras}, page: ${pagina}) {
     ${camposObrasGaleria()}
     }
   }`;
@@ -149,6 +157,18 @@ export const indiceColeccion = (coleccion) => {
           id
           nombre
           apellido
+          obras_func {
+            count
+          }
+        }
+      }
+    `;
+  } else if (coleccion === 'ciudades') {
+    return gql`
+      query {
+        ciudades(sort: ["nombre"], limit: -1) {
+          nombre
+          id
           obras_func {
             count
           }

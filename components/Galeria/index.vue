@@ -113,7 +113,8 @@ const cargando = ref(false);
 const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
   datosObrasGaleria(
-    props.nombreCampo || props.coleccion,
+    props.coleccion,
+    props.nombreCampo,
     ruta.params.slug || ruta.params.id,
     props.enTablaRelacional,
     paginaActual.value,
@@ -152,7 +153,8 @@ function cargarPagina(pagina) {
     obtenerDatos(
       `obras-${datos.value.id}${pagina}`,
       datosObrasGaleria(
-        props.nombreCampo || props.coleccion,
+        props.coleccion,
+        props.nombreCampo,
         ruta.params.slug || ruta.params.id,
         props.enTablaRelacional,
         pagina,

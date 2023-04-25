@@ -10,7 +10,7 @@ const props = defineProps({
   max: Number,
 });
 const coleccionActual = ref(null);
-const datosCajon = reactive({ id: null, numObras: 0 });
+const datosCajon = reactive({ id: null, obras: 0 });
 const cajonAbierto = ref(false);
 
 onMounted(() => {
@@ -236,8 +236,7 @@ onMounted(() => {
         return;
       }
 
-      const { id, obras } = e.features[0].properties;
-      abrirCajon('ubicaciones', { id, numObras: obras });
+      abrirCajon('ubicaciones', e.features[0].properties);
       e.clicEnElemento = true;
     });
 
@@ -245,8 +244,8 @@ onMounted(() => {
       if (e.clicEnElemento) {
         return;
       }
-      const { id, obras } = e.features[0].properties;
-      abrirCajon('paises', { id, numObras: obras });
+
+      abrirCajon('paises', e.features[0].properties);
       e.clicEnElemento = true;
     });
 

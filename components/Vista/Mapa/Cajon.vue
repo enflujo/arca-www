@@ -1,5 +1,5 @@
 <script setup>
-import { gql } from '~~/utilidades/ayudas';
+import { datosObrasGaleria } from '~/utilidades/queries';
 
 const props = defineProps({
   datos: Object,
@@ -8,48 +8,24 @@ const props = defineProps({
   cerrarCajon: Function,
 });
 const datosColeccion = ref('');
+const query = computed(() => {
+  const nombreCampo = props.coleccion === 'paises' ? 'pais' : 'ubicacion';
+  return datosObrasGaleria(props.coleccion, nombreCampo, props.datos.id, false, 1, true, 10);
+});
 
-function crearQuery() {
-  return gql`
-    query {
-      ${props.coleccion}_by_id(id: ${props.datos.id}) {
-        ${props.coleccion === 'paises' ? 'slug' : 'id'}
-        nombre
-        
-        obras(limit: 10) {
-          registro
-          titulo
-          imagen {
-            id,
-            title
-          }
-          autores {
-            autores_id {
-              id
-              nombre
-              apellido
-            }
-          }
-        }
-      }
-    }
-  `;
-}
-
-const { data, pending, refresh } = obtenerDatosAsinc(`obras-cajon-${props.coleccion}`, crearQuery());
+const { data, pending, refresh } = obtenerDatosAsinc(`obras-cajon-${props.coleccion}`, query.value);
 
 watch(
   () => props.datos.id,
   (nuevoId) => {
     if (nuevoId) {
-      refresh(crearQuery());
+      refresh(query.value);
     }
   }
 );
 
 watch(data, (respuesta) => {
-  const nuevo = respuesta[`${props.coleccion}_by_id`];
-  datosColeccion.value = nuevo;
+  datosColeccion.value = respuesta.obras;
 });
 </script>
 
@@ -59,14 +35,12 @@ watch(data, (respuesta) => {
     <div v-else>
       <div id="cerrar" @click="cerrarCajon">X</div>
       <h3 class="titulo">
-        <NuxtLink :to="`/${coleccion}/${coleccion === 'paises' ? datosColeccion.slug : datosColeccion.id}`">{{
-          datosColeccion.nombre
-        }}</NuxtLink>
+        <NuxtLink :to="`/${coleccion}/${coleccion === 'paises' ? datos.slug : datos.id}`">{{ datos.nombre }}</NuxtLink>
       </h3>
       <p class="contador">
-        <span class="conteo">{{ datos.numObras }}</span> obras en la colección
+        <span class="conteo">{{ datos.obras }}</span> obras en la colección
       </p>
-      <GaleriaMosaico v-if="datosColeccion.obras" :obras="datosColeccion.obras" />
+      <GaleriaMosaico v-if="datosColeccion" :obras="datosColeccion" />
     </div>
   </div>
 </template>
