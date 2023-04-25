@@ -42,9 +42,10 @@ onMounted(() => {
         </NuxtLink>
       </div>
     </div>
-    <div ref="siguientePagina" class="siguientePagina" :class="cargando ? 'activo' : ''">
-      <p class="textoCargando">{{ `Cargando página ${props.pagina + 1}` }}</p>
-    </div>
+  </div>
+
+  <div ref="siguientePagina" class="siguientePagina" :class="cargando ? 'activo' : ''">
+    <p class="textoCargando">{{ `Cargando página ${props.pagina + 1}` }}</p>
   </div>
 </template>
 
@@ -158,7 +159,6 @@ onMounted(() => {
       vertical-align: middle;
       margin: 0 1em;
     }
-    // <img class="iconoCargador" src="/arca-icono-amarillo.svg" alt="Icono Arca" width="28" height="28" />
   }
 
   .iconoCargador {

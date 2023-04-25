@@ -3,5 +3,5 @@ definePageMeta({ layout: 'archivo', keepalive: true });
 </script>
 
 <template>
-  <Galeria coleccion="rostros" singular="Rostro" />
+  <Galeria coleccion="rostros" nombreCampo="rostro" singular="Rostro" />
 </template>

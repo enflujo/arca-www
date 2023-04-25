@@ -67,6 +67,26 @@ export const datosGeneralesColeccion = (coleccion, busqueda, porId) => {
   `;
 };
 
+const camposObrasGaleria = () => {
+  return `
+    registro
+    titulo
+    imagen {
+      id,
+      title
+      width
+      height
+    }
+    autores {
+      autores_id {
+        id
+        nombre
+        apellido
+      }
+    }
+  `;
+};
+
 /**
  * Obras para galería.
  *
@@ -76,31 +96,26 @@ export const datosGeneralesColeccion = (coleccion, busqueda, porId) => {
  * @returns
  */
 export const datosObrasGaleria = (coleccion, busqueda, m2m = false, pagina = 1, porId) => {
-  return gql`
-  query {
-    ${coleccion}(filter: { ${porId ? 'id' : 'slug'}: { _eq: "${busqueda}" } }, limit: 1) {
-      obras(limit: ${cerebroArchivo.obrasPorPagina}, page: ${pagina}) {
-        ${m2m ? 'obras_id {' : ''}
-        registro
-        titulo
-        imagen {
-          id,
-          title
-          width
-          height
+  if (m2m) {
+    return gql`query {
+      obras_${coleccion}(filter: {${coleccion}_id: {${porId ? 'id' : 'slug'}: {_eq: "${busqueda}"}}}, limit: ${
+      cerebroArchivo.obrasPorPagina
+    }, page: ${pagina}) {
+        obras_id {
+          ${camposObrasGaleria()}
         }
-        autores {
-          autores_id {
-            id
-            nombre
-            apellido
-          }
-        }
-        ${m2m ? '}' : ''}
       }
     }
+    `;
   }
-  `;
+
+  return gql`query {
+    obras(filter: {${coleccion}: {${porId ? 'id' : 'slug'}: { _eq: "${busqueda}" }}}, limit: ${
+    cerebroArchivo.obrasPorPagina
+  }, page: ${pagina}) {
+    ${camposObrasGaleria()}
+    }
+  }`;
 };
 
 export const indiceColeccion = (coleccion) => {

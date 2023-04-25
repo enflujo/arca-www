@@ -4,6 +4,7 @@ import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/queries';
 
 const props = defineProps({
+  nombreCampo: String,
   coleccion: String,
   enTablaRelacional: {
     type: Boolean,
@@ -112,7 +113,7 @@ const cargando = ref(false);
 const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
   datosObrasGaleria(
-    props.coleccion,
+    props.nombreCampo || props.coleccion,
     ruta.params.slug || ruta.params.id,
     props.enTablaRelacional,
     paginaActual.value,
@@ -134,7 +135,7 @@ const numeroPaginas = computed(() => {
 
 function limpiarDatos(nuevosDatos) {
   let respuesta;
-  const datosObras = nuevosDatos[props.coleccion][0].obras;
+  const datosObras = props.enTablaRelacional ? nuevosDatos[`obras_${props.coleccion}`] : nuevosDatos.obras;
 
   // Extraer las obras de colección directamente o de la tabla relacional.
   respuesta = !props.enTablaRelacional
@@ -151,7 +152,7 @@ function cargarPagina(pagina) {
     obtenerDatos(
       `obras-${datos.value.id}${pagina}`,
       datosObrasGaleria(
-        props.coleccion,
+        props.nombreCampo || props.coleccion,
         ruta.params.slug || ruta.params.id,
         props.enTablaRelacional,
         pagina,
