@@ -41,7 +41,7 @@ function cambiarVista(llave) {
 </script>
 
 <template>
-  <div id="filtros">
+  <div id="filtrosVistas">
     <VistaIconos
       v-for="vista in vistas"
       :key="vista"
@@ -54,9 +54,9 @@ function cambiarVista(llave) {
 </template>
 
 <style lang="scss" scoped>
-#filtros {
+#filtrosVistas {
   display: flex;
-  margin-bottom: 1em;
+  margin-right: 1em;
 }
 
 .filtro {

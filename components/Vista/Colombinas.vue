@@ -7,6 +7,7 @@ const contenedor = ref(null);
 const datosOrdenados = ref([]);
 const maximoObras = ref(0);
 const seccionGrilla = ref(0);
+const colores = { min: obtenerVariablesCSS('--amarilloArena2'), max: obtenerVariablesCSS('--rojoCerezo') };
 
 let buscarColor;
 let anchoLinea;
@@ -16,23 +17,24 @@ const props = defineProps({
   coleccion: String,
 });
 
-onMounted(() => {
+watch(() => props.datos, procesarDatos);
+onMounted(procesarDatos);
+
+function procesarDatos() {
   /**
    * Ordenar por cantidad de obras.
    */
   const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
   const maximo = ordenados[0].obras_func.count;
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
-  const colorMin = obtenerVariablesCSS('--amarilloArena2');
-  const colorMax = obtenerVariablesCSS('--rojoCerezo');
 
-  buscarColor = escalaColores(1, maximo, colorMin, colorMax);
+  buscarColor = escalaColores(1, maximo, colores.min, colores.max);
   anchoLinea = (cantidad) => convertirEscala(cantidad, 0, maximoGrilla, 0, 100) | 0;
 
   seccionGrilla.value = maximoGrilla / 10;
   maximoObras.value = maximo;
   datosOrdenados.value = ordenados;
-});
+}
 
 function activar(evento, color) {
   const elemento = evento.target;

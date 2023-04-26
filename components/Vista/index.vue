@@ -7,8 +7,11 @@ const cerebroArchivo = usarArchivo();
 const datos = ref([]);
 const vistas = ref(['abc', 'colombinas']);
 const vistaInicial = ref('abc');
-const datosUbicaciones = ref(null);
+const datosMapa = ref(null);
+const datosLugares = reactive({ ubicaciones: [], ciudades: [], paises: [] });
 const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
+const coleccionActual = ref(props.coleccion);
+const cargando = ref(false);
 
 watch(data, (respuesta) => {
   datos.value = procesarDatos(respuesta);
@@ -25,6 +28,9 @@ function procesarUbicaciones({ paises, ubicaciones }) {
   /**
    * Creamos Geojson agregando todas las ubicaciones y países que se van a pintar en el mapa (es más rápido que agregar muchos "source" y "layer" para cada lugar por separado)
    */
+  datosLugares.ubicaciones = agregarEnlacesYTexto(ubicaciones);
+  datosLugares.paises = agregarEnlacesYTexto(paises);
+
   const ubicacionesGeojson = {
     type: 'FeatureCollection',
     features: ubicaciones.map((ubicacion) => {
@@ -50,7 +56,7 @@ function procesarUbicaciones({ paises, ubicaciones }) {
    */
   const max = paises[0].obras_func.count;
 
-  datosUbicaciones.value = { paises: paisesGeojson, ubicaciones: ubicacionesGeojson, max };
+  datosMapa.value = { paises: paisesGeojson, ubicaciones: ubicacionesGeojson, max };
 
   return paises;
 }
@@ -75,14 +81,8 @@ function procesarAutores({ autores }) {
   });
 }
 
-function procesarDatos(nuevosDatos) {
-  if (props.ruta === 'ubicaciones') {
-    return procesarUbicaciones(nuevosDatos);
-  } else if (props.coleccion === 'autores') {
-    return procesarAutores(nuevosDatos);
-  }
-
-  return nuevosDatos[props.coleccion].map((instancia) => {
+function agregarEnlacesYTexto(datos) {
+  return datos.map((instancia) => {
     if (props.coleccion === 'paises') {
       instancia.url = `/${props.coleccion}/${instancia.slug}`;
     } else {
@@ -94,20 +94,64 @@ function procesarDatos(nuevosDatos) {
     return instancia;
   });
 }
+
+function procesarDatos(nuevosDatos) {
+  if (props.ruta === 'ubicaciones') {
+    return procesarUbicaciones(nuevosDatos);
+  } else if (props.coleccion === 'autores') {
+    return procesarAutores(nuevosDatos);
+  }
+
+  return agregarEnlacesYTexto(nuevosDatos[props.coleccion]);
+}
+
+async function cambiarDatosUbicacion(coleccion) {
+  if (coleccionActual.value === coleccion) return;
+
+  coleccionActual.value = coleccion;
+
+  if (datosLugares[coleccion].length) {
+    datos.value = datosLugares[coleccion];
+  } else {
+    cargando.value = true;
+
+    const respuesta = await obtenerDatos(`indice-${coleccion}`, indiceColeccion(coleccion));
+    const datos = agregarEnlacesYTexto(respuesta[coleccion]);
+    datosLugares[coleccion] = datos;
+    datos.value = datos;
+
+    cargando.value = false;
+  }
+}
 </script>
 
 <template>
-  <Cargador v-if="pending" />
+  <div id="filtros">
+    <VistaFiltrosVistas :vistas="vistas" :vistaInicial="vistaInicial" />
+    <VistaFiltrosUbicaciones
+      v-if="ruta === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
+      :cambiarDatos="cambiarDatosUbicacion"
+      :coleccion="coleccionActual"
+    />
+  </div>
+
+  <Cargador v-if="pending || cargando" />
 
   <div v-else>
-    <VistaFiltros :vistas="vistas" :vistaInicial="vistaInicial" />
-    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="coleccion" />
-    <VistaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" :coleccion="coleccion" />
+    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="coleccionActual" />
+    <VistaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" :coleccion="coleccionActual" />
     <VistaMapa
-      v-if="cerebroArchivo.vistaActual === 'mapa' && datosUbicaciones"
-      :paises="datosUbicaciones.paises"
-      :ubicaciones="datosUbicaciones.ubicaciones"
-      :max="datosUbicaciones.max"
+      v-if="cerebroArchivo.vistaActual === 'mapa' && datosMapa"
+      :paises="datosMapa.paises"
+      :ubicaciones="datosMapa.ubicaciones"
+      :max="datosMapa.max"
     />
   </div>
 </template>
+
+<style lang="scss">
+#filtros {
+  display: flex;
+  margin-bottom: 1em;
+}
+</style>

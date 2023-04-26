@@ -8,17 +8,18 @@ const props = defineProps({
   datos: Array,
 });
 
-onMounted(() => {
-  if (props.coleccion === 'autores') {
-    procesarDatos('apellido');
-  } else if (props.coleccion === 'ciudades') {
-    procesarDatos('nombre');
-  } else {
-    procesarDatos('slug');
-  }
-});
+watch(() => props.datos, procesarDatos);
+onMounted(procesarDatos);
 
-function procesarDatos(llave) {
+function procesarDatos() {
+  let llave = 'slug';
+
+  if (props.coleccion === 'autores') {
+    llave = 'apellido';
+  } else if (props.coleccion === 'ciudades' || props.coleccion === 'ubicaciones') {
+    llave = 'nombre';
+  }
+
   const respuesta = [];
 
   props.datos.forEach((instancia) => {
