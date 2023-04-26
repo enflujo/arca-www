@@ -21,6 +21,7 @@ onMounted(() => {
   if (props.ruta === 'ubicaciones') {
     vistas.value = ['mapa', 'abc', 'colombinas'];
     vistaInicial.value = 'mapa';
+    cerebroArchivo.vistaActual = 'mapa';
   }
 });
 
