@@ -55,6 +55,7 @@ const general = usarGeneral();
   margin-left: 0.3em;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  color: var(--mediana);
 
   &:link {
     color: var(--mediana);
@@ -62,9 +63,7 @@ const general = usarGeneral();
 
   &:hover {
     opacity: 0.85;
-    &:link {
-      color: var(--mediana); // mantener el color para que no cambie al predeterminado en todos los enlaces.
-    }
+    color: var(--mediana); // mantener el color para que no cambie al predeterminado en todos los enlaces.
   }
 }
 
