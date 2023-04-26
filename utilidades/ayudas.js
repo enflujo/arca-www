@@ -1,6 +1,8 @@
 import { apiBase } from '../config/general';
 
 /**
+ *
+ * holaaa
  * Ayuda a construir la URL para pedir un archivo al API de Directus.
  * https://docs.directus.io/reference/api/assets/#requesting-a-thumbnail
  *
