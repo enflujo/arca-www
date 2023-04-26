@@ -29,8 +29,8 @@ function procesarUbicaciones({ paises, ubicaciones }) {
   /**
    * Creamos Geojson agregando todas las ubicaciones y países que se van a pintar en el mapa (es más rápido que agregar muchos "source" y "layer" para cada lugar por separado)
    */
-  datosLugares.ubicaciones = agregarEnlacesYTexto(ubicaciones);
-  datosLugares.paises = agregarEnlacesYTexto(paises);
+  datosLugares.ubicaciones = agregarEnlacesYTexto(ubicaciones, 'ubicaciones');
+  datosLugares.paises = agregarEnlacesYTexto(paises, 'paises');
 
   const ubicacionesGeojson = {
     type: 'FeatureCollection',
@@ -82,10 +82,14 @@ function procesarAutores({ autores }) {
   });
 }
 
-function agregarEnlacesYTexto(datos) {
+function agregarEnlacesYTexto(datos, coleccion = coleccionActual.value) {
   return datos.map((instancia) => {
-    if (props.coleccion === 'paises') {
-      instancia.url = `/${props.coleccion}/${instancia.slug}`;
+    if (coleccion === 'paises') {
+      instancia.url = `/paises/${instancia.slug}`;
+    } else if (coleccion === 'ciudades') {
+      instancia.url = `/ciudades/${instancia.id}`;
+    } else if (coleccion === 'ubicaciones') {
+      instancia.url = `/ubicaciones/${instancia.id}`;
     } else {
       instancia.url = `/${props.ruta || props.coleccion}/${instancia.slug}`;
     }
@@ -117,9 +121,9 @@ async function cambiarDatosUbicacion(coleccion) {
     cargando.value = true;
 
     const respuesta = await obtenerDatos(`indice-${coleccion}`, indiceColeccion(coleccion));
-    const datos = agregarEnlacesYTexto(respuesta[coleccion]);
-    datosLugares[coleccion] = datos;
-    datos.value = datos;
+    const datosLimpios = agregarEnlacesYTexto(respuesta[coleccion]);
+    datosLugares[coleccion] = datosLimpios;
+    datos.value = datosLimpios;
 
     cargando.value = false;
   }
