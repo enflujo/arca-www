@@ -24,8 +24,23 @@ function procesarDatos() {
   /**
    * Ordenar por cantidad de obras.
    */
-  const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
-  const maximo = ordenados[0].obras_func.count;
+  let ordenados = [];
+  let maximo = 0;
+  if (props.coleccion === 'gestos') {
+    ordenados = props.datos.sort((a, b) => {
+      const _b = Math.max(b.obras_gesto_1_func.count, b.obras_gesto_2_func.count, b.obras_gesto_3_func.count);
+      const _a = Math.max(a.obras_gesto_1_func.count, a.obras_gesto_2_func.count, a.obras_gesto_3_func.count);
+      console.log(_b, _a);
+      return _b - _a;
+    });
+    const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0];
+    maximo = Math.max(+obras_gesto_1_func.count, +obras_gesto_2_func.count, +obras_gesto_3_func.count);
+    console.log(maximo, ordenados);
+  } else {
+    ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
+    maximo = ordenados[0].obras_func.count;
+  }
+
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
 
   buscarColor = escalaColores(1, maximo, colores.min, colores.max);
@@ -68,11 +83,30 @@ function desactivar(evento) {
           class="elementoColombina fila"
           :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`"
         >
-          <GraficaColombina
-            :ancho="anchoLinea(elemento.obras_func.count)"
-            :color="buscarColor(elemento.obras_func.count)"
-            :total="elemento.obras_func.count"
-          />
+          <template v-if="coleccion === 'gestos'">
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_gesto_1_func.count)"
+              :color="buscarColor(elemento.obras_gesto_1_func.count)"
+              :total="elemento.obras_gesto_1_func.count"
+            />
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_gesto_2_func.count)"
+              :color="buscarColor(elemento.obras_gesto_2_func.count)"
+              :total="elemento.obras_gesto_2_func.count"
+            />
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_gesto_3_func.count)"
+              :color="buscarColor(elemento.obras_gesto_3_func.count)"
+              :total="elemento.obras_gesto_3_func.count"
+            />
+          </template>
+          <template v-else>
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_func.count)"
+              :color="buscarColor(elemento.obras_func.count)"
+              :total="elemento.obras_func.count"
+            />
+          </template>
         </NuxtLink>
       </li>
     </ul>

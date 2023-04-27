@@ -94,7 +94,14 @@ function agregarEnlacesYTexto(datos, coleccion = coleccionActual.value) {
       instancia.url = `/${props.ruta || props.coleccion}/${instancia.slug}`;
     }
 
-    instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;
+    if (coleccion === 'gestos') {
+      const conteo1 = instancia.obras_gesto_1_func.count;
+      const conteo2 = instancia.obras_gesto_2_func.count;
+      const conteo3 = instancia.obras_gesto_3_func.count;
+      instancia.texto = `${instancia.nombre} (${conteo1}, ${conteo2}, ${conteo3})`;
+    } else {
+      instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;
+    }
 
     return instancia;
   });

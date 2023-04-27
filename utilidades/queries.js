@@ -175,6 +175,24 @@ export const indiceColeccion = (coleccion) => {
         }
       }
     `;
+  } else if (coleccion === 'gestos') {
+    return gql`
+      query {
+        gestos(sort: ["nombre"], limit: -1) {
+          nombre
+          slug
+          obras_gesto_1_func {
+            count
+          }
+          obras_gesto_2_func {
+            count
+          }
+          obras_gesto_3_func {
+            count
+          }
+        }
+      }
+    `;
   }
 
   return gql`
