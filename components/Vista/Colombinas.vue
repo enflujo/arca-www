@@ -51,17 +51,13 @@ function procesarDatos() {
   datosOrdenados.value = ordenados;
 }
 
-function activar(evento, color) {
+function activar(evento) {
   const elemento = evento.target;
-  const conteo = elemento.querySelector('.conteoObras');
-  conteo.style.backgroundColor = color;
   elemento.classList.add('activo');
 }
 
 function desactivar(evento) {
   const elemento = evento.target;
-  const conteo = elemento.querySelector('.conteoObras');
-  conteo.style.backgroundColor = 'rgba(252, 252, 252, 0.65)';
   elemento.classList.remove('activo');
 }
 </script>
@@ -69,12 +65,7 @@ function desactivar(evento) {
 <template>
   <div id="contenedorGrafica" ref="contenedor">
     <ul>
-      <li
-        v-for="elemento in datosOrdenados"
-        :key="elemento.slug"
-        @mouseenter="activar($event, buscarColor(elemento.obras_func.count))"
-        @mouseleave="desactivar"
-      >
+      <li v-for="elemento in datosOrdenados" :key="elemento.slug" @mouseenter="activar" @mouseleave="desactivar">
         <NuxtLink class="nombre fila" :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`">
           {{ elemento.nombreCompleto ? elemento.nombreCompleto : elemento.nombre }}
         </NuxtLink>
