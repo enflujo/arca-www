@@ -63,7 +63,8 @@ const Obra = gql`
       ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
       autores(sort: ["autores_id.apellido"]) { autores_id { id nombre apellido } }
-      gestos(sort: ["gestos_id.slug"]) { gestos_id { codigo slug nombre } }
+      gesto1 {nombre slug}
+      # gestos(sort: ["gestos_id.slug"]) { gestos_id { codigo slug nombre } }
       tecnicas(sort: ["tecnicas_id.slug"]) { tecnicas_id { slug nombre } }
       objetos(sort: ["objetos_id.slug"]) { objetos_id { slug nombre } }
       personajes(sort: ["personajes_id.slug"]) { personajes_id { slug nombre muerte} }
@@ -275,7 +276,8 @@ function cambiarVistaLupa() {
         ruta="complejo-gestual"
       />
       <RegistroSingular class="medio" titulo="Rostro" :datos="obra.rostro" ruta="rostros" />
-      <RegistroLista titulo="Gestos" :datos="obra.gestos" class="medio" relacion="gestos_id" ruta="gestos" />
+      <RegistroSingular class="medio" titulo="Gesto Principal" :datos="obra.gesto1" ruta="gestos" />
+      <!-- <RegistroLista titulo="Gestos" :datos="obra.gestos" class="medio" relacion="gestos_id" ruta="gestos" /> -->
       <RegistroLista titulo="Objetos" :datos="obra.objetos" class="medio" relacion="objetos_id" ruta="objetos" />
       <RegistroLista
         titulo="Personajes"

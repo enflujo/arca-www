@@ -169,7 +169,7 @@ function clicSubCategorias(nivel, datosCategoria) {
 
 <template>
   <h1>Categorías</h1>
-  <VistaFiltros :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
+  <VistaFiltrosVistas :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
 
   <Cargador v-if="pending" />
 

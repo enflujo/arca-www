@@ -18,7 +18,7 @@ export default function (llave: string, query: string) {
   } = useLazyAsyncData(
     llave,
     () => {
-      // console.log(Query);
+      console.log(Query);
       return $fetch(`${apiBase}/graphql`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

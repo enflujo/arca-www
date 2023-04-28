@@ -127,7 +127,7 @@ export const datosObrasGaleria = (
 };
 
 export const indiceColeccion = (coleccion) => {
-  if (coleccion === 'paises') {
+  if (coleccion === 'ubicaciones') {
     return gql`
       query {
         paises(filter: { obras_func: { count: { _neq: 0 } } }, limit: -1) {

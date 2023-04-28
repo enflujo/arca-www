@@ -2,7 +2,7 @@
 import { usarArchivo } from '~~/cerebros/archivo';
 import { indiceColeccion } from '~~/utilidades/queries';
 
-const props = defineProps({ coleccion: String, ruta: String });
+const props = defineProps({ coleccion: String, slug: String });
 const cerebroArchivo = usarArchivo();
 const datos = ref([]);
 const vistas = ref(['abc', 'colombinas']);
@@ -18,10 +18,11 @@ watch(data, (respuesta) => {
 });
 
 onMounted(() => {
-  if (props.ruta === 'ubicaciones') {
+  if (props.coleccion === 'ubicaciones') {
     vistas.value = ['mapa', 'abc', 'colombinas'];
     vistaInicial.value = 'mapa';
     cerebroArchivo.vistaActual = 'mapa';
+    coleccionActual.value = 'paises';
   }
 });
 
@@ -91,7 +92,7 @@ function agregarEnlacesYTexto(datos, coleccion = coleccionActual.value) {
     } else if (coleccion === 'ubicaciones') {
       instancia.url = `/ubicaciones/${instancia.id}`;
     } else {
-      instancia.url = `/${props.ruta || props.coleccion}/${instancia.slug}`;
+      instancia.url = `/${props.slug}/${instancia.slug}`;
     }
 
     if (coleccion === 'gestos') {
@@ -108,7 +109,7 @@ function agregarEnlacesYTexto(datos, coleccion = coleccionActual.value) {
 }
 
 function procesarDatos(nuevosDatos) {
-  if (props.ruta === 'ubicaciones') {
+  if (props.coleccion === 'ubicaciones') {
     return procesarUbicaciones(nuevosDatos);
   } else if (props.coleccion === 'autores') {
     return procesarAutores(nuevosDatos);
@@ -141,7 +142,7 @@ async function cambiarDatosUbicacion(coleccion) {
   <div id="filtros">
     <VistaFiltrosVistas :vistas="vistas" :vistaInicial="vistaInicial" />
     <VistaFiltrosUbicaciones
-      v-if="ruta === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
+      v-if="coleccion === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
       :cambiarDatos="cambiarDatosUbicacion"
       :coleccion="coleccionActual"
     />

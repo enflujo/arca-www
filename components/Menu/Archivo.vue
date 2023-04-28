@@ -1,8 +1,40 @@
 <script setup>
+import { usarGeneral } from '~/cerebros/general';
+
 const props = defineProps({ visible: Boolean, cerrar: Function });
 const ruta = useRoute();
 const contenedorMenu = ref(null);
-
+const cerebroGeneral = usarGeneral();
+/**
+ * obras
+ * autores
+ * personajes
+ * fuentes
+ * ubicaciones
+ * ciudades
+ * paises
+ * categorias1
+ * categorias2
+ * categorias3
+ * categorias4
+ * categorias5
+ * categorias6
+ * objetos
+ * escenarios
+ * tecnicas
+ * donantes
+ * relatos_visuales
+ * complejos_gestuales
+ * tipos_gestuales
+ * gestos
+ * fisiognomica
+ * fisiognomica_imagen
+ * cartelas_filacterias
+ * rostros
+ * simbolos
+ * descriptores
+ * caracteristicas
+ */
 const opciones = [
   { nombre: 'Autores', slug: 'autores' },
   { nombre: 'Categorías', slug: 'categorias' },
@@ -58,13 +90,13 @@ function clicFuera(evento) {
     <nav id="opciones">
       <NuxtLink
         :to="`/${opcion.slug}`"
-        v-for="opcion in opciones"
+        v-for="opcion in cerebroGeneral.paginasArchivo"
         :key="opcion.slug"
         class="opcion"
         :class="esRutaActual(opcion.slug) ? 'activo' : ''"
         @click.native="cerrar"
       >
-        {{ opcion.nombre }}
+        {{ opcion.titulo }}
       </NuxtLink>
     </nav>
   </aside>

@@ -12,7 +12,7 @@ const general = usarGeneral();
     </NuxtLink>
 
     <nav id="menuPrincipal">
-      <NuxtLink v-for="pagina in general.menus.principal" :key="`pagina${pagina.slug}`" :to="`/${pagina.slug}`">
+      <NuxtLink v-for="pagina in general.paginas" :key="`pagina${pagina.slug}`" :to="`/${pagina.slug}`">
         {{ pagina.titulo }}
       </NuxtLink>
     </nav>
