@@ -30,12 +30,10 @@ function procesarDatos() {
     ordenados = props.datos.sort((a, b) => {
       const _b = Math.max(b.obras_gesto_1_func.count, b.obras_gesto_2_func.count, b.obras_gesto_3_func.count);
       const _a = Math.max(a.obras_gesto_1_func.count, a.obras_gesto_2_func.count, a.obras_gesto_3_func.count);
-      console.log(_b, _a);
       return _b - _a;
     });
     const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0];
     maximo = Math.max(+obras_gesto_1_func.count, +obras_gesto_2_func.count, +obras_gesto_3_func.count);
-    console.log(maximo, ordenados);
   } else {
     ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
     maximo = ordenados[0].obras_func.count;

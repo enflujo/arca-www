@@ -4,15 +4,15 @@ import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/queries';
 
 const props = defineProps({
-  nombreCampo: String,
   coleccion: String,
+  nombreCampo: String,
   enTablaRelacional: {
     type: Boolean,
     default: false,
   },
   singular: String,
 });
-console.log(props);
+
 const titulo = ref('');
 
 const crearNombre = (datosAutor) => {
