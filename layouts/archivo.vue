@@ -8,6 +8,10 @@ if (!cerebro.datosCargados) {
   await useAsyncData('general', cerebro.cargarGeneral);
 }
 
+if (!cerebro.relaciones.length) {
+  await useAsyncData('general', cerebro.cargarRelaciones);
+}
+
 function abrirOCerrar(evento) {
   evento.stopPropagation();
   menuVisible.value = !menuVisible.value;

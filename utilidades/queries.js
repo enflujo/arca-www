@@ -87,6 +87,19 @@ const camposObrasGaleria = () => {
   `;
 };
 
+const paises = () => {
+  return `
+  paises(filter: { obras_func: { count: { _neq: 0 } } }, limit: -1) {
+    id
+    nombre
+    slug
+    geo
+    obras_func {
+      count
+    }
+  }`;
+};
+
 /**
  * Obras para galería.
  *
@@ -106,7 +119,7 @@ export const datosObrasGaleria = (
 ) => {
   if (m2m) {
     return gql`query {
-      obras_${coleccion}(filter: {${nombreCampo}_id: {${
+      obras_${coleccion}(filter: {${nombreCampo || coleccion}_id: {${
       porId ? 'id' : 'slug'
     }: {_eq: "${busqueda}"}}}, limit: ${numObras}, page: ${pagina}) {
         obras_id {
@@ -130,15 +143,7 @@ export const indiceColeccion = (coleccion) => {
   if (coleccion === 'ubicaciones') {
     return gql`
       query {
-        paises(filter: { obras_func: { count: { _neq: 0 } } }, limit: -1) {
-          id
-          nombre
-          slug
-          geo
-          obras_func {
-            count
-          }
-        }
+        ${paises()}
 
         ubicaciones(limit: -1) {
           id
@@ -149,6 +154,12 @@ export const indiceColeccion = (coleccion) => {
           }
         }
       }
+    `;
+  } else if (coleccion === 'paises') {
+    return gql`
+    query {
+      ${paises()}
+    }
     `;
   } else if (coleccion === 'autores') {
     return gql`

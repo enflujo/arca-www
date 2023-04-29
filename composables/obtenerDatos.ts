@@ -7,12 +7,12 @@ import { apiBase } from '~~/config/general';
  * @param query Query en formato Graphql.
  * @returns Devuelve los datos in nivel dentro: `data.data`
  */
-export default async function (llave: string, query: string) {
+export default async function (llave: string, query: string, sistema = false) {
   const { data, error } = await useAsyncData(
     llave,
     () => {
-      console.log('EN SERVIDOR', query);
-      return $fetch(`${apiBase}/graphql`, {
+      // console.log('EN SERVIDOR', query);
+      return $fetch(`${apiBase}/graphql${sistema ? '/system' : ''}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),

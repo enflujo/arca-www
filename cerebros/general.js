@@ -13,6 +13,7 @@ export const usarGeneral = defineStore('general', {
     guardaescobas: '',
     buscadorVisible: false,
     busquedaActual: '',
+    relaciones: [],
   }),
 
   actions: {
@@ -49,6 +50,23 @@ export const usarGeneral = defineStore('general', {
       this.descripcion = general.descripcion || '';
       this.guardaescobas = general.texto_footer || '';
       this.datosCargados = true;
+    },
+
+    async cargarRelaciones() {
+      const Relaciones = gql`
+        query {
+          relations_in_collection(collection: "obras") {
+            field
+            related_collection
+          }
+        }
+      `;
+
+      const { relations_in_collection } = await obtenerDatos('relaciones', Relaciones, true);
+
+      this.relaciones = relations_in_collection.map((relacion) => {
+        return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
+      });
     },
   },
 });

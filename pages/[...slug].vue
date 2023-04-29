@@ -8,6 +8,9 @@ const tipoPagina = ref('');
 const [indice, slug] = ruta.params.slug;
 const esPaginaGeneral = cerebroGeneral.paginas.find((pagina) => pagina.slug === indice);
 const datos = ref();
+const enTablaRelacional = ref(false);
+const nombreCampo = ref(null);
+
 if (esPaginaGeneral) {
   tipoPagina.value = 'general';
   definePageMeta({ layout: 'paginas' });
@@ -35,7 +38,7 @@ if (esPaginaGeneral) {
       const { descripcion, banner } = paginas_archivo[0];
 
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
-      console.log(datos.value);
+
       definePageMeta({ layout: 'archivo' });
       useHead(elementosCabeza({ titulo: esPaginaArchivo.titulo, descripcion, banner }, ruta.path));
     } else {
@@ -53,7 +56,16 @@ if (esPaginaGeneral) {
         }
       `;
       const { paginas_archivo } = await obtenerDatos(`galeria${indice}${slug}`, Indice);
+      const relacion = cerebroGeneral.relaciones.find((relacion) => {
+        if (relacion.campo === 'ciudad_origen') return false;
+        return relacion.coleccionRelacionada === paginas_archivo[0].coleccion;
+      });
 
+      if (relacion) {
+        nombreCampo.value = relacion.campo;
+      } else {
+        enTablaRelacional.value = true;
+      }
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
       definePageMeta({ layout: 'archivo', keepalive: true });
       tipoPagina.value = 'archivoSingular';
@@ -74,7 +86,12 @@ if (esPaginaGeneral) {
   </template>
 
   <template v-else-if="tipoPagina === 'archivoSingular'">
-    <Galeria :coleccion="datos.coleccion" :singular="datos.titulo_singular" :enTablaRelacional="true" />
+    <Galeria
+      :coleccion="datos.coleccion"
+      :nombreCampo="nombreCampo"
+      :singular="datos.titulo_singular"
+      :enTablaRelacional="enTablaRelacional"
+    />
   </template>
 </template>
 
