@@ -95,6 +95,7 @@ const calcularDimsImgEsperando = esperar(calcularDimsImg, 200);
 onMounted(() => {
   const imagen = new Image();
   imagen.onload = () => {
+    if (!img.value) return;
     img.value.src = imagen.src;
   };
   imagen.src = urlImagen(props.datos.id, 'obra');
