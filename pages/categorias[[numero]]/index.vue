@@ -169,7 +169,7 @@ function clicSubCategorias(nivel, datosCategoria) {
 
 <template>
   <h1>Categorías</h1>
-  <VistaFiltros :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
+  <VistaFiltrosVistas :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
 
   <Cargador v-if="pending" />
 
@@ -193,7 +193,7 @@ function clicSubCategorias(nivel, datosCategoria) {
           </NuxtLink>
         </div>
         <div class="informacionTarjeta">
-          <h2>
+          <h2 class="titulo">
             <NuxtLink :to="`/categorias1/${categoria1.slug}`">{{ categoria1.nombre }}</NuxtLink>
           </h2>
           <GraficaColombina
@@ -240,6 +240,10 @@ function clicSubCategorias(nivel, datosCategoria) {
 
   border-top: 3px solid $profundidad;
   padding: 1em 0 0.8em 0;
+
+  .titulo {
+    margin-bottom: 0.2em;
+  }
 
   .colombina {
     margin-top: -0.2em;

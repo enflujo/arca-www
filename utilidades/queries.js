@@ -1,7 +1,6 @@
 import { gql } from './ayudas';
 import { usarArchivo } from '~~/cerebros/archivo';
 
-const cerebroArchivo = usarArchivo();
 const coleccionesSinDescripcion = ['paises', 'ciudades', 'ubicaciones'];
 /**
  * Datos básicos de una colección.
@@ -87,6 +86,19 @@ const camposObrasGaleria = () => {
   `;
 };
 
+const paises = () => {
+  return `
+  paises(filter: { obras_func: { count: { _neq: 0 } } }, limit: -1) {
+    id
+    nombre
+    slug
+    geo
+    obras_func {
+      count
+    }
+  }`;
+};
+
 /**
  * Obras para galería.
  *
@@ -102,13 +114,15 @@ export const datosObrasGaleria = (
   m2m = false,
   pagina = 1,
   porId = false,
-  numObras = cerebroArchivo.obrasPorPagina
+  numObras
 ) => {
+  const cerebroArchivo = usarArchivo();
+  const numeroObras = numObras || cerebroArchivo.obrasPorPagina;
   if (m2m) {
     return gql`query {
-      obras_${coleccion}(filter: {${nombreCampo}_id: {${
+      obras_${coleccion}(filter: {${nombreCampo || coleccion}_id: {${
       porId ? 'id' : 'slug'
-    }: {_eq: "${busqueda}"}}}, limit: ${numObras}, page: ${pagina}) {
+    }: {_eq: "${busqueda}"}}}, limit: ${numeroObras}, page: ${pagina}) {
         obras_id {
           ${camposObrasGaleria()}
         }
@@ -120,25 +134,17 @@ export const datosObrasGaleria = (
   return gql`query {
     obras(filter: {${nombreCampo}: {${
     porId ? 'id' : 'slug'
-  }: { _eq: "${busqueda}" }}}, limit: ${numObras}, page: ${pagina}) {
+  }: { _eq: "${busqueda}" }}}, limit: ${numeroObras}, page: ${pagina}) {
     ${camposObrasGaleria()}
     }
   }`;
 };
 
 export const indiceColeccion = (coleccion) => {
-  if (coleccion === 'paises') {
+  if (coleccion === 'ubicaciones') {
     return gql`
       query {
-        paises(filter: { obras_func: { count: { _neq: 0 } } }, limit: -1) {
-          id
-          nombre
-          slug
-          geo
-          obras_func {
-            count
-          }
-        }
+        ${paises()}
 
         ubicaciones(limit: -1) {
           id
@@ -149,6 +155,12 @@ export const indiceColeccion = (coleccion) => {
           }
         }
       }
+    `;
+  } else if (coleccion === 'paises') {
+    return gql`
+    query {
+      ${paises()}
+    }
     `;
   } else if (coleccion === 'autores') {
     return gql`
@@ -170,6 +182,24 @@ export const indiceColeccion = (coleccion) => {
           nombre
           id
           obras_func {
+            count
+          }
+        }
+      }
+    `;
+  } else if (coleccion === 'gestos') {
+    return gql`
+      query {
+        gestos(sort: ["nombre"], limit: -1) {
+          nombre
+          slug
+          obras_gesto_1_func {
+            count
+          }
+          obras_gesto_2_func {
+            count
+          }
+          obras_gesto_3_func {
             count
           }
         }

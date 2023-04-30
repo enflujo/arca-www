@@ -4,7 +4,8 @@ import { gql } from '~~/utilidades/ayudas';
 export const usarGeneral = defineStore('general', {
   state: () => ({
     datosCargados: false,
-    menus: {},
+    paginas: [],
+    paginasArchivo: [],
     filtro: '',
     titulo: '',
     banner: null,
@@ -12,6 +13,7 @@ export const usarGeneral = defineStore('general', {
     guardaescobas: '',
     buscadorVisible: false,
     busquedaActual: '',
+    relaciones: [],
   }),
 
   actions: {
@@ -28,29 +30,44 @@ export const usarGeneral = defineStore('general', {
             texto_footer
           }
 
-          menus {
-            nombre
-            paginas {
-              paginas_id {
-                slug
-                titulo
-              }
-            }
+          paginas(filter: { estado: { _eq: "publicado" } }, sort: ["sort"]) {
+            titulo
+            slug
+          }
+
+          paginas_archivo(filter: { estado: { _eq: "publicado" } }, sort: ["sort"]) {
+            titulo
+            slug
+            mostrar_en_menu
           }
         }
       `;
-      const { general, menus } = await obtenerDatos('general', General);
+      const { general, paginas, paginas_archivo } = await obtenerDatos('general', General);
 
+      this.paginas = paginas;
+      this.paginasArchivo = paginas_archivo;
       this.titulo = general.nombre || 'Arca';
       this.banner = general.banner;
       this.descripcion = general.descripcion || '';
       this.guardaescobas = general.texto_footer || '';
-
-      menus.forEach((menu) => {
-        this.menus[menu.nombre] = menu.paginas.map((pagina) => pagina.paginas_id);
-      });
-
       this.datosCargados = true;
+    },
+
+    async cargarRelaciones() {
+      const Relaciones = gql`
+        query {
+          relations_in_collection(collection: "obras") {
+            field
+            related_collection
+          }
+        }
+      `;
+
+      const { relations_in_collection } = await obtenerDatos('relaciones', Relaciones, true);
+
+      this.relaciones = relations_in_collection.map((relacion) => {
+        return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
+      });
     },
   },
 });

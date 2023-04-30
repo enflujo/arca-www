@@ -5,7 +5,6 @@ defineProps({
   radio: { type: Number, default: 8 },
   color: String,
   total: Number,
-  fondoConteo: { type: String, default: 'rgba(252, 252, 252, 0.65)' },
 });
 </script>
 
@@ -13,7 +12,7 @@ defineProps({
   <span class="colombina">
     <span class="lineaColombina" :style="`width:${ancho}%; height:${alto}px; background-color:${color}`"></span>
     <span class="circuloColombina" :style="`background-color:${color}; width:${radio}px; height:${radio}px`"></span>
-    <span class="conteoObras" :style="`background-color: ${fondoConteo}`">{{ total }}</span>
+    <span class="conteoObras">{{ total }}</span>
   </span>
 </template>
 
@@ -33,15 +32,7 @@ defineProps({
   .conteoObras {
     color: #788989;
     font-size: 0.75em;
-    padding: 0.4em;
-    margin-left: 0.7em;
-    border-radius: 6px;
-  }
-}
-
-.activo {
-  .conteoObras {
-    color: white;
+    padding: 0.3em;
   }
 }
 </style>

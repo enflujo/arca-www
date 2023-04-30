@@ -24,8 +24,21 @@ function procesarDatos() {
   /**
    * Ordenar por cantidad de obras.
    */
-  const ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
-  const maximo = ordenados[0].obras_func.count;
+  let ordenados = [];
+  let maximo = 0;
+  if (props.coleccion === 'gestos') {
+    ordenados = props.datos.sort((a, b) => {
+      const _b = Math.max(b.obras_gesto_1_func.count, b.obras_gesto_2_func.count, b.obras_gesto_3_func.count);
+      const _a = Math.max(a.obras_gesto_1_func.count, a.obras_gesto_2_func.count, a.obras_gesto_3_func.count);
+      return _b - _a;
+    });
+    const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0];
+    maximo = Math.max(+obras_gesto_1_func.count, +obras_gesto_2_func.count, +obras_gesto_3_func.count);
+  } else {
+    ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
+    maximo = ordenados[0].obras_func.count;
+  }
+
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
 
   buscarColor = escalaColores(1, maximo, colores.min, colores.max);
@@ -36,17 +49,13 @@ function procesarDatos() {
   datosOrdenados.value = ordenados;
 }
 
-function activar(evento, color) {
+function activar(evento) {
   const elemento = evento.target;
-  const conteo = elemento.querySelector('.conteoObras');
-  conteo.style.backgroundColor = color;
   elemento.classList.add('activo');
 }
 
 function desactivar(evento) {
   const elemento = evento.target;
-  const conteo = elemento.querySelector('.conteoObras');
-  conteo.style.backgroundColor = 'rgba(252, 252, 252, 0.65)';
   elemento.classList.remove('activo');
 }
 </script>
@@ -56,8 +65,8 @@ function desactivar(evento) {
     <ul>
       <li
         v-for="elemento in datosOrdenados"
-        :key="elemento.slug"
-        @mouseenter="activar($event, buscarColor(elemento.obras_func.count))"
+        :key="elemento.slug || elemento.id"
+        @mouseenter="activar"
         @mouseleave="desactivar"
       >
         <NuxtLink class="nombre fila" :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`">
@@ -68,11 +77,30 @@ function desactivar(evento) {
           class="elementoColombina fila"
           :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`"
         >
-          <GraficaColombina
-            :ancho="anchoLinea(elemento.obras_func.count)"
-            :color="buscarColor(elemento.obras_func.count)"
-            :total="elemento.obras_func.count"
-          />
+          <template v-if="coleccion === 'gestos'">
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_gesto_1_func.count)"
+              :color="buscarColor(elemento.obras_gesto_1_func.count)"
+              :total="elemento.obras_gesto_1_func.count"
+            />
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_gesto_2_func.count)"
+              :color="buscarColor(elemento.obras_gesto_2_func.count)"
+              :total="elemento.obras_gesto_2_func.count"
+            />
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_gesto_3_func.count)"
+              :color="buscarColor(elemento.obras_gesto_3_func.count)"
+              :total="elemento.obras_gesto_3_func.count"
+            />
+          </template>
+          <template v-else>
+            <GraficaColombina
+              :ancho="anchoLinea(elemento.obras_func.count)"
+              :color="buscarColor(elemento.obras_func.count)"
+              :total="elemento.obras_func.count"
+            />
+          </template>
         </NuxtLink>
       </li>
     </ul>

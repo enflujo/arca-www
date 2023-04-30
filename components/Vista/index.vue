@@ -2,7 +2,7 @@
 import { usarArchivo } from '~~/cerebros/archivo';
 import { indiceColeccion } from '~~/utilidades/queries';
 
-const props = defineProps({ coleccion: String, ruta: String });
+const props = defineProps({ coleccion: String, slug: String });
 const cerebroArchivo = usarArchivo();
 const datos = ref([]);
 const vistas = ref(['abc', 'colombinas']);
@@ -18,10 +18,11 @@ watch(data, (respuesta) => {
 });
 
 onMounted(() => {
-  if (props.ruta === 'ubicaciones') {
+  if (props.coleccion === 'ubicaciones') {
     vistas.value = ['mapa', 'abc', 'colombinas'];
     vistaInicial.value = 'mapa';
     cerebroArchivo.vistaActual = 'mapa';
+    coleccionActual.value = 'paises';
   }
 });
 
@@ -91,17 +92,24 @@ function agregarEnlacesYTexto(datos, coleccion = coleccionActual.value) {
     } else if (coleccion === 'ubicaciones') {
       instancia.url = `/ubicaciones/${instancia.id}`;
     } else {
-      instancia.url = `/${props.ruta || props.coleccion}/${instancia.slug}`;
+      instancia.url = `/${props.slug}/${instancia.slug}`;
     }
 
-    instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;
+    if (coleccion === 'gestos') {
+      const conteo1 = instancia.obras_gesto_1_func.count;
+      const conteo2 = instancia.obras_gesto_2_func.count;
+      const conteo3 = instancia.obras_gesto_3_func.count;
+      instancia.texto = `${instancia.nombre} (${conteo1}, ${conteo2}, ${conteo3})`;
+    } else {
+      instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;
+    }
 
     return instancia;
   });
 }
 
 function procesarDatos(nuevosDatos) {
-  if (props.ruta === 'ubicaciones') {
+  if (props.coleccion === 'ubicaciones') {
     return procesarUbicaciones(nuevosDatos);
   } else if (props.coleccion === 'autores') {
     return procesarAutores(nuevosDatos);
@@ -134,7 +142,7 @@ async function cambiarDatosUbicacion(coleccion) {
   <div id="filtros">
     <VistaFiltrosVistas :vistas="vistas" :vistaInicial="vistaInicial" />
     <VistaFiltrosUbicaciones
-      v-if="ruta === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
+      v-if="coleccion === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
       :cambiarDatos="cambiarDatosUbicacion"
       :coleccion="coleccionActual"
     />

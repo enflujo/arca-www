@@ -29,7 +29,6 @@ defineProps({
         :alto="1"
         :radio="6"
         :total="categoria.obras_func.count"
-        fondoConteo="transparent"
       />
 
       <CategoriasSubNivel

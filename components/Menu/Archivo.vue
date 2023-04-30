@@ -1,29 +1,14 @@
 <script setup>
+import { usarGeneral } from '~/cerebros/general';
+
 const props = defineProps({ visible: Boolean, cerrar: Function });
 const ruta = useRoute();
 const contenedorMenu = ref(null);
+const cerebroGeneral = usarGeneral();
 
-const opciones = [
-  { nombre: 'Autores', slug: 'autores' },
-  { nombre: 'Categorías', slug: 'categorias' },
-  { nombre: 'Escenarios', slug: 'escenarios' },
-  { nombre: 'Técnicas', slug: 'tecnicas' },
-  { nombre: 'Donantes', slug: 'donantes' },
-  { nombre: 'Ubicaciones', slug: 'ubicaciones' },
-  { nombre: 'Relatos Visuales', slug: 'relatos-visuales' },
-  { nombre: 'Descriptores', slug: 'descriptores' },
-  { nombre: 'Objetos', slug: 'objetos' },
-  { nombre: 'Gestos', slug: 'gestos' },
-  { nombre: 'Tipo Gestual', slug: 'tipo-gestual' },
-  { nombre: 'Complejo Gestual', slug: 'complejo-gestual' },
-  { nombre: 'Cartela - Filacteria', slug: 'cartela-filacteria' },
-  { nombre: 'Símbolos', slug: 'simbolos' },
-  { nombre: 'Características Particulares', slug: 'caracteristicas-particulares' },
-  { nombre: 'Fisiognómica', slug: 'fisiognomica' },
-  { nombre: 'Fisiognómica Imagen', slug: 'fisiognomica-imagen' },
-  { nombre: 'Personajes', slug: 'personajes' },
-  { nombre: 'Rostros', slug: 'rostros' },
-];
+const paginasVisibles = computed(() => {
+  return cerebroGeneral.paginasArchivo.filter((pagina) => pagina.mostrar_en_menu);
+});
 
 const esRutaActual = (slug) => {
   const partes = ruta.path.split('/');
@@ -58,13 +43,13 @@ function clicFuera(evento) {
     <nav id="opciones">
       <NuxtLink
         :to="`/${opcion.slug}`"
-        v-for="opcion in opciones"
+        v-for="opcion in paginasVisibles"
         :key="opcion.slug"
         class="opcion"
         :class="esRutaActual(opcion.slug) ? 'activo' : ''"
         @click.native="cerrar"
       >
-        {{ opcion.nombre }}
+        {{ opcion.titulo }}
       </NuxtLink>
     </nav>
   </aside>

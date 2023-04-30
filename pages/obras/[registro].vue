@@ -63,7 +63,9 @@ const Obra = gql`
       ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
       autores(sort: ["autores_id.apellido"]) { autores_id { id nombre apellido } }
-      gestos(sort: ["gestos_id.slug"]) { gestos_id { codigo slug nombre } }
+      gesto1 {nombre slug}
+      gesto2 {nombre slug}
+      gesto3 {nombre slug}
       tecnicas(sort: ["tecnicas_id.slug"]) { tecnicas_id { slug nombre } }
       objetos(sort: ["objetos_id.slug"]) { objetos_id { slug nombre } }
       personajes(sort: ["personajes_id.slug"]) { personajes_id { slug nombre muerte} }
@@ -258,7 +260,7 @@ function cambiarVistaLupa() {
         class="medio"
         titulo="Cartela - Filacteria"
         :datos="obra.cartela_filacteria"
-        ruta="cartela-filacteria"
+        ruta="cartelas-filacterias"
       />
       <RegistroSingular class="medio" titulo="Fisiognómica" :datos="obra.fisiognomica" ruta="fisiognomica" />
       <RegistroSingular
@@ -267,7 +269,7 @@ function cambiarVistaLupa() {
         :datos="obra.fisiognomica_imagen"
         ruta="fisiognomica-imagen"
       />
-      <RegistroSingular class="medio" titulo="Tipo gestual" :datos="obra.tipo_gestual" ruta="tipo-gestual" />
+      <RegistroSingular class="medio" titulo="Tipo gestual" :datos="obra.tipo_gestual" ruta="tipos-gestuales" />
       <RegistroSingular
         class="medio"
         titulo="Complejo gestual"
@@ -275,7 +277,32 @@ function cambiarVistaLupa() {
         ruta="complejo-gestual"
       />
       <RegistroSingular class="medio" titulo="Rostro" :datos="obra.rostro" ruta="rostros" />
-      <RegistroLista titulo="Gestos" :datos="obra.gestos" class="medio" relacion="gestos_id" ruta="gestos" />
+
+      <section v-if="obra.gesto1 || obra.gesto2 || obra.gesto3" class="seccion gestos">
+        <h3>Gestos</h3>
+
+        <div v-if="obra.gesto1" class="subSeccion">
+          <h4>Personaje principal</h4>
+          <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="contenido singular">
+            {{ obra.gesto1.nombre }}
+          </NuxtLink>
+        </div>
+
+        <div v-if="obra.gesto2" class="subSeccion">
+          <h4>Personaje secundario</h4>
+          <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="contenido singular">
+            {{ obra.gesto2.nombre }}
+          </NuxtLink>
+        </div>
+
+        <div v-if="obra.gesto3" class="subSeccion">
+          <h4>Otros personajes</h4>
+          <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="contenido singular">
+            {{ obra.gesto3.nombre }}
+          </NuxtLink>
+        </div>
+      </section>
+
       <RegistroLista titulo="Objetos" :datos="obra.objetos" class="medio" relacion="objetos_id" ruta="objetos" />
       <RegistroLista
         titulo="Personajes"
@@ -416,6 +443,33 @@ h2 {
   margin: 1em 0;
   border-bottom: 2px solid $rojoCerezo;
   padding-bottom: 0.3em;
+}
+
+.seccion.gestos {
+  flex-wrap: nowrap;
+  .subSeccion {
+    flex-basis: 25%;
+  }
+}
+
+.gestos > .subSeccion {
+  border-right: 2px solid $rojoCerezo;
+  padding-right: 1em;
+  padding-left: 0;
+
+  & ~ .subSeccion {
+    padding-left: 1em;
+  }
+}
+
+.subSeccion {
+  h4 {
+    font-style: italic;
+  }
+
+  &:last-child {
+    border: none;
+  }
 }
 
 /**
