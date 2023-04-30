@@ -63,7 +63,12 @@ function desactivar(evento) {
 <template>
   <div id="contenedorGrafica" ref="contenedor">
     <ul>
-      <li v-for="elemento in datosOrdenados" :key="elemento.slug" @mouseenter="activar" @mouseleave="desactivar">
+      <li
+        v-for="elemento in datosOrdenados"
+        :key="elemento.slug || elemento.id"
+        @mouseenter="activar"
+        @mouseleave="desactivar"
+      >
         <NuxtLink class="nombre fila" :to="elemento.url ? elemento.url : `/${props.coleccion}/${elemento.slug}`">
           {{ elemento.nombreCompleto ? elemento.nombreCompleto : elemento.nombre }}
         </NuxtLink>
