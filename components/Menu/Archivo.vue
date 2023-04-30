@@ -5,57 +5,10 @@ const props = defineProps({ visible: Boolean, cerrar: Function });
 const ruta = useRoute();
 const contenedorMenu = ref(null);
 const cerebroGeneral = usarGeneral();
-/**
- * obras
- * autores
- * personajes
- * fuentes
- * ubicaciones
- * ciudades
- * paises
- * categorias1
- * categorias2
- * categorias3
- * categorias4
- * categorias5
- * categorias6
- * objetos
- * escenarios
- * tecnicas
- * donantes
- * relatos_visuales
- * complejos_gestuales
- * tipos_gestuales
- * gestos
- * fisiognomica
- * fisiognomica_imagen
- * cartelas_filacterias
- * rostros
- * simbolos
- * descriptores
- * caracteristicas
- */
-const opciones = [
-  { nombre: 'Autores', slug: 'autores' },
-  { nombre: 'Categorías', slug: 'categorias' },
-  { nombre: 'Escenarios', slug: 'escenarios' },
-  { nombre: 'Técnicas', slug: 'tecnicas' },
-  { nombre: 'Donantes', slug: 'donantes' },
-  { nombre: 'Ubicaciones', slug: 'ubicaciones' },
-  { nombre: 'Relatos Visuales', slug: 'relatos-visuales' },
-  { nombre: 'Descriptores', slug: 'descriptores' },
-  { nombre: 'Objetos', slug: 'objetos' },
-  { nombre: 'Gestos', slug: 'gestos' },
-  { nombre: 'Tipo Gestual', slug: 'tipo-gestual' },
-  { nombre: 'Complejo Gestual', slug: 'complejo-gestual' },
-  { nombre: 'Cartela - Filacteria', slug: 'cartela-filacteria' },
-  { nombre: 'Símbolos', slug: 'simbolos' },
-  { nombre: 'Características Particulares', slug: 'caracteristicas-particulares' },
-  { nombre: 'Fisiognómica', slug: 'fisiognomica' },
-  { nombre: 'Fisiognómica Imagen', slug: 'fisiognomica-imagen' },
-  { nombre: 'Personajes', slug: 'personajes' },
-  { nombre: 'Rostros', slug: 'rostros' },
-];
+
+const paginasVisibles = computed(() => {
+  return cerebroGeneral.paginasArchivo.filter((pagina) => pagina.mostrar_en_menu);
+});
 
 const esRutaActual = (slug) => {
   const partes = ruta.path.split('/');
@@ -90,7 +43,7 @@ function clicFuera(evento) {
     <nav id="opciones">
       <NuxtLink
         :to="`/${opcion.slug}`"
-        v-for="opcion in cerebroGeneral.paginasArchivo"
+        v-for="opcion in paginasVisibles"
         :key="opcion.slug"
         class="opcion"
         :class="esRutaActual(opcion.slug) ? 'activo' : ''"
