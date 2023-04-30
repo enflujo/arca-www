@@ -20,15 +20,15 @@
   "dependencies": {
     "@enflujo/alquimia": "^1.0.5",
     "@meilisearch/instant-meilisearch": "^0.11.1",
-    "@pinia/nuxt": "^0.4.7",
-    "mapbox-gl": "^2.13.0",
-    "nuxt": "^3.3.3",
-    "vue-instantsearch": "^4.8.9"
+    "@pinia/nuxt": "^0.4.9",
+    "mapbox-gl": "^2.14.1",
+    "nuxt": "^3.4.3",
+    "vue-instantsearch": "^4.9.0"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
-    "prettier": "^2.8.7",
-    "sass": "^1.61.0"
+    "@types/node": "^18.16.3",
+    "prettier": "^2.8.8",
+    "sass": "^1.62.1"
   },
   "browserslist": {
     "production": [

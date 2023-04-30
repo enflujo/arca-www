@@ -36,9 +36,12 @@ export default function (llave: string, query: string) {
     recargar();
   }
 
-  watch(error, (error) => {
-    console.log(JSON.stringify(error, null, 2));
-  });
+  watch(
+    () => error,
+    (err) => {
+      console.log(JSON.stringify(err, null, 2));
+    }
+  );
 
   return { data, error, pending, refresh };
 }

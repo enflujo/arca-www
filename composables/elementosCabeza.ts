@@ -14,19 +14,6 @@ export type DatosPagina = {
   descripcion?: string;
 };
 
-const cerebroGeneral = usarGeneral();
-
-/**
- * Ayuda a crear el título con estilos propios.
- *
- * @param {string} subtitulo El nombre o título de la página actual, se puede dejar vacío para el Home.
- * @returns Título para el head con estilos personalizados.
- */
-const crearTitulo = (subtitulo: string | undefined) => {
-  const cabeza = `: ${cerebroGeneral.titulo} :`;
-  return subtitulo ? `${subtitulo} | ${cabeza}` : cabeza;
-};
-
 /**
  * Crea el objeto con todos los elementos necesarios para SEO de las páginas.
  * @example
@@ -45,7 +32,11 @@ const crearTitulo = (subtitulo: string | undefined) => {
  */
 
 export default function (datosPagina: DatosPagina, ruta: string) {
-  const title = crearTitulo(datosPagina.nombre || datosPagina.titulo);
+  const cerebroGeneral = usarGeneral();
+
+  const cabeza = `: ${cerebroGeneral.titulo} :`;
+  const subtitulo = datosPagina.nombre || datosPagina.titulo;
+  const title = subtitulo ? `${subtitulo} | ${cabeza}` : cabeza;
   const url = urlBase + ruta;
   let img;
 

@@ -1,7 +1,6 @@
 import { gql } from './ayudas';
 import { usarArchivo } from '~~/cerebros/archivo';
 
-const cerebroArchivo = usarArchivo();
 const coleccionesSinDescripcion = ['paises', 'ciudades', 'ubicaciones'];
 /**
  * Datos básicos de una colección.
@@ -115,13 +114,15 @@ export const datosObrasGaleria = (
   m2m = false,
   pagina = 1,
   porId = false,
-  numObras = cerebroArchivo.obrasPorPagina
+  numObras
 ) => {
+  const cerebroArchivo = usarArchivo();
+  const numeroObras = numObras || cerebroArchivo.obrasPorPagina;
   if (m2m) {
     return gql`query {
       obras_${coleccion}(filter: {${nombreCampo || coleccion}_id: {${
       porId ? 'id' : 'slug'
-    }: {_eq: "${busqueda}"}}}, limit: ${numObras}, page: ${pagina}) {
+    }: {_eq: "${busqueda}"}}}, limit: ${numeroObras}, page: ${pagina}) {
         obras_id {
           ${camposObrasGaleria()}
         }
@@ -133,7 +134,7 @@ export const datosObrasGaleria = (
   return gql`query {
     obras(filter: {${nombreCampo}: {${
     porId ? 'id' : 'slug'
-  }: { _eq: "${busqueda}" }}}, limit: ${numObras}, page: ${pagina}) {
+  }: { _eq: "${busqueda}" }}}, limit: ${numeroObras}, page: ${pagina}) {
     ${camposObrasGaleria()}
     }
   }`;
