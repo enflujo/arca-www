@@ -32,21 +32,25 @@ const Portada = gql`
 const { data, pending } = obtenerDatosAsinc('portada', Portada);
 const imgPortada = ref(null);
 const pagina = ref(null);
+const secciones = ref([]);
 
 watch(data, ({ general, paginas }) => {
   imgPortada.value = urlImagen(general.portada.id, 'portada');
   pagina.value = paginas[0];
+  secciones.value = paginas[0].secciones.filter((seccion) => !!seccion.texto);
 });
 </script>
 
 <template>
   <Cargador v-if="pending" />
   <div v-else id="portada" :style="`background-image:url(${imgPortada})`">
-    <!-- <Logo class="svgClaro" />
-    <h1 class="titulo logo-texto claridad">{{ general.titulo }}</h1> -->
+    <Logo class="svgClaro" />
+    <h1 class="titulo logo-texto">{{ general.titulo }}</h1>
     <div v-for="(seccion, i) in pagina.secciones" :key="`seccion${i}`" class="seccion">
-      <h2 class="tituloSeccion">{{ seccion.titulo }}</h2>
-      <div class="contenidoSeccion" v-html="pagina.secciones[i].texto"></div>
+      <section v-if="seccion.titulo || seccion.texto">
+        <h2 class="tituloSeccion">{{ seccion.titulo }}</h2>
+        <div class="contenidoSeccion" v-html="seccion.texto"></div>
+      </section>
     </div>
   </div>
 </template>
@@ -81,13 +85,10 @@ watch(data, ({ general, paginas }) => {
   z-index: 10;
 }
 
-.claridad {
-  color: var(--claridad);
-}
-
 .logo-texto {
   letter-spacing: 1px;
   text-transform: uppercase;
+  color: var(--claridad);
 }
 
 .svgClaro {
