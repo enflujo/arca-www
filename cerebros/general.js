@@ -37,8 +37,10 @@ export const usarGeneral = defineStore('general', {
 
           paginas_archivo(filter: { estado: { _eq: "publicado" } }, sort: ["sort"]) {
             titulo
+            titulo_singular
             slug
             mostrar_en_menu
+            coleccion
           }
         }
       `;

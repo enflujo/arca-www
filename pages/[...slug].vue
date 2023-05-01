@@ -34,7 +34,6 @@ if (esPaginaGeneral) {
         }
       `;
       const { paginas_archivo } = await obtenerDatos(`indice${indice}`, Indice);
-
       const { descripcion, banner } = paginas_archivo[0];
 
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
@@ -42,7 +41,7 @@ if (esPaginaGeneral) {
       definePageMeta({ layout: 'archivo' });
       useHead(elementosCabeza({ titulo: esPaginaArchivo.titulo, descripcion, banner }, ruta.path));
     } else {
-      const Indice = gql`
+      const IndiceGaleria = gql`
         query {
           paginas_archivo(filter: { slug: { _eq: "${indice}" } }) {
             descripcion
@@ -55,7 +54,7 @@ if (esPaginaGeneral) {
           }
         }
       `;
-      const { paginas_archivo } = await obtenerDatos(`galeria${indice}${slug}`, Indice);
+      const { paginas_archivo } = await obtenerDatos(`galeria${indice}${slug}`, IndiceGaleria);
       const relacion = cerebroGeneral.relaciones.find((relacion) => {
         if (relacion.campo === 'ciudad_origen') return false;
         return relacion.coleccionRelacionada === paginas_archivo[0].coleccion;
@@ -69,6 +68,7 @@ if (esPaginaGeneral) {
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
       definePageMeta({ layout: 'archivo', keepalive: true });
       tipoPagina.value = 'archivoSingular';
+      // La galería se encarga de los elementosCabeza() para SEO.
     }
   } else {
     throw createError({ statusCode: 404, statusMessage: 'La página no existe', fatal: true });
@@ -91,6 +91,7 @@ if (esPaginaGeneral) {
       :nombreCampo="nombreCampo"
       :singular="datos.titulo_singular"
       :enTablaRelacional="enTablaRelacional"
+      :slug="ruta.params.slug[1]"
     />
   </template>
 </template>

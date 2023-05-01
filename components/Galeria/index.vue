@@ -5,6 +5,7 @@ import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/querie
 
 const props = defineProps({
   coleccion: String,
+  slug: String,
   nombreCampo: String,
   enTablaRelacional: {
     type: Boolean,
@@ -30,11 +31,11 @@ const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 const datos = ref(null);
 const paginaActual = ref(ruta.query.pagina || 1);
-const esId = /^\d+$/.test(ruta.params.slug[1]);
+const esId = /^\d+$/.test(props.slug);
 
 const respuesta = await obtenerDatos(
-  props.coleccion,
-  datosGeneralesColeccion(props.coleccion, ruta.params.slug[1], esId)
+  `generalesColeccion${props.coleccion}`,
+  datosGeneralesColeccion(props.coleccion, props.slug, esId)
 );
 
 const datosMeta =
@@ -113,14 +114,7 @@ const cargando = ref(false);
 
 const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
-  datosObrasGaleria(
-    props.coleccion,
-    props.nombreCampo,
-    ruta.params.slug[1],
-    props.enTablaRelacional,
-    paginaActual.value,
-    esId
-  )
+  datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, paginaActual.value, esId)
 );
 
 watch(data, (datosObras) => {
@@ -153,7 +147,7 @@ function cargarPagina(pagina) {
 
     obtenerDatos(
       `obras-${datos.value.id}${pagina}`,
-      datosObrasGaleria(props.coleccion, props.nombreCampo, ruta.params.slug[1], props.enTablaRelacional, pagina, esId)
+      datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, pagina, esId)
     ).then((respuesta) => {
       obras.value = [...obras.value, ...limpiarDatos(respuesta)];
       paginaActual.value = pagina;
