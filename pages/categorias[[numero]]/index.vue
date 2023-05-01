@@ -1,12 +1,23 @@
 <script setup>
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import { usarArchivo } from '~/cerebros/archivo';
+import { usarGeneral } from '~/cerebros/general';
 import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';
 
+const cerebroGeneral = usarGeneral();
 const ruta = useRoute();
 const enrutador = useRouter();
 const cerebroArchivo = usarArchivo();
 const pending = ref(true);
+const titulo = computed(() => {
+  if (cerebroGeneral.paginasArchivo) {
+    const pagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === 'categorias1');
+    if (pagina) {
+      return pagina.titulo;
+    }
+  }
+});
+
 let color;
 let ejeX;
 let colorMin;
@@ -168,7 +179,7 @@ function clicSubCategorias(nivel, datosCategoria) {
 </script>
 
 <template>
-  <h1>Categorías</h1>
+  <h1>{{ titulo }}</h1>
   <VistaFiltrosVistas :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
 
   <Cargador v-if="pending" />
