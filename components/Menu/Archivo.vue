@@ -17,8 +17,6 @@ const esRutaActual = (slug) => {
 
   if (partes[1].includes('categorias')) {
     return slug === 'categorias';
-  } else if (partes[1] === 'paises') {
-    return slug === 'ubicaciones';
   }
   return partes.includes(slug);
 };
@@ -60,7 +58,7 @@ function clicFuera(evento) {
 
 #opciones {
   text-transform: uppercase;
-  margin: 0 0 3em 1.8em;
+  margin: 0 0 3em 1.2em;
   display: flex;
   flex-direction: column;
   padding: 2em 0 3em 0;
