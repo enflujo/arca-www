@@ -6,8 +6,14 @@ defineProps({
 </script>
 
 <template>
-  <template v-if="coleccion === 'personajes'">
-    <div id="informacion">
+  <div id="informacion">
+    <template v-if="coleccion === 'pagina'">
+      <section v-if="datos.contenido" class="seccion">
+        <div v-html="datos.contenido" class="infoContenido"></div>
+      </section>
+    </template>
+
+    <template v-else-if="coleccion === 'personajes'">
       <section v-if="datos.muerte" class="seccion medio">
         <h2>Muerte</h2>
         <div class="infoContenido">
@@ -31,11 +37,9 @@ defineProps({
         <h2>Fuente</h2>
         <div v-html="datos.fuente" class="infoContenido"></div>
       </section>
-    </div>
-  </template>
+    </template>
 
-  <template v-else-if="coleccion === 'autores'">
-    <div id="informacion">
+    <template v-else-if="coleccion === 'autores'">
       <section v-if="datos.fechas.length" class="seccion medio">
         <h2>Actividad</h2>
         <div class="infoContenido">
@@ -52,11 +56,9 @@ defineProps({
         <h2>Referencia</h2>
         <div v-html="datos.referencia" class="infoContenido"></div>
       </section>
-    </div>
-  </template>
+    </template>
 
-  <template v-else-if="coleccion === 'gestos'">
-    <div id="informacion">
+    <template v-else-if="coleccion === 'gestos'">
       <section v-if="datos.codigo" class="seccion medio">
         <h2>Código</h2>
         <div class="infoContenido">
@@ -68,28 +70,25 @@ defineProps({
         <h2>Descripción</h2>
         <div v-html="datos.descripcion" class="infoContenido"></div>
       </section>
-    </div>
-  </template>
+    </template>
 
-  <template v-else>
-    <div v-if="datos.descripcion" id="informacion">
-      <section class="seccion">
+    <template v-else>
+      <section v-if="datos.descripcion" class="seccion">
         <h2>Descripción</h2>
         <div v-html="datos.descripcion" class="infoContenido"></div>
       </section>
-    </div>
-  </template>
+    </template>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 #informacion {
-  border-bottom: 2px solid $dolor;
-  margin-bottom: 1em;
   font-weight: bold;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 .seccion {
   font-family: var(--fuenteParrafos);
   margin: 0.5em 0;
@@ -98,6 +97,11 @@ defineProps({
   width: 100%;
   display: flex;
   flex-basis: 100%;
+
+  &:last-child {
+    border-bottom: 2px solid $dolor;
+    margin-bottom: 1em;
+  }
 
   h2 {
     font-weight: bold;

@@ -25,6 +25,7 @@ if (esPaginaGeneral) {
         query {
           paginas_archivo(filter: { slug: { _eq: "${indice}" } }) {
             descripcion
+            contenido
             coleccion
             banner {
               id
@@ -82,6 +83,7 @@ if (esPaginaGeneral) {
   <PaginaGeneral v-if="tipoPagina === 'general'" :slug="indice" />
   <template v-else-if="tipoPagina === 'archivoIndice'">
     <h1>{{ datos.titulo }}</h1>
+    <GaleriaInformacion coleccion="pagina" :datos="datos" />
     <Vista :coleccion="datos.coleccion" :slug="datos.slug" />
   </template>
 
