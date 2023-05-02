@@ -1,6 +1,6 @@
 <script setup>
 import { apiBase } from '~/config/general';
-import { definirDimsImagen, gql, urlImagen } from '~~/utilidades/ayudas';
+import { definirDimsImagen, gql } from '~~/utilidades/ayudas';
 
 /**
  * Operaciones en el servidor

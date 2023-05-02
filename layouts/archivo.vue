@@ -67,7 +67,7 @@ function cerrar() {
 }
 
 main {
-  padding: 2em 1em 2em 5em;
+  padding: 1em 1em 2em 5em;
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -79,11 +79,10 @@ main {
 }
 
 .botonMenu {
-  height: 3rem;
-  width: 3rem;
+  height: 2.2rem;
   position: fixed;
-  top: 5.6em;
-  left: 1em;
+  top: 4.5em;
+  left: 0.5em;
   padding: 0.5rem;
   z-index: 2;
   display: flex;
@@ -96,7 +95,7 @@ main {
   .linea {
     background-color: $profundidad;
     border-radius: 1em;
-    width: 2rem;
+    width: 2.16rem;
     height: 0.25rem;
   }
 

@@ -58,10 +58,9 @@ function clicFuera(evento) {
 
 #opciones {
   text-transform: uppercase;
-  margin: 0 0 3em 1.2em;
   display: flex;
   flex-direction: column;
-  padding: 2em 0 3em 0;
+  padding: 2em 1.2em 6em 1.2em;
 }
 
 a,
@@ -69,7 +68,6 @@ a:link {
   font-size: 0.9em;
   margin-top: 0.9em;
   overflow: hidden;
-  padding-left: 1.4em;
   color: var(--mediana);
   font-family: var(--fuenteMenu);
   font-weight: bold;

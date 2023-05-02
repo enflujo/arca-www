@@ -1,7 +1,6 @@
 <script setup>
 import { gql } from '~~/utilidades/ayudas';
 
-const cargando = ref(true);
 const total = ref(0);
 const Obras = gql`
   query {
@@ -16,16 +15,11 @@ const Obras = gql`
 const { obras_aggregated } = await obtenerDatos('obras', Obras);
 
 total.value = obras_aggregated[0].count.id;
-cargando.value = false;
 
 definePageMeta({ layout: 'archivo' });
 </script>
 
 <template>
-  <Cargador v-if="cargando" />
-
   <h1>Obras</h1>
-  <ul class="opciones">
-    <p>Hay {{ total }} obras en la colección</p>
-  </ul>
+  <GraficaContador :numero-obras="total" />
 </template>
