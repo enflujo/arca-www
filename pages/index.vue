@@ -35,9 +35,9 @@ const pagina = ref(null);
 const secciones = ref([]);
 
 watch(data, ({ general, paginas }) => {
-  imgPortada.value = urlImagen(general.portada.id, 'portada');
   pagina.value = paginas[0];
   secciones.value = paginas[0].secciones.filter((seccion) => !!seccion.texto);
+  imgPortada.value = general.portada ? urlImagen(general.portada.id, 'portada') : null;
 });
 </script>
 
