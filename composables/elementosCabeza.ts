@@ -43,7 +43,7 @@ export default function (datosPagina: DatosPagina, ruta: string) {
   if (datosPagina.banner && datosPagina.banner.id) {
     img = urlImagen(datosPagina.banner.id, 'og-banner');
   } else {
-    img = `${urlBase}/imgs/og-EnFlujo-predeterminado.jpg`;
+    img = `${urlBase}/arca-of.webp`;
     datosPagina.banner = { title: cerebroGeneral.titulo };
   }
 
