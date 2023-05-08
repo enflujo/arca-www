@@ -222,7 +222,8 @@ function clicSubCategorias(nivel, datosCategoria) {
             class="mostrar"
             :class="categoria1.mostrarSubCategoria ? 'abierto' : 'cerrado'"
             @click="clicSubCategorias(1, categoria1)"
-          />
+          ></span>
+          <span class="ayuda">Desplegar categorías</span>
 
           <CategoriasSubNivel
             v-if="categoria1.categorias2 && categoria1.mostrarSubCategoria"
@@ -319,5 +320,13 @@ $tamañoTriangulo: 8px;
     background-color: transparent;
     border-color: transparent;
   }
+}
+
+.ayuda {
+  font-style: italic;
+  font-size: 0.85em;
+  margin-left: 0.5em;
+  display: inline-block;
+  vertical-align: top;
 }
 </style>
