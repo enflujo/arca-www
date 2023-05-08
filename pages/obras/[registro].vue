@@ -1,6 +1,13 @@
 <script setup>
+import { usarGeneral } from '~/cerebros/general';
 import { apiBase } from '~/config/general';
 import { definirDimsImagen, gql } from '~~/utilidades/ayudas';
+
+const cerebroGeneral = usarGeneral();
+
+if (!cerebroGeneral.campos.length) {
+  await useAsyncData('general', cerebroGeneral.cargarCampos);
+}
 
 /**
  * Operaciones en el servidor
@@ -111,7 +118,7 @@ watch(data, ({ obras }) => {
     fechas.push(hasta);
   }
 
-  _obra.fechas = fechas;
+  _obra.fecha = fechas.join(' - ');
 
   // Aplanar Autores
   if (_obra.autores) {
@@ -161,15 +168,17 @@ watch(data, ({ obras }) => {
     _obra.ubicacion = ubicacion;
   }
 
+  _obra.fuente = _obra.fuente && _obra.fuente.descripcion ? _obra.fuente.descripcion : null;
+
   obra.value = _obra;
 
-  buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1].coleccion);
+  buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1]);
 });
 
 async function buscarRelacionadas(ultimaCategoria) {
   const Relacionadas = gql`
     query {
-      obras(sort: ["${ultimaCategoria}"], limit: 10) {
+      obras(filter: {${ultimaCategoria.coleccion}: { slug:  {_eq: "${ultimaCategoria.slug}" } } }, limit: 20) { 
         registro
         titulo
         imagen {
@@ -202,6 +211,49 @@ function cambiarVistaImagen() {
 function cambiarVistaLupa() {
   verLupa.value = !verLupa.value;
 }
+
+const tiposCampos = {
+  caracteristicas: { tipo: 'lista', coleccion: 'caracteristicas' },
+  cartela_filacteria: { tipo: 'singular', coleccion: 'cartelas_filacterias' },
+  categorias: { tipo: 'lista', coleccion: 'categorias1' },
+  ciudad_origen: { tipo: 'lugar', coleccion: 'ciudades' },
+  comentario_bibliografico: { tipo: 'parrafos', coleccion: '' },
+  complejo_gestual: { tipo: 'singular', coleccion: 'complejos_gestuales' },
+  descriptores: { tipo: 'lista', coleccion: 'descriptores' },
+  donante: { tipo: 'singular', coleccion: 'donantes' },
+  escenarios: { tipo: 'lista', coleccion: 'escenarios' },
+  fecha: { tipo: 'singular', coleccion: '' },
+  fisiognomica: { tipo: 'singular', coleccion: 'fisiognomicas' },
+  fisiognomica_imagen: { tipo: 'singular', coleccion: 'fisiognomicas_imagen' },
+  fuente: { tipo: 'parrafos', coleccion: '' },
+  iconotexto: { tipo: 'parrafos', coleccion: '' },
+  objetos: { tipo: 'lista', coleccion: 'objetos' },
+  personajes: { tipo: 'lista', coleccion: 'personajes' },
+  relato_visual: { tipo: 'singular', coleccion: 'relatos_visuales' },
+  rostro: { tipo: 'singular', coleccion: 'rostros' },
+  simbolos: { tipo: 'lista', coleccion: 'simbolos' },
+  sintesis: { tipo: 'parrafos', coleccion: '' },
+  tecnicas: { tipo: 'lista', coleccion: 'tecnicas' },
+  tipo_gestual: { tipo: 'singular', coleccion: 'tipos_gestuales' },
+  ubicacion: { tipo: 'lugar', coleccion: '' },
+  gestos: { tipo: 'gestos', coleccion: '' },
+};
+
+const tipoCampo = (nombreCampo) => {
+  if (!tiposCampos[nombreCampo]) {
+    return;
+  }
+  return tiposCampos[nombreCampo].tipo;
+};
+
+const rutaCampo = (nombreCampo) => {
+  const { coleccion } = tiposCampos[nombreCampo];
+  const datosPagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === coleccion);
+
+  if (datosPagina) {
+    return datosPagina.slug;
+  }
+};
 </script>
 
 <template>
@@ -249,95 +301,65 @@ function cambiarVistaLupa() {
         <div id="registro">{{ obra.registro }}</div>
       </section>
 
-      <RegistroLugares :datos="obra.ubicacion" titulo="Ubicación actual" :punto="ubicacionMapa" />
-      <RegistroLugares :datos="obra.ciudad_origen" titulo="Ciudad de origen" />
-      <RegistroSingular class="medio" titulo="Fecha" :texto="obra.fechas.join(' - ')" />
-      <RegistroLista class="medio" titulo="Técnicas" :datos="obra.tecnicas" ruta="tecnicas" relacion="tecnicas_id" />
-      <RegistroLista class="medio" titulo="Categorías" :datos="obra.categorias" ruta="categorias" />
-      <RegistroSingular class="medio" titulo="Donante" :datos="obra.donante" ruta="donantes" />
-      <RegistroSingular class="medio" titulo="Relato visual" :datos="obra.relato_visual" ruta="relatos-visuales" />
-      <RegistroSingular
-        class="medio"
-        titulo="Cartela - Filacteria"
-        :datos="obra.cartela_filacteria"
-        ruta="cartelas-filacterias"
-      />
-      <RegistroSingular class="medio" titulo="Fisiognómica" :datos="obra.fisiognomica" ruta="fisiognomica" />
-      <RegistroSingular
-        class="medio"
-        titulo="Fisiognómica Imagen"
-        :datos="obra.fisiognomica_imagen"
-        ruta="fisiognomica-imagen"
-      />
-      <RegistroSingular class="medio" titulo="Tipo gestual" :datos="obra.tipo_gestual" ruta="tipos-gestuales" />
-      <RegistroSingular
-        class="medio"
-        titulo="Complejo gestual"
-        :datos="obra.complejo_gestual"
-        ruta="complejo-gestual"
-      />
-      <RegistroSingular class="medio" titulo="Rostro" :datos="obra.rostro" ruta="rostros" />
+      <template v-for="seccion in cerebroGeneral.campos" :key="`campo${seccion.campo}`">
+        <template v-if="seccion.campo === 'separador'">
+          <span class="separador"></span>
+        </template>
 
-      <section v-if="obra.gesto1 || obra.gesto2 || obra.gesto3" class="seccion gestos">
-        <h3>Gestos</h3>
+        <template v-else-if="tipoCampo(seccion.campo) === 'lugar'">
+          <RegistroLugares :datos="obra[seccion.campo]" :titulo="seccion.titulo" :punto="ubicacionMapa" />
+        </template>
 
-        <div v-if="obra.gesto1" class="subSeccion">
-          <h4>Personaje principal</h4>
-          <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="contenido singular">
-            {{ obra.gesto1.nombre }}
-          </NuxtLink>
-        </div>
+        <template v-else-if="tipoCampo(seccion.campo) === 'singular'">
+          <RegistroSingular
+            class="medio"
+            :titulo="seccion.titulo"
+            :datos="obra[seccion.campo]"
+            :ruta="rutaCampo(seccion.campo)"
+          />
+        </template>
 
-        <div v-if="obra.gesto2" class="subSeccion">
-          <h4>Personaje secundario</h4>
-          <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="contenido singular">
-            {{ obra.gesto2.nombre }}
-          </NuxtLink>
-        </div>
+        <template v-else-if="tipoCampo(seccion.campo) === 'lista'">
+          <RegistroLista
+            class="medio"
+            :titulo="seccion.titulo"
+            :datos="obra[seccion.campo]"
+            :ruta="rutaCampo(seccion.campo)"
+            :relacion="seccion.campo === 'categorias' ? null : `${seccion.campo}_id`"
+          />
+        </template>
 
-        <div v-if="obra.gesto3" class="subSeccion">
-          <h4>Otros personajes</h4>
-          <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="contenido singular">
-            {{ obra.gesto3.nombre }}
-          </NuxtLink>
-        </div>
-      </section>
+        <template v-else-if="tipoCampo(seccion.campo) === 'parrafos'">
+          <RegistroParrafos :datos="obra[seccion.campo]" :titulo="seccion.titulo" />
+        </template>
 
-      <RegistroLista titulo="Objetos" :datos="obra.objetos" class="medio" relacion="objetos_id" ruta="objetos" />
-      <RegistroLista
-        titulo="Personajes"
-        :datos="obra.personajes"
-        class="medio"
-        relacion="personajes_id"
-        ruta="personajes"
-      />
-      <RegistroLista titulo="Símbolos" :datos="obra.simbolos" class="medio" relacion="simbolos_id" ruta="simbolos" />
-      <RegistroLista
-        titulo="Escenarios"
-        :datos="obra.escenarios"
-        class="medio"
-        relacion="escenarios_id"
-        ruta="escenarios"
-      />
-      <RegistroLista
-        titulo="Descriptores"
-        :datos="obra.descriptores"
-        class="medio"
-        relacion="descriptores_id"
-        ruta="descriptores"
-      />
-      <RegistroLista
-        titulo="Características"
-        :datos="obra.caracteristicas"
-        class="medio"
-        relacion="caracteristicas_id"
-        ruta="caracteristicas-particulares"
-      />
+        <template v-else-if="seccion.campo === 'gestos'">
+          <section v-if="obra.gesto1 || obra.gesto2 || obra.gesto3" class="seccion gestos">
+            <h3>{{ seccion.titulo }}</h3>
 
-      <RegistroParrafos :datos="obra.iconotexto" titulo="Iconotexto" />
-      <RegistroParrafos :datos="obra.comentario_bibliografico" titulo="Comentario bibliográfico" />
-      <RegistroParrafos :datos="obra.sintesis" titulo="Síntesis" />
-      <RegistroParrafos :datos="obra.fuente ? obra.fuente.descripcion : null" titulo="Fuente" />
+            <div v-if="obra.gesto1" class="subSeccion">
+              <h4>Personaje principal</h4>
+              <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="contenido singular">
+                {{ obra.gesto1.nombre }}
+              </NuxtLink>
+            </div>
+
+            <div v-if="obra.gesto2" class="subSeccion">
+              <h4>Personaje secundario</h4>
+              <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="contenido singular">
+                {{ obra.gesto2.nombre }}
+              </NuxtLink>
+            </div>
+
+            <div v-if="obra.gesto3" class="subSeccion">
+              <h4>Otros personajes</h4>
+              <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="contenido singular">
+                {{ obra.gesto3.nombre }}
+              </NuxtLink>
+            </div>
+          </section>
+        </template>
+      </template>
     </div>
 
     <section id="contenedorGaleria" class="completo">
@@ -450,6 +472,14 @@ h2 {
   .subSeccion {
     flex-basis: 25%;
   }
+}
+
+.separador {
+  display: block;
+  width: 100%;
+  height: 0;
+  margin-bottom: -2px;
+  border-bottom: 2px solid $dolor;
 }
 
 .gestos > .subSeccion {

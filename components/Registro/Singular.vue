@@ -1,18 +1,17 @@
 <script setup>
 defineProps({
-  datos: Object,
+  datos: Object | String,
   titulo: String,
   ruta: String,
-  texto: String,
 });
 </script>
 
 <template>
-  <section v-if="datos || texto" class="seccion">
+  <section v-if="datos" class="seccion">
     <h3>{{ titulo }}</h3>
 
-    <template v-if="texto">
-      <p class="contenido singular">{{ texto }}</p>
+    <template v-if="typeof datos === 'string'">
+      <p class="contenido singular">{{ datos }}</p>
     </template>
 
     <template v-else-if="datos">

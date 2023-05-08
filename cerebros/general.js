@@ -14,6 +14,7 @@ export const usarGeneral = defineStore('general', {
     buscadorVisible: false,
     busquedaActual: '',
     relaciones: [],
+    campos: [],
   }),
 
   actions: {
@@ -70,6 +71,21 @@ export const usarGeneral = defineStore('general', {
       this.relaciones = relations_in_collection.map((relacion) => {
         return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
       });
+    },
+
+    async cargarCampos() {
+      const CamposObraIndividual = gql`
+        query {
+          general {
+            campos
+          }
+        }
+      `;
+      const { general } = await obtenerDatos('camposObraIndividual', CamposObraIndividual);
+
+      if (general && general.campos) {
+        this.campos = general.campos;
+      }
     },
   },
 });
