@@ -479,7 +479,7 @@ h2 {
   width: 100%;
   height: 0;
   margin-bottom: -2px;
-  border-bottom: 2px solid $dolor;
+  border-bottom: 4px solid $dolor;
 }
 
 .gestos > .subSeccion {
