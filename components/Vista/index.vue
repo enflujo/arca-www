@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usarArchivo } from '~~/cerebros/archivo';
 import { indiceColeccion } from '~~/utilidades/queries';
 

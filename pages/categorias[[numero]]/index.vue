@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
+import type { Categoria, Pagina } from 'tipos';
 import { usarArchivo } from '~/cerebros/archivo';
 import { usarGeneral } from '~/cerebros/general';
 import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';
@@ -8,7 +9,7 @@ const cerebroGeneral = usarGeneral();
 const ruta = useRoute();
 const enrutador = useRouter();
 const cerebroArchivo = usarArchivo();
-const pending = ref(true);
+const pending: Ref<boolean> = ref(true);
 const titulo = computed(() => {
   if (cerebroGeneral.paginasArchivo) {
     const pagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === 'categorias1');
@@ -18,8 +19,8 @@ const titulo = computed(() => {
   }
 });
 
-let color;
-let ejeX;
+let color: (valor: number) => string;
+let ejeX: (valor: number) => number;
 let colorMin;
 let colorMax;
 
@@ -75,14 +76,16 @@ onMounted(() => {
 
   let maximo = 0;
 
-  cerebroArchivo.datosCategorias.forEach((categoria1) => {
-    if (categoria1.obras_func.count > maximo) {
-      maximo = categoria1.obras_func.count;
-    }
-  });
+  if (cerebroArchivo.datosCategorias) {
+    cerebroArchivo.datosCategorias.forEach((categoria1) => {
+      if (categoria1.obras_func.count > maximo) {
+        maximo = categoria1.obras_func.count;
+      }
+    });
+  }
 
   color = escalaColores(1, maximo, colorMin, colorMax);
-  ejeX = (valor) => convertirEscala(valor, 0, maximo, 0, 100);
+  ejeX = (valor: number) => convertirEscala(valor, 0, maximo, 0, 100);
   pending.value = false;
 });
 
@@ -96,7 +99,9 @@ watch(
 );
 
 function ordenarTodos() {
-  function ordenarNivel(listaCategorias, nivel) {
+  if (!cerebroArchivo.datosCategorias) return;
+
+  function ordenarNivel(listaCategorias: Categoria[], nivel: number) {
     ordenar(listaCategorias);
 
     listaCategorias.forEach((categoria) => {
@@ -109,7 +114,7 @@ function ordenarTodos() {
   ordenarNivel(cerebroArchivo.datosCategorias, 1);
 }
 
-function ordenar(grupo) {
+function ordenar(grupo: Categoria[]) {
   const { vistaActual } = cerebroArchivo;
 
   if (vistaActual === 'abc') {
@@ -127,7 +132,7 @@ function ordenar(grupo) {
   }
 }
 
-function clicSubCategorias(nivel, datosCategoria) {
+function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   const nivel1 = `categorias${nivel}`;
   const nivel2 = `categorias${nivel + 1}`;
   const nivel3 = nivel + 2 <= 6 ? `categorias${nivel + 2}` : null;

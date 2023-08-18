@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usarArchivo } from '~/cerebros/archivo';
 import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/queries';
@@ -14,7 +14,7 @@ const props = defineProps({
   singular: String,
 });
 
-const titulo = ref('');
+const titulo: Ref<string> = ref('');
 
 const crearNombre = (datosAutor) => {
   const partesNombre = [];

@@ -9,7 +9,7 @@ const coleccionesSinDescripcion = ['paises', 'ciudades', 'ubicaciones'];
  * @param {string} busqueda Slug o ID de la entrada.
  * @returns
  */
-export const datosGeneralesColeccion = (coleccion, busqueda, porId) => {
+export const datosGeneralesColeccion = (coleccion: string, busqueda: string, porId: boolean) => {
   if (coleccion === 'personajes') {
     return gql`
     query {
@@ -108,21 +108,21 @@ const paises = () => {
  * @returns
  */
 export const datosObrasGaleria = (
-  coleccion,
+  coleccion: string,
   nombreCampo = coleccion,
-  busqueda,
-  m2m = false,
+  busqueda: string,
+  m2m: boolean = false,
   pagina = 1,
   porId = false,
-  numObras
+  numObras: number
 ) => {
   const cerebroArchivo = usarArchivo();
   const numeroObras = numObras || cerebroArchivo.obrasPorPagina;
   if (m2m) {
     return gql`query {
       obras_${coleccion}(filter: {${nombreCampo || coleccion}_id: {${
-      porId ? 'id' : 'slug'
-    }: {_eq: "${busqueda}"}}}, limit: ${numeroObras}, page: ${pagina}) {
+        porId ? 'id' : 'slug'
+      }: {_eq: "${busqueda}"}}}, limit: ${numeroObras}, page: ${pagina}) {
         obras_id {
           ${camposObrasGaleria()}
         }
@@ -133,14 +133,14 @@ export const datosObrasGaleria = (
 
   return gql`query {
     obras(filter: {${nombreCampo}: {${
-    porId ? 'id' : 'slug'
-  }: { _eq: "${busqueda}" }}}, limit: ${numeroObras}, page: ${pagina}) {
+      porId ? 'id' : 'slug'
+    }: { _eq: "${busqueda}" }}}, limit: ${numeroObras}, page: ${pagina}) {
     ${camposObrasGaleria()}
     }
   }`;
 };
 
-export const indiceColeccion = (coleccion) => {
+export const indiceColeccion = (coleccion: string) => {
   if (coleccion === 'ubicaciones') {
     return gql`
       query {

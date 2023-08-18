@@ -1,20 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { urlImagen } from '~/utilidades/ayudas';
+import type { Imagen } from 'tipos';
 
-const props = defineProps({
-  datos: Object,
-  titulo: String,
-  llave: String,
-  rutaIcono: { type: String, default: '/arca-icono-amarillo.svg' },
+interface Props {
+  datos: Imagen;
+  titulo: string;
+  llave: string;
+  rutaIcono: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  rutaIcono: '/arca-icono-amarillo.svg',
 });
 
-const imagen = ref(null);
+const imagen: Ref<HTMLImageElement | null> = ref(null);
 
 onMounted(() => {
+  if (!imagen.value) return;
   duranteInterseccion(
     imagen.value,
     () => {
-      imagen.value.src = urlImagen(props.datos.id, props.llave); // 554
+      if (imagen.value) imagen.value.src = urlImagen(props.datos.id, props.llave); // 554
     },
     true,
     { threshold: 0.1 }

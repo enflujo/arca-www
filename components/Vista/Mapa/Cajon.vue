@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { datosObrasGaleria } from '~/utilidades/queries';
 
 const props = defineProps({

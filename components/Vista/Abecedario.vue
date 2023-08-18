@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { eliminarTildes } from '~~/utilidades/ayudas';
 
 const abc = ref([]);

@@ -1,17 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import { urlBuscador } from '~~/config/general';
 import { usarGeneral } from '~~/cerebros/general';
 import { urlImagen } from '~~/utilidades/ayudas';
-const clienteBuscador = instantMeiliSearch(
-  'https://apiarca.uniandes.edu.co/arca-buscador',
-  '0dad4b83-fc4f-48ce-a656-f5ec7e6c3f49',
-  {
-    // placeholderSearch: false,
-    primaryKey: 'registro',
-  }
-);
+const clienteBuscador = instantMeiliSearch(urlBuscador, '0dad4b83-fc4f-48ce-a656-f5ec7e6c3f49', {
+  // placeholderSearch: false,
+  primaryKey: 'registro',
+});
+
 const cerebroGeneral = usarGeneral();
-const resultados = ref(null);
+const resultados: Ref<HTMLDivElement | null> = ref(null);
 
 const campos = [
   ['registro', 'Registro'],
@@ -41,7 +39,9 @@ const campos = [
   ['caracteristicas', 'Características Particulares'],
 ];
 
-function cerrar(evento) {
+function cerrar(evento: MouseEvent) {
+  if (!evento.target) return;
+
   if (evento.target.id === 'buscador' || evento.target.id === 'botonCerrar') {
     cerebroGeneral.buscadorVisible = false;
   }
@@ -57,7 +57,7 @@ function cambioDePagina() {
   }
 }
 
-function entradaBuscador(evento) {
+function entradaBuscador(evento: InputEvent) {
   if (typeof evento === 'string') {
     cerebroGeneral.busquedaActual = evento;
   }

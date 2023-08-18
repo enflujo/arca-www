@@ -1,5 +1,10 @@
-<script setup>
+<script setup lang="ts">
+import type { Pagina } from 'tipos';
 import { gql } from '~~/utilidades/ayudas';
+
+export interface Informacion extends Pagina {
+  secciones: { titulo: string; texto: string }[];
+}
 
 const Info = gql`
   query {
@@ -19,7 +24,7 @@ const Info = gql`
 // obtenerDatosAsinc se usa para obtener datos de forma reactiva, no estática.
 // Para obtener los datos estáticos (ej. "head") se usa la función con await. Ej. archivo - index.vue
 const { data, pending } = obtenerDatosAsinc('info', Info);
-const pagina = ref(null);
+const pagina: Ref<Informacion | null> = ref(null);
 
 watch(data, ({ paginas }) => {
   pagina.value = paginas[0];
@@ -29,12 +34,12 @@ watch(data, ({ paginas }) => {
 <template>
   <Cargador v-if="pending" />
 
-  <div v-else id="sobreArca">
+  <div v-else-if="pagina" id="sobreArca">
     <h1>{{ pagina.titulo }}</h1>
 
     <div v-for="(seccion, i) in pagina.secciones" :key="`seccion${i}`" class="seccion">
       <h2 class="tituloSeccion">{{ seccion.titulo }}</h2>
-      <div class="contenidoSeccion" v-html="pagina.secciones[0].texto"></div>
+      <div class="contenidoSeccion" v-html="seccion.texto"></div>
     </div>
   </div>
 </template>

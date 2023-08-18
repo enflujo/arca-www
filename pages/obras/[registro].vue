@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
 import { apiBase } from '~/config/general';
 import { definirDimsImagen, gql } from '~~/utilidades/ayudas';

@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
   datos: Object,
   nivel: Number,
-  color: Function,
-  ejeX: Function,
-  clicSubCategorias: Function,
+  color: { type: Function, required: true },
+  ejeX: { type: Function, required: true },
+  clicSubCategorias: { type: Function, required: true },
 });
 </script>
 
@@ -12,7 +12,7 @@ defineProps({
   <ul class="categoriaSubNivel">
     <li v-for="categoria in datos" :key="`categoria2${categoria.id}`" class="subCategoria">
       <span
-        v-if="nivel <= 5 && categoria[`categorias${nivel + 1}_func`].count > 0"
+        v-if="nivel && nivel <= 5 && categoria[`categorias${nivel + 1}_func`].count > 0"
         class="mostrar"
         :class="categoria.mostrarSubCategoria ? 'abierto' : 'cerrado'"
         @click="clicSubCategorias(nivel, categoria)"
@@ -32,7 +32,7 @@ defineProps({
       />
 
       <CategoriasSubNivel
-        v-if="nivel <= 5 && categoria[`categorias${nivel + 1}`] && categoria.mostrarSubCategoria"
+        v-if="nivel && nivel <= 5 && categoria[`categorias${nivel + 1}`] && categoria.mostrarSubCategoria"
         :datos="categoria[`categorias${nivel + 1}`]"
         :nivel="nivel + 1"
         :color="color"

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import { obtenerVariablesCSS } from '~~/utilidades/ayudas';
 

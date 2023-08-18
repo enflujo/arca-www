@@ -1,8 +1,10 @@
 /**
  * La URL donde esta el API (Directus en nuestro caso).
  */
-export const apiBase = 'https://apiarca.uniandes.edu.co';
-// export const apiBase = 'http://localhost:8055';
+export const apiBase = process.dev ? 'http://localhost:8055' : 'https://apiarca.uniandes.edu.co';
+
+export const urlBuscador = process.dev ? 'http://localhost:7700' : 'https://apiarca.uniandes.edu.co/arca-buscador';
+
 /**
  * La URL del frontend.
  */

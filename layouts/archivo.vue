@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usarGeneral } from '~~/cerebros/general';
 
 const cerebro = usarGeneral();
@@ -12,7 +12,7 @@ if (!cerebro.relaciones.length) {
   await useAsyncData('general', cerebro.cargarRelaciones);
 }
 
-function abrirOCerrar(evento) {
+function abrirOCerrar(evento: MouseEvent) {
   evento.stopPropagation();
   menuVisible.value = !menuVisible.value;
 }

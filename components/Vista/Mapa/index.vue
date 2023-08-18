@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import iconoImagen from '~~/assets/imgs/icono-imagen.svg';

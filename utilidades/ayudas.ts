@@ -1,3 +1,4 @@
+import type { Categoria } from 'tipos';
 import { apiBase } from '../config/general';
 
 /**
@@ -13,11 +14,11 @@ import { apiBase } from '../config/general';
  * urlImagen(id, {quality: 85, format: webp});
  * ```
  *
- * @param {number} id El ID del archivo o imagen en Directus
+ * @param id El ID del archivo o imagen en Directus
  * @param {string|object} key El nombre del key u Objeto con parámetros
  * @returns {string} URL con el endpoint desde donde se puede pedir el archivo
  */
-export const urlImagen = (id, key) => {
+export const urlImagen = (id: number, key: string): string => {
   if (!id) {
     throw new Error(`Se tiene que usar un ID del archivo pero ahora el parámetro es ${JSON.stringify(id)}`);
   }
@@ -43,7 +44,7 @@ export const urlImagen = (id, key) => {
  * @param {string} texto Texto sobre el cual eliminar las tildes
  * @returns Texto sin tildes.
  */
-export const eliminarTildes = (texto) => {
+export const eliminarTildes = (texto: string) => {
   return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '');
 };
 
@@ -53,13 +54,13 @@ export const eliminarTildes = (texto) => {
  * @param {string} texto Texto del cual extraer la primera letra
  * @returns Primera letra del texto sin tilde.
  */
-export const extraerPrimeraLetra = (texto) => {
+export const extraerPrimeraLetra = (texto: string) => {
   return eliminarTildes(texto.trim().charAt(0));
 };
 
 export const gql = String.raw;
 
-export function ordenarPorNombre(lista) {
+export function ordenarPorNombre(lista: { nombre: string }[]) {
   lista.sort((a, b) => {
     const nombreA = a.nombre.toUpperCase(); // ignorar mayúsculas y minúsculas
     const nombreB = b.nombre.toUpperCase();
@@ -74,7 +75,7 @@ export function ordenarPorNombre(lista) {
   });
 }
 
-export function aplanarCategorias(datosCategoria, siguienteCategoria) {
+export function aplanarCategorias(datosCategoria: Categoria, siguienteCategoria: number) {
   const respuesta = {
     nombre: datosCategoria.nombre,
     slug: datosCategoria.slug,
@@ -101,15 +102,16 @@ export function aplanarCategorias(datosCategoria, siguienteCategoria) {
  *
  * @param {string} nombre Nombre de la variable en css, por ejemplo '--verdeEsmeralda'
  */
-export function obtenerVariablesCSS(nombre) {
+export function obtenerVariablesCSS(nombre: string): string {
   const ele = window.getComputedStyle(document.body, '');
   return ele.getPropertyValue(nombre);
 }
 
-export const esperar = (funcion, tiempoEspera) => {
-  let temporizador = null;
-  return (evento) => {
-    window.clearTimeout(temporizador);
+export const esperar = (funcion: (evento: any) => void, tiempoEspera: number) => {
+  let temporizador: number | null = null;
+
+  return (evento: any) => {
+    if (temporizador) window.clearTimeout(temporizador);
 
     temporizador = window.setTimeout(() => {
       funcion(evento);
@@ -117,11 +119,11 @@ export const esperar = (funcion, tiempoEspera) => {
   };
 };
 
-export const demorar = (funcion, esperar) => {
-  let temporizador = null;
+export const demorar = (funcion: (evento: any) => void, esperar: number) => {
+  let temporizador: number | null = null;
   let anterior = 0;
 
-  return (evento) => {
+  return (evento: any) => {
     const ahora = Date.now();
     const restante = esperar - (ahora - anterior);
 

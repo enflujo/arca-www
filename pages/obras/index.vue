@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { gql } from '~~/utilidades/ayudas';
 
 const total = ref(0);

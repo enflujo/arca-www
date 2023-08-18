@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { usarGeneral } from '~/cerebros/general';
+import { PaginaArchivo, usarGeneral } from '~/cerebros/general';
 import { gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
 const ruta = useRoute();
-const tipoPagina = ref('');
+const tipoPagina: Ref<string> = ref('');
 const [indice, slug] = ruta.params.slug;
 const esPaginaGeneral = cerebroGeneral.paginas.find((pagina) => pagina.slug === indice);
-const datos = ref();
-const enTablaRelacional = ref(false);
-const nombreCampo = ref(null);
+const datos: Ref<PaginaArchivo | undefined> = ref();
+const enTablaRelacional: Ref<boolean> = ref(false);
+const nombreCampo: Ref<string | undefined> = ref();
 
 if (esPaginaGeneral) {
   tipoPagina.value = 'general';
@@ -56,6 +56,7 @@ if (esPaginaGeneral) {
         }
       `;
       const { paginas_archivo } = await obtenerDatos(`galeria${indice}${slug}`, IndiceGaleria);
+
       const relacion = cerebroGeneral.relaciones.find((relacion) => {
         if (relacion.campo === 'ciudad_origen') return false;
         return relacion.coleccionRelacionada === paginas_archivo[0].coleccion;
@@ -81,13 +82,13 @@ if (esPaginaGeneral) {
 
 <template>
   <PaginaGeneral v-if="tipoPagina === 'general'" :slug="indice" />
-  <template v-else-if="tipoPagina === 'archivoIndice'">
+  <template v-else-if="datos && tipoPagina === 'archivoIndice'">
     <h1>{{ datos.titulo }}</h1>
     <GaleriaInformacion coleccion="pagina" :datos="datos" />
     <Vista :coleccion="datos.coleccion" :slug="datos.slug" />
   </template>
 
-  <template v-else-if="tipoPagina === 'archivoSingular'">
+  <template v-else-if="datos && tipoPagina === 'archivoSingular'">
     <Galeria
       :coleccion="datos.coleccion"
       :nombreCampo="nombreCampo"

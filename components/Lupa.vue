@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { demorar, esperar, urlImagen } from '~/utilidades/ayudas';
 
 const props = defineProps({
@@ -14,9 +14,9 @@ const props = defineProps({
   tactoPos: { default: { x: -50, y: -50 } },
 });
 
-const img = ref(null);
-const lupa = ref(null);
-const dims = ref(null);
+const img: Ref<HTMLImageElement | null> = ref(null);
+const lupa: Ref<HTMLDivElement | null> = ref(null);
+const dims: Ref<DOMRect | null> = ref(null);
 const mostrarLupa = ref(false);
 const mov = ref({ x: 0, y: 0 });
 const pos = ref({ x: 0, y: 0 });
@@ -57,8 +57,8 @@ const apagarLupa = () => {
   mostrarLupa.value = false;
 };
 
-const movimientoRaton = demorar((e) => {
-  if (dims.value) {
+const movimientoRaton = demorar((e: MouseEvent) => {
+  if (dims.value && e.target) {
     const { target, clientX, clientY } = e;
     const { left, top } = dims.value;
 
@@ -93,19 +93,23 @@ const movimientoTacto = demorar((e) => {
 const calcularDimsImgEsperando = esperar(calcularDimsImg, 200);
 
 onMounted(() => {
-  const imagen = new Image();
-  imagen.onload = () => {
-    if (!img.value) return;
-    img.value.src = imagen.src;
-  };
-  imagen.src = urlImagen(props.datos.id, 'obra');
+  if (props.datos) {
+    const imagen = new Image();
+    imagen.onload = () => {
+      if (!img.value) return;
+      img.value.src = imagen.src;
+    };
+    imagen.src = urlImagen(props.datos.id, 'obra');
 
-  window.addEventListener('resize', calcularDimsImgEsperando);
-  window.addEventListener('scroll', calcularDimsImgEsperando, true);
+    window.addEventListener('resize', calcularDimsImgEsperando);
+    window.addEventListener('scroll', calcularDimsImgEsperando, true);
 
-  Object.assign(lupa.value.style, {
-    backgroundImage: `url(${imagen.src})`,
-  });
+    if (lupa.value) {
+      Object.assign(lupa.value.style, {
+        backgroundImage: `url(${imagen.src})`,
+      });
+    }
+  }
 });
 
 onUnmounted(() => {

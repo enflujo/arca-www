@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usarGeneral } from '~~/cerebros/general';
 
 const cerebroGeneral = usarGeneral();
@@ -10,7 +10,7 @@ function abrirBuscador() {
 
 onMounted(async () => {
   if (ruta.query.buscar) {
-    cerebroGeneral.busquedaActual = ruta.query.buscar;
+    cerebroGeneral.busquedaActual = ruta.query.buscar as string;
     abrirBuscador();
   }
 });
