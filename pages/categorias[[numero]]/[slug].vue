@@ -5,7 +5,7 @@ const cerebroGeneral = usarGeneral();
 const ruta = useRoute();
 const nombreColeccion = `categorias${ruta.params.numero}`;
 const nombreCampo = `categoria${ruta.params.numero}`;
-const slug: string = ruta.params.slug as string;
+const slug = ruta.params.slug as string;
 // La galería se encarga de los elementosCabeza() para SEO.
 
 const singular = computed(() => {

@@ -1,17 +1,9 @@
 import { defineStore } from 'pinia';
-import type { Imagen, Pagina } from 'tipos';
+import type { Imagen, Pagina, PaginaArchivo } from 'tipos';
 import { gql } from '~~/utilidades/ayudas';
 
 export type ColecionRelacionada = { campo: string; coleccionRelacionada: string };
 export type Campo = { titulo: string; campo: string };
-
-export type PaginaArchivo = {
-  titulo: string;
-  titulo_singular: string;
-  slug: string;
-  mostrar_en_menu: boolean;
-  coleccion: string;
-};
 
 export type CerebroGeneral = {
   datosCargados: boolean;
@@ -26,6 +18,7 @@ export type CerebroGeneral = {
   busquedaActual: string;
   relaciones: ColecionRelacionada[];
   campos: Campo[];
+  llaveBuscador: string | null;
 };
 
 export const usarGeneral = defineStore('general', {
@@ -42,6 +35,7 @@ export const usarGeneral = defineStore('general', {
       busquedaActual: '',
       relaciones: [],
       campos: [],
+      llaveBuscador: null,
     }) as CerebroGeneral,
 
   actions: {

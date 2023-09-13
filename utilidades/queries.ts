@@ -114,7 +114,7 @@ export const datosObrasGaleria = (
   m2m: boolean = false,
   pagina = 1,
   porId = false,
-  numObras: number
+  numObras?: number
 ) => {
   const cerebroArchivo = usarArchivo();
   const numeroObras = numObras || cerebroArchivo.obrasPorPagina;

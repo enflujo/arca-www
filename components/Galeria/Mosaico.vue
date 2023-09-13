@@ -1,19 +1,24 @@
 <script setup lang="ts">
-const props = defineProps({
-  obras: Array,
-  pagina: Number,
-  cargarPagina: Function,
-  cargando: Boolean,
-});
+import type { ObraGaleria } from 'tipos';
+// POR HACER: imagen predeterminada si no hay imagen
+interface Props {
+  obras: ObraGaleria[];
+  pagina?: number;
+  cargarPagina?: (pagina: number) => void;
+  cargando?: boolean;
+}
 
-const siguientePagina = ref(null);
+const props = withDefaults(defineProps<Props>(), { cargando: false });
+const siguientePagina: Ref<HTMLDivElement | undefined> = ref();
 
 onMounted(() => {
-  if (props.cargarPagina) {
+  if (props.cargarPagina && props.pagina && siguientePagina.value) {
+    const { cargarPagina, pagina } = props;
+
     duranteInterseccion(
       siguientePagina.value,
       () => {
-        props.cargarPagina(props.pagina + 1);
+        cargarPagina(pagina + 1);
       },
       false
     );
@@ -27,7 +32,7 @@ onMounted(() => {
       <span class="registro">{{ obra.registro }}</span>
 
       <NuxtLink :to="`/obras/${obra.registro}`">
-        <ImagenArca class="imagen" :datos="obra.imagen" :titulo="obra.titulo" llave="galeria" />
+        <ImagenArca v-if="obra.imagen" class="imagen" :datos="obra.imagen" :titulo="obra.titulo" llave="galeria" />
       </NuxtLink>
 
       <div class="infoImagen">
@@ -37,15 +42,21 @@ onMounted(() => {
           </NuxtLink>
         </h3>
 
-        <NuxtLink v-if="obra.autores.length" class="autor" :to="`/autores/${obra.autores[0].autores_id.id}`">
-          {{ obra.autores[0].autores_id.nombre }} {{ obra.autores[0].autores_id.apellido }}
+        <NuxtLink
+          v-if="obra.autores.length"
+          v-for="autor in obra.autores"
+          :key="`autor${autor.autores_id.id}`"
+          class="autor"
+          :to="`/autores/${autor.autores_id.id}`"
+        >
+          {{ autor.autores_id.nombre }} {{ autor.autores_id.apellido }}
         </NuxtLink>
       </div>
     </div>
   </div>
 
-  <div ref="siguientePagina" class="siguientePagina" :class="cargando ? 'activo' : ''">
-    <p class="textoCargando">{{ `Cargando página ${props.pagina + 1}` }}</p>
+  <div v-if="pagina" ref="siguientePagina" class="siguientePagina" :class="cargando ? 'activo' : ''">
+    <p class="textoCargando">{{ `Cargando página ${pagina + 1}` }}</p>
   </div>
 </template>
 
@@ -55,11 +66,6 @@ onMounted(() => {
   flex-wrap: wrap;
   justify-content: center;
   background-color: var(--amarilloPetalo);
-
-  // &::after {
-  //   content: '';
-  //   flex: auto;
-  // }
 }
 
 .obra {

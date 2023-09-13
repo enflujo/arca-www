@@ -1,4 +1,4 @@
-import type { Categoria } from 'tipos';
+import type { Categoria, ObraGaleria } from 'tipos';
 import { apiBase } from '../config/general';
 
 /**
@@ -76,7 +76,15 @@ export function ordenarPorNombre(lista: { nombre: string }[]) {
 }
 
 export function aplanarCategorias(datosCategoria: Categoria, siguienteCategoria: number) {
-  const respuesta = {
+  type Respuesta = {
+    nombre: string;
+    slug: string;
+    numObras: number;
+    ancestro: number | null;
+    id: number;
+    [siguienteNivel: string]: any;
+  };
+  const respuesta: Respuesta = {
     nombre: datosCategoria.nombre,
     slug: datosCategoria.slug,
     numObras: datosCategoria.obras_func.count,
@@ -89,7 +97,7 @@ export function aplanarCategorias(datosCategoria: Categoria, siguienteCategoria:
 
     if (datosCategoria[siguienteNivel] && datosCategoria[siguienteNivel].length) {
       const nivel = siguienteCategoria + 1;
-      respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria) => {
+      respuesta[siguienteNivel] = datosCategoria[siguienteNivel].map((categoria: Categoria) => {
         return aplanarCategorias(categoria, nivel);
       });
     }
@@ -138,8 +146,9 @@ export const demorar = (funcion: (evento: any) => void, esperar: number) => {
   };
 };
 
-export function definirDimsImagen(obra) {
-  if (!obra.imagen && !obra.imagen.width && !obra.imagen.height) return;
+export function definirDimsImagen(obra: ObraGaleria) {
+  if (!obra.imagen) return;
+  if (!obra.imagen.width && !obra.imagen.height) return;
   obra.imagen.ancho = Math.round((obra.imagen.width / obra.imagen.height) * 200);
   obra.imagen.alto = 200;
   return obra;

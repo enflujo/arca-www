@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
-import type { Categoria, Pagina } from 'tipos';
+import type { Categoria } from 'tipos';
 import { usarArchivo } from '~/cerebros/archivo';
 import { usarGeneral } from '~/cerebros/general';
 import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';

@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { usarArchivo } from '~~/cerebros/archivo';
 
+interface Props {
+  vistaInicial: string;
+  vistas: string[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  vistaInicial: '',
+});
+
 const ruta = useRoute();
 const enrutador = useRouter();
-const props = defineProps({
-  vistaInicial: { type: String, default: '' },
-  vistas: { type: Array, default: () => [] },
-});
 const cerebroArchivo = usarArchivo();
 const posiblesVistas = ['mapa', 'abc', 'colombinas'];
 
 onMounted(() => {
-  if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
-    cerebroArchivo.vistaActual = ruta.query.vista;
+  if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista as string)) {
+    cerebroArchivo.vistaActual = ruta.query.vista as string;
   } else {
     cerebroArchivo.vistaActual = props.vistaInicial;
   }
@@ -21,15 +26,15 @@ onMounted(() => {
 watch(
   () => ruta.query,
   () => {
-    if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista)) {
-      cerebroArchivo.vistaActual = ruta.query.vista;
+    if (ruta.query.vista && posiblesVistas.includes(ruta.query.vista as string)) {
+      cerebroArchivo.vistaActual = ruta.query.vista as string;
     } else {
       cerebroArchivo.vistaActual = props.vistaInicial;
     }
   }
 );
 
-function cambiarVista(llave) {
+function cambiarVista(llave: string) {
   if (llave !== cerebroArchivo.vistaActual) {
     cerebroArchivo.vistaActual = llave;
     enrutador.push({

@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import { urlBuscador } from '~~/config/general';
+import { InstantMeiliSearchInstance, instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import { apiBase, urlBuscador } from '~~/config/general';
 import { usarGeneral } from '~~/cerebros/general';
 import { urlImagen } from '~~/utilidades/ayudas';
-const clienteBuscador = instantMeiliSearch(urlBuscador, '0dad4b83-fc4f-48ce-a656-f5ec7e6c3f49', {
-  // placeholderSearch: false,
-  primaryKey: 'registro',
-});
 
 const cerebroGeneral = usarGeneral();
 const resultados: Ref<HTMLDivElement | null> = ref(null);
+let clienteBuscador: InstantMeiliSearchInstance;
+const confirguracionBuscador = {
+  // placeholderSearch: false,
+  primaryKey: 'registro',
+};
+
+if (!cerebroGeneral.llaveBuscador) {
+  const llave = await fetch(`${apiBase}/arca-datos/llave-buscador`).then((res) => res.text());
+
+  if (llave) {
+    cerebroGeneral.llaveBuscador = llave;
+    clienteBuscador = instantMeiliSearch(urlBuscador, cerebroGeneral.llaveBuscador, confirguracionBuscador);
+  }
+} else {
+  clienteBuscador = instantMeiliSearch(urlBuscador, cerebroGeneral.llaveBuscador, confirguracionBuscador);
+}
 
 const campos = [
   ['registro', 'Registro'],

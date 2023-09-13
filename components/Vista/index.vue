@@ -2,7 +2,12 @@
 import { usarArchivo } from '~~/cerebros/archivo';
 import { indiceColeccion } from '~~/utilidades/queries';
 
-const props = defineProps({ coleccion: String, slug: String });
+interface Props {
+  coleccion: string;
+  slug: string;
+}
+
+const props = defineProps<Props>();
 const cerebroArchivo = usarArchivo();
 const datos = ref([]);
 const vistas = ref(['abc', 'colombinas']);

@@ -1,27 +1,31 @@
 <script setup lang="ts">
-defineProps({
-  coleccion: String,
-  datos: Object,
-});
+import type { AutorProcesado, PaginaArchivo, PersonajeProcesado } from 'tipos';
+
+interface Props {
+  coleccion: string;
+  datos: AutorProcesado | PersonajeProcesado | PaginaArchivo;
+}
+
+defineProps<Props>();
 </script>
 
 <template>
   <div id="informacion">
     <template v-if="coleccion === 'pagina'">
-      <section v-if="datos.contenido" class="seccion">
-        <div v-html="datos.contenido" class="infoContenido"></div>
+      <section v-if="(datos as PaginaArchivo).contenido" class="seccion">
+        <div v-html="(datos as PaginaArchivo).contenido" class="infoContenido"></div>
       </section>
     </template>
 
     <template v-else-if="coleccion === 'personajes'">
-      <section v-if="datos.muerte" class="seccion medio">
+      <section v-if="(datos as PersonajeProcesado).muerte" class="seccion medio">
         <h2>Muerte</h2>
         <div class="infoContenido">
-          <p>{{ datos.muerte }} {{ datos.muerte_anotacion }}</p>
+          <p>{{ (datos as PersonajeProcesado).muerte }} {{ (datos as PersonajeProcesado).muerte_anotacion }}</p>
         </div>
       </section>
 
-      <section v-if="datos.fechas.length" class="seccion medio">
+      <section v-if="(datos as PersonajeProcesado).fechas.length" class="seccion medio">
         <h2>Beatificación / Canonización</h2>
         <div class="infoContenido">
           <p>{{ datos.fechas.join(' - ') }}</p>

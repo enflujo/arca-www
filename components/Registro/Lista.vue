@@ -1,4 +1,6 @@
 <script setup lang="ts">
+interface Prpos {}
+
 const props = defineProps({
   datos: Array,
   titulo: String,

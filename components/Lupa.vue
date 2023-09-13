@@ -1,17 +1,27 @@
 <script setup lang="ts">
+import type { ImagenArca, Punto } from 'tipos';
 import { demorar, esperar, urlImagen } from '~/utilidades/ayudas';
 
-const props = defineProps({
-  datos: Object,
-  alt: String,
-  ancho: Number,
-  alto: Number,
-  anchoBorde: { default: 1.2 },
-  escala: { default: 1.5 },
-  bordeColor: { default: '#fff' },
-  desbordar: { default: true },
-  activado: { default: true },
-  tactoPos: { default: { x: -50, y: -50 } },
+interface Props {
+  datos: ImagenArca;
+  alt: string;
+  ancho?: number;
+  alto?: number;
+  anchoBorde?: number;
+  escala?: number;
+  bordeColor?: string;
+  desbordar?: boolean;
+  activado?: boolean;
+  tactoPos?: Punto;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  anchoBorde: 1.2,
+  escala: 1.5,
+  bordeColor: '#fff',
+  desbordar: true,
+  activado: true,
+  tactoPos: () => ({ x: -50, y: -50 }),
 });
 
 const img: Ref<HTMLImageElement | null> = ref(null);
@@ -57,11 +67,9 @@ const apagarLupa = () => {
   mostrarLupa.value = false;
 };
 
-const movimientoRaton = demorar((e: MouseEvent) => {
-  if (dims.value && e.target) {
-    const { target, clientX, clientY } = e;
+const movimientoRaton = demorar(({ target, clientX, clientY }: MouseEvent) => {
+  if (dims.value && target && target instanceof Element) {
     const { left, top } = dims.value;
-
     pos.value = {
       x: (clientX - left) / target.clientWidth,
       y: (clientY - top) / target.clientHeight,
@@ -81,7 +89,7 @@ const movimientoTacto = demorar((e) => {
     const y = (_y - top) / target.clientHeight;
 
     if (x >= 0 && y >= 0 && x <= 1 && y <= 1) {
-      mov.value = tactoPos;
+      mov.value = props.tactoPos;
       pos.value = { x, y };
       mostrarLupa.value = true;
     } else {

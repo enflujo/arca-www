@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { urlImagen } from '~/utilidades/ayudas';
-import type { Imagen } from 'tipos';
+import type { ImagenArca } from 'tipos';
 
 interface Props {
-  datos: Imagen;
+  datos: ImagenArca;
   titulo: string;
   llave: string;
-  rutaIcono: string;
+  rutaIcono?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,7 +20,7 @@ onMounted(() => {
   duranteInterseccion(
     imagen.value,
     () => {
-      if (imagen.value) imagen.value.src = urlImagen(props.datos.id, props.llave); // 554
+      if (imagen.value) imagen.value.src = urlImagen(props.datos.id, props.llave);
     },
     true,
     { threshold: 0.1 }

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-defineProps({
-  cambiarDatos: Function,
-  coleccion: String,
-});
+interface Props {
+  cambiarDatos: (coleccion: string) => void;
+  coleccion: string;
+}
+defineProps<Props>();
 
 const opciones = [
   { coleccion: 'paises', titulo: 'Países' },

@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { eliminarTildes } from '~~/utilidades/ayudas';
 
-const abc = ref([]);
-
 const props = defineProps({
   coleccion: String,
   datos: Array,
 });
+const abc = ref([]);
 
 watch(() => props.datos, procesarDatos);
 onMounted(procesarDatos);

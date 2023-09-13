@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import type { Pagina } from 'tipos';
 import { gql } from '~/utilidades/ayudas';
 
-const props = defineProps({ slug: String });
-const datos = ref();
+interface Props {
+  slug: string;
+}
+const props = defineProps<Props>();
+const datos: Ref<Pagina | null> = ref(null);
 
 const Pagina = gql`
 query {
@@ -28,6 +32,6 @@ if (paginas.length) {
 </script>
 
 <template>
-  <h1>{{ datos.titulo }}</h1>
-  <div class="contenidoPagina" v-html="datos.contenido"></div>
+  <h1 v-if="datos">{{ datos.titulo }}</h1>
+  <div v-if="datos" class="contenidoPagina" v-html="datos.contenido"></div>
 </template>

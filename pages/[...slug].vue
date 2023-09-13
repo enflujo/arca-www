@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { PaginaArchivo, usarGeneral } from '~/cerebros/general';
+import type { PaginaArchivo } from 'tipos';
+import { usarGeneral } from '~/cerebros/general';
 import { gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();

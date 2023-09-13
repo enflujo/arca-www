@@ -1,7 +1,8 @@
 <script setup lang="ts">
-defineProps({
-  vista: String,
-});
+interface Props {
+  vista: string;
+}
+defineProps<Props>();
 </script>
 
 <template>

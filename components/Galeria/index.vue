@@ -1,22 +1,33 @@
 <script setup lang="ts">
+import type {
+  Autor,
+  AutorProcesado,
+  Obra,
+  ObraEnRelacional,
+  ObraGaleria,
+  PaginaArchivo,
+  Personaje,
+  PersonajeProcesado,
+} from 'tipos';
 import { usarArchivo } from '~/cerebros/archivo';
 import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/queries';
 
-const props = defineProps({
-  coleccion: String,
-  slug: String,
-  nombreCampo: String,
-  enTablaRelacional: {
-    type: Boolean,
-    default: false,
-  },
-  singular: String,
+interface Props {
+  coleccion: string;
+  slug: string;
+  nombreCampo?: string;
+  enTablaRelacional?: boolean;
+  singular: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  enTablaRelacional: false,
 });
 
 const titulo: Ref<string> = ref('');
 
-const crearNombre = (datosAutor) => {
+const crearNombre = (datosAutor: Autor) => {
   const partesNombre = [];
   if (datosAutor.nombre) partesNombre.push(datosAutor.nombre);
   if (datosAutor.apellido) partesNombre.push(datosAutor.apellido);
@@ -29,17 +40,17 @@ const crearNombre = (datosAutor) => {
  */
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
-const datos = ref(null);
-const paginaActual = ref(ruta.query.pagina || 1);
+const datos: Ref<AutorProcesado | PersonajeProcesado | PaginaArchivo | undefined> = ref();
+const paginaActual = ref(+(ruta.query.pagina as string) || 1);
 const esId = /^\d+$/.test(props.slug);
 
-const respuesta = await obtenerDatos(
+const respuesta: { autores?: Autor[]; personajes?: Personaje[]; [coleccion: string]: any } = await obtenerDatos(
   `generalesColeccion${props.coleccion}`,
   datosGeneralesColeccion(props.coleccion, props.slug, esId)
 );
 
 const datosMeta =
-  props.coleccion === 'autores'
+  props.coleccion === 'autores' && respuesta.autores
     ? {
         nombre: crearNombre(respuesta.autores[0]),
         descripcion: respuesta.autores[0].biografia,
@@ -50,34 +61,35 @@ useHead(elementosCabeza(datosMeta, ruta.path)); // SEO
 
 titulo.value = respuesta[props.coleccion][0].nombre;
 
-if (props.coleccion === 'personajes') {
+if (props.coleccion === 'personajes' && respuesta.personajes) {
   datos.value = limpiarFechas(respuesta.personajes[0]);
-} else if (props.coleccion === 'autores') {
+} else if (props.coleccion === 'autores' && respuesta.autores) {
   datos.value = limpiarFechas(respuesta.autores[0]);
   titulo.value = crearNombre(respuesta.autores[0]);
 } else {
   datos.value = respuesta[props.coleccion][0];
 }
 
-function limpiarFechas(datosGenerales) {
-  let desde;
-  let desdeAnotacion;
-  let hasta;
-  let hastaAnotacion;
+function limpiarFechas(datosGenerales: Autor | Personaje): AutorProcesado | PersonajeProcesado {
+  let desde: string | null;
+  let desdeAnotacion: string | undefined;
+  let hasta: string | null;
+  let hastaAnotacion: string | undefined;
+  const respuesta: { fechas: [desde?: string, hasta?: string] } = { fechas: [] };
 
   if (props.coleccion === 'personajes') {
-    desde = datosGenerales.beatificacion_canonizacion_desde;
-    desdeAnotacion = datosGenerales.beatificacion_canonizacion_desde_anotacion;
-    hasta = datosGenerales.beatificacion_canonizacion_hasta;
-    hastaAnotacion = datosGenerales.beatificacion_canonizacion_hasta_anotacion;
+    const personaje = datosGenerales as Personaje;
+    desde = personaje.beatificacion_canonizacion_desde ? `${personaje.beatificacion_canonizacion_desde}` : null;
+    desdeAnotacion = personaje.beatificacion_canonizacion_desde_anotacion;
+    hasta = personaje.beatificacion_canonizacion_hasta ? `${personaje.beatificacion_canonizacion_hasta}` : null;
+    hastaAnotacion = personaje.beatificacion_canonizacion_hasta_anotacion;
   } else {
-    desde = datosGenerales.desde;
-    desdeAnotacion = datosGenerales.desde_anotacion;
-    hasta = datosGenerales.hasta;
-    hastaAnotacion = datosGenerales.hasta_anotacion;
+    const autor = datosGenerales as Autor;
+    desde = autor.desde ? `${autor.desde}` : null;
+    desdeAnotacion = autor.desde_anotacion;
+    hasta = autor.hasta ? `${autor.hasta}` : null;
+    hastaAnotacion = autor.hasta_anotacion;
   }
-
-  datosGenerales.fechas = [];
 
   if (desde || desdeAnotacion) {
     if (desde && desdeAnotacion) {
@@ -86,12 +98,12 @@ function limpiarFechas(datosGenerales) {
       desde = desdeAnotacion;
     }
 
-    datosGenerales.fechas.push(desde);
+    respuesta.fechas[0] = desde as string;
   }
 
   if (hasta || hastaAnotacion) {
-    if (datosGenerales.fechas.length === 0) {
-      datosGenerales.fechas.push('?');
+    if (respuesta.fechas.length === 0) {
+      respuesta.fechas.push('?');
     }
 
     if (hasta && hastaAnotacion) {
@@ -100,24 +112,27 @@ function limpiarFechas(datosGenerales) {
       hasta = hastaAnotacion;
     }
 
-    datosGenerales.fechas.push(hasta);
+    respuesta.fechas[1] = hasta as string;
   }
 
-  return datosGenerales;
+  return { ...datosGenerales, ...respuesta };
 }
 
 /**
  * Operaciones en el cliente
  */
-const obras = ref([]);
+const obras: Ref<ObraGaleria[]> = ref([]);
 const cargando = ref(false);
+
+if (!datos.value) throw createError({ statusCode: 404, statusMessage: 'No existen datos para esta galería' });
 
 const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
   datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, paginaActual.value, esId)
 );
 
-watch(data, (datosObras) => {
+watch(data, (datosObras: Obra[]) => {
+  console.log(datosObras);
   obras.value = limpiarDatos(datosObras);
 });
 
@@ -129,27 +144,28 @@ const numeroPaginas = computed(() => {
   }
 });
 
-function limpiarDatos(nuevosDatos) {
+function limpiarDatos(nuevosDatos: { [coleccion: string]: any }) {
   let respuesta;
   const datosObras = props.enTablaRelacional ? nuevosDatos[`obras_${props.coleccion}`] : nuevosDatos.obras;
 
   // Extraer las obras de colección directamente o de la tabla relacional.
   respuesta = !props.enTablaRelacional
     ? datosObras.map(definirDimsImagen)
-    : datosObras.map((obra) => definirDimsImagen(obra.obras_id));
+    : datosObras.map((obra: ObraEnRelacional) => definirDimsImagen(obra.obras_id));
 
   return respuesta;
 }
 
-function cargarPagina(pagina) {
+function cargarPagina(pagina: number) {
   if (pagina <= numeroPaginas.value) {
     cargando.value = true;
 
     obtenerDatos(
-      `obras-${datos.value.id}${pagina}`,
+      `obras-${datos.value?.id}${pagina}`,
       datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, pagina, esId)
     ).then((respuesta) => {
       obras.value = [...obras.value, ...limpiarDatos(respuesta)];
+      console.log(obras.value);
       paginaActual.value = pagina;
       cargando.value = false;
     });
@@ -161,8 +177,8 @@ function cargarPagina(pagina) {
 
 <template>
   <h1>{{ `${singular} - ${titulo}` }}</h1>
-  <GraficaContador :numeroObras="datos.obras_func.count" />
-  <GaleriaInformacion :coleccion="coleccion" :datos="datos" />
+  <GraficaContador v-if="datos" :numeroObras="datos.obras_func.count" />
+  <GaleriaInformacion v-if="datos" :coleccion="coleccion" :datos="datos" />
 
   <Cargador v-if="pending" />
   <GaleriaMosaico v-else :obras="obras" :pagina="paginaActual" :cargarPagina="cargarPagina" :cargando="cargando" />

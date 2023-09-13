@@ -22,14 +22,14 @@
     "@meilisearch/instant-meilisearch": "^0.13.5",
     "@pinia/nuxt": "^0.4.11",
     "mapbox-gl": "^2.15.0",
-    "nuxt": "^3.6.5",
-    "vue-instantsearch": "^4.10.9"
+    "nuxt": "^3.7.2",
+    "vue-instantsearch": "^4.10.10"
   },
   "devDependencies": {
     "@types/mapbox-gl": "^2.7.13",
-    "@types/node": "^20.5.0",
-    "prettier": "^3.0.2",
-    "sass": "^1.66.0"
+    "@types/node": "^20.6.0",
+    "prettier": "^3.0.3",
+    "sass": "^1.66.1"
   },
   "browserslist": {
     "production": [
