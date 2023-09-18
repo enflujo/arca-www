@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
+import type { DatosVistaGestos, DatosVistas } from '~/tipos';
 import { obtenerVariablesCSS } from '~/utilidades/ayudas';
 
 interface Props {
   coleccion: string;
-  datos: [];
+  datos: DatosVistas[] | DatosVistaGestos[];
 }
 const props = defineProps<Props>();
 
 const contenedor = ref(null);
-const datosOrdenados = ref([]);
-const maximoObras = ref(0);
-const seccionGrilla = ref(0);
+const datosOrdenados: Ref<DatosVistas[] | DatosVistaGestos[]> = ref([]);
+const maximoObras: Ref<number> = ref(0);
+const seccionGrilla: Ref<number> = ref(0);
 const colores = { min: obtenerVariablesCSS('--amarilloArena2'), max: obtenerVariablesCSS('--rojoCerezo') };
 
 let buscarColor: (valor: number) => string;
@@ -24,15 +25,15 @@ function procesarDatos() {
   /**
    * Ordenar por cantidad de obras.
    */
-  let ordenados = [];
+  let ordenados: DatosVistas[] | DatosVistaGestos[] = [];
   let maximo = 0;
   if (props.coleccion === 'gestos') {
-    ordenados = props.datos.sort((a, b) => {
+    ordenados = (props.datos as DatosVistaGestos[]).sort((a, b) => {
       const _b = Math.max(b.obras_gesto_1_func.count, b.obras_gesto_2_func.count, b.obras_gesto_3_func.count);
       const _a = Math.max(a.obras_gesto_1_func.count, a.obras_gesto_2_func.count, a.obras_gesto_3_func.count);
       return _b - _a;
     });
-    const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0];
+    const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0] as DatosVistaGestos;
     maximo = Math.max(+obras_gesto_1_func.count, +obras_gesto_2_func.count, +obras_gesto_3_func.count);
   } else {
     ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
@@ -83,19 +84,19 @@ function desactivar(evento: MouseEvent) {
         >
           <template v-if="coleccion === 'gestos'">
             <GraficaColombina
-              :ancho="anchoLinea(elemento.obras_gesto_1_func.count)"
-              :color="buscarColor(elemento.obras_gesto_1_func.count)"
-              :total="elemento.obras_gesto_1_func.count"
+              :ancho="anchoLinea((elemento as DatosVistaGestos).obras_gesto_1_func.count)"
+              :color="buscarColor((elemento as DatosVistaGestos).obras_gesto_1_func.count)"
+              :total="(elemento as DatosVistaGestos).obras_gesto_1_func.count"
             />
             <GraficaColombina
-              :ancho="anchoLinea(elemento.obras_gesto_2_func.count)"
-              :color="buscarColor(elemento.obras_gesto_2_func.count)"
-              :total="elemento.obras_gesto_2_func.count"
+              :ancho="anchoLinea((elemento as DatosVistaGestos).obras_gesto_2_func.count)"
+              :color="buscarColor((elemento as DatosVistaGestos).obras_gesto_2_func.count)"
+              :total="(elemento as DatosVistaGestos).obras_gesto_2_func.count"
             />
             <GraficaColombina
-              :ancho="anchoLinea(elemento.obras_gesto_3_func.count)"
-              :color="buscarColor(elemento.obras_gesto_3_func.count)"
-              :total="elemento.obras_gesto_3_func.count"
+              :ancho="anchoLinea((elemento as DatosVistaGestos).obras_gesto_3_func.count)"
+              :color="buscarColor((elemento as DatosVistaGestos).obras_gesto_3_func.count)"
+              :total="(elemento as DatosVistaGestos).obras_gesto_3_func.count"
             />
           </template>
           <template v-else>

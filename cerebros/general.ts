@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import type { Imagen, Pagina, PaginaArchivo } from 'tipos';
-import { gql } from '~~/utilidades/ayudas';
+import type { Imagen, Pagina, PaginaArchivo } from '~/tipos';
+import { gql } from '~/utilidades/ayudas';
 
 export type ColecionRelacionada = { campo: string; coleccionRelacionada: string };
 export type Campo = { titulo: string; campo: string };

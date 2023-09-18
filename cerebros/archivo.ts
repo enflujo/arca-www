@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-import type { Categoria } from 'tipos';
+import type { Categoria, Vistas } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 export type CerebroArchivo = {
   obrasPorPagina: number;
-  vistaActual: string;
+  vistaActual: Vistas;
   datosCategorias?: Categoria[];
 };
 
@@ -12,7 +12,7 @@ export const usarArchivo = defineStore('archivo', {
   state: () =>
     ({
       obrasPorPagina: 25,
-      vistaActual: '',
+      vistaActual: 'abc',
     }) as CerebroArchivo,
 
   actions: {

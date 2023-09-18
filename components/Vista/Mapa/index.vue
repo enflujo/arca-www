@@ -1,19 +1,24 @@
 <script setup lang="ts">
+import type { FeatureCollection } from 'geojson';
 import mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import iconoImagen from '~~/assets/imgs/icono-imagen.svg';
+import iconoImagen from '~/assets/imgs/icono-imagen.svg';
 
-const contenedorMapa = ref(null);
-const props = defineProps({
-  paises: Object,
-  ubicaciones: Object,
-  max: Number,
-});
-const coleccionActual = ref(null);
+interface Props {
+  max: number;
+  paises: FeatureCollection;
+  ubicaciones: FeatureCollection;
+}
+
+const props = defineProps<Props>();
+const contenedorMapa: Ref<HTMLDivElement | null> = ref(null);
+const coleccionActual: Ref<string | null> = ref(null);
 const datosCajon = reactive({ id: null, obras: 0 });
-const cajonAbierto = ref(false);
+const cajonAbierto: Ref<boolean> = ref(false);
 
 onMounted(() => {
+  if (!contenedorMapa.value) return;
+
   const estilo = 'mapbox://styles/enflujo/clbmr4ink000314lg4hi2hcm1/draft';
   mapbox.accessToken = 'pk.eyJ1IjoiZW5mbHVqbyIsImEiOiJjbDNrOXNndXQwMnZsM2lvNDd4N2x0M3dvIn0.eWs4BHs67PcETEUI00T66Q';
 
@@ -160,8 +165,8 @@ onMounted(() => {
 
     // Lienzo donde están pintados los datos.
     const lienzo = mapa.getCanvas();
-    let idElementoEncima = null;
-    let fuenteElementoEncima = null;
+    let idElementoEncima: string | null = null;
+    let fuenteElementoEncima: string | null = null;
 
     /**
      * 🐁 Eventos del ratón.
