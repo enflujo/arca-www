@@ -1,5 +1,5 @@
 import { gql } from './ayudas';
-import { usarArchivo } from '~~/cerebros/archivo';
+import { usarArchivo } from '~/cerebros/archivo';
 
 const coleccionesSinDescripcion = ['paises', 'ciudades', 'ubicaciones'];
 /**

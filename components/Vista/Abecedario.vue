@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { eliminarTildes } from '~~/utilidades/ayudas';
+import { eliminarTildes } from '~/utilidades/ayudas';
 
 const props = defineProps({
   coleccion: String,

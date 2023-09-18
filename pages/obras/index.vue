@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { gql } from '~~/utilidades/ayudas';
+import { gql } from '~/utilidades/ayudas';
 
 const total = ref(0);
 const Obras = gql`

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Obra } from 'tipos';
+import type { ObraGaleria } from '~/tipos';
 import { datosObrasGaleria } from '~/utilidades/queries';
 
 interface ObraInformacionBasica {
@@ -18,7 +18,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const datosColeccion: Ref<Obra[] | undefined> = ref();
+const datosColeccion: Ref<ObraGaleria[] | undefined> = ref();
 const query = computed(() => {
   const nombreCampo = props.coleccion === 'paises' ? 'pais' : 'ubicacion';
   return datosObrasGaleria(props.coleccion, nombreCampo, props.datos.id, false, 1, true, 10);

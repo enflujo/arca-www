@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { usarArchivo } from '~~/cerebros/archivo';
-import { indiceColeccion } from '~~/utilidades/queries';
+import { usarArchivo } from '~/cerebros/archivo';
+import type { Vistas } from '~/tipos';
+import { indiceColeccion } from '~/utilidades/queries';
 
 interface Props {
   coleccion: string;
@@ -10,13 +11,13 @@ interface Props {
 const props = defineProps<Props>();
 const cerebroArchivo = usarArchivo();
 const datos = ref([]);
-const vistas = ref(['abc', 'colombinas']);
-const vistaInicial = ref('abc');
+const vistas: Ref<Vistas[]> = ref(['abc', 'colombinas']);
+const vistaInicial: Ref<Vistas> = ref('abc');
 const datosMapa = ref(null);
 const datosLugares = reactive({ ubicaciones: [], ciudades: [], paises: [] });
 const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
-const coleccionActual = ref(props.coleccion);
-const cargando = ref(false);
+const coleccionActual: Ref<string> = ref(props.coleccion);
+const cargando: Ref<boolean> = ref(false);
 
 watch(data, (respuesta) => {
   datos.value = procesarDatos(respuesta);

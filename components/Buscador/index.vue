@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { InstantMeiliSearchInstance, instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import { apiBase, urlBuscador } from '~~/config/general';
-import { usarGeneral } from '~~/cerebros/general';
-import { urlImagen } from '~~/utilidades/ayudas';
+import { apiBase, urlBuscador } from '~/config/general';
+import { usarGeneral } from '~/cerebros/general';
+import { urlImagen } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
 const resultados: Ref<HTMLDivElement | null> = ref(null);
@@ -54,7 +54,9 @@ const campos = [
 function cerrar(evento: MouseEvent) {
   if (!evento.target) return;
 
-  if (evento.target.id === 'buscador' || evento.target.id === 'botonCerrar') {
+  const { id } = evento.target as HTMLElement;
+
+  if (id === 'buscador' || id === 'botonCerrar') {
     cerebroGeneral.buscadorVisible = false;
   }
 }

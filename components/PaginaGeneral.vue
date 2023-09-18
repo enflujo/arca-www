@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Pagina } from 'tipos';
+import type { Pagina } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 interface Props {

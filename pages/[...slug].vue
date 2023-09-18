@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PaginaArchivo } from 'tipos';
+import type { PaginaArchivo } from '~/tipos';
 import { usarGeneral } from '~/cerebros/general';
 import { gql } from '~/utilidades/ayudas';
 

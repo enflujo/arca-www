@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { usarGeneral } from '~~/cerebros/general';
-import { gql, urlImagen } from '~~/utilidades/ayudas';
+import { usarGeneral } from '~/cerebros/general';
+import { gql, urlImagen } from '~/utilidades/ayudas';
 
 type Seccion = { titulo: string; texto: string };
 type Pagina = { titulo: string; slug: string; secciones: Seccion[] };

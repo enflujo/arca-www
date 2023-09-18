@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Pagina } from 'tipos';
-import { gql } from '~~/utilidades/ayudas';
+import type { Pagina } from '~/tipos';
+import { gql } from '~/utilidades/ayudas';
 
 export interface Informacion extends Pagina {
   secciones: { titulo: string; texto: string }[];

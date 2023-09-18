@@ -1,4 +1,4 @@
-import type { Categoria, ObraGaleria } from 'tipos';
+import type { Categoria, ObraGaleria } from '~/tipos';
 import { apiBase } from '../config/general';
 
 /**

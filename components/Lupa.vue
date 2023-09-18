@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ImagenArca, Punto } from 'tipos';
+import type { ImagenArca, Punto } from '~/tipos';
 import { demorar, esperar, urlImagen } from '~/utilidades/ayudas';
 
 interface Props {

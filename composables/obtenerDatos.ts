@@ -1,4 +1,4 @@
-import { apiBase } from '~~/config/general';
+import { apiBase } from '~/config/general';
 
 /**
  * Hace llamado a la base de datos de Directus en Graphql.

@@ -8,10 +8,10 @@ import type {
   PaginaArchivo,
   Personaje,
   PersonajeProcesado,
-} from 'tipos';
+} from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
 import { definirDimsImagen } from '~/utilidades/ayudas';
-import { datosGeneralesColeccion, datosObrasGaleria } from '~~/utilidades/queries';
+import { datosGeneralesColeccion, datosObrasGaleria } from '~/utilidades/queries';
 
 interface Props {
   coleccion: string;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ObraGaleria } from 'tipos';
+import type { ObraGaleria } from '~/tipos';
 // POR HACER: imagen predeterminada si no hay imagen
 interface Props {
   obras: ObraGaleria[];

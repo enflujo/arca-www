@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { urlImagen } from '~/utilidades/ayudas';
-import type { ImagenArca } from 'tipos';
+import type { ImagenArca } from '~/tipos';
 
 interface Props {
   datos: ImagenArca;

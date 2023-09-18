@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
-import { obtenerVariablesCSS } from '~~/utilidades/ayudas';
+import { obtenerVariablesCSS } from '~/utilidades/ayudas';
 
 interface Props {
   coleccion: string;

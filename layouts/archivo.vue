@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usarGeneral } from '~~/cerebros/general';
+import { usarGeneral } from '~/cerebros/general';
 
 const cerebro = usarGeneral();
 const menuVisible = ref(false);

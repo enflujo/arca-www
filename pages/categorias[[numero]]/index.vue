@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
-import type { Categoria } from 'tipos';
+import type { Categoria } from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
 import { usarGeneral } from '~/cerebros/general';
 import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';
@@ -145,7 +145,7 @@ function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
     datosCategoria.mostrarSubCategoria = false;
     return;
   } else if (!datosCategoria.mostrarSubCategoria && datosCategoria[nivel2]) {
-    // Los datos existen y esta cerrado, abriro sin hacer un nuevo query.
+    // Los datos existen y esta cerrado, abrirlo sin hacer un nuevo query.
     datosCategoria.mostrarSubCategoria = true;
     return;
   }
