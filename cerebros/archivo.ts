@@ -1,12 +1,19 @@
 import { defineStore } from 'pinia';
+import type { Categoria, Vistas } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
+export type CerebroArchivo = {
+  obrasPorPagina: number;
+  vistaActual: Vistas;
+  datosCategorias?: Categoria[];
+};
+
 export const usarArchivo = defineStore('archivo', {
-  state: () => ({
-    obrasPorPagina: 25,
-    vistaActual: '',
-    datosCategorias: null,
-  }),
+  state: () =>
+    ({
+      obrasPorPagina: 25,
+      vistaActual: 'abc',
+    }) as CerebroArchivo,
 
   actions: {
     async cargarDatosCategorias() {

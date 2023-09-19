@@ -1,10 +1,13 @@
-<script setup>
-defineProps({
-  cambiarDatos: Function,
-  coleccion: String,
-});
+<script setup lang="ts">
+import type { TiposLugares } from '~/tipos';
 
-const opciones = [
+interface Props {
+  cambiarDatos: (tipoLugar: TiposLugares) => Promise<void>;
+  coleccion: string;
+}
+defineProps<Props>();
+
+const opciones: { coleccion: TiposLugares; titulo: string }[] = [
   { coleccion: 'paises', titulo: 'Países' },
   { coleccion: 'ciudades', titulo: 'Ciudades' },
   { coleccion: 'ubicaciones', titulo: 'Ubicaciones' },

@@ -1,6 +1,6 @@
-import { usarGeneral } from '~~/cerebros/general';
-import { urlBase } from '~~/config/general';
-import { urlImagen } from '~~/utilidades/ayudas';
+import { usarGeneral } from '~/cerebros/general';
+import { urlBase } from '~/config/general';
+import { urlImagen } from '~/utilidades/ayudas';
 
 export type ImagenDirectus = {
   id?: number;
@@ -25,7 +25,7 @@ export type DatosPagina = {
  * ```
  * @param datosPagina Los datos para SEO.
  * @param datosPagina.nombre El título de la página actual.
- * @param datosPagina.descripcion La descripción corta de la página actual.
+ * @param datosPagina.descripción La descripción corta de la página actual.
  * @param datosPagina.banner Objeto con `id` y `title` que describe la imagen en el API.
  * @param ruta Ruta de la página actual, se puede sacar con `ruta.path`.
  * @returns El objeto con todas las partes de meta tags.

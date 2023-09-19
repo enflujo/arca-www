@@ -1,16 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
 
-const props = defineProps({ visible: Boolean, cerrar: Function });
+interface Props {
+  visible: boolean;
+  cerrar: () => void;
+}
+
+const props = defineProps<Props>();
 const ruta = useRoute();
-const contenedorMenu = ref(null);
+const contenedorMenu: Ref<HTMLElement | undefined> = ref();
 const cerebroGeneral = usarGeneral();
 
 const paginasVisibles = computed(() => {
   return cerebroGeneral.paginasArchivo.filter((pagina) => pagina.mostrar_en_menu);
 });
 
-const esRutaActual = (slug) => {
+const esRutaActual = (slug: string) => {
   const partes = ruta.path.split('/');
 
   if (!partes[1]) return false;
@@ -29,8 +34,10 @@ onUnmounted(() => {
   document.body.removeEventListener('click', clicFuera);
 });
 
-function clicFuera(evento) {
-  if (!(contenedorMenu.value === evento.target || contenedorMenu.value.contains(evento.target))) {
+function clicFuera(evento: MouseEvent) {
+  if (!contenedorMenu.value) return;
+  const elemento = evento.target as HTMLElement;
+  if (!(contenedorMenu.value === elemento || contenedorMenu.value.contains(elemento))) {
     props.cerrar();
   }
 }

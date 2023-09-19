@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
   ancho: Number,
   alto: { type: Number, default: 3 },

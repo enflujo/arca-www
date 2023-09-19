@@ -1,21 +1,42 @@
 import { defineStore } from 'pinia';
-import { gql } from '~~/utilidades/ayudas';
+import type { Imagen, Pagina, PaginaArchivo } from '~/tipos';
+import { gql } from '~/utilidades/ayudas';
+
+export type ColecionRelacionada = { campo: string; coleccionRelacionada: string };
+export type Campo = { titulo: string; campo: string };
+
+export type CerebroGeneral = {
+  datosCargados: boolean;
+  paginas: Pagina[];
+  paginasArchivo: PaginaArchivo[];
+  filtro: string;
+  titulo: string;
+  banner?: Imagen;
+  descripcion: string;
+  guardaescobas: string;
+  buscadorVisible: boolean;
+  busquedaActual: string;
+  relaciones: ColecionRelacionada[];
+  campos: Campo[];
+  llaveBuscador: string | null;
+};
 
 export const usarGeneral = defineStore('general', {
-  state: () => ({
-    datosCargados: false,
-    paginas: [],
-    paginasArchivo: [],
-    filtro: '',
-    titulo: '',
-    banner: null,
-    descripcion: '',
-    guardaescobas: '',
-    buscadorVisible: false,
-    busquedaActual: '',
-    relaciones: [],
-    campos: [],
-  }),
+  state: () =>
+    ({
+      datosCargados: false,
+      paginas: [],
+      paginasArchivo: [],
+      filtro: '',
+      titulo: '',
+      descripcion: '',
+      guardaescobas: '',
+      buscadorVisible: false,
+      busquedaActual: '',
+      relaciones: [],
+      campos: [],
+      llaveBuscador: null,
+    }) as CerebroGeneral,
 
   actions: {
     async cargarGeneral() {
@@ -45,6 +66,7 @@ export const usarGeneral = defineStore('general', {
           }
         }
       `;
+
       const { general, paginas, paginas_archivo } = await obtenerDatos('general', General);
 
       this.paginas = paginas;
@@ -68,7 +90,7 @@ export const usarGeneral = defineStore('general', {
 
       const { relations_in_collection } = await obtenerDatos('relaciones', Relaciones, true);
 
-      this.relaciones = relations_in_collection.map((relacion) => {
+      this.relaciones = relations_in_collection.map((relacion: { related_collection: string; field: string }) => {
         return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
       });
     },

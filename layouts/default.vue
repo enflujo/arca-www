@@ -1,10 +1,12 @@
-<script setup>
-import { usarGeneral } from '~~/cerebros/general';
+<script setup lang="ts">
+import { usarGeneral } from '~/cerebros/general';
 
 const cerebro = usarGeneral();
 
 if (!cerebro.datosCargados) {
-  await useAsyncData('general', cerebro.cargarGeneral);
+  console.log(cerebro.datosCargados);
+  // await useAsyncData('general', cerebro.cargarGeneral);
+  await cerebro.cargarGeneral();
 }
 </script>
 

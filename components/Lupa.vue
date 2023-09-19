@@ -1,22 +1,32 @@
-<script setup>
+<script setup lang="ts">
+import type { ImagenArca, Punto } from '~/tipos';
 import { demorar, esperar, urlImagen } from '~/utilidades/ayudas';
 
-const props = defineProps({
-  datos: Object,
-  alt: String,
-  ancho: Number,
-  alto: Number,
-  anchoBorde: { default: 1.2 },
-  escala: { default: 1.5 },
-  bordeColor: { default: '#fff' },
-  desbordar: { default: true },
-  activado: { default: true },
-  tactoPos: { default: { x: -50, y: -50 } },
+interface Props {
+  datos: ImagenArca;
+  alt: string;
+  ancho?: number;
+  alto?: number;
+  anchoBorde?: number;
+  escala?: number;
+  bordeColor?: string;
+  desbordar?: boolean;
+  activado?: boolean;
+  tactoPos?: Punto;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  anchoBorde: 1.2,
+  escala: 1.5,
+  bordeColor: '#fff',
+  desbordar: true,
+  activado: true,
+  tactoPos: () => ({ x: -50, y: -50 }),
 });
 
-const img = ref(null);
-const lupa = ref(null);
-const dims = ref(null);
+const img: Ref<HTMLImageElement | null> = ref(null);
+const lupa: Ref<HTMLDivElement | null> = ref(null);
+const dims: Ref<DOMRect | null> = ref(null);
 const mostrarLupa = ref(false);
 const mov = ref({ x: 0, y: 0 });
 const pos = ref({ x: 0, y: 0 });
@@ -57,11 +67,9 @@ const apagarLupa = () => {
   mostrarLupa.value = false;
 };
 
-const movimientoRaton = demorar((e) => {
-  if (dims.value) {
-    const { target, clientX, clientY } = e;
+const movimientoRaton = demorar(({ target, clientX, clientY }: MouseEvent) => {
+  if (dims.value && target && target instanceof Element) {
     const { left, top } = dims.value;
-
     pos.value = {
       x: (clientX - left) / target.clientWidth,
       y: (clientY - top) / target.clientHeight,
@@ -81,7 +89,7 @@ const movimientoTacto = demorar((e) => {
     const y = (_y - top) / target.clientHeight;
 
     if (x >= 0 && y >= 0 && x <= 1 && y <= 1) {
-      mov.value = tactoPos;
+      mov.value = props.tactoPos;
       pos.value = { x, y };
       mostrarLupa.value = true;
     } else {
@@ -93,19 +101,23 @@ const movimientoTacto = demorar((e) => {
 const calcularDimsImgEsperando = esperar(calcularDimsImg, 200);
 
 onMounted(() => {
-  const imagen = new Image();
-  imagen.onload = () => {
-    if (!img.value) return;
-    img.value.src = imagen.src;
-  };
-  imagen.src = urlImagen(props.datos.id, 'obra');
+  if (props.datos) {
+    const imagen = new Image();
+    imagen.onload = () => {
+      if (!img.value) return;
+      img.value.src = imagen.src;
+    };
+    imagen.src = urlImagen(props.datos.id, 'obra');
 
-  window.addEventListener('resize', calcularDimsImgEsperando);
-  window.addEventListener('scroll', calcularDimsImgEsperando, true);
+    window.addEventListener('resize', calcularDimsImgEsperando);
+    window.addEventListener('scroll', calcularDimsImgEsperando, true);
 
-  Object.assign(lupa.value.style, {
-    backgroundImage: `url(${imagen.src})`,
-  });
+    if (lupa.value) {
+      Object.assign(lupa.value.style, {
+        backgroundImage: `url(${imagen.src})`,
+      });
+    }
+  }
 });
 
 onUnmounted(() => {

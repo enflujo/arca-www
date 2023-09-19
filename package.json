@@ -18,17 +18,19 @@
     "server:restart": "pm2 restart ecosystem.config.js"
   },
   "dependencies": {
-    "@enflujo/alquimia": "^1.0.5",
-    "@meilisearch/instant-meilisearch": "^0.11.1",
-    "@pinia/nuxt": "^0.4.9",
-    "mapbox-gl": "^2.14.1",
-    "nuxt": "^3.4.3",
-    "vue-instantsearch": "^4.9.0"
+    "@enflujo/alquimia": "^2.0.0",
+    "@meilisearch/instant-meilisearch": "^0.13.5",
+    "@pinia/nuxt": "^0.4.11",
+    "mapbox-gl": "^2.15.0",
+    "nuxt": "^3.7.3",
+    "vue-instantsearch": "^4.10.11"
   },
   "devDependencies": {
-    "@types/node": "^18.16.3",
-    "prettier": "^2.8.8",
-    "sass": "^1.62.1"
+    "@types/geojson": "^7946.0.10",
+    "@types/mapbox-gl": "^2.7.14",
+    "@types/node": "^20.6.2",
+    "prettier": "^3.0.3",
+    "sass": "^1.67.0"
   },
   "browserslist": {
     "production": [

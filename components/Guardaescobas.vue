@@ -1,14 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { usarGeneral } from '@/cerebros/general';
 
-const general = usarGeneral();
+interface Props {
+  completo: boolean;
+}
 
-const props = defineProps({
-  completo: {
-    type: Boolean,
-    default: true,
-  },
-});
+withDefaults(defineProps<Props>(), { completo: true });
+
+const general = usarGeneral();
 </script>
 
 <template>

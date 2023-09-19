@@ -1,9 +1,12 @@
-<script setup>
-const props = defineProps({
-  datos: Array,
-  titulo: String,
-  punto: Object,
-});
+<script setup lang="ts">
+import type { Feature, Point } from 'geojson';
+
+interface Props {
+  datos?: { url: string; nombre: string }[];
+  punto?: Feature<Point>;
+  titulo: string;
+}
+defineProps<Props>();
 </script>
 
 <template>

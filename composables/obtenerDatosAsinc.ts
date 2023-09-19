@@ -1,4 +1,4 @@
-import { apiBase } from '~~/config/general';
+import { apiBase } from '~/config/general';
 
 /**
  * Registra un llamado a la base de datos para resolver asincrónicamente.

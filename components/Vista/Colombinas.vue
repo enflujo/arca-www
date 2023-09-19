@@ -1,21 +1,22 @@
-<script setup>
+<script setup lang="ts">
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
-import { obtenerVariablesCSS } from '~~/utilidades/ayudas';
+import type { DatosVistaGestos, DatosVistas } from '~/tipos';
+import { obtenerVariablesCSS } from '~/utilidades/ayudas';
+
+interface Props {
+  coleccion: string;
+  datos: DatosVistas[] | DatosVistaGestos[];
+}
+const props = defineProps<Props>();
 
 const contenedor = ref(null);
-
-const datosOrdenados = ref([]);
-const maximoObras = ref(0);
-const seccionGrilla = ref(0);
+const datosOrdenados: Ref<DatosVistas[] | DatosVistaGestos[]> = ref([]);
+const maximoObras: Ref<number> = ref(0);
+const seccionGrilla: Ref<number> = ref(0);
 const colores = { min: obtenerVariablesCSS('--amarilloArena2'), max: obtenerVariablesCSS('--rojoCerezo') };
 
-let buscarColor;
-let anchoLinea;
-
-const props = defineProps({
-  datos: Array,
-  coleccion: String,
-});
+let buscarColor: (valor: number) => string;
+let anchoLinea: (cantidad: number) => number;
 
 watch(() => props.datos, procesarDatos);
 onMounted(procesarDatos);
@@ -24,15 +25,15 @@ function procesarDatos() {
   /**
    * Ordenar por cantidad de obras.
    */
-  let ordenados = [];
+  let ordenados: DatosVistas[] | DatosVistaGestos[] = [];
   let maximo = 0;
   if (props.coleccion === 'gestos') {
-    ordenados = props.datos.sort((a, b) => {
+    ordenados = (props.datos as DatosVistaGestos[]).sort((a, b) => {
       const _b = Math.max(b.obras_gesto_1_func.count, b.obras_gesto_2_func.count, b.obras_gesto_3_func.count);
       const _a = Math.max(a.obras_gesto_1_func.count, a.obras_gesto_2_func.count, a.obras_gesto_3_func.count);
       return _b - _a;
     });
-    const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0];
+    const { obras_gesto_1_func, obras_gesto_2_func, obras_gesto_3_func } = ordenados[0] as DatosVistaGestos;
     maximo = Math.max(+obras_gesto_1_func.count, +obras_gesto_2_func.count, +obras_gesto_3_func.count);
   } else {
     ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
@@ -42,21 +43,25 @@ function procesarDatos() {
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;
 
   buscarColor = escalaColores(1, maximo, colores.min, colores.max);
-  anchoLinea = (cantidad) => convertirEscala(cantidad, 0, maximoGrilla, 0, 100) | 0;
+  anchoLinea = (cantidad: number) => convertirEscala(cantidad, 0, maximoGrilla, 0, 100) | 0;
 
   seccionGrilla.value = maximoGrilla / 10;
   maximoObras.value = maximo;
   datosOrdenados.value = ordenados;
 }
 
-function activar(evento) {
-  const elemento = evento.target;
-  elemento.classList.add('activo');
+function activar(evento: MouseEvent) {
+  if (evento.target instanceof Element) {
+    const elemento = evento.target;
+    elemento.classList.add('activo');
+  }
 }
 
-function desactivar(evento) {
-  const elemento = evento.target;
-  elemento.classList.remove('activo');
+function desactivar(evento: MouseEvent) {
+  if (evento.target instanceof Element) {
+    const elemento = evento.target;
+    elemento.classList.remove('activo');
+  }
 }
 </script>
 
@@ -79,19 +84,19 @@ function desactivar(evento) {
         >
           <template v-if="coleccion === 'gestos'">
             <GraficaColombina
-              :ancho="anchoLinea(elemento.obras_gesto_1_func.count)"
-              :color="buscarColor(elemento.obras_gesto_1_func.count)"
-              :total="elemento.obras_gesto_1_func.count"
+              :ancho="anchoLinea((elemento as DatosVistaGestos).obras_gesto_1_func.count)"
+              :color="buscarColor((elemento as DatosVistaGestos).obras_gesto_1_func.count)"
+              :total="(elemento as DatosVistaGestos).obras_gesto_1_func.count"
             />
             <GraficaColombina
-              :ancho="anchoLinea(elemento.obras_gesto_2_func.count)"
-              :color="buscarColor(elemento.obras_gesto_2_func.count)"
-              :total="elemento.obras_gesto_2_func.count"
+              :ancho="anchoLinea((elemento as DatosVistaGestos).obras_gesto_2_func.count)"
+              :color="buscarColor((elemento as DatosVistaGestos).obras_gesto_2_func.count)"
+              :total="(elemento as DatosVistaGestos).obras_gesto_2_func.count"
             />
             <GraficaColombina
-              :ancho="anchoLinea(elemento.obras_gesto_3_func.count)"
-              :color="buscarColor(elemento.obras_gesto_3_func.count)"
-              :total="elemento.obras_gesto_3_func.count"
+              :ancho="anchoLinea((elemento as DatosVistaGestos).obras_gesto_3_func.count)"
+              :color="buscarColor((elemento as DatosVistaGestos).obras_gesto_3_func.count)"
+              :total="(elemento as DatosVistaGestos).obras_gesto_3_func.count"
             />
           </template>
           <template v-else>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usarGeneral } from '@/cerebros/general';
 
 const general = usarGeneral();

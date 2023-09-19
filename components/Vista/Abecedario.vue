@@ -1,18 +1,20 @@
-<script setup>
-import { eliminarTildes } from '~~/utilidades/ayudas';
+<script setup lang="ts">
+import type { DatosVistas, Abecedario } from '~/tipos';
+import { eliminarTildes } from '~/utilidades/ayudas';
 
-const abc = ref([]);
+interface Props {
+  coleccion: string;
+  datos: DatosVistas[];
+}
 
-const props = defineProps({
-  coleccion: String,
-  datos: Array,
-});
+const props = defineProps<Props>();
+const abc: Ref<Abecedario> = ref([]);
 
 watch(() => props.datos, procesarDatos);
 onMounted(procesarDatos);
 
 function procesarDatos() {
-  let llave = 'slug';
+  let llave: 'slug' | 'nombre' | 'apellido' = 'slug';
 
   if (props.coleccion === 'autores') {
     llave = 'apellido';
@@ -20,10 +22,11 @@ function procesarDatos() {
     llave = 'nombre';
   }
 
-  const respuesta = [];
+  const respuesta: Abecedario = [];
 
   props.datos.forEach((instancia) => {
-    const primeraLetra = eliminarTildes(instancia[llave].charAt(0)).toLowerCase();
+    if (!instancia[llave]) return;
+    const primeraLetra = eliminarTildes((instancia[llave] as string).charAt(0)).toLowerCase();
     let elementosLetra = respuesta.find((obj) => obj.letra === primeraLetra);
 
     if (!elementosLetra) {

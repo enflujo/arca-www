@@ -1,13 +1,17 @@
-<script setup>
+<script setup lang="ts">
+import type { ObraGaleria, ObraInformacionBasica } from '~/tipos';
 import { datosObrasGaleria } from '~/utilidades/queries';
 
-const props = defineProps({
-  datos: Object,
-  coleccion: String,
-  abierto: Boolean,
-  cerrarCajon: Function,
-});
-const datosColeccion = ref('');
+interface Props {
+  datos: ObraInformacionBasica;
+  coleccion: string;
+  abierto: boolean;
+  cerrarCajon: () => void;
+}
+
+const props = defineProps<Props>();
+
+const datosColeccion: Ref<ObraGaleria[] | undefined> = ref();
 const query = computed(() => {
   const nombreCampo = props.coleccion === 'paises' ? 'pais' : 'ubicacion';
   return datosObrasGaleria(props.coleccion, nombreCampo, props.datos.id, false, 1, true, 10);

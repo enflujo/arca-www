@@ -1,19 +1,26 @@
-<script setup>
+<script setup lang="ts">
+import type { FeatureCollection, Point } from 'geojson';
 import mapbox from 'mapbox-gl';
+import type { GeoJSONSource } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import iconoImagen from '~~/assets/imgs/icono-imagen.svg';
+import iconoImagen from '~/assets/imgs/icono-imagen.svg';
+import type { ObraInformacionBasica } from '~/tipos';
 
-const contenedorMapa = ref(null);
-const props = defineProps({
-  paises: Object,
-  ubicaciones: Object,
-  max: Number,
-});
-const coleccionActual = ref(null);
-const datosCajon = reactive({ id: null, obras: 0 });
-const cajonAbierto = ref(false);
+interface Props {
+  max: number;
+  paises: FeatureCollection;
+  ubicaciones: FeatureCollection;
+}
+
+const props = defineProps<Props>();
+const contenedorMapa: Ref<HTMLDivElement | null> = ref(null);
+const coleccionActual: Ref<string | null> = ref(null);
+const datosCajon: ObraInformacionBasica = reactive({ id: '', obras: 0 });
+const cajonAbierto: Ref<boolean> = ref(false);
 
 onMounted(() => {
+  if (!contenedorMapa.value) return;
+
   const estilo = 'mapbox://styles/enflujo/clbmr4ink000314lg4hi2hcm1/draft';
   mapbox.accessToken = 'pk.eyJ1IjoiZW5mbHVqbyIsImEiOiJjbDNrOXNndXQwMnZsM2lvNDd4N2x0M3dvIn0.eWs4BHs67PcETEUI00T66Q';
 
@@ -160,8 +167,8 @@ onMounted(() => {
 
     // Lienzo donde están pintados los datos.
     const lienzo = mapa.getCanvas();
-    let idElementoEncima = null;
-    let fuenteElementoEncima = null;
+    let idElementoEncima: string | null = null;
+    let fuenteElementoEncima: string | null = null;
 
     /**
      * 🐁 Eventos del ratón.
@@ -180,7 +187,7 @@ onMounted(() => {
         // Referencia al elemento
         const { properties, source } = elementos[0];
         // Identificador del elemento dentro de mapbox.
-        const id = properties.cluster_id ? properties.cluster_id : properties.id;
+        const id = properties?.cluster_id ? properties.cluster_id : properties?.id;
 
         if (id && (id !== idElementoEncima || source !== fuenteElementoEncima)) {
           // desactivar los estados anteriores si existe alguno
@@ -213,13 +220,17 @@ onMounted(() => {
       const circulos = mapa.queryRenderedFeatures(e.point, {
         layers: ['grupos'],
       });
-      const idGrupo = circulos[0].properties.cluster_id;
 
-      mapa.getSource('ubicaciones').getClusterExpansionZoom(idGrupo, (err, zoom) => {
-        if (err) return;
+      if (!circulos.length) return;
+
+      const idGrupo = circulos[0].properties?.cluster_id;
+      const algo = mapa.getSource('ubicaciones') as GeoJSONSource;
+
+      (mapa.getSource('ubicaciones') as GeoJSONSource).getClusterExpansionZoom(idGrupo, (err, zoom) => {
+        if (err || circulos[0].geometry) return;
 
         mapa.easeTo({
-          center: circulos[0].geometry.coordinates,
+          center: (circulos[0].geometry as Point).coordinates as [number, number],
           zoom,
         });
       });
@@ -232,20 +243,14 @@ onMounted(() => {
     // Clic en nombre del lugar (cuando no están agrupados)
     mapa.on('click', 'nombre', (e) => {
       // Saltar el evento si el click es en otro elemento anterior.
-      if (e.clicEnElemento) {
-        return;
-      }
-
-      abrirCajon('ubicaciones', e.features[0].properties);
+      if (e.clicEnElemento || !e.features) return;
+      abrirCajon('ubicaciones', e.features[0].properties as ObraInformacionBasica);
       e.clicEnElemento = true;
     });
 
     mapa.on('click', 'zonas', (e) => {
-      if (e.clicEnElemento) {
-        return;
-      }
-
-      abrirCajon('paises', e.features[0].properties);
+      if (e.clicEnElemento || !e.features) return;
+      abrirCajon('paises', e.features[0].properties as ObraInformacionBasica);
       e.clicEnElemento = true;
     });
 
@@ -261,7 +266,7 @@ onMounted(() => {
   }); // Fin de mapa.on('load')
 });
 
-function abrirCajon(coleccion, datos) {
+function abrirCajon(coleccion: string, datos: ObraInformacionBasica) {
   Object.assign(datosCajon, datos);
 
   if (coleccionActual.value !== coleccion) {

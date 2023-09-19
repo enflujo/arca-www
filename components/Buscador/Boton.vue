@@ -1,5 +1,5 @@
-<script setup>
-import { usarGeneral } from '~~/cerebros/general';
+<script setup lang="ts">
+import { usarGeneral } from '~/cerebros/general';
 
 const cerebroGeneral = usarGeneral();
 const ruta = useRoute();
@@ -10,7 +10,7 @@ function abrirBuscador() {
 
 onMounted(async () => {
   if (ruta.query.buscar) {
-    cerebroGeneral.busquedaActual = ruta.query.buscar;
+    cerebroGeneral.busquedaActual = ruta.query.buscar as string;
     abrirBuscador();
   }
 });
@@ -19,7 +19,7 @@ onMounted(async () => {
 <template>
   <div id="botonBuscar" @click="abrirBuscador">
     <span class="indicacion">Buscar...</span>
-    <img id="lupa" src="~~/assets/imgs/lupa.svg" alt="Icono de lupa en buscador" />
+    <img id="lupa" src="~/assets/imgs/lupa.svg" alt="Icono de lupa en buscador" />
   </div>
 </template>
 

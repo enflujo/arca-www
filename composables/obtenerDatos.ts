@@ -1,11 +1,11 @@
-import { apiBase } from '~~/config/general';
+import { apiBase } from '~/config/general';
 
 /**
  * Hace llamado a la base de datos de Directus en Graphql.
  *
  * @param llave Un texto único para registrar el llamado a la base de datos.
  * @param query Query en formato Graphql.
- * @returns Devuelve los datos in nivel dentro: `data.data`
+ * @returns Devuelve los datos un nivel dentro: `data.data`
  */
 export default async function (llave: string, query: string, sistema = false) {
   const { data, error } = await useAsyncData(

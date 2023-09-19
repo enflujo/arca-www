@@ -1,19 +1,43 @@
-<script setup>
-import { usarArchivo } from '~~/cerebros/archivo';
-import { indiceColeccion } from '~~/utilidades/queries';
+<script setup lang="ts">
+import type { FeatureCollection } from 'geojson';
+import { usarArchivo } from '~/cerebros/archivo';
+import type {
+  Ciudad,
+  DatosIndices,
+  DatosUbicaciones,
+  DatosVistas,
+  Gesto,
+  IndiceGeneral,
+  Indices,
+  NombresColecciones,
+  Pais,
+  TiposLugares,
+  Ubicacion,
+  Vistas,
+} from '~/tipos';
+import { indiceColeccion } from '~/utilidades/queries';
 
-const props = defineProps({ coleccion: String, slug: String });
+interface Props {
+  coleccion: NombresColecciones;
+  slug: string;
+}
+
+const props = defineProps<Props>();
 const cerebroArchivo = usarArchivo();
-const datos = ref([]);
-const vistas = ref(['abc', 'colombinas']);
-const vistaInicial = ref('abc');
-const datosMapa = ref(null);
-const datosLugares = reactive({ ubicaciones: [], ciudades: [], paises: [] });
+const datos: Ref<Indices | undefined> = ref();
+const vistas: Ref<Vistas[]> = ref(['abc', 'colombinas']);
+const vistaInicial: Ref<Vistas> = ref('abc');
+const datosMapa: Ref<{ paises: FeatureCollection; ubicaciones: FeatureCollection; max: number } | null> = ref(null);
+const datosLugares: { ubicaciones: Ubicacion[]; ciudades: Ciudad[]; paises: Pais[] } = reactive({
+  ubicaciones: [],
+  ciudades: [],
+  paises: [],
+});
 const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
-const coleccionActual = ref(props.coleccion);
-const cargando = ref(false);
+const coleccionActual: Ref<string> = ref(props.coleccion);
+const cargando: Ref<boolean> = ref(false);
 
-watch(data, (respuesta) => {
+watch(data, (respuesta: DatosIndices) => {
   datos.value = procesarDatos(respuesta);
 });
 
@@ -26,23 +50,24 @@ onMounted(() => {
   }
 });
 
-function procesarUbicaciones({ paises, ubicaciones }) {
+function procesarUbicaciones({ paises, ubicaciones }: DatosIndices) {
+  if (!ubicaciones || !paises) return;
   /**
    * Creamos Geojson agregando todas las ubicaciones y países que se van a pintar en el mapa (es más rápido que agregar muchos "source" y "layer" para cada lugar por separado)
    */
-  datosLugares.ubicaciones = agregarEnlacesYTexto(ubicaciones, 'ubicaciones');
-  datosLugares.paises = agregarEnlacesYTexto(paises, 'paises');
+  datosLugares.ubicaciones = agregarEnlacesYTexto(ubicaciones, 'ubicaciones') as Ubicacion[];
+  datosLugares.paises = agregarEnlacesYTexto(paises, 'paises') as Pais[];
 
-  const ubicacionesGeojson = {
+  const ubicacionesGeojson: FeatureCollection = {
     type: 'FeatureCollection',
-    features: ubicaciones.map((ubicacion) => {
+    features: ubicaciones.map((ubicacion): DatosUbicaciones => {
       const { id, nombre, obras_func, geo } = ubicacion;
 
       return { type: 'Feature', properties: { id, nombre, obras: obras_func.count }, geometry: geo, id };
     }),
   };
   // Geojson para países.
-  const paisesGeojson = {
+  const paisesGeojson: FeatureCollection = {
     type: 'FeatureCollection',
     features: paises.map((pais) => {
       const { id, nombre, slug, obras_func, geo } = pais;
@@ -63,7 +88,9 @@ function procesarUbicaciones({ paises, ubicaciones }) {
   return paises;
 }
 
-function procesarAutores({ autores }) {
+function procesarAutores({ autores }: DatosIndices) {
+  if (!autores) return;
+
   return autores.map((autor) => {
     autor.url = `/autores/${autor.id}`;
     const partesNombre = [];
@@ -83,56 +110,63 @@ function procesarAutores({ autores }) {
   });
 }
 
-function agregarEnlacesYTexto(datos, coleccion = coleccionActual.value) {
+function agregarEnlacesYTexto(datos: Indices, coleccion = coleccionActual.value) {
   return datos.map((instancia) => {
     if (coleccion === 'paises') {
-      instancia.url = `/paises/${instancia.slug}`;
+      (instancia as Pais).url = `/paises/${(instancia as Pais).slug}`;
     } else if (coleccion === 'ciudades') {
-      instancia.url = `/ciudades/${instancia.id}`;
+      (instancia as Ciudad).url = `/ciudades/${(instancia as Ciudad).id}`;
     } else if (coleccion === 'ubicaciones') {
-      instancia.url = `/ubicaciones/${instancia.id}`;
+      (instancia as Ubicacion).url = `/ubicaciones/${(instancia as Ubicacion).id}`;
     } else {
-      instancia.url = `/${props.slug}/${instancia.slug}`;
+      (instancia as Pais).url = `/${props.slug}/${(instancia as Pais).slug}`;
     }
 
     if (coleccion === 'gestos') {
-      const conteo1 = instancia.obras_gesto_1_func.count;
-      const conteo2 = instancia.obras_gesto_2_func.count;
-      const conteo3 = instancia.obras_gesto_3_func.count;
-      instancia.texto = `${instancia.nombre} (${conteo1}, ${conteo2}, ${conteo3})`;
+      const conteo1 = (instancia as Gesto).obras_gesto_1_func.count;
+      const conteo2 = (instancia as Gesto).obras_gesto_2_func.count;
+      const conteo3 = (instancia as Gesto).obras_gesto_3_func.count;
+      (instancia as Gesto).texto = `${instancia.nombre} (${conteo1}, ${conteo2}, ${conteo3})`;
     } else {
-      instancia.texto = `${instancia.nombre} (${instancia.obras_func.count})`;
+      (instancia as IndiceGeneral).texto = `${instancia.nombre} (${(instancia as IndiceGeneral).obras_func.count})`;
     }
 
     return instancia;
   });
 }
 
-function procesarDatos(nuevosDatos) {
+function procesarDatos(nuevosDatos: DatosIndices) {
   if (props.coleccion === 'ubicaciones') {
     return procesarUbicaciones(nuevosDatos);
   } else if (props.coleccion === 'autores') {
     return procesarAutores(nuevosDatos);
   }
 
-  return agregarEnlacesYTexto(nuevosDatos[props.coleccion]);
+  return agregarEnlacesYTexto(nuevosDatos[props.coleccion] as Indices);
 }
 
-async function cambiarDatosUbicacion(coleccion) {
-  if (coleccionActual.value === coleccion) return;
+async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
+  if (coleccionActual.value === tipoLugar) return;
 
-  coleccionActual.value = coleccion;
+  coleccionActual.value = tipoLugar;
 
-  if (datosLugares[coleccion].length) {
-    datos.value = datosLugares[coleccion];
+  if (datosLugares[tipoLugar].length) {
+    datos.value = datosLugares[tipoLugar];
   } else {
     cargando.value = true;
 
-    const respuesta = await obtenerDatos(`indice-${coleccion}`, indiceColeccion(coleccion));
-    const datosLimpios = agregarEnlacesYTexto(respuesta[coleccion]);
-    datosLugares[coleccion] = datosLimpios;
-    datos.value = datosLimpios;
+    const respuesta = await obtenerDatos(`indice-${tipoLugar}`, indiceColeccion(tipoLugar));
+    const datosLimpios = agregarEnlacesYTexto(respuesta[tipoLugar]);
 
+    if (tipoLugar === 'ubicaciones') {
+      datosLugares.ubicaciones = datosLimpios as Ubicacion[];
+    } else if (tipoLugar === 'ciudades') {
+      datosLugares.ciudades = datosLimpios as Ciudad[];
+    } else if (tipoLugar === 'paises') {
+      datosLugares.paises = datosLimpios as Pais[];
+    }
+
+    datos.value = datosLimpios;
     cargando.value = false;
   }
 }
@@ -151,8 +185,16 @@ async function cambiarDatosUbicacion(coleccion) {
   <Cargador v-if="pending || cargando" />
 
   <div v-else>
-    <VistaAbecedario v-if="cerebroArchivo.vistaActual === 'abc'" :datos="datos" :coleccion="coleccionActual" />
-    <VistaColombinas v-if="cerebroArchivo.vistaActual === 'colombinas'" :datos="datos" :coleccion="coleccionActual" />
+    <VistaAbecedario
+      v-if="cerebroArchivo.vistaActual === 'abc'"
+      :datos="datos as DatosVistas[]"
+      :coleccion="coleccionActual"
+    />
+    <VistaColombinas
+      v-if="cerebroArchivo.vistaActual === 'colombinas'"
+      :datos="datos as DatosVistas[]"
+      :coleccion="coleccionActual"
+    />
     <VistaMapa
       v-if="cerebroArchivo.vistaActual === 'mapa' && datosMapa"
       :paises="datosMapa.paises"
