@@ -57,6 +57,12 @@ export interface ImagenArca extends Imagen {
   alto: number;
 }
 
+export interface ColeccionGeneral extends ConteoObras {
+  id: number;
+  nombre: string;
+  slug: string;
+  descripcion?: string;
+}
 export interface Categoria extends ConteoObras {
   id: number;
   slug: string;
@@ -128,7 +134,7 @@ export interface PaginaArchivo extends ConteoObras, CamposSEO {
 
 export interface CamposSEO {
   descripcion: string;
-  banne: Imagen;
+  banner: Imagen;
 }
 
 export interface DatosVistas extends ConteoObras {
@@ -190,6 +196,7 @@ export interface Gesto {
   obras_gesto_3_func: { count: number };
   url?: string;
   texto?: string;
+  banner: Imagen;
 }
 
 export interface IndiceGeneral extends ConteoObras {
@@ -237,6 +244,29 @@ export type DatosIndices = {
   simbolos?: IndiceGeneral[];
   descriptores?: IndiceGeneral[];
   caracteristicas?: IndiceGeneral[];
+};
+
+export type Colecciones = {
+  paises?: Pais[];
+  ubicaciones?: Ubicacion[];
+  autores?: Autor[];
+  ciudades?: Ciudad[];
+  gestos?: Gesto[];
+  personajes?: ColeccionGeneral[];
+  objetos?: ColeccionGeneral[];
+  escenarios?: ColeccionGeneral[];
+  tecnicas?: ColeccionGeneral[];
+  donantes?: ColeccionGeneral[];
+  relatos_visuales?: ColeccionGeneral[];
+  complejos_gestuales?: ColeccionGeneral[];
+  tipos_gestuales?: ColeccionGeneral[];
+  fisiognomicas?: ColeccionGeneral[];
+  fisiognomicas_imagen?: ColeccionGeneral[];
+  cartelas_filacterias?: ColeccionGeneral[];
+  rostros?: ColeccionGeneral[];
+  simbolos?: ColeccionGeneral[];
+  descriptores?: ColeccionGeneral[];
+  caracteristicas?: ColeccionGeneral[];
 };
 
 export type Indices = (Pais | Ubicacion | Autor | Ciudad | Gesto | IndiceGeneral)[];

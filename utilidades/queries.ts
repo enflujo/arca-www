@@ -49,6 +49,19 @@ export const datosGeneralesColeccion = (coleccion: string, busqueda: string, por
       }
     }
     `;
+  } else if (coleccion === 'gestos') {
+    return gql`
+    query {
+      gestos(filter: { slug: {_eq: "${busqueda}" } }, limit: 1)  {
+        slug
+        nombre
+        codigo
+        obras_gesto_1_func {count}
+        obras_gesto_2_func {count}
+        obras_gesto_3_func {count}
+      }
+    }
+    `;
   }
 
   return gql`

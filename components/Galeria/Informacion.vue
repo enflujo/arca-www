@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { AutorProcesado, PaginaArchivo, PersonajeProcesado } from '~/tipos';
+import type { AutorProcesado, EntradaColeccion, Gesto, PaginaArchivo, PersonajeProcesado } from '~/tipos';
 
 interface Props {
   coleccion: string;
-  datos: AutorProcesado | PersonajeProcesado | PaginaArchivo;
+  datos: AutorProcesado | PersonajeProcesado | PaginaArchivo | Gesto | EntradaColeccion;
 }
 
 defineProps<Props>();
@@ -63,23 +63,23 @@ defineProps<Props>();
     </template>
 
     <template v-else-if="coleccion === 'gestos'">
-      <section v-if="datos.codigo" class="seccion medio">
+      <section v-if="(datos as Gesto).codigo" class="seccion medio">
         <h2>Código</h2>
         <div class="infoContenido">
-          <p>{{ datos.codigo }}</p>
+          <p>{{ (datos as Gesto).codigo }}</p>
         </div>
       </section>
 
-      <section v-if="datos.descripcion" class="seccion">
+      <section v-if="(datos as Gesto).descripcion" class="seccion">
         <h2>Descripción</h2>
-        <div v-html="datos.descripcion" class="infoContenido"></div>
+        <div v-html="(datos as Gesto).descripcion" class="infoContenido"></div>
       </section>
     </template>
 
     <template v-else>
-      <section v-if="datos.descripcion" class="seccion">
+      <section v-if="(datos as EntradaColeccion).descripcion" class="seccion">
         <h2>Descripción</h2>
-        <div v-html="datos.descripcion" class="infoContenido"></div>
+        <div v-html="(datos as EntradaColeccion).descripcion" class="infoContenido"></div>
       </section>
     </template>
   </div>
