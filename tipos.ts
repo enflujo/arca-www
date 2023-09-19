@@ -25,6 +25,13 @@ export interface ObraGaleria extends Obra {
   imagen?: ImagenArca;
 }
 
+export interface ObraInformacionBasica {
+  id: string;
+  nombre?: string;
+  slug?: string;
+  obras: number;
+}
+
 export interface ConteoObras {
   obras_func: { count: number };
 }

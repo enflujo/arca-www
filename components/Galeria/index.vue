@@ -132,7 +132,6 @@ const { data, pending } = obtenerDatosAsinc(
 );
 
 watch(data, (datosObras: Obra[]) => {
-  console.log(datosObras);
   obras.value = limpiarDatos(datosObras);
 });
 

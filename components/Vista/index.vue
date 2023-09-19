@@ -38,9 +38,7 @@ const coleccionActual: Ref<string> = ref(props.coleccion);
 const cargando: Ref<boolean> = ref(false);
 
 watch(data, (respuesta: DatosIndices) => {
-  if (respuesta[props.coleccion]) {
-    datos.value = procesarDatos(respuesta);
-  }
+  datos.value = procesarDatos(respuesta);
 });
 
 onMounted(() => {
@@ -144,7 +142,7 @@ function procesarDatos(nuevosDatos: DatosIndices) {
     return procesarAutores(nuevosDatos);
   }
 
-  return agregarEnlacesYTexto(nuevosDatos[props.coleccion]);
+  return agregarEnlacesYTexto(nuevosDatos[props.coleccion] as Indices);
 }
 
 async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
@@ -158,10 +156,17 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
     cargando.value = true;
 
     const respuesta = await obtenerDatos(`indice-${tipoLugar}`, indiceColeccion(tipoLugar));
-    const datosLimpios = agregarEnlacesYTexto(respuesta[tipoLugar]) as (Ciudad | Pais | Ubicacion)[];
-    datosLugares[tipoLugar] = datosLimpios;
-    datos.value = datosLimpios;
+    const datosLimpios = agregarEnlacesYTexto(respuesta[tipoLugar]);
 
+    if (tipoLugar === 'ubicaciones') {
+      datosLugares.ubicaciones = datosLimpios as Ubicacion[];
+    } else if (tipoLugar === 'ciudades') {
+      datosLugares.ciudades = datosLimpios as Ciudad[];
+    } else if (tipoLugar === 'paises') {
+      datosLugares.paises = datosLimpios as Pais[];
+    }
+
+    datos.value = datosLimpios;
     cargando.value = false;
   }
 }

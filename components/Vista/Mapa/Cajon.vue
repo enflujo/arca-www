@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import type { ObraGaleria } from '~/tipos';
+import type { ObraGaleria, ObraInformacionBasica } from '~/tipos';
 import { datosObrasGaleria } from '~/utilidades/queries';
-
-interface ObraInformacionBasica {
-  id: string;
-  nombre: string;
-  slug: string;
-  obras: number;
-}
 
 interface Props {
   datos: ObraInformacionBasica;
