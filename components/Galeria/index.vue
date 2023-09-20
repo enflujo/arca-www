@@ -45,7 +45,7 @@ const crearNombre = (datosAutor: Autor) => {
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
 const datos: Ref<AutorProcesado | PersonajeProcesado | PaginaArchivo | EntradaColeccion | undefined> = ref();
-const paginaActual = ref(+(ruta.query.pagina as string) || 1);
+const paginaActual: Ref<number> = ref(+(ruta.query.pagina as string) || 1);
 const esId = /^\d+$/.test(props.slug);
 
 const respuesta: Colecciones = await obtenerDatos(
@@ -174,7 +174,6 @@ function limpiarDatos(nuevosDatos: { [coleccion: string]: any }) {
 function cargarPagina(pagina: number) {
   if (pagina <= numeroPaginas.value) {
     cargando.value = true;
-
     obtenerDatos(
       `obras-${datos.value?.id}${pagina}`,
       datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, pagina, esId)

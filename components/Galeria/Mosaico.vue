@@ -3,22 +3,20 @@ import type { ObraGaleria } from '~/tipos';
 // POR HACER: imagen predeterminada si no hay imagen
 interface Props {
   obras: ObraGaleria[];
-  pagina?: number;
-  cargarPagina?: (pagina: number) => void;
+  pagina: number;
+  cargarPagina: (pagina: number) => void;
   cargando?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { cargando: false });
+const props = withDefaults(defineProps<Props>(), { cargando: false, pagina: 1 });
 const siguientePagina: Ref<HTMLDivElement | undefined> = ref();
 
 onMounted(() => {
   if (props.cargarPagina && props.pagina && siguientePagina.value) {
-    const { cargarPagina, pagina } = props;
-
     duranteInterseccion(
       siguientePagina.value,
       () => {
-        cargarPagina(pagina + 1);
+        props.cargarPagina(props.pagina + 1);
       },
       false
     );
