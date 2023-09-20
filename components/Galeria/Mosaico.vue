@@ -4,7 +4,7 @@ import type { ObraGaleria } from '~/tipos';
 interface Props {
   obras: ObraGaleria[];
   pagina: number;
-  cargarPagina: (pagina: number) => void;
+  cargarPagina?: (pagina: number) => void;
   cargando?: boolean;
 }
 
@@ -12,10 +12,11 @@ const props = withDefaults(defineProps<Props>(), { cargando: false, pagina: 1 })
 const siguientePagina: Ref<HTMLDivElement | undefined> = ref();
 
 onMounted(() => {
-  if (props.cargarPagina && props.pagina && siguientePagina.value) {
+  if (props.pagina && siguientePagina.value) {
     duranteInterseccion(
       siguientePagina.value,
       () => {
+        if (!props.cargarPagina) return;
         props.cargarPagina(props.pagina + 1);
       },
       false

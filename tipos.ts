@@ -17,6 +17,61 @@ export interface Obra {
   imagen?: Imagen;
 }
 
+interface CamposBasicosURL {
+  nombre: string;
+  slug: string;
+}
+interface CamposCategoria extends CamposBasicosURL {
+  ruta: string;
+  coleccion: string;
+}
+export interface RegistroObra {
+  registro: number;
+  fecha_inicial: number;
+  fecha_final: number;
+  sintesis: string;
+  comentario_bibliografico: string;
+  iconotexto: string;
+  fuente: { descripcion: string };
+
+  categoria1: CamposCategoria;
+  categoria2: CamposCategoria;
+  categoria3: CamposCategoria;
+  categoria4: CamposCategoria;
+  categoria5: CamposCategoria;
+  categoria6: CamposCategoria;
+
+  donante: CamposBasicosURL;
+  relato_visual: CamposBasicosURL;
+  fisiognomica: CamposBasicosURL;
+  fisiognomica_imagen: CamposBasicosURL;
+  cartela_filacteria: CamposBasicosURL;
+  rostro: CamposBasicosURL;
+  tipo_gestual: CamposBasicosURL;
+  complejo_gestual: CamposBasicosURL;
+
+  ciudad_origen: { id: number; nombre: string; pais: CamposBasicosURL };
+  ubicacion: {
+    id: number;
+    nombre: string;
+    anotacion: string;
+    geo: Point;
+    ciudad: { id: number; nombre: string; pais: CamposBasicosURL };
+  };
+
+  autores: { autores_id: { id: number; nombre: string; apellido: string } }[];
+  gesto1: CamposBasicosURL;
+  gesto2: CamposBasicosURL;
+  gesto3: CamposBasicosURL;
+  tecnicas: { tecnicas_id: CamposBasicosURL };
+  objetos: { objetos_id: CamposBasicosURL };
+  personajes: { personajes_id: { slug: string; nombre: string; muerte: number } };
+  simbolos: { simbolos_id: CamposBasicosURL };
+  escenarios: { escenarios_id: CamposBasicosURL };
+  descriptores: { descriptores_id: CamposBasicosURL };
+  caracteristicas: { caracteristicas_id: CamposBasicosURL };
+}
+
 export interface ObraEnRelacional {
   obras_id: ObraGaleria;
 }
@@ -128,7 +183,7 @@ export interface PaginaArchivo extends ConteoObras, CamposSEO {
   titulo: string;
   slug: string;
   titulo_singular: string;
-  coleccion: string;
+  coleccion: NombresColecciones;
   contenido: string;
 }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
 import { apiBase } from '~/config/general';
+import type { NombresColecciones, Obra, RegistroObra } from '~/tipos';
 import { definirDimsImagen, gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
@@ -39,7 +40,7 @@ const ubicacionMapa = ref(null);
 const vistaCompleta = ref(false);
 const verLupa = ref(true);
 
-const Obra = gql`
+const PeticionObra = gql`
   query {
     obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
       registro
@@ -84,7 +85,12 @@ const Obra = gql`
   }
 `;
 
-const { data, pending } = obtenerDatosAsinc(`obra${ruta.params.registro}`, Obra);
+interface Respuesta {
+  data: Ref<{ obras: RegistroObra[] }>;
+  pending: Ref<boolean>;
+}
+
+const { data, pending }: Respuesta = obtenerDatosAsinc(`obra${ruta.params.registro}`, PeticionObra);
 
 watch(data, ({ obras }) => {
   const _obra = obras[0];
@@ -212,7 +218,9 @@ function cambiarVistaLupa() {
   verLupa.value = !verLupa.value;
 }
 
-const tiposCampos = {
+type TiposCampos = 'singular' | 'lista' | 'parrafos' | 'gestos' | 'lugar';
+
+const tiposCampos: { [coleccion: string]: { tipo: TiposCampos; coleccion: string } } = {
   caracteristicas: { tipo: 'lista', coleccion: 'caracteristicas' },
   cartela_filacteria: { tipo: 'singular', coleccion: 'cartelas_filacterias' },
   categorias: { tipo: 'lista', coleccion: 'categorias1' },
@@ -239,15 +247,15 @@ const tiposCampos = {
   gestos: { tipo: 'gestos', coleccion: '' },
 };
 
-const tipoCampo = (nombreCampo) => {
-  if (!tiposCampos[nombreCampo]) {
+const tipoCampo = (llave: NombresColecciones) => {
+  if (!tiposCampos[llave]) {
     return;
   }
-  return tiposCampos[nombreCampo].tipo;
+  return tiposCampos[llave].tipo;
 };
 
-const rutaCampo = (nombreCampo) => {
-  const { coleccion } = tiposCampos[nombreCampo];
+const rutaCampo = (llave: NombresColecciones) => {
+  const { coleccion } = tiposCampos[llave];
   const datosPagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === coleccion);
 
   if (datosPagina) {
@@ -364,7 +372,7 @@ const rutaCampo = (nombreCampo) => {
 
     <section id="contenedorGaleria" class="completo">
       <h2>Obras Relacionadas</h2>
-      <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" />
+      <GaleriaMosaico v-if="relacionadas" :obras="relacionadas" :pagina="1" />
     </section>
   </div>
 </template>
