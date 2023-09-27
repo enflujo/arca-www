@@ -35,6 +35,13 @@ function procesarDatos() {
     }
 
     elementosLetra.elementos.push({ url: instancia.url, texto: instancia.texto });
+    elementosLetra.elementos.sort((a, b) => {
+      const textoA = eliminarTildes(a.texto.toLowerCase());
+      const textoB = eliminarTildes(b.texto.toLocaleLowerCase());
+      if (textoA < textoB) return -1;
+      else if (textoA > textoB) return 1;
+      return 0;
+    });
   });
 
   respuesta.sort((a, b) => {

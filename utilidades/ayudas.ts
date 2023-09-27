@@ -1,4 +1,4 @@
-import type { Categoria, ImagenArca, Obra, ObraGaleria } from '~/tipos';
+import type { Categoria, Obra, ObraGaleria } from '~/tipos';
 import { apiBase } from '../config/general';
 
 /**
@@ -44,7 +44,7 @@ export const urlImagen = (id: number, key: string): string => {
  * @param {string} texto Texto sobre el cual eliminar las tildes
  * @returns Texto sin tildes.
  */
-export const eliminarTildes = (texto: string) => {
+export const eliminarTildes = (texto: string): string => {
   return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '');
 };
 
