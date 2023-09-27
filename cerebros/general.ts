@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import type { Imagen, Pagina, PaginaArchivo } from '~/tipos';
+import type { Imagen, Pagina, PaginaArchivo, RegistroObra } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 export type ColecionRelacionada = { campo: string; coleccionRelacionada: string };
-export type Campo = { titulo: string; campo: string };
+export type Campo = { titulo: string; campo: keyof RegistroObra & 'separador' };
 
 export type CerebroGeneral = {
   datosCargados: boolean;

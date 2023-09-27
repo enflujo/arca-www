@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { Point } from 'geojson';
 import { usarGeneral } from '~/cerebros/general';
 import { apiBase } from '~/config/general';
-import type { NombresColecciones, Obra, RegistroObra } from '~/tipos';
+import type { CamposCategoria, NombresColecciones, Obra, ObraGaleria, RegistroObra, TiposCampos } from '~/tipos';
 import { definirDimsImagen, gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
@@ -34,9 +35,9 @@ if (datosGenerales[0].imagen) {
 useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
 
 // En el cliente
-const obra = ref(null);
-const relacionadas = ref(null);
-const ubicacionMapa = ref(null);
+const obra: Ref<RegistroObra | null> = ref(null);
+const relacionadas: Ref<ObraGaleria[] | null> = ref(null);
+const ubicacionMapa: Ref<{ id: number; nombre: string; geometry: Point } | null> = ref(null);
 const vistaCompleta = ref(false);
 const verLupa = ref(true);
 
@@ -67,7 +68,7 @@ const PeticionObra = gql`
       tipo_gestual { slug nombre }
       complejo_gestual { slug nombre }
 
-      ciudad_origen { id nombre pais { slug nombre } }
+      ciudad_origen { id nombre geo pais { slug nombre } }
       ubicacion { id nombre anotacion geo ciudad { id nombre pais { slug nombre } } }
 
       autores(sort: ["autores_id.apellido"]) { autores_id { id nombre apellido } }
@@ -96,14 +97,16 @@ watch(data, ({ obras }) => {
   const _obra = obras[0];
 
   // Aplanar categorías en una sola lista/array
-  _obra.categorias = [];
+  const categorias = [];
 
   for (let i = 1; i <= 6; i++) {
-    const coleccion = `categoria${i}`;
-    if (_obra[coleccion]) {
-      _obra[coleccion].ruta = `/categorias${i}/${_obra[coleccion].slug}`;
-      _obra[coleccion].coleccion = coleccion;
-      _obra.categorias.push(_obra[coleccion]);
+    const coleccion = `categoria${i}` as keyof RegistroObra;
+    const datosCategoria = _obra[coleccion] as CamposCategoria;
+
+    if (datosCategoria) {
+      datosCategoria.ruta = `/categorias${i}/${datosCategoria.slug}`;
+      datosCategoria.coleccion = coleccion;
+      categorias.push(datosCategoria);
     }
   }
 
@@ -140,29 +143,28 @@ watch(data, ({ obras }) => {
 
   // Aplanar lugares
   if (_obra.ciudad_origen) {
-    const origen = [{ url: `/ciudades/${_obra.ciudad_origen.id}`, nombre: _obra.ciudad_origen.nombre }];
+    const origenes = [{ url: `/ciudades/${_obra.ciudad_origen.id}`, nombre: _obra.ciudad_origen.nombre }];
 
     if (_obra.ciudad_origen.pais) {
-      origen.push({ url: `/paises/${_obra.ciudad_origen.pais.slug}`, nombre: _obra.ciudad_origen.pais.nombre });
+      origenes.push({ url: `/paises/${_obra.ciudad_origen.pais.slug}`, nombre: _obra.ciudad_origen.pais.nombre });
     }
 
-    _obra.ciudad_origen = origen;
+    _obra.ciudad_origen.procesado = origenes;
   }
 
   if (_obra.ubicacion) {
-    const ubicacion = [
+    const ubicaciones: { url: string; nombre: string; geo?: Point }[] = [
       {
         url: `/ubicaciones/${_obra.ubicacion.id}`,
         nombre: _obra.ubicacion.nombre + `${_obra.ubicacion.anotacion ? ' (' + _obra.ubicacion.anotacion + ')' : ''}`,
-        geo: _obra.ubicacion.geo,
       },
     ];
 
     if (_obra.ubicacion.ciudad) {
-      ubicacion.push({ url: `/ciudades/${_obra.ubicacion.ciudad.id}`, nombre: _obra.ubicacion.ciudad.nombre });
+      ubicaciones.push({ url: `/ciudades/${_obra.ubicacion.ciudad.id}`, nombre: _obra.ubicacion.ciudad.nombre });
 
       if (_obra.ubicacion.ciudad.pais) {
-        ubicacion.push({
+        ubicaciones.push({
           url: `/paises/${_obra.ubicacion.ciudad.pais.slug}`,
           nombre: _obra.ubicacion.ciudad.pais.nombre,
         });
@@ -171,20 +173,21 @@ watch(data, ({ obras }) => {
 
     ubicacionMapa.value = { id: _obra.ubicacion.id, nombre: _obra.ubicacion.nombre, geometry: _obra.ubicacion.geo };
 
-    _obra.ubicacion = ubicacion;
+    _obra.ubicacion.procesado = ubicaciones;
   }
-
-  _obra.fuente = _obra.fuente && _obra.fuente.descripcion ? _obra.fuente.descripcion : null;
 
   obra.value = _obra;
 
-  buscarRelacionadas(_obra.categorias[_obra.categorias.length - 1]);
+  buscarRelacionadas(categorias[categorias.length - 1]);
 });
 
-async function buscarRelacionadas(ultimaCategoria) {
+async function buscarRelacionadas(ultimaCategoria: { coleccion: string; slug: string }) {
   const Relacionadas = gql`
     query {
-      obras(filter: {${ultimaCategoria.coleccion}: { slug:  {_eq: "${ultimaCategoria.slug}" } } }, limit: 20) { 
+      obras(filter: { _and : [
+        {${ultimaCategoria.coleccion}: { slug:  {_eq: "${ultimaCategoria.slug}" } } },
+        {registro: {_neq: "${ruta.params.registro}"}}
+      ]}, limit: 20) { 
         registro
         titulo
         imagen {
@@ -204,9 +207,11 @@ async function buscarRelacionadas(ultimaCategoria) {
     }
     `;
 
-  const { obras } = await obtenerDatos(`relacionadas${ruta.params.registro}`, Relacionadas);
+  const { obras } = (await obtenerDatos(`relacionadas${ruta.params.registro}`, Relacionadas)) as { obras: Obra[] };
 
-  relacionadas.value = obras.map(definirDimsImagen);
+  if (obras) {
+    relacionadas.value = obras.map(definirDimsImagen) as ObraGaleria[];
+  }
 }
 
 definePageMeta({ layout: 'default', keepalive: true });
@@ -218,9 +223,7 @@ function cambiarVistaLupa() {
   verLupa.value = !verLupa.value;
 }
 
-type TiposCampos = 'singular' | 'lista' | 'parrafos' | 'gestos' | 'lugar';
-
-const tiposCampos: { [coleccion: string]: { tipo: TiposCampos; coleccion: string } } = {
+const tiposCampos: { [coleccion: string]: { tipo: TiposCampos; coleccion: NombresColecciones | '' } } = {
   caracteristicas: { tipo: 'lista', coleccion: 'caracteristicas' },
   cartela_filacteria: { tipo: 'singular', coleccion: 'cartelas_filacterias' },
   categorias: { tipo: 'lista', coleccion: 'categorias1' },
@@ -247,14 +250,14 @@ const tiposCampos: { [coleccion: string]: { tipo: TiposCampos; coleccion: string
   gestos: { tipo: 'gestos', coleccion: '' },
 };
 
-const tipoCampo = (llave: NombresColecciones) => {
+const tipoCampo = (llave: keyof RegistroObra) => {
   if (!tiposCampos[llave]) {
     return;
   }
   return tiposCampos[llave].tipo;
 };
 
-const rutaCampo = (llave: NombresColecciones) => {
+const rutaCampo = (llave: keyof RegistroObra) => {
   const { coleccion } = tiposCampos[llave];
   const datosPagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === coleccion);
 
@@ -289,7 +292,7 @@ const rutaCampo = (llave: NombresColecciones) => {
       />
     </div>
 
-    <div id="contenedorDatos">
+    <div v-if="obra" id="contenedorDatos">
       <section id="contenedorPrimerBloque" class="seccion">
         <div id="contenedorTituloAutor">
           <h1>{{ datosGenerales[0].titulo }}</h1>
@@ -315,7 +318,7 @@ const rutaCampo = (llave: NombresColecciones) => {
         </template>
 
         <template v-else-if="tipoCampo(seccion.campo) === 'lugar'">
-          <RegistroLugares :datos="obra[seccion.campo]" :titulo="seccion.titulo" :punto="ubicacionMapa" />
+          <RegistroLugares :datos="obra[seccion.campo]" :titulo="seccion.titulo" :punto="ubicacionMapa?.geometry" />
         </template>
 
         <template v-else-if="tipoCampo(seccion.campo) === 'singular'">

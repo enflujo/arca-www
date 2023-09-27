@@ -1,4 +1,4 @@
-import type { Categoria, ObraGaleria } from '~/tipos';
+import type { Categoria, ImagenArca, Obra, ObraGaleria } from '~/tipos';
 import { apiBase } from '../config/general';
 
 /**
@@ -146,10 +146,12 @@ export const demorar = (funcion: (evento: any) => void, esperar: number) => {
   };
 };
 
-export function definirDimsImagen(obra: ObraGaleria) {
+export function definirDimsImagen(obra: Obra): ObraGaleria | undefined {
   if (!obra.imagen) return;
   if (!obra.imagen.width && !obra.imagen.height) return;
-  obra.imagen.ancho = Math.round((obra.imagen.width / obra.imagen.height) * 200);
-  obra.imagen.alto = 200;
-  return obra;
+  const ancho = Math.round((obra.imagen.width / obra.imagen.height) * 200);
+  const alto = 200;
+  Object.assign(obra.imagen, { ancho, alto });
+
+  return obra as ObraGaleria;
 }

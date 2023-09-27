@@ -17,18 +17,26 @@ export interface Obra {
   imagen?: Imagen;
 }
 
+export type TiposCampos = 'singular' | 'lista' | 'parrafos' | 'gestos' | 'lugar';
+export type LlavesCampos = 'separador' & NombresColecciones;
 interface CamposBasicosURL {
   nombre: string;
   slug: string;
 }
-interface CamposCategoria extends CamposBasicosURL {
+export interface CamposCategoria extends CamposBasicosURL {
   ruta: string;
   coleccion: string;
+}
+
+export interface UbicacionProcesada {
+  url: string;
+  nombre: string;
 }
 export interface RegistroObra {
   registro: number;
   fecha_inicial: number;
   fecha_final: number;
+  fecha?: string;
   sintesis: string;
   comentario_bibliografico: string;
   iconotexto: string;
@@ -50,16 +58,18 @@ export interface RegistroObra {
   tipo_gestual: CamposBasicosURL;
   complejo_gestual: CamposBasicosURL;
 
-  ciudad_origen: { id: number; nombre: string; pais: CamposBasicosURL };
+  ciudad_origen: { id: number; nombre: string; pais: CamposBasicosURL; procesado?: UbicacionProcesada[] } | null;
+
   ubicacion: {
     id: number;
     nombre: string;
     anotacion: string;
     geo: Point;
     ciudad: { id: number; nombre: string; pais: CamposBasicosURL };
+    procesado?: UbicacionProcesada[];
   };
 
-  autores: { autores_id: { id: number; nombre: string; apellido: string } }[];
+  autores: { autores_id: { id: number; nombre: string; apellido: string; nombreCompleto?: string } }[];
   gesto1: CamposBasicosURL;
   gesto2: CamposBasicosURL;
   gesto3: CamposBasicosURL;
@@ -332,6 +342,12 @@ export type NombresColecciones =
   | 'ubicaciones'
   | 'ciudades'
   | 'paises'
+  | 'categorias1'
+  | 'categorias2'
+  | 'categorias3'
+  | 'categorias4'
+  | 'categorias5'
+  | 'categorias6'
   | 'objetos'
   | 'escenarios'
   | 'tecnicas'
