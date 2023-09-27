@@ -1,5 +1,6 @@
 import type { Categoria, Obra, ObraGaleria } from '~/tipos';
 import { apiBase } from '../config/general';
+import { convert } from 'html-to-text';
 
 /**
  * Ayuda a construir la URL para pedir un archivo al API de Directus.
@@ -49,8 +50,9 @@ export const eliminarTildes = (texto: string): string => {
 };
 
 export function procesarTextoHTML(texto: string) {
-  const documento = new DOMParser().parseFromString(texto, 'text/html');
-  return documento.documentElement.textContent;
+  // const documento = new DOMParser().parseFromString(texto, 'text/html');
+  // return documento.documentElement.textContent;
+  return convert(texto, {}).replace(/\n/g, ' ');
 }
 
 /**

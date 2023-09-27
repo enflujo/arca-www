@@ -21,6 +21,7 @@
     "@enflujo/alquimia": "^2.0.0",
     "@meilisearch/instant-meilisearch": "^0.13.6",
     "@pinia/nuxt": "^0.4.11",
+    "html-to-text": "^9.0.5",
     "mapbox-gl": "^2.15.0",
     "nuxt": "^3.7.4",
     "vue-instantsearch": "^4.10.12"
