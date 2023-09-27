@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PaginaArchivo } from '~/tipos';
 import { usarGeneral } from '~/cerebros/general';
-import { gql } from '~/utilidades/ayudas';
+import { gql, procesarTextoHTML } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
 const ruta = useRoute();
@@ -36,12 +36,22 @@ if (esPaginaGeneral) {
         }
       `;
       const { paginas_archivo } = await obtenerDatos(`indice${indice}`, Indice);
-      const { descripcion, banner } = paginas_archivo[0];
+      const { descripcion, banner, contenido } = paginas_archivo[0];
 
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
 
       definePageMeta({ layout: 'archivo' });
-      useHead(elementosCabeza({ titulo: esPaginaArchivo.titulo, descripcion, banner }, ruta.path));
+
+      useHead(
+        elementosCabeza(
+          {
+            titulo: esPaginaArchivo.titulo,
+            descripcion: descripcion || procesarTextoHTML(contenido),
+            banner,
+          },
+          ruta.path
+        )
+      );
     } else {
       const IndiceGaleria = gql`
         query {

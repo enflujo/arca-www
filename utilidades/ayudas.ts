@@ -48,6 +48,11 @@ export const eliminarTildes = (texto: string): string => {
   return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '');
 };
 
+export function procesarTextoHTML(texto: string) {
+  const documento = new DOMParser().parseFromString(texto, 'text/html');
+  return documento.documentElement.textContent;
+}
+
 /**
  * Ayuda a extraer la primera letra de un texto omitiendo tildes.
  *
