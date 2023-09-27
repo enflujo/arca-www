@@ -17,6 +17,71 @@ export interface Obra {
   imagen?: Imagen;
 }
 
+export type TiposCampos = 'singular' | 'lista' | 'parrafos' | 'gestos' | 'lugar';
+export type LlavesCampos = 'separador' & NombresColecciones;
+interface CamposBasicosURL {
+  nombre: string;
+  slug: string;
+}
+export interface CamposCategoria extends CamposBasicosURL {
+  ruta: string;
+  coleccion: string;
+}
+
+export interface UbicacionProcesada {
+  url: string;
+  nombre: string;
+}
+export interface RegistroObra {
+  registro: number;
+  fecha_inicial: number;
+  fecha_final: number;
+  fecha?: string;
+  sintesis: string;
+  comentario_bibliografico: string;
+  iconotexto: string;
+  fuente: { descripcion: string };
+
+  categoria1: CamposCategoria;
+  categoria2: CamposCategoria;
+  categoria3: CamposCategoria;
+  categoria4: CamposCategoria;
+  categoria5: CamposCategoria;
+  categoria6: CamposCategoria;
+
+  donante: CamposBasicosURL;
+  relato_visual: CamposBasicosURL;
+  fisiognomica: CamposBasicosURL;
+  fisiognomica_imagen: CamposBasicosURL;
+  cartela_filacteria: CamposBasicosURL;
+  rostro: CamposBasicosURL;
+  tipo_gestual: CamposBasicosURL;
+  complejo_gestual: CamposBasicosURL;
+
+  ciudad_origen: { id: number; nombre: string; pais: CamposBasicosURL; procesado?: UbicacionProcesada[] } | null;
+
+  ubicacion: {
+    id: number;
+    nombre: string;
+    anotacion: string;
+    geo: Point;
+    ciudad: { id: number; nombre: string; pais: CamposBasicosURL };
+    procesado?: UbicacionProcesada[];
+  };
+
+  autores: { autores_id: { id: number; nombre: string; apellido: string; nombreCompleto?: string } }[];
+  gesto1: CamposBasicosURL;
+  gesto2: CamposBasicosURL;
+  gesto3: CamposBasicosURL;
+  tecnicas: { tecnicas_id: CamposBasicosURL };
+  objetos: { objetos_id: CamposBasicosURL };
+  personajes: { personajes_id: { slug: string; nombre: string; muerte: number } };
+  simbolos: { simbolos_id: CamposBasicosURL };
+  escenarios: { escenarios_id: CamposBasicosURL };
+  descriptores: { descriptores_id: CamposBasicosURL };
+  caracteristicas: { caracteristicas_id: CamposBasicosURL };
+}
+
 export interface ObraEnRelacional {
   obras_id: ObraGaleria;
 }
@@ -128,7 +193,7 @@ export interface PaginaArchivo extends ConteoObras, CamposSEO {
   titulo: string;
   slug: string;
   titulo_singular: string;
-  coleccion: string;
+  coleccion: NombresColecciones;
   contenido: string;
 }
 
@@ -277,6 +342,12 @@ export type NombresColecciones =
   | 'ubicaciones'
   | 'ciudades'
   | 'paises'
+  | 'categorias1'
+  | 'categorias2'
+  | 'categorias3'
+  | 'categorias4'
+  | 'categorias5'
+  | 'categorias6'
   | 'objetos'
   | 'escenarios'
   | 'tecnicas'

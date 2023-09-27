@@ -1,12 +1,12 @@
 <script setup lang="ts">
-interface Prpos {}
+interface Props {
+  datos?: { nombre: string; ruta?: string }[];
+  titulo: string;
+  relacion?: string | null;
+  ruta?: string;
+}
 
-const props = defineProps({
-  datos: Array,
-  titulo: String,
-  relacion: String,
-  ruta: String,
-});
+const props = defineProps<Props>();
 
 const url = (elemento) => {
   if (elemento.ruta) return elemento.ruta;
@@ -15,7 +15,7 @@ const url = (elemento) => {
 </script>
 
 <template>
-  <section v-if="datos.length" class="seccion">
+  <section v-if="datos && datos.length" class="seccion">
     <h3>{{ titulo }}</h3>
     <ul class="lista contenido">
       <li v-for="(elemento, i) in datos" :key="`elemento${ruta}${i}`">

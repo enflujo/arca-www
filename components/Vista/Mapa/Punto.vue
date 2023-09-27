@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Feature, Point } from 'geojson';
+import type { Point } from 'geojson';
 import mapbox from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface Props {
-  punto: Feature<Point>;
+  punto: Point;
 }
 const props = defineProps<Props>();
 const contenedorMapa: Ref<HTMLDivElement | undefined> = ref();
@@ -15,7 +15,7 @@ onMounted(() => {
   const estilo = 'mapbox://styles/enflujo/clbmr4ink000314lg4hi2hcm1/draft';
   mapbox.accessToken = 'pk.eyJ1IjoiZW5mbHVqbyIsImEiOiJjbDNrOXNndXQwMnZsM2lvNDd4N2x0M3dvIn0.eWs4BHs67PcETEUI00T66Q';
 
-  const coordenadas = props.punto.geometry.coordinates as [lat: number, lon: number];
+  const coordenadas = props.punto.coordinates as [lat: number, lon: number];
 
   const mapa = new mapbox.Map({
     container: contenedorMapa.value,
