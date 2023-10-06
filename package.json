@@ -29,9 +29,9 @@
   "devDependencies": {
     "@types/geojson": "^7946.0.11",
     "@types/mapbox-gl": "^2.7.15",
-    "@types/node": "^20.7.0",
+    "@types/node": "^20.8.2",
     "prettier": "^3.0.3",
-    "sass": "^1.68.0"
+    "sass": "^1.69.0"
   },
   "browserslist": {
     "production": [
