@@ -18,7 +18,7 @@ import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~/utilidades/queries';
 
 interface Props {
-  coleccion: NombresColecciones;
+  coleccion: keyof Colecciones;
   slug: string;
   nombreCampo?: string;
   enTablaRelacional?: boolean;

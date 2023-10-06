@@ -1,9 +1,12 @@
 <script setup lang="ts">
-defineProps({
-  datos: Object | String,
-  titulo: String,
-  ruta: String,
-});
+import { CamposBasicosURL } from '~/tipos';
+
+interface Props {
+  datos: CamposBasicosURL | string;
+  titulo: string;
+  ruta: string;
+}
+defineProps<Props>();
 </script>
 
 <template>

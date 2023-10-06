@@ -1,4 +1,5 @@
 import type { Feature, MultiPolygon, Point, Polygon } from 'geojson';
+import { type } from 'os';
 
 export interface Punto {
   x: number;
@@ -19,13 +20,14 @@ export interface Obra {
 
 export type TiposCampos = 'singular' | 'lista' | 'parrafos' | 'gestos' | 'lugar';
 export type LlavesCampos = 'separador' & NombresColecciones;
-interface CamposBasicosURL {
+export interface CamposBasicosURL {
   nombre: string;
   slug: string;
 }
+
 export interface CamposCategoria extends CamposBasicosURL {
   ruta: string;
-  coleccion: string;
+  campo: CamposCategorias;
 }
 
 export interface UbicacionProcesada {
@@ -295,6 +297,12 @@ export type DatosIndices = {
   ciudades?: Ciudad[];
   gestos?: Gesto[];
   personajes?: IndiceGeneral[];
+  categorias1?: IndiceGeneral[];
+  categorias2?: IndiceGeneral[];
+  categorias3?: IndiceGeneral[];
+  categorias4?: IndiceGeneral[];
+  categorias5?: IndiceGeneral[];
+  categorias6?: IndiceGeneral[];
   objetos?: IndiceGeneral[];
   escenarios?: IndiceGeneral[];
   tecnicas?: IndiceGeneral[];
@@ -335,6 +343,15 @@ export type Colecciones = {
 };
 
 export type Indices = (Pais | Ubicacion | Autor | Ciudad | Gesto | IndiceGeneral)[];
+export type NombresCategorias =
+  | 'categorias1'
+  | 'categorias2'
+  | 'categorias3'
+  | 'categorias4'
+  | 'categorias5'
+  | 'categorias6';
+
+export type CamposCategorias = 'categoria1' | 'categoria2' | 'categoria3' | 'categoria4' | 'categoria5' | 'categoria6';
 
 export type NombresColecciones =
   | 'autores'
@@ -342,12 +359,7 @@ export type NombresColecciones =
   | 'ubicaciones'
   | 'ciudades'
   | 'paises'
-  | 'categorias1'
-  | 'categorias2'
-  | 'categorias3'
-  | 'categorias4'
-  | 'categorias5'
-  | 'categorias6'
+  | NombresCategorias
   | 'objetos'
   | 'escenarios'
   | 'tecnicas'

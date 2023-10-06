@@ -1,12 +1,13 @@
 <script setup lang="ts">
-const props = defineProps({
-  numeroObras: Number,
-});
+interface Props {
+  numeroObras: number;
+}
+defineProps<Props>();
 </script>
 
 <template>
   <p class="contador">
-    <span class="conteo">{{ props.numeroObras }}</span> obras en la colección
+    <span class="conteo">{{ numeroObras }}</span> obras en la colección
   </p>
 </template>
 

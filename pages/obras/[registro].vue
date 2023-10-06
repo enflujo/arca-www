@@ -2,7 +2,15 @@
 import type { Point } from 'geojson';
 import { usarGeneral } from '~/cerebros/general';
 import { apiBase } from '~/config/general';
-import type { CamposCategoria, NombresColecciones, Obra, ObraGaleria, RegistroObra, TiposCampos } from '~/tipos';
+import type {
+  CamposCategoria,
+  CamposCategorias,
+  NombresColecciones,
+  Obra,
+  ObraGaleria,
+  RegistroObra,
+  TiposCampos,
+} from '~/tipos';
 import { definirDimsImagen, gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
@@ -100,12 +108,12 @@ watch(data, ({ obras }) => {
   const categorias = [];
 
   for (let i = 1; i <= 6; i++) {
-    const coleccion = `categoria${i}` as keyof RegistroObra;
+    const coleccion = `categoria${i}` as CamposCategorias;
     const datosCategoria = _obra[coleccion] as CamposCategoria;
 
     if (datosCategoria) {
       datosCategoria.ruta = `/categorias${i}/${datosCategoria.slug}`;
-      datosCategoria.coleccion = coleccion;
+      datosCategoria.campo = coleccion;
       categorias.push(datosCategoria);
     }
   }
@@ -181,11 +189,11 @@ watch(data, ({ obras }) => {
   buscarRelacionadas(categorias[categorias.length - 1]);
 });
 
-async function buscarRelacionadas(ultimaCategoria: { coleccion: string; slug: string }) {
+async function buscarRelacionadas(ultimaCategoria: { campo: string; slug: string }) {
   const Relacionadas = gql`
     query {
       obras(filter: { _and : [
-        {${ultimaCategoria.coleccion}: { slug:  {_eq: "${ultimaCategoria.slug}" } } },
+        {${ultimaCategoria.campo}: { slug:  {_eq: "${ultimaCategoria.slug}" } } },
         {registro: {_neq: "${ruta.params.registro}"}}
       ]}, limit: 20) { 
         registro

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-defineProps({
-  vistaCompleta: Boolean,
-});
+interface Props {
+  vistaCompleta: boolean;
+}
+
+defineProps<Props>();
 </script>
 
 <template>

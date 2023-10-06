@@ -1,11 +1,13 @@
 <script setup lang="ts">
-defineProps({
-  ancho: Number,
-  alto: { type: Number, default: 3 },
-  radio: { type: Number, default: 8 },
-  color: String,
-  total: Number,
-});
+interface Props {
+  ancho: number;
+  alto: number;
+  radio: number;
+  color: string;
+  total: number;
+}
+
+withDefaults(defineProps<Props>(), { alto: 3, radio: 8 });
 </script>
 
 <template>
