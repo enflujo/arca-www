@@ -48,7 +48,7 @@ watch(data, ({ general, paginas }) => {
   <div v-else id="portada" :style="`background-image:url(${imgPortada})`">
     <Logo class="svgClaro" />
     <h1 class="titulo logo-texto">{{ general.titulo }}</h1>
-    <div v-if="pagina" v-for="(seccion, i) in pagina.secciones" :key="`seccion${i}`" class="seccion">
+    <div v-if="pagina && pagina.secciones" v-for="(seccion, i) in pagina.secciones" :key="`seccion${i}`" class="seccion">
       <section v-if="seccion.titulo || seccion.texto">
         <h2 class="tituloSeccion">{{ seccion.titulo }}</h2>
         <div class="contenidoSeccion" v-html="seccion.texto"></div>

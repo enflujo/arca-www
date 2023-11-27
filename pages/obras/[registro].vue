@@ -268,10 +268,7 @@ const tipoCampo = (llave: keyof RegistroObra) => {
 const rutaCampo = (llave: keyof RegistroObra) => {
   const { coleccion } = tiposCampos[llave];
   const datosPagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === coleccion);
-
-  if (datosPagina) {
-    return datosPagina.slug;
-  }
+  return datosPagina?.slug;
 };
 </script>
 

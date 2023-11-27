@@ -5,7 +5,6 @@ import type {
   Colecciones,
   EntradaColeccion,
   Gesto,
-  NombresColecciones,
   Obra,
   ObraEnRelacional,
   ObraGaleria,

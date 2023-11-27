@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { InstantMeiliSearchInstance, instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import type {InstantMeiliSearchInstance, InstantMeiliSearchOptions} from '@meilisearch/instant-meilisearch'
 import { apiBase, urlBuscador } from '~/config/general';
 import { usarGeneral } from '~/cerebros/general';
 import { urlImagen } from '~/utilidades/ayudas';
@@ -7,7 +8,7 @@ import { urlImagen } from '~/utilidades/ayudas';
 const cerebroGeneral = usarGeneral();
 const resultados: Ref<HTMLDivElement | null> = ref(null);
 let clienteBuscador: InstantMeiliSearchInstance;
-const confirguracionBuscador = {
+const confirguracionBuscador: InstantMeiliSearchOptions = {
   // placeholderSearch: false,
   primaryKey: 'registro',
 };
