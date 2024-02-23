@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { LlavesRelaciones } from '~/tipos';
+
 interface Props {
   datos?: { nombre: string; ruta?: string }[];
   titulo: string;
-  relacion?: string | null;
+  relacion?: LlavesRelaciones;
   ruta?: string;
 }
 

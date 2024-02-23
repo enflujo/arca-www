@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Imagen, Pagina, PaginaArchivo, RegistroObra } from '~/tipos';
+import type { Imagen, NombresColecciones, Pagina, PaginaArchivo, RegistroObra } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 export type ColecionRelacionada = { campo: string; coleccionRelacionada: string };
@@ -20,6 +20,18 @@ export type CerebroGeneral = {
   campos: Campo[];
   llaveBuscador: string | null;
 };
+
+export interface DatosGenerales {
+  general: { nombre: string; descripcion: string; banner: { id: string; title: string }; texto_footer: string };
+  paginas: { titulo: string; slug: string }[];
+  paginas_archivo: {
+    titulo: string;
+    titulo_singular: string;
+    slug: string;
+    mostrar_en_menu: boolean;
+    coleccion: NombresColecciones;
+  }[];
+}
 
 export const usarGeneral = defineStore('general', {
   state: () =>
@@ -67,7 +79,7 @@ export const usarGeneral = defineStore('general', {
         }
       `;
 
-      const { general, paginas, paginas_archivo } = await obtenerDatos('general', General);
+      const { general, paginas, paginas_archivo } = await obtenerDatos<DatosGenerales>('general', General);
 
       this.paginas = paginas;
       this.paginasArchivo = paginas_archivo;

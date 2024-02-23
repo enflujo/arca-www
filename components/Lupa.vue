@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ImagenArca, Punto } from '~/tipos';
+import type { ImagenArca } from '~/tipos';
 import { demorar, esperar, urlImagen } from '~/utilidades/ayudas';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   bordeColor?: string;
   desbordar?: boolean;
   activado?: boolean;
-  tactoPos?: Punto;
+  tactoPos?: { x: number; y: number };
 }
 
 const props = withDefaults(defineProps<Props>(), {

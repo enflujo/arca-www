@@ -7,7 +7,7 @@ import { apiBase } from '~/config/general';
  * @param query Query en formato Graphql.
  * @returns Devuelve el objeto asincrónico `{data, error, pending, refresh}`
  */
-export default function (llave: string, query: string) {
+export default function <Esquema>(llave: string, query: string) {
   let Query = query;
 
   const {
@@ -15,7 +15,7 @@ export default function (llave: string, query: string) {
     error,
     pending,
     refresh: recargar,
-  } = useLazyAsyncData(
+  } = useLazyAsyncData<Esquema>(
     llave,
     () => {
       // console.log(Query);

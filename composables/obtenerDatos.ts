@@ -7,8 +7,8 @@ import { apiBase } from '~/config/general';
  * @param query Query en formato Graphql.
  * @returns Devuelve los datos un nivel dentro: `data.data`
  */
-export default async function (llave: string, query: string, sistema = false) {
-  const { data, error } = await useAsyncData(
+export default async function obtenerDatos<Esquema>(llave: string, query: string, sistema = false) {
+  const { data, error } = await useAsyncData<Esquema>(
     llave,
     () => {
       // console.log('EN SERVIDOR', query);
@@ -19,7 +19,7 @@ export default async function (llave: string, query: string, sistema = false) {
       });
     },
     {
-      transform: (data: any) => data.data,
+      transform: (res: any) => res.data,
     }
   );
 
@@ -27,5 +27,5 @@ export default async function (llave: string, query: string, sistema = false) {
     throw new Error(JSON.stringify(error.value, null, 2));
   }
 
-  return data.value;
+  return data.value as Esquema;
 }

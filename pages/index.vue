@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
+import type { Imagen } from '~/tipos';
 import { gql, urlImagen } from '~/utilidades/ayudas';
+import fondoPredeterminado from '~/assets/imgs/Portada_ARCA.jpg';
 
 type Seccion = { titulo: string; texto: string };
 type Pagina = { titulo: string; slug: string; secciones: Seccion[] };
@@ -9,6 +11,11 @@ const general = usarGeneral();
 // El título en este caso es nulo ya que el título que pasamos a esta función se vuelve el subtítulo,
 // al ser la página inicial no se necesita.
 useHead(elementosCabeza({}, '/'));
+
+interface Esquema {
+  general: { portada?: Imagen };
+  paginas: Pagina[];
+}
 
 const Portada = gql`
   query {
@@ -31,15 +38,17 @@ const Portada = gql`
   }
 `;
 
-const { data, pending } = obtenerDatosAsinc('portada', Portada);
+const { data, pending } = obtenerDatosAsinc<Esquema>('portada', Portada);
 const imgPortada: Ref<string | null> = ref(null);
 const pagina: Ref<Pagina | null> = ref(null);
 const secciones: Ref<{ titulo: string; texto: string }[]> = ref([]);
 
-watch(data, ({ general, paginas }) => {
+watch(data, (respuesta) => {
+  if (!respuesta) return;
+  const { general, paginas } = respuesta;
   pagina.value = paginas[0];
   secciones.value = paginas[0].secciones.filter((seccion: Seccion) => !!seccion.texto);
-  imgPortada.value = general.portada ? urlImagen(general.portada.id, 'portada') : null;
+  imgPortada.value = general.portada ? urlImagen(general.portada.id, 'portada') : fondoPredeterminado;
 });
 </script>
 
@@ -48,7 +57,12 @@ watch(data, ({ general, paginas }) => {
   <div v-else id="portada" :style="`background-image:url(${imgPortada})`">
     <Logo class="svgClaro" />
     <h1 class="titulo logo-texto">{{ general.titulo }}</h1>
-    <div v-if="pagina && pagina.secciones" v-for="(seccion, i) in pagina.secciones" :key="`seccion${i}`" class="seccion">
+    <div
+      v-if="pagina && pagina.secciones"
+      v-for="(seccion, i) in pagina.secciones"
+      :key="`seccion${i}`"
+      class="seccion"
+    >
       <section v-if="seccion.titulo || seccion.texto">
         <h2 class="tituloSeccion">{{ seccion.titulo }}</h2>
         <div class="contenidoSeccion" v-html="seccion.texto"></div>

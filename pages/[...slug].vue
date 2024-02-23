@@ -12,6 +12,10 @@ const datos: Ref<PaginaArchivo | undefined> = ref();
 const enTablaRelacional: Ref<boolean> = ref(false);
 const nombreCampo: Ref<string | undefined> = ref();
 
+interface EsquemaPaginaArchivo {
+  paginas_archivo: [PaginaArchivo];
+}
+
 if (esPaginaGeneral) {
   tipoPagina.value = 'general';
   definePageMeta({ layout: 'paginas' });
@@ -35,7 +39,11 @@ if (esPaginaGeneral) {
           }
         }
       `;
-      const { paginas_archivo } = await obtenerDatos(`indice${indice}`, Indice);
+
+      const { paginas_archivo } = (await obtenerDatos<EsquemaPaginaArchivo>(
+        `indice${indice}`,
+        Indice
+      )) as EsquemaPaginaArchivo;
       const { descripcion, banner, contenido } = paginas_archivo[0];
 
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
@@ -66,22 +74,27 @@ if (esPaginaGeneral) {
           }
         }
       `;
-      const { paginas_archivo } = await obtenerDatos(`galeria${indice}${slug}`, IndiceGaleria);
+      const respuesta = await obtenerDatos<EsquemaPaginaArchivo>(`galeria${indice}${slug}`, IndiceGaleria);
 
-      const relacion = cerebroGeneral.relaciones.find((relacion) => {
-        if (relacion.campo === 'ciudad_origen') return false;
-        return relacion.coleccionRelacionada === paginas_archivo[0].coleccion;
-      });
+      if (respuesta) {
+        const relacion = cerebroGeneral.relaciones.find((relacion) => {
+          if (relacion.campo === 'ciudad_origen') return false;
+          return relacion.coleccionRelacionada === respuesta.paginas_archivo[0].coleccion;
+        });
 
-      if (relacion) {
-        nombreCampo.value = relacion.campo;
+        if (relacion) {
+          nombreCampo.value = relacion.campo;
+        } else {
+          enTablaRelacional.value = true;
+        }
+
+        datos.value = { ...esPaginaArchivo, ...respuesta.paginas_archivo[0] };
+        definePageMeta({ layout: 'archivo', keepalive: true });
+        tipoPagina.value = 'archivoSingular';
+        // La galería se encarga de los elementosCabeza() para SEO.
       } else {
-        enTablaRelacional.value = true;
+        // TODO: 404
       }
-      datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };
-      definePageMeta({ layout: 'archivo', keepalive: true });
-      tipoPagina.value = 'archivoSingular';
-      // La galería se encarga de los elementosCabeza() para SEO.
     }
   } else {
     throw createError({ statusCode: 404, statusMessage: 'La página no existe', fatal: true });
