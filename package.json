@@ -22,17 +22,17 @@
     "@meilisearch/instant-meilisearch": "^0.13.6",
     "@pinia/nuxt": "^0.5.1",
     "html-to-text": "^9.0.5",
-    "mapbox-gl": "^2.15.0",
-    "nuxt": "^3.8.2",
-    "vue-instantsearch": "^4.12.1"
+    "mapbox-gl": "^3.1.2",
+    "nuxt": "^3.10.3",
+    "vue-instantsearch": "^4.13.8"
   },
   "devDependencies": {
-    "@types/geojson": "^7946.0.13",
+    "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
-    "@types/mapbox-gl": "^2.7.19",
-    "@types/node": "^20.10.0",
-    "prettier": "^3.1.0",
-    "sass": "^1.69.5"
+    "@types/mapbox-gl": "^3.1.0",
+    "@types/node": "^20.11.20",
+    "prettier": "^3.2.5",
+    "sass": "^1.71.1"
   },
   "browserslist": {
     "production": [
