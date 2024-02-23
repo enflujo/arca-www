@@ -1,8 +1,8 @@
 <script setup lang="ts">
 interface Props {
   ancho: number;
-  alto: number;
-  radio: number;
+  alto?: number;
+  radio?: number;
   color: string;
   total: number;
 }
