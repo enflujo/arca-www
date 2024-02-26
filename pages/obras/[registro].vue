@@ -11,6 +11,7 @@ import type {
   RegistroObra,
   TiposCampos,
 } from '~/tipos';
+import type { BaseRegistro } from '~/tipos/bases';
 import { definirDimsImagen, gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
@@ -32,7 +33,7 @@ query {
 }
 `;
 
-const { obras: datosGenerales } = await obtenerDatos(`obraGeneral${ruta.params.registro}`, ObraGeneral);
+const { obras: datosGenerales } = await obtenerDatos<BaseRegistro>(`obraGeneral${ruta.params.registro}`, ObraGeneral);
 
 if (datosGenerales[0].imagen) {
   // Definir dims imagen
@@ -94,15 +95,11 @@ const PeticionObra = gql`
   }
 `;
 
-interface Respuesta {
-  data: Ref<{ obras: RegistroObra[] }>;
-  pending: Ref<boolean>;
-}
+const { data, pending } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
 
-const { data, pending }: Respuesta = obtenerDatosAsinc(`obra${ruta.params.registro}`, PeticionObra);
-
-watch(data, ({ obras }) => {
-  const _obra = obras[0];
+watch(data, (res) => {
+  if (!res) return;
+  const _obra = res.obras[0];
 
   // Aplanar categorías en una sola lista/array
   const categorias = [];
