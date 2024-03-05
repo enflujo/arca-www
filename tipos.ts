@@ -55,6 +55,8 @@ export interface RegistroObra {
   categoria5: CamposCategoria;
   categoria6: CamposCategoria;
 
+  categorias?: CamposCategoria[];
+
   donante: CamposBasicosURL;
   relato_visual: CamposBasicosURL;
   fisiognomica: CamposBasicosURL;

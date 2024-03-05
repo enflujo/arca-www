@@ -114,6 +114,7 @@ watch(data, (res) => {
       categorias.push(datosCategoria);
     }
   }
+  _obra.categorias = categorias;
 
   // Limpiar ciudad de origen
   if (_obra.ciudad_origen) {
@@ -271,6 +272,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
 <template>
   <Cargador v-if="pending" />
+
   <div id="contenedorObra" v-else>
     <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
       <div class="opciones">
@@ -338,7 +340,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
             :titulo="seccion.titulo"
             :datos="obra[seccion.campo]"
             :ruta="rutaCampo(seccion.campo)"
-            :relacion="seccion.campo === 'categorias' ? null : `${seccion.campo}_id`"
+            :relacion="seccion.campo === 'categorias' ? undefined : `${seccion.campo}_id`"
           />
         </template>
 

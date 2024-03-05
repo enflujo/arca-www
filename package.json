@@ -22,15 +22,15 @@
     "@meilisearch/instant-meilisearch": "^0.13.6",
     "@pinia/nuxt": "^0.5.1",
     "html-to-text": "^9.0.5",
-    "mapbox-gl": "^3.1.2",
+    "mapbox-gl": "^3.2.0",
     "nuxt": "^3.10.3",
-    "vue-instantsearch": "^4.13.8"
+    "vue-instantsearch": "^4.14.0"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
     "@types/mapbox-gl": "^3.1.0",
-    "@types/node": "^20.11.20",
+    "@types/node": "^20.11.24",
     "prettier": "^3.2.5",
     "sass": "^1.71.1"
   },
