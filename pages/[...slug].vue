@@ -97,7 +97,8 @@ if (esPaginaGeneral) {
       }
     }
   } else {
-    throw createError({ statusCode: 404, statusMessage: 'La página no existe', fatal: true });
+    // TODO: ESTO ESTABA ROMPIENDO LA PàGINA, VER COMO MOSTRAR EL 404 CUANDO DE VERDAD ES 404
+    throw createError({ statusCode: 404, statusMessage: 'La página no existe', fatal: false });
   }
 }
 
