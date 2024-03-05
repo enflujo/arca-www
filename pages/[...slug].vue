@@ -107,6 +107,7 @@ if (esPaginaGeneral) {
 
 <template>
   <PaginaGeneral v-if="tipoPagina === 'general'" :slug="indice" />
+
   <template v-else-if="datos && tipoPagina === 'archivoIndice'">
     <h1>{{ datos.titulo }}</h1>
     <GaleriaInformacion coleccion="pagina" :datos="datos" />
