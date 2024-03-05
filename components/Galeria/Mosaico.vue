@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
   <div class="contenedorGaleria">
-    <div v-for="obra in obras" :key="obra.registro" class="obra">
+    <div v-for="obra in obras" :key="`obra-registro-${obra.registro}`" class="obra">
       <span class="registro">{{ obra.registro }}</span>
 
       <NuxtLink :to="`/obras/${obra.registro}`">

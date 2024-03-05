@@ -184,7 +184,7 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
 
   <Cargador v-if="pending || cargando" />
 
-  <div v-else>
+  <div>
     <VistaAbecedario
       v-if="cerebroArchivo.vistaActual === 'abc'"
       :datos="datos as DatosVistas[]"

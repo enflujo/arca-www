@@ -273,7 +273,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 <template>
   <Cargador v-if="pending" />
 
-  <div id="contenedorObra" v-else>
+  <div id="contenedorObra">
     <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
       <div class="opciones">
         <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
@@ -316,7 +316,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
         <div id="registro">{{ obra.registro }}</div>
       </section>
 
-      <template v-for="seccion in cerebroGeneral.campos" :key="`campo${seccion.campo}`">
+      <template v-for="seccion in cerebroGeneral.campos" :key="`campo-ficha-${seccion.campo}`">
         <template v-if="seccion.campo === 'separador'">
           <span class="separador"></span>
         </template>

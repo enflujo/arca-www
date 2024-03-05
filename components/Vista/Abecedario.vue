@@ -55,10 +55,10 @@ function procesarDatos() {
 </script>
 
 <template>
-  <section v-for="seccion in abc" :key="`seccion${seccion.letra}`" class="grupoLetras">
+  <section v-for="seccion in abc" :key="`seccion-letra-${seccion.letra}`" class="grupoLetras">
     <h2 class="tituloLetra">{{ seccion.letra }}</h2>
     <ul class="elementos">
-      <li v-for="(elemento, i) in seccion.elementos" :key="`elemento${i}`" class="elemento">
+      <li v-for="(elemento, i) in seccion.elementos" :key="`elemento-abc-${i}`" class="elemento">
         <NuxtLink :to="elemento.url">{{ elemento.texto }}</NuxtLink>
       </li>
     </ul>

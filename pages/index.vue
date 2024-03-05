@@ -54,13 +54,14 @@ watch(data, (respuesta) => {
 
 <template>
   <Cargador v-if="pending && !pagina" />
-  <div v-else id="portada" :style="`background-image:url(${imgPortada})`">
+
+  <div id="portada" :style="`background-image:url(${imgPortada})`">
     <Logo class="svgClaro" />
     <h1 class="titulo logo-texto">{{ general.titulo }}</h1>
     <div
       v-if="pagina && pagina.secciones"
       v-for="(seccion, i) in pagina.secciones"
-      :key="`seccion${i}`"
+      :key="`seccion-intro${i}`"
       class="seccion"
     >
       <section v-if="seccion.titulo || seccion.texto">

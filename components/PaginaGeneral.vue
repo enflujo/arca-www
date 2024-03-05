@@ -1,12 +1,24 @@
 <script setup lang="ts">
-import type { Pagina } from '~/tipos';
+import type { Imagen, Pagina } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 interface Props {
   slug: string;
 }
+
+interface DatosPagina {
+  titulo: string;
+  descripcion: string;
+  contenido: string;
+  banner: Imagen;
+}
+
+interface Esquema {
+  paginas: DatosPagina[];
+}
+
 const props = defineProps<Props>();
-const datos: Ref<Pagina | null> = ref(null);
+const datos: Ref<DatosPagina | null> = ref(null);
 
 const Pagina = gql`
 query {
@@ -22,7 +34,7 @@ query {
 }
 `;
 
-const { paginas } = await obtenerDatos(`pagina${props.slug}`, Pagina);
+const { paginas } = await obtenerDatos<Esquema>(`pagina${props.slug}`, Pagina);
 
 if (paginas.length) {
   datos.value = paginas[0];

@@ -50,7 +50,7 @@ function cambiarVista(llave: Vistas) {
   <div id="filtrosVistas">
     <VistaIconos
       v-for="vista in vistas"
-      :key="vista"
+      :key="`vista-${vista}`"
       class="filtro"
       :class="cerebroArchivo.vistaActual === vista ? 'activo' : ''"
       :vista="vista"

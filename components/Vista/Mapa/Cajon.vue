@@ -36,7 +36,8 @@ watch(data, (respuesta) => {
 <template>
   <div id="cajon" :class="abierto ? 'activo' : ''">
     <Cargador v-if="pending" />
-    <div v-else class="contenido">
+
+    <div class="contenido">
       <div id="cerrar" @click="cerrarCajon">X</div>
       <h3 class="titulo">
         <NuxtLink :to="`/${coleccion}/${coleccion === 'paises' ? datos.slug : datos.id}`">{{ datos.nombre }}</NuxtLink>

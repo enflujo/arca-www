@@ -1,5 +1,5 @@
 <template>
-  <div id="contenedor-cargador">
+  <div class="contenedor-cargador">
     <div class="cargador">
       <Logo class="logo" />
       <div class="texto-cargador">

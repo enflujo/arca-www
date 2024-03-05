@@ -18,7 +18,7 @@ const opciones: { coleccion: TiposLugares; titulo: string }[] = [
   <ul class="opciones">
     <li
       v-for="opcion in opciones"
-      :key="`opcionUbicacion${opcion.coleccion}`"
+      :key="`opcion-ubicacion${opcion.coleccion}`"
       @click="cambiarDatos(opcion.coleccion)"
       class="opcionUbicacion"
       :class="coleccion === opcion.coleccion ? 'activo' : ''"

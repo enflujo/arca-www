@@ -195,5 +195,5 @@ function cargarPagina(pagina: number) {
   <GaleriaInformacion v-if="datos" :coleccion="coleccion" :datos="datos" />
 
   <Cargador v-if="pending" />
-  <GaleriaMosaico v-else :obras="obras" :pagina="paginaActual" :cargarPagina="cargarPagina" :cargando="cargando" />
+  <GaleriaMosaico :obras="obras" :pagina="paginaActual" :cargarPagina="cargarPagina" :cargando="cargando" />
 </template>
