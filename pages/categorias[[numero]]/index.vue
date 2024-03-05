@@ -189,7 +189,7 @@ function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 
   <Cargador v-if="pending" />
 
-  <div>
+  <div v-else>
     <!-- Ver documentación del componente <TransitionGroup> en https://vuejs.org/guide/built-ins/transition-group.html -->
     <TransitionGroup name="tarjetas" tag="ul">
       <ul

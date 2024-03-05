@@ -39,7 +39,7 @@ const { paginas } = await obtenerDatos<Esquema>(`pagina${props.slug}`, Pagina);
 if (paginas.length) {
   datos.value = paginas[0];
 } else {
-  throw createError({ statusCode: 404, statusMessage: 'Arca en problemas', fatal: true });
+  throw createError({ statusCode: 404, message: 'Arca en problemas', fatal: true });
 }
 </script>
 
