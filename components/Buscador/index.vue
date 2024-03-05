@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import type {InstantMeiliSearchInstance, InstantMeiliSearchOptions} from '@meilisearch/instant-meilisearch'
+import type { InstantMeiliSearchInstance, InstantMeiliSearchOptions } from '@meilisearch/instant-meilisearch';
 import { apiBase, urlBuscador } from '~/config/general';
 import { usarGeneral } from '~/cerebros/general';
 import { urlImagen } from '~/utilidades/ayudas';
