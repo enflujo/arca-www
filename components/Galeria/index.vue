@@ -18,7 +18,7 @@ import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~/utilidades/queries';
 
 interface Props {
-  coleccion: keyof Colecciones;
+  coleccion: NombresColecciones;
   slug: string;
   nombreCampo?: string;
   enTablaRelacional?: boolean;
@@ -48,7 +48,7 @@ const datos: Ref<AutorProcesado | PersonajeProcesado | PaginaArchivo | EntradaCo
 const paginaActual: Ref<number> = ref(+(ruta.query.pagina as string) || 1);
 const esId = /^\d+$/.test(props.slug);
 
-const respuesta: Colecciones = await obtenerDatos(
+const respuesta = await obtenerDatos<Colecciones>(
   `generalesColeccion${props.coleccion}`,
   datosGeneralesColeccion(props.coleccion, props.slug, esId)
 );
@@ -68,7 +68,7 @@ if (respuestaDatos) {
 
   useHead(elementosCabeza(datosMeta, ruta.path)); // SEO
   titulo.value = respuestaDatos[0].nombre;
-  if (props.coleccion === 'personajes' && respuesta.personajes) {
+  if (coleccion === 'personajes' && respuesta.personajes) {
     datos.value = limpiarFechas(respuesta.personajes[0] as Personaje);
   } else if (props.coleccion === 'autores' && respuesta.autores) {
     datos.value = limpiarFechas(respuesta.autores[0]);
@@ -174,6 +174,7 @@ function limpiarDatos(nuevosDatos: { [coleccion: string]: any }) {
 function cargarPagina(pagina: number) {
   if (pagina <= numeroPaginas.value) {
     cargando.value = true;
+
     obtenerDatos(
       `obras-${datos.value?.id}${pagina}`,
       datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, pagina, esId)

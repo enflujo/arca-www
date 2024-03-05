@@ -212,6 +212,7 @@ function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
           <h2 class="titulo">
             <NuxtLink :to="`/categorias1/${categoria1.slug}`">{{ categoria1.nombre }}</NuxtLink>
           </h2>
+          
           <GraficaColombina
             :color="color(categoria1.obras_func.count)"
             :ancho="ejeX(categoria1.obras_func.count)"

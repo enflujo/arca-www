@@ -11,6 +11,7 @@ import type {
   RegistroObra,
   TiposCampos,
 } from '~/tipos';
+import type { BaseRegistro } from '~/tipos/bases';
 import { definirDimsImagen, gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
@@ -32,7 +33,7 @@ query {
 }
 `;
 
-const { obras: datosGenerales } = await obtenerDatos(`obraGeneral${ruta.params.registro}`, ObraGeneral);
+const { obras: datosGenerales } = await obtenerDatos<BaseRegistro>(`obraGeneral${ruta.params.registro}`, ObraGeneral);
 
 if (datosGenerales[0].imagen) {
   // Definir dims imagen
@@ -94,15 +95,11 @@ const PeticionObra = gql`
   }
 `;
 
-interface Respuesta {
-  data: Ref<{ obras: RegistroObra[] }>;
-  pending: Ref<boolean>;
-}
+const { data, pending } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
 
-const { data, pending }: Respuesta = obtenerDatosAsinc(`obra${ruta.params.registro}`, PeticionObra);
-
-watch(data, ({ obras }) => {
-  const _obra = obras[0];
+watch(data, (res) => {
+  if (!res) return;
+  const _obra = res.obras[0];
 
   // Aplanar categorías en una sola lista/array
   const categorias = [];
@@ -117,6 +114,7 @@ watch(data, ({ obras }) => {
       categorias.push(datosCategoria);
     }
   }
+  _obra.categorias = categorias;
 
   // Limpiar ciudad de origen
   if (_obra.ciudad_origen) {
@@ -268,15 +266,13 @@ const tipoCampo = (llave: keyof RegistroObra) => {
 const rutaCampo = (llave: keyof RegistroObra) => {
   const { coleccion } = tiposCampos[llave];
   const datosPagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === coleccion);
-
-  if (datosPagina) {
-    return datosPagina.slug;
-  }
+  return datosPagina?.slug;
 };
 </script>
 
 <template>
   <Cargador v-if="pending" />
+
   <div id="contenedorObra" v-else>
     <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
       <div class="opciones">
@@ -344,7 +340,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
             :titulo="seccion.titulo"
             :datos="obra[seccion.campo]"
             :ruta="rutaCampo(seccion.campo)"
-            :relacion="seccion.campo === 'categorias' ? null : `${seccion.campo}_id`"
+            :relacion="seccion.campo === 'categorias' ? undefined : `${seccion.campo}_id`"
           />
         </template>
 

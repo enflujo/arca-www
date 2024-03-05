@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CamposBasicosURL } from '~/tipos';
+import type { CamposBasicosURL } from '~/tipos';
 
 interface Props {
   datos: CamposBasicosURL | string;
   titulo: string;
-  ruta: string;
+  ruta?: string;
 }
 defineProps<Props>();
 </script>

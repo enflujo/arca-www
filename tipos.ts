@@ -1,10 +1,4 @@
 import type { Feature, MultiPolygon, Point, Polygon } from 'geojson';
-import { type } from 'os';
-
-export interface Punto {
-  x: number;
-  y: number;
-}
 
 export type Estados = 'publicado' | 'borrador' | 'archivado';
 export type Vistas = 'abc' | 'colombinas' | 'mapa';
@@ -19,6 +13,16 @@ export interface Obra {
 }
 
 export type TiposCampos = 'singular' | 'lista' | 'parrafos' | 'gestos' | 'lugar';
+export type LlavesRelaciones =
+  | 'autores_id'
+  | 'tecnicas_id'
+  | 'objetos_id'
+  | 'personajes_id'
+  | 'simbolos_id'
+  | 'escenarios_id'
+  | 'descriptores_id'
+  | 'caracteristicas_id';
+
 export type LlavesCampos = 'separador' & NombresColecciones;
 export interface CamposBasicosURL {
   nombre: string;
@@ -51,6 +55,8 @@ export interface RegistroObra {
   categoria5: CamposCategoria;
   categoria6: CamposCategoria;
 
+  categorias?: CamposCategoria[];
+
   donante: CamposBasicosURL;
   relato_visual: CamposBasicosURL;
   fisiognomica: CamposBasicosURL;
@@ -59,6 +65,9 @@ export interface RegistroObra {
   rostro: CamposBasicosURL;
   tipo_gestual: CamposBasicosURL;
   complejo_gestual: CamposBasicosURL;
+  gesto1: CamposBasicosURL;
+  gesto2: CamposBasicosURL;
+  gesto3: CamposBasicosURL;
 
   ciudad_origen: { id: number; nombre: string; pais: CamposBasicosURL; procesado?: UbicacionProcesada[] } | null;
 
@@ -72,9 +81,6 @@ export interface RegistroObra {
   };
 
   autores: { autores_id: { id: number; nombre: string; apellido: string; nombreCompleto?: string } }[];
-  gesto1: CamposBasicosURL;
-  gesto2: CamposBasicosURL;
-  gesto3: CamposBasicosURL;
   tecnicas: { tecnicas_id: CamposBasicosURL };
   objetos: { objetos_id: CamposBasicosURL };
   personajes: { personajes_id: { slug: string; nombre: string; muerte: number } };
@@ -106,9 +112,10 @@ export interface ConteoObras {
 export interface Pagina {
   titulo: string;
   slug: string;
-  contenido: string;
+  contenido?: string;
   descripcion?: string;
   banner?: Imagen;
+  seciones?: string[];
 }
 
 export type Imagen = {

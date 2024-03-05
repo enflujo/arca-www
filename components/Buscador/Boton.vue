@@ -32,10 +32,11 @@ onMounted(async () => {
   position: relative;
   color: rgba($profundidad, 0.6);
   font-size: 0.9em;
-
   cursor: pointer;
   transition: opacity 0.25s ease-in-out;
   opacity: 0.85;
+  margin-left: auto;
+  margin-right: 1.5em;
 
   &:hover {
     opacity: 1;

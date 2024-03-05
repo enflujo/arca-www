@@ -44,7 +44,7 @@ watch(data, (respuesta) => {
       <p class="contador">
         <span class="conteo">{{ datos.obras }}</span> obras en la colección
       </p>
-      <GaleriaMosaico v-if="datosColeccion" :obras="datosColeccion" />
+      <GaleriaMosaico v-if="datosColeccion" :obras="datosColeccion" :pagina="0" />
     </div>
   </div>
 </template>

@@ -20,18 +20,19 @@
   "dependencies": {
     "@enflujo/alquimia": "^2.0.0",
     "@meilisearch/instant-meilisearch": "^0.13.6",
-    "@pinia/nuxt": "^0.4.11",
+    "@pinia/nuxt": "^0.5.1",
     "html-to-text": "^9.0.5",
-    "mapbox-gl": "^2.15.0",
-    "nuxt": "^3.7.4",
-    "vue-instantsearch": "^4.10.12"
+    "mapbox-gl": "^3.2.0",
+    "nuxt": "^3.10.3",
+    "vue-instantsearch": "^4.14.0"
   },
   "devDependencies": {
-    "@types/geojson": "^7946.0.11",
-    "@types/mapbox-gl": "^2.7.15",
-    "@types/node": "^20.8.2",
-    "prettier": "^3.0.3",
-    "sass": "^1.69.0"
+    "@types/geojson": "^7946.0.14",
+    "@types/html-to-text": "^9.0.4",
+    "@types/mapbox-gl": "^3.1.0",
+    "@types/node": "^20.11.24",
+    "prettier": "^3.2.5",
+    "sass": "^1.71.1"
   },
   "browserslist": {
     "production": [
