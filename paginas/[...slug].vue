@@ -40,10 +40,7 @@ if (esPaginaGeneral) {
         }
       `;
 
-      const { paginas_archivo } = (await obtenerDatos<EsquemaPaginaArchivo>(
-        `indice${indice}`,
-        Indice
-      )) as EsquemaPaginaArchivo;
+      const { paginas_archivo } = await obtenerDatos<EsquemaPaginaArchivo>(`indice${indice}`, Indice);
       const { descripcion, banner, contenido } = paginas_archivo[0];
 
       datos.value = { ...esPaginaArchivo, ...paginas_archivo[0] };

@@ -7,7 +7,8 @@ defineProps<Props>();
 </script>
 
 <template>
-  <svg class="iconoZoom" alt="Icono para cambiar el tamaño de la imagen" viewBox="0 0 20 20" stroke="none">
+  <svg class="iconoZoom" viewBox="0 0 20 20" stroke="none">
+    <title>Icono para cambiar el tamaño de la imagen</title>
     <g transform="matrix(0.8333334 0 0 0.8333334 0 0)">
       <path
         v-if="vistaCompleta"

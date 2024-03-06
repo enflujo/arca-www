@@ -19,6 +19,7 @@ interface Esquema {
 
 const props = defineProps<Props>();
 const datos: Ref<DatosPagina | null> = ref(null);
+const ruta = useRoute();
 
 const Pagina = gql`
 query {
@@ -37,7 +38,19 @@ query {
 const { paginas } = await obtenerDatos<Esquema>(`pagina${props.slug}`, Pagina);
 
 if (paginas.length) {
-  datos.value = paginas[0];
+  const datosPagina = paginas[0];
+  datos.value = datosPagina;
+
+  useHead(
+    elementosCabeza(
+      {
+        titulo: datosPagina.titulo,
+        descripcion: datosPagina.descripcion,
+        banner: datosPagina.banner,
+      },
+      ruta.path
+    )
+  );
 } else {
   throw createError({ statusCode: 404, message: 'Arca en problemas', fatal: true });
 }
