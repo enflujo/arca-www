@@ -6,7 +6,7 @@ import { usarGeneral } from '~/cerebros/general';
 import { urlImagen } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
-const resultados: Ref<HTMLDivElement | null> = ref(null);
+const resultados: Ref<{ $el: HTMLDivElement } | null> = ref(null);
 let clienteBuscador: InstantMeiliSearchInstance;
 const confirguracionBuscador: InstantMeiliSearchOptions = {
   // placeholderSearch: false,
@@ -82,7 +82,13 @@ function entradaBuscador(evento: InputEvent) {
 <template>
   <div id="botonCerrar" @click="cerrar">x</div>
   <ClientOnly>
-    <ais-instant-search id="buscador" :search-client="clienteBuscador" index-name="obras" @click="cerrar">
+    <ais-instant-search
+      id="buscador"
+      :search-client="clienteBuscador"
+      index-name="obras"
+      @click="cerrar"
+      :future="{ preserveSharedStateOnUnmount: true }"
+    >
       <ais-configure :attributesToSnippet="['sintesis:20']" :snippetEllipsisText="'...'" :hits-per-page.camel="11" />
 
       <ais-search-box
@@ -106,6 +112,7 @@ function entradaBuscador(evento: InputEvent) {
 
       <ais-pagination
         @page-change="cambioDePagina"
+        :padding="5"
         :class-names="{
           'ais-Pagination': 'contenedorPaginas',
           'ais-Pagination-list': 'listaPaginas',
@@ -113,7 +120,41 @@ function entradaBuscador(evento: InputEvent) {
           'ais-Pagination-item--selected': 'paginaActual',
           'ais-Pagination-item--disabled': 'paginaDesabilitada',
         }"
-      />
+      >
+        <template v-slot="{ currentRefinement, nbHits, nbPages, pages, isFirstPage, isLastPage, refine, createURL }">
+          <p class="contadorRespuestas">
+            Número de obras:
+            <span class="numeroRespuestas" :class="nbHits === 1000 ? 'muchos' : ''">{{
+              nbHits === 1000 ? '1000+' : nbHits
+            }}</span>
+          </p>
+
+          <ul class="listaPaginas">
+            <li v-if="!isFirstPage" class="pagina">
+              <a :href="createURL(0)" @click.prevent="refine(0)"> ‹‹ </a>
+            </li>
+            <li v-if="!isFirstPage" class="pagina">
+              <a :href="createURL(currentRefinement - 1)" @click.prevent="refine(currentRefinement - 1)"> ‹ </a>
+            </li>
+            <li
+              v-for="page in pages"
+              :key="page"
+              class="pagina"
+              :class="page === currentRefinement ? 'paginaActual' : ''"
+            >
+              <a :href="createURL(page)" @click.prevent="refine(page)">
+                {{ page + 1 }}
+              </a>
+            </li>
+            <li v-if="!isLastPage" class="pagina">
+              <a :href="createURL(currentRefinement + 1)" @click.prevent="refine(currentRefinement + 1)"> › </a>
+            </li>
+            <li v-if="!isLastPage" class="pagina">
+              <a :href="createURL(nbPages)" @click.prevent="refine(nbPages)"> ›› </a>
+            </li>
+          </ul>
+        </template>
+      </ais-pagination>
 
       <ais-hits
         id="resultados"
@@ -158,6 +199,23 @@ function entradaBuscador(evento: InputEvent) {
   top: 0;
   left: 0;
   background-color: rgba($dolor, 0.75);
+
+  .contadorRespuestas {
+    text-align: center;
+    font-size: 0.85em;
+    padding: 0.3em;
+    display: block;
+    margin-bottom: 0.3em;
+
+    .numeroRespuestas {
+      font-weight: bold;
+
+      &.muchos {
+        font-style: italic;
+        font-weight: normal;
+      }
+    }
+  }
 
   :deep(.buscadorContenedor) {
     width: 80vw;
