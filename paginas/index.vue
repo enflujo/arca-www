@@ -124,19 +124,4 @@ watch(data, (respuesta) => {
   margin-top: 0.5em;
   margin-bottom: 1.5em;
 }
-// Teléfonos horizontal
-@media (min-width: $minCelular) {
-}
-
-// Pantallas medianas (Tablets)
-@media (min-width: $minTablet) {
-}
-
-// Dispositivos grandes y pantallas medianas
-@media (min-width: $minPantalla) {
-}
-
-// Pantallas grandes
-@media (min-width: $minPantallaGrande) {
-}
 </style>

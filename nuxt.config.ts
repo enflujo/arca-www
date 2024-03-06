@@ -32,6 +32,9 @@ export default defineNuxtConfig({
       ],
     },
   },
+  dir: {
+    pages: 'paginas',
+  },
   vite: {
     css: {
       preprocessorOptions: {

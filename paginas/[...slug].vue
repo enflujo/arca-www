@@ -89,7 +89,7 @@ if (esPaginaGeneral) {
         }
 
         datos.value = { ...esPaginaArchivo, ...respuesta.paginas_archivo[0] };
-        definePageMeta({ layout: 'archivo', keepalive: true });
+        definePageMeta({ layout: 'archivo' });
         tipoPagina.value = 'archivoSingular';
         // La galería se encarga de los elementosCabeza() para SEO.
       } else {
@@ -97,32 +97,30 @@ if (esPaginaGeneral) {
       }
     }
   } else {
-    // TODO: ESTO ESTABA ROMPIENDO LA PàGINA, VER COMO MOSTRAR EL 404 CUANDO DE VERDAD ES 404
-    throw createError({ statusCode: 404, message: 'La página no existe', fatal: false });
+    // console.log('nada', ruta.params.slug, slug);
+    // definePageMeta({ layout: 'default' });
+    // definePageMeta({ layout: 'archivo' });
   }
 }
-
-//
 </script>
 
 <template>
   <PaginaGeneral v-if="tipoPagina === 'general'" :slug="indice" />
 
-  <template v-else-if="datos && tipoPagina === 'archivoIndice'">
+  <div v-else-if="datos && tipoPagina === 'archivoIndice'">
     <h1>{{ datos.titulo }}</h1>
     <GaleriaInformacion coleccion="pagina" :datos="datos" />
     <Vista :coleccion="datos.coleccion" :slug="datos.slug" />
-  </template>
+  </div>
 
-  <template v-else-if="datos && tipoPagina === 'archivoSingular'">
-    <Galeria
-      :coleccion="datos.coleccion"
-      :nombreCampo="nombreCampo"
-      :singular="datos.titulo_singular"
-      :enTablaRelacional="enTablaRelacional"
-      :slug="ruta.params.slug[1]"
-    />
-  </template>
+  <Galeria
+    v-else-if="datos && tipoPagina === 'archivoSingular'"
+    :coleccion="datos.coleccion"
+    :nombreCampo="nombreCampo"
+    :singular="datos.titulo_singular"
+    :enTablaRelacional="enTablaRelacional"
+    :slug="ruta.params.slug[1]"
+  />
 </template>
 
 <style lang="scss">

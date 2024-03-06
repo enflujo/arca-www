@@ -140,7 +140,9 @@ function limpiarFechas(datosGenerales: Autor | Personaje): AutorProcesado | Pers
 const obras: Ref<ObraGaleria[]> = ref([]);
 const cargando = ref(false);
 
-if (!datos.value) throw createError({ statusCode: 404, message: 'No existen datos para esta galería' });
+if (!datos.value) {
+  throw createError({ statusCode: 404, message: 'No existen datos para esta galería' });
+}
 
 const { data, pending } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
