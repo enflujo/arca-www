@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { gql } from '~/utilidades/ayudas';
 
+interface Esquema {
+  obras_aggregated: { count: { id: number } }[];
+}
+
 const total = ref(0);
 const Obras = gql`
   query {
@@ -12,7 +16,7 @@ const Obras = gql`
   }
 `;
 
-const { obras_aggregated } = await obtenerDatos('obras', Obras);
+const { obras_aggregated } = await obtenerDatos<Esquema>('obras', Obras);
 
 total.value = obras_aggregated[0].count.id;
 

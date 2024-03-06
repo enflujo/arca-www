@@ -3,11 +3,9 @@ import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import type { Categoria } from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
 import { usarGeneral } from '~/cerebros/general';
-import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';
+import { gql, obtenerVariablesCSS, peticion } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
-const ruta = useRoute();
-const enrutador = useRouter();
 const cerebroArchivo = usarArchivo();
 const pending: Ref<boolean> = ref(true);
 const titulo = computed(() => {
@@ -23,46 +21,6 @@ let color: (valor: number) => string;
 let ejeX: (valor: number) => number;
 let colorMin;
 let colorMax;
-
-if (ruta.query.id) {
-  const { id } = ruta.query;
-
-  const BuscarCategoria = gql`
-      query {
-        categorias1(filter: { id: { _eq: ${id} } }) {
-          slug
-        }
-        categorias2(filter: { id: { _eq: ${id} } }) {
-          slug
-        }
-        categorias3(filter: { id: { _eq: ${id} } }) {
-          slug
-        }
-        categorias4(filter: { id: { _eq: ${id} } }) {
-          slug
-        }
-        categorias5(filter: { id: { _eq: ${id} } }) {
-          slug
-        }
-        categorias6(filter: { id: { _eq: ${id} } }) {
-          slug
-        }
-      }
-    `;
-
-  const busqueda = await obtenerDatos(`buscarCategoriaId${id}`, BuscarCategoria);
-
-  for (let i = 1; i < 7; i++) {
-    const coleccion = `categorias${i}`;
-    if (busqueda[coleccion].length) {
-      const { slug } = busqueda[coleccion][0];
-
-      enrutador.push({
-        path: `/${coleccion}/${slug}`,
-      });
-    }
-  }
-}
 
 definePageMeta({ layout: 'archivo', keepalive: true });
 
@@ -132,7 +90,7 @@ function ordenar(grupo: Categoria[]) {
   }
 }
 
-function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
+async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   const nivel1 = `categorias${nivel}`;
   const nivel2 = `categorias${nivel + 1}`;
   const nivel3 = nivel + 2 <= 6 ? `categorias${nivel + 2}` : null;
@@ -171,7 +129,7 @@ function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   `;
 
   // No usamos async/await ya que en vue3 con <script setup> solo podemos crear 1 función async.
-  obtenerDatos(`subcategorias${nivel}${datosCategoria.id}`, Subcategoria).then((respuesta) => {
+  peticion(Subcategoria).then((respuesta) => {
     const datosSubCategoria = respuesta[`${nivel1}_by_id`][nivel2];
 
     if (cerebroArchivo.vistaActual !== 'abc') {

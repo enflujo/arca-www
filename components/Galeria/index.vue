@@ -14,7 +14,7 @@ import type {
   PersonajeProcesado,
 } from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
-import { definirDimsImagen } from '~/utilidades/ayudas';
+import { definirDimsImagen, peticion } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~/utilidades/queries';
 
 interface Props {
@@ -177,8 +177,7 @@ function cargarPagina(pagina: number) {
   if (pagina <= numeroPaginas.value) {
     cargando.value = true;
 
-    obtenerDatos(
-      `obras-${datos.value?.id}${pagina}`,
+    peticion(
       datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, pagina, esId)
     ).then((respuesta) => {
       obras.value = [...obras.value, ...limpiarDatos(respuesta)];

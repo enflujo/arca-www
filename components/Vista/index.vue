@@ -15,6 +15,7 @@ import type {
   Ubicacion,
   Vistas,
 } from '~/tipos';
+import { peticion } from '~/utilidades/ayudas';
 import { indiceColeccion } from '~/utilidades/queries';
 
 interface Props {
@@ -155,7 +156,7 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
   } else {
     cargando.value = true;
 
-    const respuesta = await obtenerDatos(`indice-${tipoLugar}`, indiceColeccion(tipoLugar));
+    const respuesta = await peticion(indiceColeccion(tipoLugar));
     const datosLimpios = agregarEnlacesYTexto(respuesta[tipoLugar]);
 
     if (tipoLugar === 'ubicaciones') {

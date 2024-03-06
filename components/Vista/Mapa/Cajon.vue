@@ -11,13 +11,16 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const datosColeccion: Ref<ObraGaleria[] | undefined> = ref();
+const datosColeccion: Ref<ObraGaleria[]> = ref([]);
 const query = computed(() => {
   const nombreCampo = props.coleccion === 'paises' ? 'pais' : 'ubicacion';
   return datosObrasGaleria(props.coleccion, nombreCampo, props.datos.id, false, 1, true, 10);
 });
 
-const { data, pending, refresh } = obtenerDatosAsinc(`obras-cajon-${props.coleccion}`, query.value);
+const { data, pending, refresh } = obtenerDatosAsinc<{ obras: ObraGaleria[] }>(
+  `obras-cajon-${props.coleccion}`,
+  query.value
+);
 
 watch(
   () => props.datos.id,
@@ -29,6 +32,7 @@ watch(
 );
 
 watch(data, (respuesta) => {
+  if (!respuesta) return;
   datosColeccion.value = respuesta.obras;
 });
 </script>
