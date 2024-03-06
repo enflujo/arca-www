@@ -23,7 +23,7 @@
     "@pinia/nuxt": "^0.5.1",
     "html-to-text": "^9.0.5",
     "mapbox-gl": "^3.2.0",
-    "nuxt": "^3.10.3",
+    "nuxt": "^3.8.2",
     "vue-instantsearch": "^4.14.0"
   },
   "devDependencies": {
