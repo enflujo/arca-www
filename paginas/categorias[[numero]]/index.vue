@@ -2,27 +2,58 @@
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import type { Categoria } from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
-import { usarGeneral } from '~/cerebros/general';
 import { gql, obtenerVariablesCSS, peticion } from '~/utilidades/ayudas';
 
-const cerebroGeneral = usarGeneral();
 const cerebroArchivo = usarArchivo();
 const pending: Ref<boolean> = ref(true);
-const titulo = computed(() => {
-  if (cerebroGeneral.paginasArchivo) {
-    const pagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === 'categorias1');
-    if (pagina) {
-      return pagina.titulo;
-    }
-  }
-});
+const pagina: Ref<Esquema | null> = ref(null);
+const ruta = useRoute();
 
 let color: (valor: number) => string;
 let ejeX: (valor: number) => number;
 let colorMin;
 let colorMax;
 
+interface Esquema {
+  titulo: string;
+  slug: string;
+  contenido: string;
+  descripcion: string;
+  banner: { id: number; title: string };
+}
+
+const GeneralCategorias = gql`
+  query {
+    paginas_archivo(filter: { coleccion: { _eq: "categorias1" } }, limit: 1) {
+      titulo
+      slug
+      contenido
+      descripcion
+      banner {
+        id
+        title
+      }
+    }
+  }
+`;
+
+const { paginas_archivo } = await obtenerDatos<{ paginas_archivo: Esquema[] }>('generalCategorias', GeneralCategorias);
+
+pagina.value = paginas_archivo[0];
+
 definePageMeta({ layout: 'archivo', keepalive: true });
+
+// Pedir datos básicos de esto y ponerlos en los metadatos
+useHead(
+  elementosCabeza(
+    {
+      titulo: pagina.value.titulo,
+      descripcion: pagina.value.descripcion || pagina.value.contenido.replace(/(<([^>]+)>)/gi, ''),
+      banner: pagina.value.banner,
+    },
+    ruta.path
+  )
+);
 
 if (!cerebroArchivo.datosCategorias) {
   await cerebroArchivo.cargarDatosCategorias();
@@ -142,7 +173,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 </script>
 
 <template>
-  <h1>{{ titulo }}</h1>
+  <h1>{{ pagina?.titulo }}</h1>
   <VistaFiltrosVistas :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
 
   <Cargador v-if="pending" />
