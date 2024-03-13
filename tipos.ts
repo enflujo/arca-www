@@ -142,7 +142,7 @@ export interface Categoria extends ConteoObras {
   slug: string;
   nombre: string;
   descripcion: string;
-  imagen: Imagen;
+  imagen: ImagenArca;
   mostrarSubCategoria: boolean;
   [subnivel: string]: any;
 }

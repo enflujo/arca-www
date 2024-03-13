@@ -1,12 +1,31 @@
 import { defineStore } from 'pinia';
-import type { Categoria, Vistas } from '~/tipos';
+import type { ImagenArca, Vistas } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
-export type CerebroArchivo = {
+interface DatosCategoria1 {
+  categorias1: {
+    id: number;
+    slug: string;
+    nombre: string;
+    descripcion: string;
+    imagen: ImagenArca;
+    mostrarSubCategoria: boolean;
+    [subnivel: string]: any;
+  };
+}
+export interface CerebroArchivo {
   obrasPorPagina: number;
   vistaActual: Vistas;
-  datosCategorias?: Categoria[];
-};
+  datosCategorias?: {
+    id: number;
+    slug: string;
+    nombre: string;
+    descripcion: string;
+    imagen: ImagenArca;
+    mostrarSubCategoria: boolean;
+    [subnivel: string]: any;
+  };
+}
 
 export const usarArchivo = defineStore('archivo', {
   state: () =>
@@ -34,7 +53,8 @@ export const usarArchivo = defineStore('archivo', {
           }
         }
       `;
-      const { categorias1 } = await obtenerDatos('datosCategorias1', Categorias1);
+      const { categorias1 } = await obtenerDatos<DatosCategoria1>('datosCategorias1', Categorias1);
+
       if (categorias1.imagen) {
         categorias1.imagen.ancho = 300;
         categorias1.imagen.alto = 300;
