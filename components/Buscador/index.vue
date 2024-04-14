@@ -18,10 +18,14 @@ if (!cerebroGeneral.llaveBuscador) {
 
   if (llave) {
     cerebroGeneral.llaveBuscador = llave;
-    clienteBuscador = instantMeiliSearch(urlBuscador, cerebroGeneral.llaveBuscador, confirguracionBuscador);
+    clienteBuscador = instantMeiliSearch(
+      urlBuscador,
+      cerebroGeneral.llaveBuscador,
+      confirguracionBuscador
+    ).searchClient;
   }
 } else {
-  clienteBuscador = instantMeiliSearch(urlBuscador, cerebroGeneral.llaveBuscador, confirguracionBuscador);
+  clienteBuscador = instantMeiliSearch(urlBuscador, cerebroGeneral.llaveBuscador, confirguracionBuscador).searchClient;
 }
 
 const campos = [
