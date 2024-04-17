@@ -68,7 +68,7 @@ function cerrar() {
 
 main {
   padding: 1em 1em 2em 5em;
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
