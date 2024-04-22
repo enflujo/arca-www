@@ -24,7 +24,7 @@
     "html-to-text": "^9.0.5",
     "mapbox-gl": "^3.3.0",
     "nuxt": "^3.11.2",
-    "vue-instantsearch": "^4.15.0"
+    "vue-instantsearch": "^4.16.0"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",

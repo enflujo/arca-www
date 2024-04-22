@@ -95,12 +95,13 @@ defineProps<Props>();
 
 .seccion {
   font-family: var(--fuenteParrafos);
-  margin: 0.5em 0;
+
   padding: 0.5em 0;
   border-top: 2px solid $dolor;
   width: 100%;
   display: flex;
   flex-basis: 100%;
+  align-items: center;
 
   &:last-child {
     border-bottom: 2px solid $dolor;
@@ -113,6 +114,7 @@ defineProps<Props>();
     width: 130px;
     color: $dolor;
   }
+
   &.medio {
     vertical-align: top;
     flex-basis: 48%;
@@ -121,7 +123,6 @@ defineProps<Props>();
 
 .infoContenido {
   margin-left: 0.5em;
-  padding-top: 0.1em;
   flex: 1;
   font-size: 0.9em;
 }

@@ -305,6 +305,10 @@ function entradaBuscador(evento: InputEvent) {
       font-weight: bold;
       font-family: var(--fuenteMenu);
     }
+
+    .campo p {
+      margin: 0.2em 0;
+    }
   }
 }
 
