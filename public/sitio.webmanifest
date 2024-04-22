@@ -1,7 +1,7 @@
 {
   "name": "Arte Colonial Americano",
   "short_name": "Arca",
-  "start_url": "https://arca.uniandes.edu.co",
+  "start_url": "/",
   "icons": [
     {
       "src": "/icono-192x192.png",
