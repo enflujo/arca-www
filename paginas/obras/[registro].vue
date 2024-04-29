@@ -53,6 +53,7 @@ const verLupa = ref(true);
 const PeticionObra = gql`
   query {
     obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
+      id
       registro
       fecha_inicial
       fecha_final
@@ -271,6 +272,8 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 </script>
 
 <template>
+  <EditarDatos :url="`obras/${obra?.id}`" />
+
   <Cargador v-if="pending" />
 
   <div id="contenedorObra">

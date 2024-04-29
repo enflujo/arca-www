@@ -39,6 +39,7 @@ export interface UbicacionProcesada {
   nombre: string;
 }
 export interface RegistroObra {
+  id: number;
   registro: number;
   fecha_inicial: number;
   fecha_final: number;
