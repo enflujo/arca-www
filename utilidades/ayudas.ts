@@ -67,17 +67,10 @@ export const extraerPrimeraLetra = (texto: string) => {
 
 export const gql = String.raw;
 
-export function ordenarPorNombre(lista: { nombre: string }[]) {
-  lista.sort((a, b) => {
-    const nombreA = a.nombre.toUpperCase(); // ignorar mayúsculas y minúsculas
-    const nombreB = b.nombre.toUpperCase();
-    if (nombreA < nombreB) {
-      return -1;
-    }
-    if (nombreA > nombreB) {
-      return 1;
-    }
-
+export function ordenarPorLlave(fuente: { [llave: string]: any }[], llave: string, ascendente?: boolean) {
+  return fuente.sort((a, b) => {
+    if (a[llave] < b[llave]) return ascendente ? -1 : 1;
+    if (a[llave] > b[llave]) return ascendente ? 1 : -1;
     return 0;
   });
 }

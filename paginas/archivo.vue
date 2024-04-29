@@ -15,7 +15,7 @@ const total = ref(0);
 
 const agregados = gql`
   query {
-    gestos1: obras_aggregated(groupBy: ["gesto1"], limit: -1) {
+    gestos1: obras_aggregated(groupBy: ["gesto1", "gesto2"], limit: -1) {
       group
       count {
         id
@@ -43,24 +43,23 @@ const agregados = gql`
 `;
 
 const { gestos1, gestos2, fechas } = await obtenerDatos<Esquema>('agregados', agregados);
-
 const limites = { min: fechas[0].group.fecha_inicial, max: fechas.slice(-1)[0].group.fecha_inicial, distancia: 0 };
 limites.distancia = limites.max - limites.min;
 const pasoX = 100 / limites.distancia;
 const posX = (año: number) => `${(año - limites.min) * pasoX}%`;
 const alto = (valor: number) => `${valor}px`;
 definePageMeta({ layout: 'archivo' });
-console.log(limites, fechas, pasoX);
+console.log(gestos1);
 </script>
 
 <template>
-  <h1>Obras</h1>
+  <!-- <h1>Obras</h1>
   <div class="contenedorLinea">
     <span class="nodo" v-for="fecha in fechas" :style="`left:${posX(fecha.group.fecha_inicial)}`">
       <span class="barra" :style="`height:${alto(fecha.count.id)}`"></span>
       <span class="fecha">{{ fecha.group.fecha_inicial }}</span>
     </span>
-  </div>
+  </div> -->
 </template>
 
 <style lang="scss" scoped>
