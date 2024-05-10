@@ -591,12 +591,12 @@
   resolved "https://registry.yarnpkg.com/@mapbox/whoots-js/-/whoots-js-3.1.0.tgz#497c67a1cef50d1a2459ba60f315e448d2ad87fe"
   integrity sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==
 
-"@meilisearch/instant-meilisearch@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@meilisearch/instant-meilisearch/-/instant-meilisearch-0.17.0.tgz#d0fdefe7f0d0d0275e98b97c5116c5866416be40"
-  integrity sha512-6SDDivDWsmYjX33m2fAUCcBvatjutBbvqV8Eg+CEllz0l6piAiDK/WlukVpYrSmhYN2YGQsJSm62WbMGciPhUg==
+"@meilisearch/instant-meilisearch@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@meilisearch/instant-meilisearch/-/instant-meilisearch-0.18.0.tgz#3834e97ef117b40e2cbe16bc86343196b2cf0c98"
+  integrity sha512-sBJkqZrJHm6cfIZbfzp0aAg/6hE5vBnNdOpCSCo1WFXGNmSSuU5n9oA4B5ZrxNDAcz4B2FwDMq8r5lSh3J8T9A==
   dependencies:
-    meilisearch "^0.38.0"
+    meilisearch "^0.39.0"
 
 "@netlify/functions@^2.6.0":
   version "2.6.0"
@@ -1299,10 +1299,17 @@
   dependencies:
     "@types/geojson" "*"
 
-"@types/node@*", "@types/node@^20.12.7":
+"@types/node@*":
   version "20.12.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.7.tgz#04080362fa3dd6c5822061aa3124f5c152cff384"
   integrity sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==
+  dependencies:
+    undici-types "~5.26.4"
+
+"@types/node@^20.12.11":
+  version "20.12.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.11.tgz#c4ef00d3507000d17690643278a60dc55a9dc9be"
+  integrity sha512-vDg9PZ/zi+Nqp6boSOT7plNuthRugEKixDv5sFTIpkE89MmNtEArAShI4mxuX2+UrLEe9pxC1vm2cjm9YlWbJw==
   dependencies:
     undici-types "~5.26.4"
 
@@ -1669,10 +1676,10 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-algoliasearch-helper@3.18.0:
-  version "3.18.0"
-  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.18.0.tgz#e3651090cc6c41f244a6db2573bdd116ca4b7085"
-  integrity sha512-ZXvA8r6VG46V343jnIE7Tei8Xr0/9N8YhD27joC0BKxeogQyvNu7O37i510wA7FnrDjoa/tFhK90WUaBlkaqnw==
+algoliasearch-helper@3.19.0:
+  version "3.19.0"
+  resolved "https://registry.yarnpkg.com/algoliasearch-helper/-/algoliasearch-helper-3.19.0.tgz#56f9c61f46ecb0a0f7497f127a5d32a94d87e090"
+  integrity sha512-AaSb5DZDMZmDQyIy6lf4aL0OZGgyIdqvLIIvSuVQOIOqfhrYSY7TvotIFI2x0Q3cP3xUpTd7lI1astUC4aXBJw==
   dependencies:
     "@algolia/events" "^4.0.1"
 
@@ -3167,27 +3174,27 @@ ini@^1.3.5:
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
-instantsearch-ui-components@0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.4.0.tgz#0aabc136107b1adac42bbb93c6dc3cfb1942b24e"
-  integrity sha512-Isa9Ankm89e9PUXsUto6TxYzcQpXKlWZMsKLXc//dO4i9q5JS8s0Es+c+U65jRLK2j1DiVlNx/Z6HshRIZwA8w==
+instantsearch-ui-components@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/instantsearch-ui-components/-/instantsearch-ui-components-0.5.0.tgz#922e94a5a95b7c8a3bc8547a4090fa327a3ac279"
+  integrity sha512-iDdbAbPDyKZOCdOd4aiMkMVJ1WFhc+QU0dM0EIgfZqDYHFuw8XfyLakRK+S7YcQi4bomoqWZ4FiQ/gTFFWo4rQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
 
-instantsearch.js@4.67.0:
-  version "4.67.0"
-  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.67.0.tgz#b6c1b194eab845588edb9c1d4f42d57de30c0181"
-  integrity sha512-RKbLBbpysAHOjOBtuSnxsYRnYydEB+Y/R/W0XMC+HZRro6FKUmLexXJR2MkVJXwuC3AG7RNC75jPx1WbVREWMA==
+instantsearch.js@4.68.1:
+  version "4.68.1"
+  resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.68.1.tgz#b516188db7ffbc651db2c6b60e264288d5d66e4c"
+  integrity sha512-h1TmKTO9K3aid6m/4JlLPDnlun/GDniGALxljrFctNHR7zIRP1SsNJtqcAevID49BVlpFSGqwtrtZ7JgpWQJJg==
   dependencies:
     "@algolia/events" "^4.0.1"
     "@types/dom-speech-recognition" "^0.0.1"
     "@types/google.maps" "^3.45.3"
     "@types/hogan.js" "^3.0.0"
     "@types/qs" "^6.5.3"
-    algoliasearch-helper "3.18.0"
+    algoliasearch-helper "3.19.0"
     hogan.js "^3.0.2"
     htm "^3.0.0"
-    instantsearch-ui-components "0.4.0"
+    instantsearch-ui-components "0.5.0"
     preact "^10.10.0"
     qs "^6.5.1 < 6.10"
     search-insights "^2.13.0"
@@ -3665,10 +3672,10 @@ mdn-data@2.0.30:
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.30.tgz#ce4df6f80af6cfbe218ecd5c552ba13c4dfa08cc"
   integrity sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==
 
-meilisearch@^0.38.0:
-  version "0.38.0"
-  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.38.0.tgz#c3f666a995f15553b1b27e05e28a51bbfb3639bc"
-  integrity sha512-bHaq8nYxSKw9/Qslq1Zes5g9tHgFkxy/I9o8942wv2PqlNOT0CzptIkh/x98N52GikoSZOXSQkgt6oMjtf5uZw==
+meilisearch@^0.39.0:
+  version "0.39.0"
+  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.39.0.tgz#958da44fd2aeb52caab3c09c15bff9f660016351"
+  integrity sha512-nNf/HOqQ/wSxaSYKyIsE8thMPciLyIpEDIp0ZbJxkOZ/tETDNfaBNbY+Eq/wbTR9O769QSiQFf5OhssfGyOzbA==
   dependencies:
     cross-fetch "^3.1.6"
 
@@ -4953,10 +4960,10 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sass@^1.75.0:
-  version "1.75.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.75.0.tgz#91bbe87fb02dfcc34e052ddd6ab80f60d392be6c"
-  integrity sha512-ShMYi3WkrDWxExyxSZPst4/okE9ts46xZmJDSawJQrnte7M1V9fScVB+uNXOVKRBt0PggHOwoZcn8mYX4trnBw==
+sass@^1.77.0:
+  version "1.77.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.77.0.tgz#e736c69aff9fae4a4e6dae60a979eee9c942f321"
+  integrity sha512-eGj4HNfXqBWtSnvItNkn7B6icqH14i3CiCGbzMKs3BAPTq62pp9NBYsBgyN4cA+qssqo9r26lW4JSvlaUUWbgw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
@@ -5867,13 +5874,13 @@ vue-devtools-stub@^0.1.0:
   resolved "https://registry.yarnpkg.com/vue-devtools-stub/-/vue-devtools-stub-0.1.0.tgz#a65b9485edecd4273cedcb8102c739b83add2c81"
   integrity sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==
 
-vue-instantsearch@^4.16.0:
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/vue-instantsearch/-/vue-instantsearch-4.16.0.tgz#65ee24d6a37c172ef1ee342ac6a6d017ce8124eb"
-  integrity sha512-tsn/upx7/8Zqmz3gKThWwEy7y9pWR1Q5u+Ug9dKINaMXiLqDRVtwj5ILHM1WPxQKq591IFKloQNM9uWTpOJxAw==
+vue-instantsearch@^4.16.2:
+  version "4.16.2"
+  resolved "https://registry.yarnpkg.com/vue-instantsearch/-/vue-instantsearch-4.16.2.tgz#88bc9e52e499348ba1ca1f5a6b59cf3f8ee9ddeb"
+  integrity sha512-lMyXjQHF7AkWLvq5xXfquGcGJfnQfxk3ZmDYKEwt0f8xefzDniRXfPKqvy7k9i6It6vYzEFC9A6Z5ZjQHVMlpA==
   dependencies:
-    instantsearch-ui-components "0.4.0"
-    instantsearch.js "4.67.0"
+    instantsearch-ui-components "0.5.0"
+    instantsearch.js "4.68.1"
     mitt "^2.1.0"
 
 vue-observe-visibility@^2.0.0-alpha.1:
