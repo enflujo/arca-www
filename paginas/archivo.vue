@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usarGeneral } from '~/cerebros/general';
 import { gql } from '~/utilidades/ayudas';
 
 interface AgregdoColeccion {
@@ -6,7 +7,7 @@ interface AgregdoColeccion {
 }
 
 interface Esquema {
-  todos: { count: { id: number } }[];
+  total: { count: { id: number } }[];
   gestos1: AgregdoColeccion[];
   gestos2: AgregdoColeccion[];
   fechas: any;
@@ -14,7 +15,7 @@ interface Esquema {
 
 const agregados = gql`
   query {
-    todos: obras_aggregated {
+    total: obras_aggregated {
       count {
         id
       }
@@ -47,7 +48,7 @@ const agregados = gql`
   }
 `;
 
-const { todos, gestos1, gestos2, fechas } = await obtenerDatos<any>('agregados', agregados);
+const { total, gestos1, gestos2, fechas } = await obtenerDatos<any>('agregados', agregados);
 const limites = { min: fechas[0].group.fecha_inicial, max: fechas.slice(-1)[0].group.fecha_inicial, distancia: 0 };
 // console.log(gestos1);
 limites.distancia = limites.max - limites.min;
@@ -84,15 +85,18 @@ class ObraPunto {
     this.color = '#000';
   }
 }
+const cerebroGeneral = usarGeneral();
 const lienzo: Ref<HTMLCanvasElement | null> = ref(null);
 let ctx: CanvasRenderingContext2D;
 const lienzo2: Ref<HTMLCanvasElement | null> = ref(null);
 let ctx2: CanvasRenderingContext2D;
 const puntos: ObraPunto[] = [];
-const total = computed(() => todos[0].count.id);
+const totalObras = computed(() => total[0].count.id);
 let ancho = 1200;
-
 const alto = 800;
+
+const colecciones: Ref<HTMLInputElement | undefined> = ref();
+
 const colores = (i: number) =>
   [
     '#FF6633',
@@ -298,13 +302,14 @@ const colores = (i: number) =>
   ][i];
 
 onMounted(() => {
+  console.log(cerebroGeneral.paginasArchivo);
   if (!lienzo.value || !lienzo2.value) return;
   ctx = lienzo.value.getContext('2d') as CanvasRenderingContext2D;
   ctx2 = lienzo2.value.getContext('2d') as CanvasRenderingContext2D;
 
-  const len = total.value;
+  const len = totalObras.value;
 
-  const dimCuadrado = Math.ceil(Math.sqrt(total.value));
+  const dimCuadrado = Math.ceil(Math.sqrt(totalObras.value));
 
   // for (let x = 0; x < dimCuadrado; x++) {
   //   for (let y = 0; y < dimCuadrado; y++) {
@@ -312,10 +317,10 @@ onMounted(() => {
   //   }
   // }
 
-  const sumaGestos = gestos1.reduce((acumulado, actual) => {
-    return acumulado + actual.count.id;
-  }, 0);
-  console.log('obras con gesto1', sumaGestos);
+  // const sumaGestos = gestos1.reduce((acumulado, actual) => {
+  //   return acumulado + actual.count.id;
+  // }, 0);
+  // console.log('obras con gesto1', sumaGestos);
 
   for (let i = 0; i < len; i++) {
     const x = (Math.random() * ancho - 1) | 0;
@@ -326,7 +331,7 @@ onMounted(() => {
 
   let totalConGesto1 = 0;
   let n = 0;
-  console.log(gestos1);
+
   gestos1.forEach((gesto1: any, i: number) => {
     const conteo = gesto1.count.id;
     const id = gesto1.group.gesto1;
@@ -335,10 +340,8 @@ onMounted(() => {
 
     if (color) {
       const len = n + conteo;
-      console.log(n, len, conteo);
 
       for (let x = n; x < len; x++) {
-        // console.log(n);
         puntos[x].color = color;
       }
     }
@@ -350,7 +353,6 @@ onMounted(() => {
     n += conteo;
   });
 
-  console.log(puntos);
   escalar();
 
   window.addEventListener('resize', escalar);
@@ -382,7 +384,7 @@ function escalar() {
 
 function pintar() {
   if (!ctx) return;
-  const len = total.value;
+  const len = totalObras.value;
   let color = puntos[0].color;
   ctx.fillStyle = color;
 
@@ -403,17 +405,37 @@ function pintar() {
   // ctx.fill();
 }
 
-function cuadroGestos() {
-  const totalGestos = gestos1.length;
-  const max = Math.max();
+async function abrirOpciones(evento: Event) {
+  const coleccion = colecciones.value?.value;
+  console.log(coleccion);
+  if (!coleccion) return;
+
+  const query = gql`
+    query {
+      ${coleccion}(filter: { obras: { id: {_nnull: true} } }, limit: -1) {
+        id
+        nombre
+      }
+    }`;
+
+  try {
+    const datos = await pedirDatos(query);
+    if (datos[coleccion]) {
+      console.log(datos[coleccion]);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
 <template>
-  <ul>
-    <!-- <li @click="buscarGesto(1)">gestos 1</li> -->
-    <li @click="cuadroGestos()">gestos 1</li>
-  </ul>
+  <select id="buscarColeccion" ref="colecciones" name="colecciones" @change="abrirOpciones">
+    <option v-for="coleccion in cerebroGeneral.paginasArchivo" class="campoColeccion" :value="coleccion.coleccion">
+      {{ coleccion.titulo }}
+    </option>
+  </select>
+
   <canvas ref="lienzo" id="lienzo"></canvas>
   <canvas ref="lienzo2" id="lienzo2"></canvas>
   <!-- <h1>Obras</h1>
@@ -434,5 +456,18 @@ function cuadroGestos() {
 
 canvas {
   display: inline-block;
+}
+
+#buscarColeccion {
+  width: 250px;
+  padding: 0.5em;
+  background-color: var(--verdeClaro);
+  font-family: var(--fuenteMenu);
+  cursor: pointer;
+}
+
+.campoColeccion {
+  font-size: 0.85em;
+  padding: 0.35em 0;
 }
 </style>
