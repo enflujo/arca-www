@@ -22,7 +22,7 @@ export type CerebroGeneral = {
 };
 
 export interface DatosGenerales {
-  general: { nombre: string; descripcion: string; banner: { id: string; title: string }; texto_footer: string };
+  general: { nombre: string; descripcion: string; banner: Imagen; texto_footer: string };
   paginas: { titulo: string; slug: string }[];
   paginas_archivo: {
     titulo: string;
