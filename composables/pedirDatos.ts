@@ -1,6 +1,6 @@
 import { apiBase } from '~/config/general';
 
-export default async <Esquema>(query: string) => {
+export default async <Esquema>(query: string): Promise<Esquema> => {
   return new Promise(async (resolver, rechazar) => {
     const respuesta = await $fetch<{ data: any }>(`${apiBase}/graphql`, {
       method: 'POST',
