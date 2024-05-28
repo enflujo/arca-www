@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
+import type { NombresColecciones } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 interface AgregdoColeccion {
@@ -302,7 +303,6 @@ const colores = (i: number) =>
   ][i];
 
 onMounted(() => {
-  console.log(cerebroGeneral.paginasArchivo);
   if (!lienzo.value || !lienzo2.value) return;
   ctx = lienzo.value.getContext('2d') as CanvasRenderingContext2D;
   ctx2 = lienzo2.value.getContext('2d') as CanvasRenderingContext2D;
@@ -408,20 +408,32 @@ function pintar() {
 async function abrirOpciones(evento: Event) {
   const coleccion = colecciones.value?.value;
   console.log(coleccion);
-  if (!coleccion) return;
+  if (!coleccion || coleccion === 'inicio') return;
 
-  const query = gql`
+  const queryNormal = gql`
     query {
       ${coleccion}(filter: { obras: { id: {_nnull: true} } }, limit: -1) {
         id
         nombre
+        ${coleccion === 'autores' ? 'apellido' : ''}
       }
     }`;
 
+  const queryGestos = gql`
+    query {
+      gestos(limit: -1) {
+        id
+        nombre
+      }
+    }
+  `;
+
+  const query = coleccion === 'gestos' ? queryGestos : queryNormal;
+
   try {
-    const datos = await pedirDatos(query);
+    const datos = await pedirDatos<{ [coleccion: string]: { id: number; nombre: string; apellido?: string }[] }>(query);
     if (datos[coleccion]) {
-      console.log(datos[coleccion]);
+      console.log(datos[coleccion].map((e) => e.nombre));
     }
   } catch (error) {
     console.error(error);
@@ -431,6 +443,7 @@ async function abrirOpciones(evento: Event) {
 
 <template>
   <select id="buscarColeccion" ref="colecciones" name="colecciones" @change="abrirOpciones">
+    <option value="inicio">__</option>
     <option v-for="coleccion in cerebroGeneral.paginasArchivo" class="campoColeccion" :value="coleccion.coleccion">
       {{ coleccion.titulo }}
     </option>
