@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
-import type { NombresColecciones } from '~/tipos';
 import { gql } from '~/utilidades/ayudas';
 
 interface AgregdoColeccion {
@@ -58,20 +57,20 @@ limites.distancia = limites.max - limites.min;
 // const alto = (valor: number) => `${valor}px`;
 definePageMeta({ layout: 'default' });
 
-async function buscarGesto(id: number) {
-  const { data } = obtenerDatosAsinc(
-    'busqueda',
-    gql`
-    query {
-      categorias1(filter: { id: {_eq: ${id}}}) {
-        nombre
-      }
-    }
-  `
-  );
+// async function buscarGesto(id: number) {
+//   const { data } = obtenerDatosAsinc(
+//     'busqueda',
+//     gql`
+//     query {
+//       categorias1(filter: { id: {_eq: ${id}}}) {
+//         nombre
+//       }
+//     }
+//   `
+//   );
 
-  console.log(data.value.categorias1[0].nombre);
-}
+//   console.log(data.value.categorias1[0].nombre);
+// }
 /**
  * En Cliente
  */
@@ -95,8 +94,6 @@ const puntos: ObraPunto[] = [];
 const totalObras = computed(() => total[0].count.id);
 let ancho = 1200;
 const alto = 800;
-
-const colecciones: Ref<HTMLInputElement | undefined> = ref();
 
 const colores = (i: number) =>
   [
@@ -303,111 +300,100 @@ const colores = (i: number) =>
   ][i];
 
 onMounted(() => {
-  if (!lienzo.value || !lienzo2.value) return;
-  ctx = lienzo.value.getContext('2d') as CanvasRenderingContext2D;
-  ctx2 = lienzo2.value.getContext('2d') as CanvasRenderingContext2D;
-
-  const len = totalObras.value;
-
-  const dimCuadrado = Math.ceil(Math.sqrt(totalObras.value));
-
-  // for (let x = 0; x < dimCuadrado; x++) {
-  //   for (let y = 0; y < dimCuadrado; y++) {
-  //     console.log(x, y);
-  //   }
+  // if (!lienzo.value || !lienzo2.value) return;
+  // ctx = lienzo.value.getContext('2d') as CanvasRenderingContext2D;
+  // ctx2 = lienzo2.value.getContext('2d') as CanvasRenderingContext2D;
+  // const len = totalObras.value;
+  // const dimCuadrado = Math.ceil(Math.sqrt(totalObras.value));
+  // // for (let x = 0; x < dimCuadrado; x++) {
+  // //   for (let y = 0; y < dimCuadrado; y++) {
+  // //     console.log(x, y);
+  // //   }
+  // // }
+  // // const sumaGestos = gestos1.reduce((acumulado, actual) => {
+  // //   return acumulado + actual.count.id;
+  // // }, 0);
+  // // console.log('obras con gesto1', sumaGestos);
+  // for (let i = 0; i < len; i++) {
+  //   const x = (Math.random() * ancho - 1) | 0;
+  //   const y = (Math.random() * alto - 1) | 0;
+  //   puntos.push(new ObraPunto(x, y));
   // }
-
-  // const sumaGestos = gestos1.reduce((acumulado, actual) => {
-  //   return acumulado + actual.count.id;
-  // }, 0);
-  // console.log('obras con gesto1', sumaGestos);
-
-  for (let i = 0; i < len; i++) {
-    const x = (Math.random() * ancho - 1) | 0;
-    const y = (Math.random() * alto - 1) | 0;
-
-    puntos.push(new ObraPunto(x, y));
-  }
-
-  let totalConGesto1 = 0;
-  let n = 0;
-
-  gestos1.forEach((gesto1: any, i: number) => {
-    const conteo = gesto1.count.id;
-    const id = gesto1.group.gesto1;
-
-    const color = colores(i);
-
-    if (color) {
-      const len = n + conteo;
-
-      for (let x = n; x < len; x++) {
-        puntos[x].color = color;
-      }
-    }
-
-    if (id) {
-      totalConGesto1 += conteo;
-    }
-
-    n += conteo;
-  });
-
-  escalar();
-
-  window.addEventListener('resize', escalar);
+  // let totalConGesto1 = 0;
+  // let n = 0;
+  // gestos1.forEach((gesto1: any, i: number) => {
+  //   const conteo = gesto1.count.id;
+  //   const id = gesto1.group.gesto1;
+  //   const color = colores(i);
+  //   if (color) {
+  //     const len = n + conteo;
+  //     for (let x = n; x < len; x++) {
+  //       puntos[x].color = color;
+  //     }
+  //   }
+  //   if (id) {
+  //     totalConGesto1 += conteo;
+  //   }
+  //   n += conteo;
+  // });
+  // escalar();
+  // window.addEventListener('resize', escalar);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', escalar);
+  // window.removeEventListener('resize', escalar);
 });
 
-function escalar() {
-  if (!lienzo.value || !lienzo2.value) return;
-  ancho = 1200;
-  lienzo.value.width = ancho;
-  lienzo.value.height = alto;
-  Object.assign(lienzo.value.style, {
-    width: `${ancho}px`,
-    height: `${alto}px`,
-  });
+// function escalar() {
+//   if (!lienzo.value || !lienzo2.value) return;
+//   ancho = 1200;
+//   lienzo.value.width = ancho;
+//   lienzo.value.height = alto;
+//   Object.assign(lienzo.value.style, {
+//     width: `${ancho}px`,
+//     height: `${alto}px`,
+//   });
 
-  lienzo2.value.width = 600;
-  lienzo2.value.height = 600;
-  Object.assign(lienzo2.value.style, {
-    width: `${600}px`,
-    height: `${600}px`,
-  });
+//   lienzo2.value.width = 600;
+//   lienzo2.value.height = 600;
+//   Object.assign(lienzo2.value.style, {
+//     width: `${600}px`,
+//     height: `${600}px`,
+//   });
 
-  pintar();
-}
+//   pintar();
+// }
 
-function pintar() {
-  if (!ctx) return;
-  const len = totalObras.value;
-  let color = puntos[0].color;
-  ctx.fillStyle = color;
+// function pintar() {
+//   if (!ctx) return;
+//   const len = totalObras.value;
+//   let color = puntos[0].color;
+//   ctx.fillStyle = color;
 
-  ctx.beginPath();
-  for (let i = 0; i < len; i++) {
-    const punto = puntos[i];
-    ctx.rect(punto.x, punto.y, 1.5, 1.5);
+//   ctx.beginPath();
+//   for (let i = 0; i < len; i++) {
+//     const punto = puntos[i];
+//     ctx.rect(punto.x, punto.y, 1.5, 1.5);
 
-    if (punto.color !== color) {
-      ctx.fill();
-      color = punto.color;
-      ctx.fillStyle = color;
-      // ctx.closePath();
-      ctx.beginPath();
-    }
-  }
-  // ctx.fill();
-  // ctx.fill();
-}
+//     if (punto.color !== color) {
+//       ctx.fill();
+//       color = punto.color;
+//       ctx.fillStyle = color;
+//       // ctx.closePath();
+//       ctx.beginPath();
+//     }
+//   }
+//   // ctx.fill();
+//   // ctx.fill();
+// }
+const listas: Ref<{ id: number; nombre: string }[][]> = ref([]);
+const columna1: Ref<HTMLInputElement | undefined> = ref();
+const columna2: Ref<HTMLInputElement | undefined> = ref();
 
-async function abrirOpciones(evento: Event) {
-  const coleccion = colecciones.value?.value;
-  console.log(coleccion);
+async function abrirOpciones(numeroLista: number) {
+  const seleccionador = numeroLista === 0 ? columna1 : columna2;
+  const coleccion = seleccionador.value?.value;
+
   if (!coleccion || coleccion === 'inicio') return;
 
   const queryNormal = gql`
@@ -432,8 +418,33 @@ async function abrirOpciones(evento: Event) {
 
   try {
     const datos = await pedirDatos<{ [coleccion: string]: { id: number; nombre: string; apellido?: string }[] }>(query);
+
     if (datos[coleccion]) {
-      console.log(datos[coleccion].map((e) => e.nombre));
+      if (coleccion === 'autores') {
+        datos.autores = datos.autores.map((a) => {
+          return { id: a.id, nombre: `${a.nombre} ${a.apellido}` };
+        });
+      }
+
+      listas.value[numeroLista] = datos[coleccion];
+      console.log(numeroLista);
+      if (numeroLista === 1) {
+        const QueryRelaciones = gql`
+          query {
+            relaciones: obras_aggregated(groupBy: ["${columna1.value?.value}", "${columna2.value?.value}"], sort: "-count.id") {
+              group
+              count {id}
+            }
+          }
+        `;
+        console.log(QueryRelaciones);
+        try {
+          const relaciones = await pedirDatos<any>(QueryRelaciones);
+          console.log(relaciones);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
   } catch (error) {
     console.error(error);
@@ -442,36 +453,58 @@ async function abrirOpciones(evento: Event) {
 </script>
 
 <template>
-  <select id="buscarColeccion" ref="colecciones" name="colecciones" @change="abrirOpciones">
-    <option value="inicio">__</option>
-    <option v-for="coleccion in cerebroGeneral.paginasArchivo" class="campoColeccion" :value="coleccion.coleccion">
-      {{ coleccion.titulo }}
-    </option>
-  </select>
+  <p class="contador">
+    Actualmente hay <span class="resaltado">{{ totalObras }}</span> obras registradas en la coleccion
+  </p>
 
-  <canvas ref="lienzo" id="lienzo"></canvas>
-  <canvas ref="lienzo2" id="lienzo2"></canvas>
-  <!-- <h1>Obras</h1>
-  <div class="contenedorLinea">
-    <span class="nodo" v-for="fecha in fechas" :style="`left:${posX(fecha.group.fecha_inicial)}`">
-      <span class="barra" :style="`height:${alto(fecha.count.id)}`"></span>
-      <span class="fecha">{{ fecha.group.fecha_inicial }}</span>
-    </span>
-  </div> -->
+  <div class="contenedor">
+    <div class="columna">
+      <select class="buscarColeccion" ref="columna1" @change="abrirOpciones(0)">
+        <option value="inicio">__</option>
+        <option v-for="coleccion in cerebroGeneral.paginasArchivo" class="campoColeccion" :value="coleccion.coleccion">
+          {{ coleccion.titulo }}
+        </option>
+      </select>
+
+      <ul id="lista1" class="listaOpciones">
+        <li v-for="elemento in listas[0]">{{ elemento.nombre }}</li>
+      </ul>
+    </div>
+
+    <svg class="conexiones"></svg>
+
+    <div class="columna">
+      <select class="buscarColeccion" ref="columna2" @change="abrirOpciones(1)">
+        <option value="inicio">__</option>
+        <option v-for="coleccion in cerebroGeneral.paginasArchivo" class="campoColeccion" :value="coleccion.coleccion">
+          {{ coleccion.titulo }}
+        </option>
+      </select>
+
+      <ul id="lista2" class="listaOpciones">
+        <li v-for="elemento in listas[1]">{{ elemento.nombre }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- <canvas ref="lienzo" id="lienzo"></canvas>
+  <canvas ref="lienzo2" id="lienzo2"></canvas> -->
 </template>
 
 <style lang="scss" scoped>
-#lienzo {
-  // display: block;
-
-  // width: 100%;
-}
-
 canvas {
   display: inline-block;
 }
 
-#buscarColeccion {
+.contenedor {
+  display: flex;
+
+  .columna {
+    // width: 30%;
+  }
+}
+
+.buscarColeccion {
   width: 250px;
   padding: 0.5em;
   background-color: var(--verdeClaro);
@@ -482,5 +515,26 @@ canvas {
 .campoColeccion {
   font-size: 0.85em;
   padding: 0.35em 0;
+}
+
+.contador {
+  border: 2px solid;
+  padding: 0.8em;
+  display: inline-block;
+}
+
+.resaltado {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.listaOpciones {
+  font-size: 0.85em;
+  width: 250px;
+  min-width: 200px;
+}
+
+#lista1 {
+  text-align: right;
 }
 </style>

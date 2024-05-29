@@ -8,6 +8,7 @@ export default async <Esquema>(query: string): Promise<Esquema> => {
       body: JSON.stringify({ query }),
     }).catch((error) => {
       console.log('¡ERROR!', error.data.errors[0].extensions.errors[0]);
+      rechazar();
     });
 
     if (respuesta?.data) {
