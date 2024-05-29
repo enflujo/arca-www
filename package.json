@@ -22,9 +22,9 @@
     "@meilisearch/instant-meilisearch": "^0.18.1",
     "@pinia/nuxt": "^0.5.1",
     "html-to-text": "^9.0.5",
-    "mapbox-gl": "^3.3.0",
+    "mapbox-gl": "^3.4.0",
     "nuxt": "^3.11.2",
-    "vue-instantsearch": "^4.16.2"
+    "vue-instantsearch": "^4.17.1"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
