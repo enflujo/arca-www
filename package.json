@@ -30,9 +30,9 @@
     "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
     "@types/mapbox-gl": "^3.1.0",
-    "@types/node": "^20.12.12",
-    "prettier": "^3.2.5",
-    "sass": "^1.77.2"
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.0",
+    "sass": "^1.77.4"
   },
   "browserslist": {
     "production": [
