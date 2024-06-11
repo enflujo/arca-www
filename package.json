@@ -24,13 +24,13 @@
     "html-to-text": "^9.0.5",
     "mapbox-gl": "^3.4.0",
     "nuxt": "^3.11.2",
-    "vue-instantsearch": "^4.17.1"
+    "vue-instantsearch": "^4.17.2"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
     "@types/mapbox-gl": "^3.1.0",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.14.1",
     "prettier": "^3.3.0",
     "sass": "^1.77.4"
   },

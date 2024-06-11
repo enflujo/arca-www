@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { convertirEscala } from '@enflujo/alquimia';
 import { usarGeneral } from '~/cerebros/general';
 import { gql } from '~/utilidades/ayudas';
 
@@ -21,6 +22,13 @@ const agregados = gql`
       }
     }
 
+    fechas: obras_aggregated(groupBy: ["fecha_inicial"], limit: -1, sort: ["fecha_inicial"]) {
+      group
+      count {
+        id
+      }
+    }
+
     gestos1: obras_aggregated(groupBy: ["gesto1"], limit: -1) {
       group
       count {
@@ -34,22 +42,42 @@ const agregados = gql`
         id
       }
     }
-
-    fechas: obras_aggregated(
-      groupBy: ["fecha_periodo", "fecha_inicial", "fecha_final"]
-      limit: -1
-      sort: ["fecha_inicial"]
-    ) {
-      group
-      count {
-        id
-      }
-    }
   }
 `;
 
 const { total, gestos1, gestos2, fechas } = await obtenerDatos<any>('agregados', agregados);
 const limites = { min: fechas[0].group.fecha_inicial, max: fechas.slice(-1)[0].group.fecha_inicial, distancia: 0 };
+const obrasPorDecadas: { año: number; conteo: number }[] = [];
+
+let maximoValor = 0;
+
+const revisarMaximo = (valor: number) => {
+  if (maximoValor < valor) {
+    maximoValor = valor;
+  }
+};
+const decada = (valor: number) => ((valor / 10) | 0) * 10;
+fechas.forEach((fecha) => {
+  const año = decada(fecha.group.fecha_inicial);
+  const existe = obrasPorDecadas.find((fecha) => fecha.año === año);
+
+  if (!existe) {
+    obrasPorDecadas.push({ año, conteo: fecha.count.id });
+    revisarMaximo(fecha.count.id);
+  } else {
+    existe.conteo += fecha.count.id;
+    revisarMaximo(existe.conteo);
+  }
+});
+
+const fechaMin = obrasPorDecadas[0].año;
+const fechaMax = obrasPorDecadas[obrasPorDecadas.length - 1].año;
+const distancia = fechaMax - fechaMin;
+const limiteY = 150; // cambiar a dinámico
+const pasoX = 95 / distancia;
+const pasoY = 100 / limiteY;
+const ejeX = (valor: number) => 2.5 + (valor - fechaMin) * pasoX;
+const ejeY = (valor: number) => 90 - convertirEscala(valor, 0, maximoValor, 0, 200) * pasoY;
 // console.log(gestos1);
 limites.distancia = limites.max - limites.min;
 // const pasoX = 100 / limites.distancia;
@@ -427,7 +455,7 @@ async function abrirOpciones(numeroLista: number) {
       }
 
       listas.value[numeroLista] = datos[coleccion];
-      console.log(numeroLista);
+
       if (numeroLista === 1) {
         const QueryRelaciones = gql`
           query {
@@ -437,7 +465,7 @@ async function abrirOpciones(numeroLista: number) {
             }
           }
         `;
-        console.log(QueryRelaciones);
+
         try {
           const relaciones = await pedirDatos<any>(QueryRelaciones);
           console.log(relaciones);
@@ -450,12 +478,77 @@ async function abrirOpciones(numeroLista: number) {
     console.error(error);
   }
 }
+const lineas: Ref<{ año: number; conteo: number }[][]> = ref([]);
+
+async function buscarCategoria(elemento: any, coleccion?: string) {
+  console.log(elemento, coleccion);
+  const Query = gql`
+    query {
+      obras(filter: { categoria1: { id: {_eq: "${elemento.id}" } }}, limit: -1, sort: ["fecha_inicial"]) {
+        fecha_inicial
+      }
+    }
+  `;
+  const respuesta = await pedirDatos<{ obras: { fecha_inicial: number }[] }>(Query);
+
+  if (!respuesta.obras.length) return;
+  const fechas: { año: number; conteo: number }[] = [];
+  respuesta.obras.forEach((obra) => {
+    const existe = fechas.find((f) => f.año === obra.fecha_inicial);
+
+    if (!existe) {
+      fechas.push({ año: obra.fecha_inicial, conteo: 1 });
+    } else {
+      existe.conteo++;
+    }
+  });
+
+  lineas.value.push(fechas);
+}
+const svgFechasExactas = ref();
+function crearLinea(puntos: any) {
+  const { width, height } = svgFechasExactas.value?.getBoundingClientRect();
+  const x = (valor: number) => convertirEscala(valor, 0, 100, 0, width);
+  const y = (valor: number) => convertirEscala(valor, 0, 100, 0, height);
+  let linea = '';
+
+  puntos.forEach((punto, i) => {
+    if (i === 0) {
+      linea += `M${x(ejeX(punto.año))} ${y(ejeY(punto.conteo))}`;
+    } else {
+      linea += ` L${x(ejeX(punto.año))} ${y(ejeY(punto.conteo))}`;
+    }
+  });
+
+  linea += ' Z';
+
+  return linea;
+}
 </script>
 
 <template>
   <p class="contador">
     Actualmente hay <span class="resaltado">{{ totalObras }}</span> obras registradas en la coleccion
   </p>
+  <div class="contenedorSVG">
+    <svg v-if="obrasPorDecadas.length" class="contenedorLinea" ref="svgFechasExactas">
+      <g v-for="obj in obrasPorDecadas" :style="`transform:translateX(${ejeX(obj.año)}%)`">
+        <line class="barra" x1="0" :y1="`${ejeY(obj.conteo)}%`" x2="0" y2="90%" stroke="black"></line>
+        <line class="guiaEje" x1="0" y1="91%" x2="0" y2="94%"></line>
+        <text class="año" x="0" y="98%">{{ obj.año }}</text>
+      </g>
+
+      <line class="lineaGuia" x1="0" x2="100%" y1="92%" y2="92%"></line>
+
+      <g v-for="(grupo, i) in lineas">
+        <path
+          :d="crearLinea(grupo)"
+          vector-effect="non-scaling-stroke"
+          :style="`fill: none; stroke: ${colores(i)}; stroke-width: 1`"
+        ></path>
+      </g>
+    </svg>
+  </div>
 
   <div class="contenedor">
     <div class="columna">
@@ -467,7 +560,7 @@ async function abrirOpciones(numeroLista: number) {
       </select>
 
       <ul id="lista1" class="listaOpciones">
-        <li v-for="elemento in listas[0]">{{ elemento.nombre }}</li>
+        <li v-for="elemento in listas[0]" @click="buscarCategoria(elemento, columna1?.value)">{{ elemento.nombre }}</li>
       </ul>
     </div>
 
@@ -494,6 +587,10 @@ async function abrirOpciones(numeroLista: number) {
 <style lang="scss" scoped>
 canvas {
   display: inline-block;
+}
+
+.contenedorSVG {
+  height: 200px;
 }
 
 .contenedor {
@@ -536,5 +633,64 @@ canvas {
 
 #lista1 {
   text-align: right;
+}
+
+.bloquearSvg {
+  width: 90vw;
+  height: 200px;
+  display: block;
+  position: relative;
+  margin: 0 auto;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.contenedorLinea {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  width: 90vw;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.año {
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.barra {
+  stroke-width: 2px;
+  stroke: rgb(59, 131, 176);
+}
+
+.curvaPeriodo {
+  stroke: rgb(116, 53, 194);
+  fill: transparent;
+}
+
+.lineaGuia {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.guiaEje {
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.bloque {
+  font-size: 0.4em;
+  position: absolute;
+
+  overflow: hidden;
+
+  .fecha {
+    margin: 0 0.2em;
+  }
 }
 </style>
