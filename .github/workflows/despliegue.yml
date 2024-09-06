@@ -21,7 +21,7 @@ jobs:
             source ~/.nvm/nvm.sh
             cd ${{ secrets.RUTA }}
             git pull origin main
-            yarn install --frozen-lockfile
+            yarn install --immutable
             yarn server:stop
             yarn build
             yarn server:restart
