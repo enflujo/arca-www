@@ -20,20 +20,20 @@
   },
   "dependencies": {
     "@enflujo/alquimia": "^2.0.0",
-    "@meilisearch/instant-meilisearch": "^0.17.0",
-    "@pinia/nuxt": "^0.5.1",
+    "@meilisearch/instant-meilisearch": "^0.20.0",
+    "@pinia/nuxt": "^0.5.4",
     "html-to-text": "^9.0.5",
-    "mapbox-gl": "^3.3.0",
-    "nuxt": "^3.11.2",
-    "vue-instantsearch": "^4.15.0"
+    "mapbox-gl": "^3.6.0",
+    "nuxt": "^3.13.1",
+    "vue-instantsearch": "^4.19.3"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
-    "@types/mapbox-gl": "^3.1.0",
-    "@types/node": "^20.12.7",
-    "prettier": "^3.2.5",
-    "sass": "^1.75.0"
+    "@types/mapbox-gl": "^3.4.0",
+    "@types/node": "^22.5.4",
+    "prettier": "^3.3.3",
+    "sass": "^1.78.0"
   },
   "browserslist": {
     "production": [

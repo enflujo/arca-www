@@ -1074,12 +1074,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@meilisearch/instant-meilisearch@npm:^0.17.0":
-  version: 0.17.0
-  resolution: "@meilisearch/instant-meilisearch@npm:0.17.0"
+"@meilisearch/instant-meilisearch@npm:^0.20.0":
+  version: 0.20.0
+  resolution: "@meilisearch/instant-meilisearch@npm:0.20.0"
   dependencies:
-    meilisearch: "npm:^0.38.0"
-  checksum: 10c0/3391ed211f4e54916fe73d3c0a5b8bf43ff6bd29ceb3d50d8d1c0aef9c5c1b933b467e9dfde773f849585cbb35ed28df22187f380d48d93899f50356ed9de7d3
+    meilisearch: "npm:^0.42.0"
+  checksum: 10c0/2c64131652df3ee07541a706188736dc12ebfdf914615101203a88c5849c2d54af452f2d647ce3da44e000c72449aa64d114414965cc03bfc567efe08db521f0
   languageName: node
   linkType: hard
 
@@ -1510,7 +1510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/nuxt@npm:^0.5.1":
+"@pinia/nuxt@npm:^0.5.4":
   version: 0.5.4
   resolution: "@pinia/nuxt@npm:0.5.4"
   dependencies:
@@ -1860,7 +1860,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mapbox-gl@npm:^3.1.0":
+"@types/mapbox-gl@npm:^3.4.0":
   version: 3.4.0
   resolution: "@types/mapbox-gl@npm:3.4.0"
   dependencies:
@@ -1887,21 +1887,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^22.5.4":
   version: 22.5.4
   resolution: "@types/node@npm:22.5.4"
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/b445daa7eecd761ad4d778b882d6ff7bcc3b4baad2086ea9804db7c5d4a4ab0298b00d7f5315fc640a73b5a1d52bbf9628e09c9fec0cf44dbf9b4df674a8717d
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.12.7":
-  version: 20.16.5
-  resolution: "@types/node@npm:20.16.5"
-  dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10c0/6af7994129815010bcbc4cf8221865559c8116ff43e74a6549525c2108267596fc2d18aff5d5ecfe089fb60a119f975631343e2c65c52bfa0955ed9dc56733d6
   languageName: node
   linkType: hard
 
@@ -2407,18 +2398,18 @@ __metadata:
   resolution: "arca-www@workspace:."
   dependencies:
     "@enflujo/alquimia": "npm:^2.0.0"
-    "@meilisearch/instant-meilisearch": "npm:^0.17.0"
-    "@pinia/nuxt": "npm:^0.5.1"
+    "@meilisearch/instant-meilisearch": "npm:^0.20.0"
+    "@pinia/nuxt": "npm:^0.5.4"
     "@types/geojson": "npm:^7946.0.14"
     "@types/html-to-text": "npm:^9.0.4"
-    "@types/mapbox-gl": "npm:^3.1.0"
-    "@types/node": "npm:^20.12.7"
+    "@types/mapbox-gl": "npm:^3.4.0"
+    "@types/node": "npm:^22.5.4"
     html-to-text: "npm:^9.0.5"
-    mapbox-gl: "npm:^3.3.0"
-    nuxt: "npm:^3.11.2"
-    prettier: "npm:^3.2.5"
-    sass: "npm:^1.75.0"
-    vue-instantsearch: "npm:^4.15.0"
+    mapbox-gl: "npm:^3.6.0"
+    nuxt: "npm:^3.13.1"
+    prettier: "npm:^3.3.3"
+    sass: "npm:^1.78.0"
+    vue-instantsearch: "npm:^4.19.3"
   languageName: unknown
   linkType: soft
 
@@ -5138,7 +5129,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mapbox-gl@npm:^3.3.0":
+"mapbox-gl@npm:^3.6.0":
   version: 3.6.0
   resolution: "mapbox-gl@npm:3.6.0"
   dependencies:
@@ -5187,12 +5178,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meilisearch@npm:^0.38.0":
-  version: 0.38.0
-  resolution: "meilisearch@npm:0.38.0"
+"meilisearch@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "meilisearch@npm:0.42.0"
   dependencies:
     cross-fetch: "npm:^3.1.6"
-  checksum: 10c0/df2133e2f3a3c1db4cb9047bfe4c2354b35d43306ad08a880dd11c9d61a05dcf044640ea848f6d3704902686c51aa68881aad8231e88b89e4a454005a66753c3
+  checksum: 10c0/60344b39bc2794e732b8129e75a0418743e77d9b84f142731d390de6fe3d00b10e1e4fce3b0ef81ed15920452a037e12026117ac1e81f825f9af95ebf6544fd9
   languageName: node
   linkType: hard
 
@@ -5741,7 +5732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt@npm:^3.11.2":
+"nuxt@npm:^3.13.1":
   version: 3.13.1
   resolution: "nuxt@npm:3.13.1"
   dependencies:
@@ -6468,7 +6459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.2.5":
+"prettier@npm:^3.3.3":
   version: 3.3.3
   resolution: "prettier@npm:3.3.3"
   bin:
@@ -6887,7 +6878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.75.0":
+"sass@npm:^1.78.0":
   version: 1.78.0
   resolution: "sass@npm:1.78.0"
   dependencies:
@@ -8099,7 +8090,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-instantsearch@npm:^4.15.0":
+"vue-instantsearch@npm:^4.19.3":
   version: 4.19.3
   resolution: "vue-instantsearch@npm:4.19.3"
   dependencies:

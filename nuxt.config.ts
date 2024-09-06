@@ -2,6 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
+
   app: {
     head: {
       htmlAttrs: {
@@ -32,9 +33,11 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   dir: {
     pages: 'paginas',
   },
+
   vite: {
     css: {
       preprocessorOptions: {
@@ -44,6 +47,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   typescript: {
     shim: false,
   },
@@ -51,4 +55,6 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@enflujo/alquimia'],
   },
+
+  compatibilityDate: '2024-09-06',
 });
