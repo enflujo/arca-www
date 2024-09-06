@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   enTablaRelacional: false,
 });
 
-const titulo: Ref<string> = ref('');
+const titulo: Ref = ref('');
 
 const crearNombre = (datosAutor: Autor) => {
   const partesNombre = [];
@@ -44,8 +44,8 @@ const crearNombre = (datosAutor: Autor) => {
  */
 const cerebroArchivo = usarArchivo();
 const ruta = useRoute();
-const datos: Ref<AutorProcesado | PersonajeProcesado | PaginaArchivo | EntradaColeccion | undefined> = ref();
-const paginaActual: Ref<number> = ref(+(ruta.query.pagina as string) || 1);
+const datos: Ref = ref();
+const paginaActual: Ref = ref(+(ruta.query.pagina as string) || 1);
 const esId = /^\d+$/.test(props.slug);
 
 const respuesta = await obtenerDatos<Colecciones>(
@@ -137,14 +137,14 @@ function limpiarFechas(datosGenerales: Autor | Personaje): AutorProcesado | Pers
 /**
  * Operaciones en el cliente
  */
-const obras: Ref<ObraGaleria[]> = ref([]);
+const obras: Ref = ref([]);
 const cargando = ref(false);
 
 if (!datos.value) {
   throw createError({ statusCode: 404, message: 'No existen datos para esta galería' });
 }
 
-const { data, pending } = obtenerDatosAsinc(
+const { data } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
   datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, paginaActual.value, esId)
 );
@@ -195,6 +195,6 @@ function cargarPagina(pagina: number) {
   <GraficaContador v-if="datos" :numeroObras="datos.obras_func.count" />
   <GaleriaInformacion v-if="datos" :coleccion="coleccion" :datos="datos" />
 
-  <Cargador v-if="pending" />
+  <Cargador v-if="status === 'pending'" />
   <GaleriaMosaico :obras="obras" :pagina="paginaActual" :cargarPagina="cargarPagina" :cargando="cargando" />
 </template>

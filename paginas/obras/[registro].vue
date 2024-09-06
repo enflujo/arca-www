@@ -44,9 +44,9 @@ if (datosGenerales[0].imagen) {
 useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
 
 // En el cliente
-const obra: Ref<RegistroObra | null> = ref(null);
-const relacionadas: Ref<ObraGaleria[] | null> = ref(null);
-const ubicacionMapa: Ref<{ id: number; nombre: string; geometry: Point } | null> = ref(null);
+const obra: Ref = ref(null);
+const relacionadas: Ref = ref(null);
+const ubicacionMapa: Ref = ref(null);
 const vistaCompleta = ref(false);
 const verLupa = ref(true);
 
@@ -96,7 +96,7 @@ const PeticionObra = gql`
   }
 `;
 
-const { data, pending } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
+const { data, status } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
 
 watch(data, (res) => {
   if (!res) return;
@@ -274,7 +274,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 <template>
   <EditarDatos :url="`obras/${obra?.id}`" />
 
-  <Cargador v-if="pending" />
+  <Cargador v-if="status === 'pending'" />
 
   <div id="contenedorObra">
     <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">

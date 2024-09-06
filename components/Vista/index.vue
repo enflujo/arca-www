@@ -25,18 +25,18 @@ interface Props {
 
 const props = defineProps<Props>();
 const cerebroArchivo = usarArchivo();
-const datos: Ref<Indices | undefined> = ref();
-const vistas: Ref<Vistas[]> = ref(['abc', 'colombinas']);
-const vistaInicial: Ref<Vistas> = ref('abc');
-const datosMapa: Ref<{ paises: FeatureCollection; ubicaciones: FeatureCollection; max: number } | null> = ref(null);
+const datos: Ref = ref();
+const vistas: Ref = ref(['abc', 'colombinas']);
+const vistaInicial: Ref = ref('abc');
+const datosMapa: Ref = ref(null);
 const datosLugares: { ubicaciones: Ubicacion[]; ciudades: Ciudad[]; paises: Pais[] } = reactive({
   ubicaciones: [],
   ciudades: [],
   paises: [],
 });
-const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
-const coleccionActual: Ref<string> = ref(props.coleccion);
-const cargando: Ref<boolean> = ref(false);
+const { data, status } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
+const coleccionActual: Ref = ref(props.coleccion);
+const cargando: Ref = ref(false);
 
 watch(data, (respuesta: DatosIndices) => {
   datos.value = procesarDatos(respuesta);
@@ -183,7 +183,7 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
     />
   </div>
 
-  <Cargador v-if="pending || cargando" />
+  <Cargador v-if="status === 'pending' || cargando" />
 
   <div v-else>
     <VistaAbecedario

@@ -5,7 +5,7 @@ import { apiBase } from '~/config/general';
  *
  * @param llave Un texto único para registrar el llamado a la base de datos.
  * @param query Query en formato Graphql.
- * @returns Devuelve el objeto asincrónico `{data, error, pending, refresh}`
+ * @returns Devuelve el objeto asincrónico `{data, error, status, refresh}`
  */
 export default function <Esquema>(llave: string, query: string) {
   let Query = query;
@@ -13,12 +13,11 @@ export default function <Esquema>(llave: string, query: string) {
   const {
     data,
     error,
-    pending,
+    status,
     refresh: recargar,
   } = useLazyAsyncData<Esquema>(
     llave,
     () => {
-      // console.log(Query);
       return $fetch(`${apiBase}/graphql`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -43,5 +42,5 @@ export default function <Esquema>(llave: string, query: string) {
     }
   );
 
-  return { data, error, pending, refresh };
+  return { data, error, status, refresh };
 }
