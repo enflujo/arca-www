@@ -1,6 +1,7 @@
 {
   "name": "arca-www",
-  "version": "1.0.0",
+  "packageManager": "yarn@4.4.1",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
@@ -19,20 +20,20 @@
   },
   "dependencies": {
     "@enflujo/alquimia": "^2.0.0",
-    "@meilisearch/instant-meilisearch": "^0.18.1",
-    "@pinia/nuxt": "^0.5.1",
+    "@meilisearch/instant-meilisearch": "^0.20.0",
+    "@pinia/nuxt": "^0.5.4",
     "html-to-text": "^9.0.5",
-    "mapbox-gl": "^3.4.0",
-    "nuxt": "^3.12.2",
-    "vue-instantsearch": "^4.17.5"
+    "mapbox-gl": "^3.6.0",
+    "nuxt": "^3.13.1",
+    "vue-instantsearch": "^4.19.3"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
-    "@types/mapbox-gl": "^3.1.0",
-    "@types/node": "^20.14.9",
-    "prettier": "^3.3.2",
-    "sass": "^1.77.6"
+    "@types/mapbox-gl": "^3.4.0",
+    "@types/node": "^22.5.4",
+    "prettier": "^3.3.3",
+    "sass": "^1.78.0"
   },
   "browserslist": {
     "production": [

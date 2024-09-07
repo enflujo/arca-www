@@ -38,10 +38,10 @@ const Portada = gql`
   }
 `;
 
-const { data, pending } = obtenerDatosAsinc<Esquema>('portada', Portada);
-const imgPortada: Ref<string | null> = ref(null);
-const pagina: Ref<Pagina | null> = ref(null);
-const secciones: Ref<{ titulo: string; texto: string }[]> = ref([]);
+const { data, status } = obtenerDatosAsinc<Esquema>('portada', Portada);
+const imgPortada: Ref = ref(null);
+const pagina: Ref = ref(null);
+const secciones: Ref = ref([]);
 
 watch(data, (respuesta) => {
   if (!respuesta) return;
@@ -53,7 +53,7 @@ watch(data, (respuesta) => {
 </script>
 
 <template>
-  <Cargador v-if="pending && !pagina" />
+  <Cargador v-if="status === 'pending' && !pagina" />
 
   <div id="portada" :style="`background-image:url(${imgPortada})`">
     <Logo class="svgClaro" />

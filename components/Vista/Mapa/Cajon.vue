@@ -11,13 +11,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const datosColeccion: Ref<ObraGaleria[]> = ref([]);
+const datosColeccion: Ref = ref([]);
 const query = computed(() => {
   const nombreCampo = props.coleccion === 'paises' ? 'pais' : 'ubicacion';
   return datosObrasGaleria(props.coleccion, nombreCampo, props.datos.id, false, 1, true, 10);
 });
 
-const { data, pending, refresh } = obtenerDatosAsinc<{ obras: ObraGaleria[] }>(
+const { data, status, refresh } = obtenerDatosAsinc<{ obras: ObraGaleria[] }>(
   `obras-cajon-${props.coleccion}`,
   query.value
 );
@@ -39,7 +39,7 @@ watch(data, (respuesta) => {
 
 <template>
   <div id="cajon" :class="abierto ? 'activo' : ''">
-    <Cargador v-if="pending" />
+    <Cargador v-if="status === 'pending'" />
 
     <div class="contenido">
       <div id="cerrar" @click="cerrarCajon">X</div>
