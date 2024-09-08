@@ -4,7 +4,6 @@ import { usarGeneral } from '~/cerebros/general';
 const cerebro = usarGeneral();
 
 if (!cerebro.datosCargados) {
-  console.log('hola desde layout/default');
   // await useAsyncData('general', cerebro.cargarGeneral);
   await cerebro.cargarGeneral();
 }

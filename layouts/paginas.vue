@@ -4,13 +4,12 @@ import { usarGeneral } from '~/cerebros/general';
 const cerebro = usarGeneral();
 
 if (!cerebro.datosCargados) {
-  console.log('hola desde layout/paginas');
   await useAsyncData('general', cerebro.cargarGeneral);
 }
 </script>
 
 <template>
-  <!-- <Encabezado />
+  <Encabezado />
   <div id="contenedor">
     <div id="contenido">
       <Buscador v-if="cerebro.buscadorVisible" />
@@ -19,7 +18,7 @@ if (!cerebro.datosCargados) {
       </main>
       <Guardaescobas :completo="false" />
     </div>
-  </div> -->
+  </div>
 </template>
 
 <style lang="scss" scoped>

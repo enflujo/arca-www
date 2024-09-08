@@ -35,7 +35,7 @@ query {
 }
 `;
 
-const { paginas } = await obtenerDatos<Esquema>(`pagina${props.slug}`, Pagina);
+const { paginas } = await pedirDatos<Esquema>(Pagina);
 
 if (paginas.length) {
   const datosPagina = paginas[0];

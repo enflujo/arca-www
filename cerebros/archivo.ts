@@ -34,6 +34,7 @@ export const usarArchivo = defineStore('archivo', {
           }
         }
       `;
+
       const { categorias1 } = await obtenerDatos('datosCategorias1', Categorias1);
       if (categorias1.imagen) {
         categorias1.imagen.ancho = 300;

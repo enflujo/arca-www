@@ -8,13 +8,11 @@ import type {
   NombresColecciones,
   Obra,
   ObraEnRelacional,
-  ObraGaleria,
-  PaginaArchivo,
   Personaje,
   PersonajeProcesado,
 } from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
-import { definirDimsImagen, peticion } from '~/utilidades/ayudas';
+import { definirDimsImagen } from '~/utilidades/ayudas';
 import { datosGeneralesColeccion, datosObrasGaleria } from '~/utilidades/queries';
 
 interface Props {
@@ -144,7 +142,7 @@ if (!datos.value) {
   throw createError({ statusCode: 404, message: 'No existen datos para esta galería' });
 }
 
-const { data } = obtenerDatosAsinc(
+const { data, status } = obtenerDatosAsinc(
   `obras-${datos.value.id}`,
   datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, paginaActual.value, esId)
 );
@@ -177,7 +175,7 @@ function cargarPagina(pagina: number) {
   if (pagina <= numeroPaginas.value) {
     cargando.value = true;
 
-    peticion(
+    pedirDatos(
       datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, pagina, esId)
     ).then((respuesta) => {
       obras.value = [...obras.value, ...limpiarDatos(respuesta)];

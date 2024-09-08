@@ -8,6 +8,7 @@ import { apiBase } from '~/config/general';
  * @returns Devuelve los datos un nivel dentro: `data.data`
  */
 export default async function obtenerDatos<Esquema>(llave: string, query: string, sistema = false) {
+  // console.log(llave, sistema);
   const { data, error } = await useAsyncData<Esquema>(
     llave,
     () => {
