@@ -33,6 +33,10 @@ export interface DatosGenerales {
   }[];
 }
 
+export interface RelacionesColeccionesSistema {
+  relations_in_collection: { field: string; related_collection: string }[];
+}
+
 export const usarGeneral = defineStore('general', {
   state: () =>
     ({
@@ -100,11 +104,11 @@ export const usarGeneral = defineStore('general', {
         }
       `;
 
-      const { relations_in_collection } = await obtenerDatos('relaciones', Relaciones, true);
+      // const { relations_in_collection } = await pedirDatos<RelacionesColeccionesSistema>(Relaciones, true);
 
-      this.relaciones = relations_in_collection.map((relacion: { related_collection: string; field: string }) => {
-        return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
-      });
+      // this.relaciones = relations_in_collection.map((relacion: { related_collection: string; field: string }) => {
+      //   return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
+      // });
     },
 
     async cargarCampos() {
@@ -115,7 +119,9 @@ export const usarGeneral = defineStore('general', {
           }
         }
       `;
-      const { general } = await obtenerDatos('camposObraIndividual', CamposObraIndividual);
+      const { general } = await pedirDatos<{
+        general: { campos: { titulo: string; campo: keyof RegistroObra & 'separador' }[] };
+      }>(CamposObraIndividual);
 
       if (general && general.campos) {
         this.campos = general.campos;

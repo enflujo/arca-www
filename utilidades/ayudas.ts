@@ -155,11 +155,3 @@ export function definirDimsImagen(obra: Obra): ObraGaleria | undefined {
 
   return obra as ObraGaleria;
 }
-
-export function peticion<Esquema>(query: string, sistema = false) {
-  return $fetch(`${apiBase}/graphql${sistema ? '/system' : ''}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
-  }).then((res: any) => res.data as Esquema);
-}

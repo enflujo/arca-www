@@ -5,11 +5,11 @@ const cerebro = usarGeneral();
 const menuVisible = ref(false);
 
 if (!cerebro.datosCargados) {
-  await useAsyncData('general', cerebro.cargarGeneral);
+  await cerebro.cargarGeneral();
 }
 
 if (!cerebro.relaciones.length) {
-  await useAsyncData('general', cerebro.cargarRelaciones);
+  await cerebro.cargarRelaciones();
 }
 
 function abrirOCerrar(evento: MouseEvent) {

@@ -12,7 +12,7 @@ import type {
   TiposCampos,
 } from '~/tipos';
 import type { BaseRegistro } from '~/tipos/bases';
-import { definirDimsImagen, gql, peticion } from '~/utilidades/ayudas';
+import { definirDimsImagen, gql } from '~/utilidades/ayudas';
 
 const cerebroGeneral = usarGeneral();
 
@@ -214,7 +214,7 @@ async function buscarRelacionadas(ultimaCategoria: { campo: string; slug: string
     }
     `;
 
-  const respuesta = await peticion<{ obras: Obra[] }>(Relacionadas);
+  const respuesta = await pedirDatos<{ obras: Obra[] }>(Relacionadas);
 
   if (respuesta.obras) {
     relacionadas.value = respuesta.obras.map(definirDimsImagen) as ObraGaleria[];

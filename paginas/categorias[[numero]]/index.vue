@@ -2,7 +2,7 @@
 import { convertirEscala, escalaColores } from '@enflujo/alquimia';
 import type { Categoria } from '~/tipos';
 import { usarArchivo } from '~/cerebros/archivo';
-import { gql, obtenerVariablesCSS, peticion } from '~/utilidades/ayudas';
+import { gql, obtenerVariablesCSS } from '~/utilidades/ayudas';
 
 const cerebroArchivo = usarArchivo();
 const pending: Ref<boolean> = ref(true);
@@ -160,7 +160,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   `;
 
   // No usamos async/await ya que en vue3 con <script setup> solo podemos crear 1 función async.
-  peticion(Subcategoria).then((respuesta) => {
+  pedirDatos(Subcategoria).then((respuesta) => {
     const datosSubCategoria = respuesta[`${nivel1}_by_id`][nivel2];
 
     if (cerebroArchivo.vistaActual !== 'abc') {
