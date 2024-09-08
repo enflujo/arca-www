@@ -23,8 +23,6 @@ function cerrar() {
 </script>
 
 <template>
-  <Encabezado />
-
   <div id="contenedor">
     <div class="botonMenu" @click="abrirOCerrar" :class="menuVisible ? 'cerrar' : 'abrir'">
       <span class="linea linea1"></span>

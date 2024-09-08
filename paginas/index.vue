@@ -80,12 +80,12 @@ watch(data, (respuesta) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
   width: 100%;
   z-index: 1;
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
+  padding: 3em 0;
 }
 
 .logoArca {

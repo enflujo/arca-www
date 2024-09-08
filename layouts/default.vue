@@ -10,7 +10,6 @@ if (!cerebro.datosCargados) {
 </script>
 
 <template>
-  <Encabezado />
   <div id="contenedor">
     <div id="contenido">
       <Buscador v-if="cerebro.buscadorVisible" />
