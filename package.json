@@ -3,6 +3,7 @@
   "packageManager": "yarn@4.4.1",
   "version": "1.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
@@ -24,16 +25,19 @@
     "@pinia/nuxt": "^0.5.4",
     "html-to-text": "^9.0.5",
     "mapbox-gl": "^3.6.0",
-    "nuxt": "^3.13.1",
     "vue-instantsearch": "^4.19.3"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^1.4.1",
     "@types/geojson": "^7946.0.14",
     "@types/html-to-text": "^9.0.4",
     "@types/mapbox-gl": "^3.4.0",
     "@types/node": "^22.5.4",
+    "nuxt": "^3.13.1",
     "prettier": "^3.3.3",
-    "sass": "^1.78.0"
+    "sass": "^1.78.0",
+    "vue": "^3.5.3",
+    "vue-router": "^4.4.3"
   },
   "browserslist": {
     "production": [
