@@ -104,11 +104,11 @@ export const usarGeneral = defineStore('general', {
         }
       `;
 
-      // const { relations_in_collection } = await pedirDatos<RelacionesColeccionesSistema>(Relaciones, true);
+      const { relations_in_collection } = await pedirDatos<RelacionesColeccionesSistema>(Relaciones, true);
 
-      // this.relaciones = relations_in_collection.map((relacion: { related_collection: string; field: string }) => {
-      //   return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
-      // });
+      this.relaciones = relations_in_collection.map((relacion: { related_collection: string; field: string }) => {
+        return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
+      });
     },
 
     async cargarCampos() {

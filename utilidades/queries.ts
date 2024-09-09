@@ -178,7 +178,7 @@ export const indiceColeccion = (coleccion: string) => {
   } else if (coleccion === 'autores') {
     return gql`
       query {
-        autores(limit: -1, sort: ["apellido"]) {
+        autores(sort: ["apellido"], limit: -1) {
           id
           nombre
           apellido

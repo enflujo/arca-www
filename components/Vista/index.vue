@@ -2,6 +2,7 @@
 import type { FeatureCollection } from 'geojson';
 import { usarArchivo } from '~/cerebros/archivo';
 import type {
+  Autor,
   Ciudad,
   DatosIndices,
   DatosUbicaciones,
@@ -13,7 +14,6 @@ import type {
   Pais,
   TiposLugares,
   Ubicacion,
-  Vistas,
 } from '~/tipos';
 import { indiceColeccion } from '~/utilidades/queries';
 
@@ -24,7 +24,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const cerebroArchivo = usarArchivo();
-const datos: Ref = ref();
+const datos: Ref<(Ubicacion | Ciudad | Pais | Autor | Gesto | IndiceGeneral)[] | undefined> = ref();
 const vistas: Ref = ref(['abc', 'colombinas']);
 const vistaInicial: Ref = ref('abc');
 const datosMapa: Ref = ref(null);
@@ -33,12 +33,22 @@ const datosLugares: { ubicaciones: Ubicacion[]; ciudades: Ciudad[]; paises: Pais
   ciudades: [],
   paises: [],
 });
-const { data, status } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
+const { data, status } = obtenerDatosAsinc<DatosIndices>(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
 const coleccionActual: Ref = ref(props.coleccion);
 const cargando: Ref = ref(false);
 
-watch(data, (respuesta: DatosIndices) => {
-  datos.value = procesarDatos(respuesta);
+watch(data, (respuesta: DatosIndices | null) => {
+  if (respuesta) {
+    if (props.coleccion === 'ubicaciones') {
+      datos.value = procesarUbicaciones(respuesta);
+    } else if (props.coleccion === 'autores') {
+      datos.value = procesarAutores(respuesta);
+    } else {
+      datos.value = agregarEnlacesYTexto(respuesta[props.coleccion] as Indices);
+    }
+  } else {
+    console.error('HPOPPPP, no hay datos', data, respuesta);
+  }
 });
 
 onMounted(() => {
@@ -133,16 +143,6 @@ function agregarEnlacesYTexto(datos: Indices, coleccion = coleccionActual.value)
 
     return instancia;
   });
-}
-
-function procesarDatos(nuevosDatos: DatosIndices) {
-  if (props.coleccion === 'ubicaciones') {
-    return procesarUbicaciones(nuevosDatos);
-  } else if (props.coleccion === 'autores') {
-    return procesarAutores(nuevosDatos);
-  }
-
-  return agregarEnlacesYTexto(nuevosDatos[props.coleccion] as Indices);
 }
 
 async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {

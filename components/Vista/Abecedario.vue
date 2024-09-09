@@ -4,7 +4,7 @@ import { eliminarTildes } from '~/utilidades/ayudas';
 
 interface Props {
   coleccion: string;
-  datos: DatosVistas[];
+  datos?: DatosVistas[];
 }
 
 const props = defineProps<Props>();
@@ -14,6 +14,7 @@ watch(() => props.datos, procesarDatos);
 onMounted(procesarDatos);
 
 function procesarDatos() {
+  if (!props.datos) return;
   let llave: 'slug' | 'nombre' | 'apellido' = 'slug';
 
   if (props.coleccion === 'autores') {

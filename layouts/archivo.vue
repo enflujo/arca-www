@@ -4,10 +4,6 @@ import { usarGeneral } from '~/cerebros/general';
 const cerebro = usarGeneral();
 const menuVisible = ref(false);
 
-if (!cerebro.datosCargados) {
-  await cerebro.cargarGeneral();
-}
-
 if (!cerebro.relaciones.length) {
   await cerebro.cargarRelaciones();
 }
