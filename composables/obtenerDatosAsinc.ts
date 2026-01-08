@@ -36,12 +36,11 @@ export default function <Esquema>(llave: string, query: string) {
     recargar();
   }
 
-  watch(
-    () => error,
-    (err) => {
+  watch(error, (err) => {
+    if (err) {
       console.log(JSON.stringify(err, null, 2));
     }
-  );
+  });
 
   return { data, error, pending, refresh };
 }

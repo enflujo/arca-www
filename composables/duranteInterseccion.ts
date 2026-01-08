@@ -1,3 +1,5 @@
+import { onBeforeUnmount } from 'vue';
+
 export default function (
   elemento: HTMLElement,
   accion: (elemento: Element) => void,
@@ -15,6 +17,10 @@ export default function (
   }, opciones);
 
   observador.observe(elemento);
+
+  onBeforeUnmount(() => {
+    observador.disconnect();
+  });
 
   return observador;
 }

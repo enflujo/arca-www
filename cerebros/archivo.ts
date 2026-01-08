@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Categoria, Vistas } from '~/tipos';
+import obtenerDatos from '~/composables/obtenerDatos';
 import { gql } from '~/utilidades/ayudas';
 
 export type CerebroArchivo = {
@@ -34,12 +35,18 @@ export const usarArchivo = defineStore('archivo', {
           }
         }
       `;
-      const { categorias1 } = await obtenerDatos('datosCategorias1', Categorias1);
-      if (categorias1.imagen) {
-        categorias1.imagen.ancho = 300;
-        categorias1.imagen.alto = 300;
-      }
-      this.datosCategorias = categorias1;
+      const { categorias1 } = await obtenerDatos<{ categorias1: Categoria[] }>('datosCategorias1', Categorias1);
+
+      this.datosCategorias = (categorias1 || []).map((categoria) => {
+        if (categoria.imagen) {
+          return {
+            ...categoria,
+            imagen: { ...categoria.imagen, ancho: 300, alto: 300 },
+          };
+        }
+
+        return categoria;
+      });
     },
   },
 });

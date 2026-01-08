@@ -17,7 +17,7 @@ export const head = {
     { name: 'theme-color', content: colorBase },
     {
       rel: 'stylesheet',
-      href: 'https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css',
+      href: 'https://api.mapbox.com/mapbox-gl-js/v3.17.0/mapbox-gl.css',
     },
   ],
 };
