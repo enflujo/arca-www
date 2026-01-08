@@ -17,7 +17,7 @@ import { definirDimsImagen, gql, peticion } from '~/utilidades/ayudas';
 const cerebroGeneral = usarGeneral();
 
 if (!cerebroGeneral.campos.length) {
-  await useAsyncData('general', cerebroGeneral.cargarCampos);
+  await useAsyncData('cargarCampos', cerebroGeneral.cargarCampos);
 }
 
 /**
@@ -35,13 +35,13 @@ query {
 
 const { obras: datosGenerales } = await obtenerDatos<BaseRegistro>(`obraGeneral${ruta.params.registro}`, ObraGeneral);
 
-if (datosGenerales[0].imagen) {
+if (datosGenerales && datosGenerales.length && datosGenerales[0]?.imagen) {
   // Definir dims imagen
   datosGenerales[0].imagen.ancho = Math.round((datosGenerales[0].imagen.width / datosGenerales[0].imagen.height) * 300);
   datosGenerales[0].imagen.alto = 300;
-}
 
-useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
+  useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
+}
 
 // En el cliente
 const obra: Ref<RegistroObra | null> = ref(null);
@@ -100,6 +100,8 @@ const { data, pending } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ru
 watch(data, (res) => {
   if (!res) return;
   const _obra = res.obras[0];
+
+  if (!_obra) return;
 
   // Aplanar categorías en una sola lista/array
   const categorias = [];
@@ -271,8 +273,6 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 </script>
 
 <template>
-  <Cargador v-if="pending" />
-
   <div id="contenedorObra">
     <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
       <div class="opciones">

@@ -38,9 +38,7 @@ watch(data, (respuesta) => {
 </script>
 
 <template>
-  <div id="cajon" :class="abierto ? 'activo' : ''">
-    <Cargador v-if="pending" />
-
+  <div id="cajon" :class="abierto ? 'activo' : ''" suppressHydrationWarning>
     <div class="contenido">
       <div id="cerrar" @click="cerrarCajon">X</div>
       <h3 class="titulo">

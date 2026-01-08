@@ -22,7 +22,13 @@ export type CerebroGeneral = {
 };
 
 export interface DatosGenerales {
-  general: { nombre: string; descripcion: string; banner: { id: string; title: string }; texto_footer: string };
+  general: {
+    nombre: string;
+    descripcion: string;
+    banner: { id: number; title: string; filename_download?: string; width: number; height: number };
+    texto_footer: string;
+    campos?: Campo[];
+  };
   paginas: { titulo: string; slug: string }[];
   paginas_archivo: {
     titulo: string;
@@ -100,7 +106,9 @@ export const usarGeneral = defineStore('general', {
         }
       `;
 
-      const { relations_in_collection } = await obtenerDatos('relaciones', Relaciones, true);
+      const { relations_in_collection } = await obtenerDatos<{
+        relations_in_collection: { field: string; related_collection: string }[];
+      }>('relaciones', Relaciones, true);
 
       this.relaciones = relations_in_collection.map((relacion: { related_collection: string; field: string }) => {
         return { coleccionRelacionada: relacion.related_collection, campo: relacion.field };
@@ -115,7 +123,7 @@ export const usarGeneral = defineStore('general', {
           }
         }
       `;
-      const { general } = await obtenerDatos('camposObraIndividual', CamposObraIndividual);
+      const { general } = await obtenerDatos<DatosGenerales>('camposObraIndividual', CamposObraIndividual);
 
       if (general && general.campos) {
         this.campos = general.campos;

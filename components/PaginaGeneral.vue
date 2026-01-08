@@ -18,7 +18,7 @@ interface Esquema {
 }
 
 const props = defineProps<Props>();
-const datos: Ref<DatosPagina | null> = ref(null);
+const datos: Ref<DatosPagina | null | undefined> = ref(null);
 const ruta = useRoute();
 
 const Pagina = gql`
@@ -39,6 +39,7 @@ const { paginas } = await obtenerDatos<Esquema>(`pagina${props.slug}`, Pagina);
 
 if (paginas.length) {
   const datosPagina = paginas[0];
+  if (!datosPagina) throw createError({ statusCode: 404, message: 'Página no encontrada', fatal: true });
   datos.value = datosPagina;
 
   useHead(

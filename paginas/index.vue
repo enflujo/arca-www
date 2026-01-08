@@ -40,20 +40,32 @@ const Portada = gql`
 
 const { data, pending } = obtenerDatosAsinc<Esquema>('portada', Portada);
 const imgPortada: Ref<string | null> = ref(null);
-const pagina: Ref<Pagina | null> = ref(null);
+const pagina: Ref<Pagina | null | undefined> = ref(null);
 const secciones: Ref<{ titulo: string; texto: string }[]> = ref([]);
+
+// Procesar datos iniciales si ya existen
+if (data.value) {
+  const { general, paginas } = data.value;
+  pagina.value = paginas[0];
+  if (paginas[0]) {
+    secciones.value = paginas[0].secciones.filter((seccion: Seccion) => !!seccion.texto);
+    imgPortada.value = general.portada ? urlImagen(general.portada.id, 'portada') : fondoPredeterminado;
+  }
+}
 
 watch(data, (respuesta) => {
   if (!respuesta) return;
   const { general, paginas } = respuesta;
   pagina.value = paginas[0];
+
+  if (!paginas[0]) return;
   secciones.value = paginas[0].secciones.filter((seccion: Seccion) => !!seccion.texto);
   imgPortada.value = general.portada ? urlImagen(general.portada.id, 'portada') : fondoPredeterminado;
 });
 </script>
 
 <template>
-  <Cargador v-if="pending && !pagina" />
+  <Cargador v-if="pending || !pagina" />
 
   <div id="portada" :style="`background-image:url(${imgPortada})`">
     <Logo class="svgClaro" />

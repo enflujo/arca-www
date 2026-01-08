@@ -4,7 +4,7 @@ import { usarGeneral } from '~/cerebros/general';
 const cerebro = usarGeneral();
 
 if (!cerebro.datosCargados) {
-  await useAsyncData('general', cerebro.cargarGeneral);
+  await useAsyncData('cargarGeneral', cerebro.cargarGeneral);
 }
 </script>
 

@@ -26,7 +26,7 @@ export default function <Esquema>(llave: string, query: string) {
       });
     },
     {
-      transform: (data: any) => data.data,
+      transform: (data: any) => data?.data || null,
       server: false,
     }
   );

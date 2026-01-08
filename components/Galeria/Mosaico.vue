@@ -10,6 +10,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { cargando: false, pagina: 1 });
 const siguientePagina: Ref<HTMLDivElement | undefined> = ref();
+const claseCargando = ref(false);
 
 onMounted(() => {
   if (props.pagina && siguientePagina.value) {
@@ -23,6 +24,13 @@ onMounted(() => {
     );
   }
 });
+
+watch(
+  () => props.cargando,
+  (nuevoValor) => {
+    claseCargando.value = nuevoValor ?? false;
+  }
+);
 </script>
 
 <template>
@@ -54,7 +62,13 @@ onMounted(() => {
     </div>
   </div>
 
-  <div v-if="pagina" ref="siguientePagina" class="siguientePagina" :class="cargando ? 'activo' : ''">
+  <div
+    v-if="pagina"
+    ref="siguientePagina"
+    class="siguientePagina"
+    :class="claseCargando ? 'activo' : ''"
+    suppressHydrationWarning
+  >
     <p class="textoCargando">{{ `Cargando página ${pagina + 1}` }}</p>
   </div>
 </template>

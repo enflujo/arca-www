@@ -6,13 +6,12 @@ import { gql, obtenerVariablesCSS, peticion } from '~/utilidades/ayudas';
 
 const cerebroArchivo = usarArchivo();
 const pending: Ref<boolean> = ref(true);
-const pagina: Ref<Esquema | null> = ref(null);
+const pagina: Ref<Esquema | null | undefined> = ref(null);
 const ruta = useRoute();
 
-let color: (valor: number) => string;
-let ejeX: (valor: number) => number;
-let colorMin;
-let colorMax;
+// Usar refs reactivos para las funciones de escala
+const color = ref<(valor: number) => string>(() => '#000000');
+const ejeX = ref<(valor: number) => number>(() => 0);
 
 interface Esquema {
   titulo: string;
@@ -43,6 +42,10 @@ pagina.value = paginas_archivo[0];
 
 definePageMeta({ layout: 'archivo', keepalive: true });
 
+if (!paginas_archivo || paginas_archivo.length === 0 || !pagina.value) {
+  throw createError({ statusCode: 404, message: 'No existen datos para esta página' });
+}
+
 // Pedir datos básicos de esto y ponerlos en los metadatos
 useHead(
   elementosCabeza(
@@ -60,8 +63,8 @@ if (!cerebroArchivo.datosCategorias) {
 }
 
 onMounted(() => {
-  colorMin = obtenerVariablesCSS('--amarilloArena2');
-  colorMax = obtenerVariablesCSS('--rojoCerezo');
+  const colorMin = obtenerVariablesCSS('--amarilloArena2');
+  const colorMax = obtenerVariablesCSS('--rojoCerezo');
 
   let maximo = 0;
 
@@ -73,8 +76,8 @@ onMounted(() => {
     });
   }
 
-  color = escalaColores(1, maximo, colorMin, colorMax);
-  ejeX = (valor: number) => convertirEscala(valor, 0, maximo, 0, 100);
+  color.value = escalaColores(1, maximo, colorMin, colorMax);
+  ejeX.value = (valor: number) => convertirEscala(valor, 0, maximo, 0, 100);
   pending.value = false;
 });
 
@@ -176,9 +179,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   <h1>{{ pagina?.titulo }}</h1>
   <VistaFiltrosVistas :vistas="['abc', 'colombinas']" vistaInicial="abc" class="filtrosCategorias" />
 
-  <Cargador v-if="pending" />
-
-  <div v-else>
+  <div>
     <!-- Ver documentación del componente <TransitionGroup> en https://vuejs.org/guide/built-ins/transition-group.html -->
     <TransitionGroup name="tarjetas" tag="ul">
       <ul
@@ -190,8 +191,10 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
           <NuxtLink :to="`/categorias1/${categoria1.slug}`">
             <ImagenArca
               class="imagen"
-              :datos="categoria1.imagen"
+              :datos="{ ...categoria1.imagen, ancho: categoria1.imagen.width, alto: categoria1.imagen.height }"
               :titulo="categoria1.nombre"
+              :ancho="categoria1.imagen.width"
+              :alto="categoria1.imagen.height"
               llave="categoria"
               rutaIcono="/arca-icono.svg"
             />
@@ -203,6 +206,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
           </h2>
 
           <GraficaColombina
+            v-if="!pending"
             :color="color(categoria1.obras_func.count)"
             :ancho="ejeX(categoria1.obras_func.count)"
             :total="categoria1.obras_func.count"
@@ -283,14 +287,14 @@ $tamañoTriangulo: 8px;
   height: $tamañoTriangulo;
   line-height: 0;
   display: inline-block;
-  background-color: $profundidad;
+  background-color: var(--profundidad);
   transition: all 0.25s ease-out;
 
   &.abierto {
-    background-color: $dolor;
+    background-color: var(--dolor);
     &::after {
       content: '-';
-      color: $mediana;
+      color: var(--mediana);
       font-weight: bold;
       border-width: 0;
       border-color: transparent;
@@ -308,7 +312,7 @@ $tamañoTriangulo: 8px;
   }
 
   &:hover {
-    background-color: lighten($profundidad, 30%);
+    background-color: color.adjust($profundidad, $lightness: 30%);
   }
 
   &.sinSubNivel {

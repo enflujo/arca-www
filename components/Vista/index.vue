@@ -38,8 +38,15 @@ const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceC
 const coleccionActual: Ref<string> = ref(props.coleccion);
 const cargando: Ref<boolean> = ref(false);
 
-watch(data, (respuesta: DatosIndices) => {
-  datos.value = procesarDatos(respuesta);
+// Procesar datos iniciales si ya existen
+if (data.value) {
+  datos.value = procesarDatos(data.value);
+}
+
+watch(data, (respuesta) => {
+  if (respuesta) {
+    datos.value = procesarDatos(respuesta as DatosIndices);
+  }
 });
 
 onMounted(() => {
@@ -82,7 +89,7 @@ function procesarUbicaciones({ paises, ubicaciones }: DatosIndices) {
   /**
    * Ordenar por cantidad de obras en el país.
    */
-  const max = paises[0].obras_func.count;
+  const max = paises && paises.length > 0 && paises[0] ? paises[0].obras_func.count : 0;
 
   datosMapa.value = { paises: paisesGeojson, ubicaciones: ubicacionesGeojson, max };
 
@@ -156,8 +163,8 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
   } else {
     cargando.value = true;
 
-    const respuesta = await peticion(indiceColeccion(tipoLugar));
-    const datosLimpios = agregarEnlacesYTexto(respuesta[tipoLugar]);
+    const respuesta = (await peticion(indiceColeccion(tipoLugar))) as DatosIndices;
+    const datosLimpios = agregarEnlacesYTexto(respuesta[tipoLugar] || []);
 
     if (tipoLugar === 'ubicaciones') {
       datosLugares.ubicaciones = datosLimpios as Ubicacion[];
@@ -174,35 +181,37 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
 </script>
 
 <template>
-  <div id="filtros">
-    <VistaFiltrosVistas :vistas="vistas" :vistaInicial="vistaInicial" />
-    <VistaFiltrosUbicaciones
-      v-if="coleccion === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
-      :cambiarDatos="cambiarDatosUbicacion"
-      :coleccion="coleccionActual"
-    />
-  </div>
+  <Cargador v-if="pending || cargando || !datos" />
 
-  <Cargador v-if="pending || cargando" />
+  <template v-else>
+    <div id="filtros">
+      <VistaFiltrosVistas :vistas="vistas" :vistaInicial="vistaInicial" />
+      <VistaFiltrosUbicaciones
+        v-if="coleccion === 'ubicaciones' && cerebroArchivo.vistaActual !== 'mapa'"
+        :cambiarDatos="cambiarDatosUbicacion"
+        :coleccion="coleccionActual"
+      />
+    </div>
 
-  <div v-else>
-    <VistaAbecedario
-      v-if="cerebroArchivo.vistaActual === 'abc'"
-      :datos="datos as DatosVistas[]"
-      :coleccion="coleccionActual"
-    />
-    <VistaColombinas
-      v-if="cerebroArchivo.vistaActual === 'colombinas'"
-      :datos="datos as DatosVistas[]"
-      :coleccion="coleccionActual"
-    />
-    <VistaMapa
-      v-if="cerebroArchivo.vistaActual === 'mapa' && datosMapa"
-      :paises="datosMapa.paises"
-      :ubicaciones="datosMapa.ubicaciones"
-      :max="datosMapa.max"
-    />
-  </div>
+    <div>
+      <VistaAbecedario
+        v-if="cerebroArchivo.vistaActual === 'abc'"
+        :datos="datos as DatosVistas[]"
+        :coleccion="coleccionActual"
+      />
+      <VistaColombinas
+        v-if="cerebroArchivo.vistaActual === 'colombinas'"
+        :datos="datos as DatosVistas[]"
+        :coleccion="coleccionActual"
+      />
+      <VistaMapa
+        v-if="cerebroArchivo.vistaActual === 'mapa' && datosMapa"
+        :paises="datosMapa.paises"
+        :ubicaciones="datosMapa.ubicaciones"
+        :max="datosMapa.max"
+      />
+    </div>
+  </template>
 </template>
 
 <style lang="scss">

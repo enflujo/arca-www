@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import type { FeatureCollection, Point } from 'geojson';
 import mapbox from 'mapbox-gl';
-import type { GeoJSONSource } from 'mapbox-gl';
+import type { GeoJSONSource, MapMouseEvent } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import iconoImagen from '~/assets/imgs/icono-imagen.svg';
 import type { ObraInformacionBasica } from '~/tipos';
+
+declare global {
+  namespace mapboxgl {
+    interface MapMouseEvent {
+      clicEnElemento?: boolean;
+    }
+  }
+}
 
 interface Props {
   max: number;
@@ -167,7 +175,7 @@ onMounted(() => {
 
     // Lienzo donde están pintados los datos.
     const lienzo = mapa.getCanvas();
-    let idElementoEncima: string | null = null;
+    let idElementoEncima: string | number | null = null;
     let fuenteElementoEncima: string | null = null;
 
     /**
@@ -185,18 +193,20 @@ onMounted(() => {
         lienzo.style.cursor = 'pointer';
 
         // Referencia al elemento
-        const { properties, source } = elementos[0];
+        const element = elementos[0];
+        if (!element || !element.properties) return;
+        const { properties, source } = element;
         // Identificador del elemento dentro de mapbox.
         const id = properties?.cluster_id ? properties.cluster_id : properties?.id;
 
-        if (id && (id !== idElementoEncima || source !== fuenteElementoEncima)) {
+        if (id && source && (id !== idElementoEncima || source !== fuenteElementoEncima)) {
           // desactivar los estados anteriores si existe alguno
           if (fuenteElementoEncima && idElementoEncima) {
-            mapa.setFeatureState({ source: fuenteElementoEncima, id: idElementoEncima }, { activo: false });
+            mapa.setFeatureState({ source: fuenteElementoEncima, id: idElementoEncima as number }, { activo: false });
           }
 
           // Poner "activo" el elemento para que actualice el estado en mapbox.
-          mapa.setFeatureState({ source: source, id }, { activo: true });
+          mapa.setFeatureState({ source: source, id: id as number }, { activo: true });
           idElementoEncima = id;
           fuenteElementoEncima = source;
         }
@@ -221,13 +231,13 @@ onMounted(() => {
         layers: ['grupos'],
       });
 
-      if (!circulos.length) return;
+      if (!circulos.length || !circulos[0] || !circulos[0].properties) return;
 
-      const idGrupo = circulos[0].properties?.cluster_id;
+      const idGrupo = circulos[0].properties.cluster_id;
       const algo = mapa.getSource('ubicaciones') as GeoJSONSource;
 
       (mapa.getSource('ubicaciones') as GeoJSONSource).getClusterExpansionZoom(idGrupo, (err, zoom) => {
-        if (err || circulos[0].geometry) return;
+        if (err || zoom === null || !circulos[0] || circulos[0].geometry.type !== 'Point') return;
 
         mapa.easeTo({
           center: (circulos[0].geometry as Point).coordinates as [number, number],
@@ -243,13 +253,13 @@ onMounted(() => {
     // Clic en nombre del lugar (cuando no están agrupados)
     mapa.on('click', 'nombre', (e) => {
       // Saltar el evento si el click es en otro elemento anterior.
-      if (e.clicEnElemento || !e.features) return;
+      if (e.clicEnElemento || !e.features || !e.features[0]) return;
       abrirCajon('ubicaciones', e.features[0].properties as ObraInformacionBasica);
       e.clicEnElemento = true;
     });
 
     mapa.on('click', 'zonas', (e) => {
-      if (e.clicEnElemento || !e.features) return;
+      if (e.clicEnElemento || !e.features || !e.features[0]) return;
       abrirCajon('paises', e.features[0].properties as ObraInformacionBasica);
       e.clicEnElemento = true;
     });

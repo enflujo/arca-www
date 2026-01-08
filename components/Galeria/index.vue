@@ -55,11 +55,11 @@ const respuesta = await obtenerDatos<Colecciones>(
 
 const { coleccion } = props;
 
-const respuestaDatos = respuesta[coleccion];
+const respuestaDatos = respuesta[coleccion as keyof Colecciones];
 
-if (respuestaDatos) {
+if (respuestaDatos && respuestaDatos.length && respuestaDatos[0]) {
   const datosMeta =
-    coleccion === 'autores' && respuesta.autores
+    coleccion === 'autores' && respuesta.autores && respuesta.autores[0]
       ? {
           nombre: crearNombre(respuesta.autores[0]),
           descripcion: respuesta.autores[0].biografia,
@@ -68,9 +68,10 @@ if (respuestaDatos) {
 
   useHead(elementosCabeza(datosMeta, ruta.path)); // SEO
   titulo.value = respuestaDatos[0].nombre;
+
   if (coleccion === 'personajes' && respuesta.personajes) {
     datos.value = limpiarFechas(respuesta.personajes[0] as Personaje);
-  } else if (props.coleccion === 'autores' && respuesta.autores) {
+  } else if (props.coleccion === 'autores' && respuesta.autores && respuesta.autores[0]) {
     datos.value = limpiarFechas(respuesta.autores[0]);
     titulo.value = crearNombre(respuesta.autores[0]);
   } else if (coleccion === 'gestos') {
@@ -149,8 +150,15 @@ const { data, pending } = obtenerDatosAsinc(
   datosObrasGaleria(props.coleccion, props.nombreCampo, props.slug, props.enTablaRelacional, paginaActual.value, esId)
 );
 
-watch(data, (datosObras: Obra[]) => {
-  obras.value = limpiarDatos(datosObras);
+// Procesar datos iniciales si ya existen
+if (data.value) {
+  obras.value = limpiarDatos(data.value);
+}
+
+watch(data, (datosObras: Obra[] | null) => {
+  if (datosObras) {
+    obras.value = limpiarDatos(datosObras);
+  }
 });
 
 const numeroPaginas = computed(() => {
@@ -191,10 +199,13 @@ function cargarPagina(pagina: number) {
 </script>
 
 <template>
-  <h1>{{ `${singular} - ${titulo}` }}</h1>
-  <GraficaContador v-if="datos" :numeroObras="datos.obras_func.count" />
-  <GaleriaInformacion v-if="datos" :coleccion="coleccion" :datos="datos" />
+  <Cargador v-if="pending || cargando || obras.length === 0" />
 
-  <Cargador v-if="pending" />
-  <GaleriaMosaico :obras="obras" :pagina="paginaActual" :cargarPagina="cargarPagina" :cargando="cargando" />
+  <template v-else>
+    <h1>{{ `${singular} - ${titulo}` }}</h1>
+    <GraficaContador v-if="datos" :numeroObras="datos.obras_func.count" />
+    <GaleriaInformacion v-if="datos" :coleccion="coleccion" :datos="datos" />
+
+    <GaleriaMosaico :obras="obras" :pagina="paginaActual" :cargarPagina="cargarPagina" :cargando="cargando" />
+  </template>
 </template>

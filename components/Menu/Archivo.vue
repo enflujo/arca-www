@@ -80,11 +80,11 @@ a:link {
   font-weight: bold;
 
   &:hover {
-    color: darken($mediana, 10%);
+    color: color.adjust($mediana, $lightness: -10%);
   }
 
   &.activo {
-    color: darken($mediana, 20%);
+    color: color.adjust($mediana, $lightness: -20%);
   }
 }
 </style>

@@ -37,7 +37,7 @@ function procesarDatos() {
     maximo = Math.max(+obras_gesto_1_func.count, +obras_gesto_2_func.count, +obras_gesto_3_func.count);
   } else {
     ordenados = props.datos.sort((a, b) => b.obras_func.count - a.obras_func.count);
-    maximo = ordenados[0].obras_func.count;
+    maximo = ordenados[0]?.obras_func?.count ?? 0;
   }
 
   const maximoGrilla = Math.ceil(maximo / 1000) * 1000;

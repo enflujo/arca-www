@@ -19,12 +19,16 @@ export default async function obtenerDatos<Esquema>(llave: string, query: string
       });
     },
     {
-      transform: (res: any) => res.data,
+      transform: (res: any) => res?.data || null,
     }
   );
 
   if (error.value) {
     throw new Error(JSON.stringify(error.value, null, 2));
+  }
+
+  if (!data.value) {
+    throw new Error(`No se pudieron obtener datos para la llave: ${llave}`);
   }
 
   return data.value as Esquema;
