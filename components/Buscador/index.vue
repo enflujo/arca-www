@@ -81,6 +81,11 @@ function entradaBuscador(evento: InputEvent) {
     cerebroGeneral.busquedaActual = evento;
   }
 }
+
+function tieneDatos(valor: string | undefined): boolean {
+  if (!valor) return false;
+  return valor.trim().length > 0;
+}
 </script>
 
 <template>
@@ -177,13 +182,9 @@ function entradaBuscador(evento: InputEvent) {
 
           <div class="campos">
             <div v-for="campo in campos" :key="`campo${campo[0]}`" class="campo">
-              <p v-if="item._highlightResult[campo[0]]">
+              <p v-if="item._highlightResult[campo[0]] && tieneDatos(item._highlightResult[campo[0]].value)">
                 <span class="titulo">{{ campo[1] }}: </span>
-                <span
-                  class="texto"
-                  v-if="item._highlightResult && item._highlightResult[campo[0]].value"
-                  v-html="item._highlightResult[campo[0]].value"
-                ></span>
+                <span class="texto" v-html="item._highlightResult[campo[0]].value"></span>
               </p>
             </div>
           </div>

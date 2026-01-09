@@ -17,7 +17,7 @@ import { definirDimsImagen, gql, peticion } from '~/utilidades/ayudas';
 const cerebroGeneral = usarGeneral();
 
 if (!cerebroGeneral.campos.length) {
-  await useAsyncData('cargarCampos', cerebroGeneral.cargarCampos);
+  await cerebroGeneral.cargarCampos();
 }
 
 /**
@@ -95,7 +95,7 @@ const PeticionObra = gql`
   }
 `;
 
-const { data, pending } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
+const { data } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
 
 watch(data, (res) => {
   if (!res) return;
@@ -266,7 +266,9 @@ const tipoCampo = (llave: keyof RegistroObra) => {
 };
 
 const rutaCampo = (llave: keyof RegistroObra) => {
-  const { coleccion } = tiposCampos[llave];
+  const campo = tiposCampos[llave];
+  if (!campo) return;
+  const { coleccion } = campo;
   const datosPagina = cerebroGeneral.paginasArchivo.find((pagina) => pagina.coleccion === coleccion);
   return datosPagina?.slug;
 };
@@ -280,6 +282,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
         <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
 
         <a
+          v-if="datosGenerales[0].imagen"
           class="controlImg"
           :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
           target="_blank"
@@ -296,7 +299,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
       />
     </div>
 
-    <div v-if="obra" id="contenedorDatos">
+    <div v-if="obra && datosGenerales && datosGenerales[0] && datosGenerales[0].imagen" id="contenedorDatos">
       <section id="contenedorPrimerBloque" class="seccion">
         <div id="contenedorTituloAutor">
           <h1>{{ datosGenerales[0].titulo }}</h1>
