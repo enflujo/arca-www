@@ -15,6 +15,12 @@ export default defineNitroPlugin(() => {
   // No en la compilación ni en entornos sin servidor persistente.
   if (import.meta.prerender) return;
 
+  // En producción pm2 corre varias instancias (exec_mode: 'cluster', instances: 'max'). Comparten la
+  // caché en disco (.data/), así que basta con que una sola —la 0— renueve, para no multiplicar las
+  // consultas al API.
+  const instancia = process.env.NODE_APP_INSTANCE ?? process.env.pm_id;
+  if (instancia !== undefined && instancia !== '0') return;
+
   setTimeout(() => renovar().catch(() => {}), 30_000);
   setInterval(() => renovar().catch(() => {}), CADA_HORAS * 60 * 60 * 1000);
 });
