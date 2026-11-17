@@ -26,7 +26,11 @@ const coleccionActual: Ref<string | null> = ref(null);
 const datosCajon: ObraInformacionBasica = reactive({ id: '', obras: 0 });
 const cajonAbierto: Ref<boolean> = ref(false);
 
-onMounted(() => {
+// El mapa se crea un cuadro después del montaje: cuando la página llega armada desde el servidor,
+// el contenedor puede no tener aún su tamaño final y mapbox no llegaría a dibujar.
+onMounted(() => requestAnimationFrame(crearMapa));
+
+function crearMapa() {
   if (!contenedorMapa.value) return;
 
   const estilo = 'mapbox://styles/enflujo/clbmr4ink000314lg4hi2hcm1/draft';
@@ -51,6 +55,7 @@ onMounted(() => {
    * Esperar a que el mapa de mapbox termine de cargar antes de llenarlo con los datos.
    */
   mapa.on('load', () => {
+    mapa.resize();
     // Crea la fuente con todos los paises (polígonos).
     mapa.addSource('paises', {
       type: 'geojson',
@@ -274,7 +279,7 @@ onMounted(() => {
       }
     });
   }); // Fin de mapa.on('load')
-});
+}
 
 function abrirCajon(coleccion: string, datos: ObraInformacionBasica) {
   Object.assign(datosCajon, datos);

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /datos-viz/
 
 Sitemap: https://arca.uniandes.edu.co/sitemap.xml

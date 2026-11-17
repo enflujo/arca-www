@@ -11,7 +11,8 @@ const props = defineProps<Props>();
 const abc: Ref<Abecedario> = ref([]);
 
 watch(() => props.datos, procesarDatos);
-onMounted(procesarDatos);
+// Se procesa de inmediato (no en onMounted) para que la lista venga en el HTML del servidor (SEO).
+procesarDatos();
 
 function procesarDatos() {
   let llave: 'slug' | 'nombre' | 'apellido' = 'slug';

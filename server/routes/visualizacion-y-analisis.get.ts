@@ -1,3 +1,4 @@
+import { urlBase } from '~/config/general';
 import { MENU_PRINCIPAL } from '~/utilidades/menu';
 
 // «Visualización y análisis»: se sirve directamente el HTML independiente de ARCA VIVO
@@ -10,6 +11,22 @@ const ALTO = 72; // igual a $altoEncabezado
 
 const escapar = (texto: string) =>
   texto.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const TITULO = 'Visualización y análisis | ARCA · Arte Colonial Americano';
+const DESCRIPCION =
+  'Explora las 27.000 pinturas coloniales de ARCA como conjunto: escala, cronología, geografía de las obras y lenguaje gestual, con filtros por país, periodo y tema.';
+const URL_PAGINA = `${urlBase}/${SLUG}`;
+
+const metadatos = [
+  `<meta name="description" content="${escapar(DESCRIPCION)}">`,
+  `<link rel="canonical" href="${URL_PAGINA}">`,
+  `<meta property="og:type" content="website">`,
+  `<meta property="og:url" content="${URL_PAGINA}">`,
+  `<meta property="og:title" content="${escapar(TITULO)}">`,
+  `<meta property="og:description" content="${escapar(DESCRIPCION)}">`,
+  `<meta property="og:image" content="${urlBase}/arca-of.webp">`,
+  `<meta name="twitter:card" content="summary_large_image">`,
+].join('\n');
 
 // Estilos de la barra (los mismos de components/Encabezado.vue) y ajustes para que los
 // elementos fijos o pegajosos de la visualización empiecen debajo de ella.
@@ -87,7 +104,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const pagina = html
-    .replace(/<head[^>]*>/, (cabeza) => `${cabeza}\n${copiaServidor}`)
+    // Título y metadatos para buscadores y redes, en el formato del resto del sitio.
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapar(TITULO)}</title>`)
+    .replace(/<head[^>]*>/, (cabeza) => `${cabeza}\n${metadatos}\n${copiaServidor}`)
     .replace('</head>', `${estilos}\n</head>`)
     .replace(/<body[^>]*>/, (body) => `${body}\n${menu}`);
 

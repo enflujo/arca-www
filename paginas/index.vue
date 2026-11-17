@@ -52,7 +52,13 @@ const imagenPortada = portada?.imagen?.id ? urlImagenPublica(portada.imagen.id, 
 const seccionesCMS = (datos.paginas?.[0]?.secciones ?? [])
   .filter((s) => s.titulo && s.texto && !/inicie el recorrido/i.test(s.texto))
   // Sin los párrafos vacíos (<p>&nbsp;</p>) que el editor del CMS deja como separadores.
-  .map((s) => ({ ...s, texto: (s.texto ?? '').replace(/<p>(\s|&nbsp;| )*<\/p>/gi, '') }));
+  .map((s) => ({
+    ...s,
+    texto: (s.texto ?? '')
+      .replace(/<p>(\s|&nbsp;| )*<\/p>/gi, '')
+      // El CMS dice «veinticinco mil pinturas»; la colección tiene hoy la cifra del API (27.000).
+      .replace(/veinticinco mil/gi, totalObras),
+  }));
 
 const camposColeccion = computed(() => general.paginasArchivo.filter((p) => p.mostrar_en_menu).length || 21);
 
@@ -108,7 +114,7 @@ const hitos = [
   },
   {
     anio: 'Hoy',
-    titulo: 'ARCA en vivo',
+    titulo: 'Visualización y análisis',
     texto: `${totalObras} pinturas y cerca de 800 mil etiquetas, abiertas a nuevas lecturas desde los datos.`,
     hoy: true,
   },
