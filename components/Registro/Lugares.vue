@@ -20,8 +20,7 @@ defineProps<Props>();
         <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
       </span>
     </p>
-
-    <VistaMapaPunto v-if="datos.geo" :punto="datos.geo" />
+    <!-- El mapa de la obra va ahora debajo de la imagen (components/Registro/MapaObra.vue). -->
   </section>
 </template>
 

@@ -398,28 +398,38 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
 <template>
   <div id="contenedorObra">
-    <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
-      <div class="opciones">
-        <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
-        <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
+    <!-- Columna de la imagen: la obra y, debajo, el mapa de su recorrido -->
+    <div id="columnaImagen" :class="vistaCompleta ? 'grande' : ''">
+      <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
+        <div class="opciones">
+          <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
+          <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
 
-        <a
+          <a
+            v-if="datosGenerales[0].imagen"
+            class="controlImg"
+            :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
+            target="_blank"
+            :download="datosGenerales[0].imagen.filename_download"
+          >
+            <IconoDescarga class="controlImg descarga" />
+          </a>
+        </div>
+        <Lupa
           v-if="datosGenerales[0].imagen"
-          class="controlImg"
-          :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
-          target="_blank"
-          :download="datosGenerales[0].imagen.filename_download"
-        >
-          <IconoDescarga class="controlImg descarga" />
-        </a>
+          :datos="datosGenerales[0].imagen"
+          :src="srcImagen"
+          :alt="altImagen"
+          :activado="verLupa"
+          @click="cambiarVistaImagen"
+        />
       </div>
-      <Lupa
-        v-if="datosGenerales[0].imagen"
-        :datos="datosGenerales[0].imagen"
-        :src="srcImagen"
-        :alt="altImagen"
-        :activado="verLupa"
-        @click="cambiarVistaImagen"
+
+      <RegistroMapaObra
+        v-if="obra && !vistaCompleta"
+        class="mapaRecorrido"
+        :origen="obra.ciudad_origen"
+        :actual="obra.ubicacion"
       />
     </div>
 
@@ -468,6 +478,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
             :datos="obra[seccion.campo]"
             :ruta="rutaCampo(seccion.campo)"
             :relacion="seccion.campo === 'categorias' ? undefined : `${seccion.campo}_id`"
+            :jerarquia="seccion.campo === 'categorias'"
           />
         </template>
 
@@ -524,6 +535,22 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
 #contenedorTituloAutor {
   max-width: 80%;
+}
+
+#columnaImagen {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+
+  &.grande {
+    flex-basis: 100%;
+  }
+
+  // El mapa se alinea con la imagen (a la derecha de los botones de zoom, lupa y descarga).
+  .mapaRecorrido {
+    margin-left: calc(30px + 0.5em);
+  }
 }
 
 #contenedorImagen {
@@ -704,9 +731,12 @@ h2 {
 
 // Pantallas grandes
 @media (min-width: $minPantallaGrande) {
-  #contenedorImagen {
-    flex-basis: 48%;
+  #columnaImagen {
+    width: auto;
+    flex-basis: 46%;
+  }
 
+  #contenedorImagen {
     .zoom {
       display: block;
     }
