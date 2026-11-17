@@ -87,7 +87,6 @@ defineProps<Props>();
 
 <style lang="scss" scoped>
 #informacion {
-  font-weight: bold;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -96,22 +95,29 @@ defineProps<Props>();
 .seccion {
   font-family: var(--fuenteParrafos);
   margin: 0.5em 0;
-  padding: 0.5em 0;
-  border-top: 2px solid $dolor;
+  padding: 0.8em 0;
+  border-top: 1px solid var(--bordeFuerte);
   width: 100%;
   display: flex;
   flex-basis: 100%;
+  color: var(--textoCuerpo);
+  line-height: 1.65;
 
   &:last-child {
-    border-bottom: 2px solid $dolor;
+    border-bottom: 1px solid var(--bordeFuerte);
     margin-bottom: 1em;
   }
 
+  // Etiqueta de sección: Manrope pequeña en mayúsculas.
   h2 {
-    font-weight: bold;
-    font-size: 1em;
+    font-family: var(--fuenteSans);
+    font-weight: 600;
+    font-size: 0.72em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.6;
     width: 130px;
-    color: $dolor;
+    color: var(--ocre);
   }
   &.medio {
     vertical-align: top;

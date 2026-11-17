@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
+import { SUBPAGINAS, seccionDeRuta } from '~/utilidades/menu';
 
 interface Props {
   visible: boolean;
@@ -11,7 +12,10 @@ const ruta = useRoute();
 const contenedorMenu: Ref<HTMLElement | undefined> = ref();
 const cerebroGeneral = usarGeneral();
 
-const paginasVisibles = computed(() => {
+// Menú lateral según la sección: las clasificaciones de la Colección, o las subpáginas de Recursos / Sobre ARCA.
+const opciones = computed(() => {
+  const seccion = seccionDeRuta(ruta.path);
+  if (seccion === 'recursos' || seccion === 'sobre') return SUBPAGINAS[seccion];
   return cerebroGeneral.paginasArchivo.filter((pagina) => pagina.mostrar_en_menu);
 });
 
@@ -23,7 +27,7 @@ const esRutaActual = (slug: string) => {
   if (partes[1].includes('categorias')) {
     return slug === 'categorias';
   }
-  return partes.includes(slug);
+  return partes[1] === slug;
 };
 
 onMounted(() => {
@@ -45,46 +49,72 @@ function clicFuera(evento: MouseEvent) {
 
 <template>
   <aside ref="contenedorMenu" :class="visible ? 'visible' : ''">
-    <nav id="opciones">
+    <nav id="opciones" aria-label="Páginas de esta sección">
       <NuxtLink
         :to="`/${opcion.slug}`"
-        v-for="opcion in paginasVisibles"
+        v-for="opcion in opciones"
         :key="opcion.slug"
         class="opcion"
         :class="esRutaActual(opcion.slug) ? 'activo' : ''"
+        :aria-current="esRutaActual(opcion.slug) ? 'page' : undefined"
         @click.native="cerrar"
       >
-        {{ opcion.titulo }}
+        <span class="punto" aria-hidden="true"></span>
+        <span>{{ opcion.titulo }}</span>
       </NuxtLink>
     </nav>
   </aside>
 </template>
 
 <style lang="scss" scoped>
-@use 'sass:color';
-
+// Medidas del diseño: 320 px de ancho, opciones en mayúsculas de 12,5 px, píldora para la activa.
 #opciones {
-  text-transform: uppercase;
   display: flex;
   flex-direction: column;
-  padding: 2em 1.2em 6em 1.2em;
+  gap: 2px;
+  padding: 36px 24px 6em 44px;
 }
 
 a,
 a:link {
-  font-size: 0.9em;
-  margin-top: 0.9em;
-  overflow: hidden;
-  color: var(--mediana);
-  font-family: var(--fuenteMenu);
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: var(--fuenteSans);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: var(--textoCuerpo);
 
   &:hover {
-    color: color.adjust($mediana, $lightness: -10%);
+    color: var(--ocre);
+  }
+
+  .punto {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    flex-shrink: 0;
+    background-color: transparent;
   }
 
   &.activo {
-    color: color.adjust($mediana, $lightness: -20%);
+    background-color: var(--arena);
+    color: var(--ocre);
+
+    .punto {
+      background-color: var(--ocre);
+    }
+  }
+}
+
+@media (max-width: #{$minPantallaGrande - 1px}) {
+  #opciones {
+    padding: 4.5em 24px 6em 24px;
   }
 }
 </style>

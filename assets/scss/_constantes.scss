@@ -1,51 +1,75 @@
+// Rediseño 2026 · lenguaje visual de ARCA
+// Se conservan los nombres de variables que ya usaban los componentes, pero con los valores del nuevo
+// sistema (tema claro del diseño: pergamino, tinta y ocre; encabezado oscuro). Los nombres nuevos
+// (--tinta, --ocre, --oro, --pergamino…) son los que se deben usar de aquí en adelante.
+
 :root {
-  //Fuentes 📝📰📜
-  --fuenteTitulo: 'Unbounded', italic;
-  --fuenteMenu: 'Nunito', sans-serif;
-  --fuenteMenuPeso: 700;
-  --fuentePrincipal: 'Lora', serif;
+  // Fuentes 📝 — IM Fell English para títulos, Manrope para texto e interfaz
+  --fuenteSerif: 'IM Fell English', Georgia, serif;
+  --fuenteSans: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+
+  --fuenteTitulo: var(--fuenteSerif);
+  --fuenteMenu: var(--fuenteSans);
+  --fuenteMenuPeso: 600;
+  --fuentePrincipal: var(--fuenteSerif);
   --fuentePrincipalPeso: 400;
   --fuentePrincipalBold: 700;
-  --fuenteParrafos: 'Lora', serif;
+  --fuenteParrafos: var(--fuenteSans);
 
-  //Tamaños 🔎📐📏
+  // Tamaños 📐
   --tamanoMenu: 80px;
   --tamanoDashAl: 30vh;
   --tamanoDashAn: 25vw;
+  --radio: 14px;
+  --radioPequeno: 8px;
 
-  //Colores 🎨🟢🔴
-  --verdeClaro2: #f2f9f8;
-  --verdeClaro: #d0f1ec;
-  --verdeEsmeralda: #0c4d51;
-  --verdeEsmeralda2: #0e5e62;
-  --verdeEsmeralda3: #2d9b97;
-  --verdeMenta: #49c5b6;
-  --verdeResaltar: #0e5e621a;
+  // Paleta del rediseño 🎨
+  --tinta: #1c1512; // fondo oscuro / texto principal
+  --tintaPanel: #261d18; // paneles sobre fondo oscuro
+  --pergamino: #f3e9d8; // fondo claro
+  --papel: #faf6ec; // tarjetas y paneles claros
+  --arena: #e8dcc4; // resaltados suaves (píldora activa)
+  --borde: #d8c8ae;
+  --bordeFuerte: #bda87f;
+  --ocre: #8a5f14; // acento sobre claro (botones, enlaces)
+  --ocreOscuro: #6e4a0e;
+  --ocreClaro: #a8741b;
+  --oro: #d9ac4f; // acento sobre oscuro
+  --textoSuave: #6b5646;
+  --textoCuerpo: #574538;
+  --sobreOscuro: #f3e9d8; // texto sobre fondo oscuro
+  --sobreOscuroSuave: #bfae96;
 
-  --naranjaPlantaRodadora: #eab28c;
-  --naranjaLino: #f4e9e1;
+  // Nombres anteriores, ahora apuntando a la paleta nueva
+  --verdeClaro2: var(--papel);
+  --verdeClaro: var(--arena);
+  --verdeEsmeralda: var(--tinta);
+  --verdeEsmeralda2: var(--tintaPanel);
+  --verdeEsmeralda3: var(--ocre);
+  --verdeMenta: var(--oro);
+  --verdeResaltar: rgba(138, 95, 20, 0.1);
 
-  // (Comentario en archivo) -> // width: 81vw;
+  --naranjaPlantaRodadora: var(--bordeFuerte);
+  --naranjaLino: var(--arena);
 
-  --amarilloArena2: #ecd06f;
-  --amarilloJengibre: #ffe485;
-  --amarilloCrema: #fff0c2;
-  --amarilloPetalo: #fffbf0;
+  --amarilloArena2: var(--oro);
+  --amarilloJengibre: var(--oro);
+  --amarilloCrema: var(--arena);
+  --amarilloPetalo: var(--pergamino);
 
-  --rojoCerezo: #9e171f;
-  --rojoRaspon: #d14836;
-  --rojoOxido: #d86a45;
+  --rojoCerezo: var(--ocreOscuro);
+  --rojoRaspon: var(--ocreClaro);
+  --rojoOxido: var(--ocreClaro);
 
-  //ColoresLindosJeann 🎨🟢🔴
-  --claridad: #fffdf8;
-  --mediana: #faf5ec;
-  --profundidad: #08173e;
-  --dolor: #af2828;
-  --amarilloBase: #ecd06f;
-  --amarilloClaro: #f5ebc6;
+  --claridad: var(--papel);
+  --mediana: var(--pergamino);
+  --profundidad: var(--tinta);
+  --dolor: var(--ocre);
+  --amarilloBase: var(--oro);
+  --amarilloClaro: var(--arena);
 }
 
-$altoEncabezado: 60px;
+$altoEncabezado: 72px;
 
 // Tamaños Pantallas 🖥️ 📺 📱
 $minCelular: 576px;
@@ -54,12 +78,23 @@ $minPantalla: 992px;
 $minPantallaGrande: 1200px;
 $minPantallaGigante: 1920px;
 
-//ColoresLindosJeann 🎨🟢🔴
-$claridad: #fffdf8;
-$mediana: #faf5ec;
-$profundidad: #08173e;
-$dolor: #af2828;
-$rojoCerezo: #9e171f;
-$amarilloBase: #ecd06f;
-$amarilloClaro: #f5ebc6;
-$verdeEsmeralda: #0c4d51;
+// Paleta en SCSS (para funciones de color como rgba() o color.adjust())
+$tinta: #1c1512;
+$tintaPanel: #261d18;
+$pergamino: #f3e9d8;
+$papel: #faf6ec;
+$arena: #e8dcc4;
+$borde: #d8c8ae;
+$ocre: #8a5f14;
+$oro: #d9ac4f;
+$textoSuave: #6b5646;
+
+// Nombres anteriores
+$claridad: $papel;
+$mediana: $pergamino;
+$profundidad: $tinta;
+$dolor: $ocre;
+$rojoCerezo: #6e4a0e;
+$amarilloBase: $oro;
+$amarilloClaro: $arena;
+$verdeEsmeralda: $tinta;

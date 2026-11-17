@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import { usarGeneral } from '~/cerebros/general';
+import { seccionDeRuta } from '~/utilidades/menu';
 
 const cerebro = usarGeneral();
 const menuVisible = ref(false);
+const ruta = useRoute();
+
+// Rediseño 2026: área principal oscura con paneles claros en Recursos, Sobre ARCA y en los índices de la
+// Colección (las páginas del menú lateral). Las galerías de obras conservan por ahora su fondo claro.
+const oscuro = computed(() => {
+  const seccion = seccionDeRuta(ruta.path);
+  const esIndice = ruta.path.split('/').filter(Boolean).length === 1;
+  return seccion === 'recursos' || seccion === 'sobre' || (seccion === 'coleccion' && esIndice);
+});
 
 if (!cerebro.datosCargados) {
   await useAsyncData('cargarGeneral', async () => {
@@ -40,7 +50,7 @@ function cerrar() {
 
     <MenuArchivo id="contenedorMenu" :visible="menuVisible" :cerrar="cerrar" />
 
-    <div id="contenido">
+    <div id="contenido" :class="{ oscuro }">
       <Buscador v-if="cerebro.buscadorVisible" />
       <main>
         <slot />
@@ -59,7 +69,11 @@ function cerrar() {
 }
 
 #contenedorMenu {
-  background-color: rgba($color: $verdeEsmeralda, $alpha: 0.92);
+  background-color: var(--papel);
+  border-right: 1px solid var(--borde);
+  box-sizing: border-box;
+  top: $altoEncabezado;
+  height: calc(100vh - #{$altoEncabezado}) !important;
   position: fixed;
   overflow: auto;
   width: 0;
@@ -82,13 +96,25 @@ main {
   min-height: 86vh;
   width: 100vw;
   position: relative;
+
+  &.oscuro {
+    background-color: var(--tinta);
+    color: var(--sobreOscuro);
+
+    main {
+      max-width: 1240px;
+      margin: 0;
+      padding: 44px clamp(20px, 4.4vw, 64px) 64px;
+    }
+  }
 }
 
 .botonMenu {
   height: 2.2rem;
   position: fixed;
-  top: 4.5em;
+  top: calc(#{$altoEncabezado} + 0.6em);
   left: 0.5em;
+  background-color: rgba($papel, 0.9);
   padding: 0.5rem;
   z-index: 2;
   display: flex;
@@ -101,8 +127,8 @@ main {
   .linea {
     background-color: $profundidad;
     border-radius: 1em;
-    width: 2.16rem;
-    height: 0.25rem;
+    width: 1.8rem;
+    height: 0.2rem;
   }
 
   .linea1 {
@@ -116,10 +142,9 @@ main {
   }
 
   &.cerrar {
-    top: 4em;
     left: 85vw;
     .linea {
-      background-color: $claridad;
+      background-color: $tinta;
     }
 
     .linea1 {
@@ -160,12 +185,11 @@ main {
 // Pantallas grandes - Ahora si el menú y el contenido son visibles al tiempo.
 @media (min-width: $minPantallaGrande) {
   #contenedorMenu {
-    width: 380px;
-    background-color: $verdeEsmeralda;
+    width: 320px;
   }
 
   #contenido {
-    width: calc(100vw - 380px);
+    width: calc(100vw - 320px);
   }
 
   .botonMenu {
@@ -177,7 +201,240 @@ main {
   }
 }
 
+// En pantallas sin menú lateral fijo, el contenido deja espacio al botón del menú.
+@media (max-width: #{$minPantallaGrande - 1px}) {
+  #contenido.oscuro main {
+    padding-top: 72px;
+  }
+}
+
 //Pantallas gigantes
 @media (min-width: $minPantallaGigante) {
+}
+</style>
+
+<!-- Piezas compartidas por las páginas del rediseño (área oscura con paneles claros).
+     :where(#contenido) quita el peso del id: estas reglas ganan a los estilos base (p, h1…) pero los estilos
+     propios de cada página (con dos o más clases) las pueden ajustar. -->
+<style lang="scss">
+:where(#contenido).oscuro {
+  .encabezadoPagina {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .ceja {
+    margin: 0;
+    font-family: var(--fuenteSans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sobreOscuro);
+  }
+
+  .tituloPagina {
+    margin: 0;
+    font-family: var(--fuenteSerif);
+    font-weight: 400;
+    font-size: clamp(34px, 3.6vw, 52px);
+    line-height: 1.05;
+    color: var(--oro);
+  }
+
+  .entradilla {
+    margin: 0 0 28px;
+    max-width: 940px;
+    font-family: var(--fuenteSerif);
+    font-size: clamp(19px, 1.6vw, 22px);
+    line-height: 1.55;
+    color: #d8c9b2;
+
+    &.grande {
+      font-size: clamp(20px, 1.8vw, 25px);
+      line-height: 1.5;
+    }
+  }
+
+  .textoSuave {
+    margin: 0;
+    max-width: 940px;
+    font-size: 17px;
+    line-height: 1.75;
+    color: #d8c9b2;
+  }
+
+  .tituloBloque {
+    margin: 0;
+    font-family: var(--fuenteSerif);
+    font-weight: 400;
+    font-size: clamp(30px, 2.8vw, 40px);
+    color: var(--oro);
+  }
+
+  .nota {
+    margin: 0;
+    font-size: 15px;
+    color: var(--sobreOscuroSuave);
+  }
+
+  .panelClaro {
+    background-color: var(--papel);
+    color: var(--tinta);
+    border: 1px solid #e0d3b8;
+    border-radius: 18px;
+    box-sizing: border-box;
+
+    p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--textoCuerpo);
+    }
+  }
+
+  .etiquetaPanel {
+    font-family: var(--fuenteSans);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a6a45;
+  }
+
+  .botonOcre,
+  .botonContorno {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 24px;
+    border-radius: 10px;
+    font-family: var(--fuenteSans);
+    font-size: 15px;
+    font-weight: 700;
+    box-sizing: border-box;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+
+  .botonOcre {
+    background-color: var(--ocre);
+
+    &:link,
+    &:visited,
+    &:hover {
+      color: var(--papel);
+    }
+
+    &:hover {
+      background-color: var(--ocreOscuro);
+    }
+  }
+
+  .botonContorno {
+    border: 1px solid #5a4a3e;
+    font-weight: 600;
+
+    &:link,
+    &:visited {
+      color: var(--sobreOscuro);
+    }
+
+    &:hover {
+      border-color: var(--oro);
+      color: var(--oro);
+    }
+
+    svg {
+      stroke: var(--oro);
+    }
+  }
+
+  .pildora {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid #5a4a3e;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 600;
+    box-sizing: border-box;
+
+    &:link,
+    &:visited {
+      color: var(--sobreOscuro);
+    }
+
+    &:hover {
+      border-color: var(--oro);
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: var(--oro);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+
+  .chipPanel {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background-color: var(--arena);
+    font-size: 13px;
+    font-weight: 600;
+    color: #8a6a45;
+  }
+
+  .creditoImagen {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--sobreOscuroSuave);
+
+    a:link,
+    a:visited {
+      color: var(--sobreOscuroSuave);
+    }
+
+    a:hover {
+      color: var(--oro);
+    }
+
+    .numero {
+      color: var(--oro);
+      font-weight: 700;
+    }
+  }
+
+  .separadorOscuro {
+    border-top: 1px solid #3a2e27;
+    padding-top: 28px;
+  }
 }
 </style>

@@ -84,22 +84,25 @@ function procesarDatos() {
   margin: 0 0 1.5em 0;
 }
 
+// Etiquetas en píldora, como en el rediseño.
 .elemento {
-  border: 1px solid $profundidad;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
   margin: 0.2em;
-  background-color: transparent;
+  background-color: var(--papel);
   transition: all 0.2s ease-in;
 
   a {
-    padding: 0.4em;
+    padding: 0.35em 0.9em;
     display: block;
   }
 
   &:hover {
-    background-color: $rojoCerezo;
+    border-color: var(--ocre);
+    background-color: var(--ocre);
     a,
     a:link {
-      color: $claridad;
+      color: var(--papel);
     }
   }
 }

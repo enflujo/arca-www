@@ -25,12 +25,20 @@ time {
   margin: 0;
 }
 
-h1 {
-  font-family: var(--fuentePrincipal);
+// Títulos en IM Fell English (serif), texto e interfaz en Manrope.
+h1,
+h2,
+h3 {
+  font-family: var(--fuenteSerif);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
 }
 
-h2 {
-  font-family: var(--fuenteMenu);
+h4,
+h5,
+h6 {
+  font-family: var(--fuenteSans);
 }
 
 p {
@@ -39,8 +47,8 @@ p {
 }
 
 a {
-  font-family: var(--fuentePrincipal);
-  font-weight: 400;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
 button {
@@ -49,9 +57,14 @@ button {
   padding: 0;
 }
 
-button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ocre);
+  outline-offset: 2px;
 }
 
 fieldset {
@@ -78,8 +91,12 @@ video {
 }
 
 body {
+  font-family: var(--fuenteSans);
   font-weight: var(--fuentePrincipalPeso);
-  background-color: var(--amarilloPetalo);
+  line-height: 1.5;
+  color: var(--tinta);
+  background-color: var(--pergamino);
+  -webkit-font-smoothing: antialiased;
 }
 
 a,
@@ -94,8 +111,8 @@ a:link {
 }
 
 ::selection {
-  background-color: var(--verdeMenta);
-  color: var(--claridad);
+  background-color: var(--oro);
+  color: var(--tinta);
 }
 
 .texto-claro {
