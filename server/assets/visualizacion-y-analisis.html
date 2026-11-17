@@ -3272,7 +3272,8 @@ async function gxAsoc(){
 
     // Matriz de círculos
     const W = cont.clientWidth || 700, rotW = Math.min(190, Math.round(W * .3)), cabH = 118, filaH = filas.length <= 15 ? 40 : 32;
-    const colW = Math.min(150, (W - rotW - 80) / gs.length)   // margen derecho: el último nombre inclinado no se corta, H = cabH + filas.length * filaH + 6;
+    // margen derecho: el último nombre inclinado no se corta
+    const colW = Math.min(150, (W - rotW - 80) / gs.length), H = cabH + filas.length * filaH + 6;
     const cx = j => rotW + colW * j + colW / 2, cy = i => cabH + filaH * i + filaH / 2;
     const maxN = d3.max(celdas, c => c.n) || 1, maxPct = d3.max(celdas, c => c.pct) || 1;
     const radio = d3.scaleSqrt([0, maxN], [3, Math.min(colW, filaH) / 2 - 2]);

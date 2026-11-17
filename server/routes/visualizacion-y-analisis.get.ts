@@ -96,6 +96,20 @@ const menu = `<header id="arcaEncabezado"><a class="nombreProyecto" href="/" ari
   ''
 )}</nav><a class="buscarSitio" href="/?buscar=" aria-label="Buscar obras, autores, temas…"><span>Buscar obras, autores…</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a></header>`;
 
+// Enlace directo a una pestaña: /visualizacion-y-analisis?pestana=gestos (general | analisis | gestos).
+// Espera a que el tablero termine de cargar las obras y abre la pestaña pedida.
+const pestanaDesdeURL = `<script>
+(function(){
+  var p = new URLSearchParams(location.search).get('pestana');
+  if (!p || !/^(general|analisis|gestos)$/.test(p)) return;
+  var intentos = 0, reloj = setInterval(function(){
+    var listo = typeof S !== 'undefined' && S.obras && S.obras.length && typeof verPestana === 'function';
+    if (listo) { clearInterval(reloj); verPestana(p); }
+    else if (++intentos > 600) clearInterval(reloj);
+  }, 200);
+})();
+</script>`;
+
 export default defineEventHandler(async (event) => {
   const html = await useStorage('assets:server').getItem<string>(`${SLUG}.html`);
 
@@ -108,7 +122,8 @@ export default defineEventHandler(async (event) => {
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapar(TITULO)}</title>`)
     .replace(/<head[^>]*>/, (cabeza) => `${cabeza}\n${metadatos}\n${copiaServidor}`)
     .replace('</head>', `${estilos}\n</head>`)
-    .replace(/<body[^>]*>/, (body) => `${body}\n${menu}`);
+    .replace(/<body[^>]*>/, (body) => `${body}\n${menu}`)
+    .replace(/<\/body>(?![\s\S]*<\/body>)/, `${pestanaDesdeURL}\n</body>`);
 
   setHeader(event, 'Content-Type', 'text/html; charset=utf-8');
   return pagina;
