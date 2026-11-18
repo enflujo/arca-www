@@ -98,3 +98,19 @@ nitro: {
 3. `yarn build` y reiniciar. Las consultas nuevas se guardan solas la primera vez que se piden.
 
 `server/assets` está excluido de Prettier (`.prettierignore`) para conservar el archivo tal cual.
+
+## Colores de las gráficas (accesibilidad)
+
+Debajo de las pestañas hay un selector **«Colores de las gráficas»** con cuatro paletas:
+
+| Paleta                   | Uso                                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| **ARCA**                 | La paleta original del proyecto.                                                                                             |
+| **Escala de grises**     | Grises bien separados en luminosidad; además, cualquier color fijo de una gráfica se pasa a gris con `filter: grayscale(1)`. |
+| **Apta para daltonismo** | Paleta Okabe-Ito para categorías y rampa _cividis_ para cantidades.                                                          |
+| **Alto contraste**       | Tonos saturados y rampa _inferno_ (de claro a casi negro).                                                                   |
+
+- Está implementado en `index_comparar.html` (copiado en `server/assets/visualizacion-y-analisis.html`): objeto `PALETAS` y función `aplicarPaleta()`. Al cambiar de paleta se redibujan todas las gráficas con `aplicarFiltros()`.
+- La elección se guarda en `localStorage` (`arca.paleta`). También se puede abrir con `?paleta=arca|grises|daltonismo|contraste` en la URL.
+- En las rampas de cantidad, más obras siempre se ve más oscuro.
+- Es independiente del botón **Contraste** del encabezado, que cambia los fondos y el texto de todo el sitio.

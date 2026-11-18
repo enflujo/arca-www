@@ -173,7 +173,7 @@ section.bloque{background:var(--panel);border:1px solid var(--linea);border-radi
 .pais{stroke:#a08862;stroke-width:.6;cursor:pointer;transition:opacity .15s;vector-effect:non-scaling-stroke}
 .pais:hover{opacity:.8}
 .pais.sel{stroke:var(--oro);stroke-width:2}
-.punto{fill:var(--carmin);fill-opacity:.72;stroke:#fff;stroke-width:.6;cursor:pointer;vector-effect:non-scaling-stroke}
+.punto{fill:var(--puntoMapa,var(--carmin));fill-opacity:.72;stroke:#fff;stroke-width:.6;cursor:pointer;vector-effect:non-scaling-stroke}
 .punto:hover{fill-opacity:1;stroke-width:1.6}
 .leyenda{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--tenue);margin-top:6px}
 .leyenda .barra{height:8px;width:120px;border-radius:2px;background:linear-gradient(90deg,#f3e6c8,var(--oro))}
@@ -222,6 +222,27 @@ header.cabeza .barra-activa{--texto:#2a1d16;--tenue:#6e5a46;--oro:#8a6210;--line
   background:#3a2c22;color:#e8d9bd;border:2px solid #d2a94b;transition:background .15s,color .15s}
 .pestanas button:hover{background:#5a4430;color:#fff}
 .pestanas button[aria-selected="true"]{background:#d2a94b;color:#241910;box-shadow:0 2px 10px rgba(210,169,75,.35)}
+/* Selector de paleta de las gráficas (accesibilidad) */
+.fila-pestanas{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 18px;margin:18px 0 0}
+.fila-pestanas .pestanas{margin:0}
+.selector-paleta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.84rem;color:#f1e8d8}
+.selector-paleta .rot{font-weight:600;color:#d2a94b}
+.selector-paleta .opciones{display:flex;flex-wrap:wrap;gap:6px}
+.selector-paleta button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;
+  border:1px solid rgba(210,169,75,.6);background:#2a1f18;color:#f1e8d8;font-size:.82rem;font-weight:600;line-height:1.2}
+.selector-paleta button:hover{background:#3a2c22;border-color:#d2a94b}
+.selector-paleta button:focus-visible{outline:2px solid #d2a94b;outline-offset:2px}
+.selector-paleta button[aria-pressed="true"]{background:#f1e8d8;color:#1d1411;border-color:#f1e8d8}
+.selector-paleta .muestras{display:inline-flex;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+.selector-paleta .muestras i{display:block;width:8px;height:12px}
+/* En escala de grises, lo que no sale de la paleta (colores fijos de algunas gráficas) también pasa a gris */
+html[data-paleta="grises"] body section.bloque svg,html[data-paleta="grises"] body .explorador svg,html[data-paleta="grises"] body .detalle svg,
+html[data-paleta="grises"] body .vista-analisis svg,html[data-paleta="grises"] body .caja i{filter:grayscale(1)}
+html[data-paleta="grises"]{--puntoMapa:#ffffff;--barraLista:#5a5a5a}
+html[data-paleta="grises"] .punto{stroke:#111}
+html[data-paleta="daltonismo"]{--puntoMapa:#cc79a7;--barraLista:#cc79a7}
+html[data-paleta="contraste"]{--puntoMapa:#00c2f0;--barraLista:#0033cc}
+html[data-paleta="contraste"] .punto{stroke:#000}
 .vista-analisis{margin-top:22px}
 .vista-analisis[hidden]{display:none}
 .pestanas button:focus-visible{outline:2px solid #d2a94b;outline-offset:2px}
@@ -257,7 +278,7 @@ select.destello{animation:destello 1.6s ease-out}
 .lista .cifra{font-size:.82rem;color:var(--tenue);font-variant-numeric:tabular-nums}
 .lista .pista{grid-column:1/-1;height:5px;background:#f3e1e6;border-radius:3px;overflow:hidden}
 /* Color propio (carmín rosado) para no confundirla con las gráficas doradas */
-.lista .pista span{display:block;height:100%;background:#c43b6a}
+.lista .pista span{display:block;height:100%;background:var(--barraLista,#c43b6a)}
 
 .red-leyenda{display:flex;gap:14px;font-size:.78rem;color:var(--tenue);margin-top:6px;flex-wrap:wrap}
 .red-leyenda span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px;background:var(--c)}
@@ -581,11 +602,17 @@ footer{margin-top:30px;color:var(--tenue);font-size:.8rem;max-width:80ch}
     </div>
   </header>
 
+  <div class="fila-pestanas">
   <nav class="pestanas" role="tablist" aria-label="Tipo de análisis">
     <button type="button" role="tab" data-p="general" aria-selected="true" aria-controls="vistaGeneral">Análisis general</button>
     <button type="button" role="tab" data-p="analisis" aria-selected="false" aria-controls="vistaAnalisis">Posibles análisis</button>
     <button type="button" role="tab" data-p="gestos" aria-selected="false" aria-controls="vistaGestos">Análisis por gestos</button>
   </nav>
+  <div class="selector-paleta" id="selectorPaleta" role="group" aria-label="Colores de las gráficas">
+    <span class="rot">Colores de las gráficas:</span>
+    <span class="opciones"></span>
+  </div>
+  </div>
 
   <div class="aviso" id="aviso">
     <h3>No fue posible leer la API</h3>
@@ -1849,20 +1876,21 @@ function corregirOrientacion(f){
 }
 // Rampa multitono (amarillo → naranja → café) de claro a oscuro: sobre un fondo
 // beige, más obras tiene que leerse como más oscuro, no al revés.
-const RAMPA_MAPA = t => d3.interpolateYlOrBr(0.18 + 0.79*t);
+let RAMPA_MAPA = t => d3.interpolateYlOrBr(0.18 + 0.79*t);
 // Paleta por categoría (identidad: país, origen, término…). Ocho tonos bien separados
 // en orden fijo: el orden está elegido para que los vecinos se distingan también con
 // daltonismo. A partir del noveno, todo va en gris «otros»: nunca se repite un color.
-const CATEG = ['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#6250d6','#e34948'];
-const CATEG_OTROS = '#a39686';
+let ACENTO_TIEMPO = '#e4572e', ACENTO_LISTA = '#c43b6a';
+let CATEG = ['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#6250d6','#e34948'];
+let CATEG_OTROS = '#a39686';
 const colorCateg = claves => { const m = new Map(claves.slice(0, CATEG.length).map((k,i)=>[k, CATEG[i]])); return k => m.get(k) || CATEG_OTROS; };
 // Texto legible sobre un relleno: oscuro sobre tonos claros, blanco sobre oscuros.
 const tintaSobre = c => d3.lab(c).l > 64 ? '#2a1d16' : '#fff';
 // Rampas de magnitud (un solo tono, de claro a oscuro). Cada gráfica tiene la suya
 // para que no se confundan entre sí: Temática en azul, Técnicas en verde
 // y Explorar a fondo en turquesa; el mapa conserva el dorado.
-const RAMPA_TEMAS    = d3.interpolateRgb('#e6eefa', '#0d366b');
-const RAMPA_TECNICAS = d3.interpolateRgb('#e2f3ea', '#0b5a3c');
+let RAMPA_TEMAS    = d3.interpolateRgb('#e6eefa', '#0d366b');
+let RAMPA_TECNICAS = d3.interpolateRgb('#e2f3ea', '#0b5a3c');
 
 function dibujarMapa(){
   const cont = $('mapa');
@@ -2032,7 +2060,7 @@ function dibujarMapa(){
       const rango = enPct ? `${fmtPct(a)}–${fmtPct(b)}` : `${fmt(Math.round(a))}–${fmt(Math.round(b))}`;
       return `<span class="caja"><i style="background:${c}"></i>${rango}</span>`; }).join('')
     + (enBarras ? '' : `<span class="caja" style="margin-left:6px"><i style="background:#ded2ba;border:1px solid var(--linea)"></i>sin obras</span>`)
-    + (porOrigen || enBarras ? '' : `<span class="caja"><i style="background:var(--carmin);border-radius:50%;width:10px;height:10px"></i>lugar de conservación (tamaño = nº de obras)</span>`);
+    + (porOrigen || enBarras ? '' : `<span class="caja"><i style="background:var(--puntoMapa,var(--carmin));border-radius:50%;width:10px;height:10px"></i>lugar de conservación (tamaño = nº de obras)</span>`);
 
   S.datos.mapa = {filas:[
     ...S.paises.map(p=>({tipo: porOrigen?'País de origen':'País de conservación', nombre:p.nombre, obras:porPais.get(p.id)||0}))
@@ -2159,7 +2187,7 @@ function dibujarTiempo(){
   barra.append('rect').attr('x',d=>x(d)).attr('width',x.bandwidth()).attr('y',m.t).attr('height',H-m.b-m.t).attr('fill','transparent');
   barra.append('rect')
     .attr('x',d=>x(d)).attr('width',x.bandwidth()).attr('y',d=>y(filtr.get(d)||0)).attr('height',d=>y(0)-y(filtr.get(d)||0))
-    .attr('fill','#e4572e');   // bermellón: color propio y llamativo para Temporalidad
+      .attr('fill', ACENTO_TIEMPO);   // bermellón (según la paleta elegida): color propio y llamativo para Temporalidad
   cont.replaceChildren(svg.node());
   const modoTxt = $('tModo').selectedOptions[0].textContent;
   S.datos.tiempo = {filas: decs.map(d=>({periodo:rotuloPeriodo(d, paso), obras: +(filtr.get(d)||0).toFixed(2), obras_distintas:(idsDe.get(d)||[]).length, como_se_cuenta:modoTxt}))};
@@ -2747,7 +2775,7 @@ function svgRanking(){
     const y = m.t + i*fila;
     svg.append('text').attr('x', etiqueta - 8).attr('y', y + fila/2).attr('text-anchor','end').attr('dominant-baseline','middle')
       .attr('font-size', 11.5).attr('fill', '#2a1d16').text(recortar(String(f.termino), 44));
-    svg.append('rect').attr('x', etiqueta).attr('y', y + 4).attr('width', Math.max(2, x(f.obras))).attr('height', fila - 8).attr('rx', 2).attr('fill', '#c43b6a');
+    svg.append('rect').attr('x', etiqueta).attr('y', y + 4).attr('width', Math.max(2, x(f.obras))).attr('height', fila - 8).attr('rx', 2).attr('fill', ACENTO_LISTA);
     svg.append('text').attr('x', etiqueta + Math.max(2, x(f.obras)) + 6).attr('y', y + fila/2).attr('dominant-baseline','middle')
       .attr('font-size', 10.5).attr('fill', '#6e5a46').text(`${fmt(f.obras)} · ${String(f.porcentaje_del_filtro).replace('.', ',')} %`);
   });
@@ -3059,7 +3087,7 @@ const CAMPOS_GESTO = ['gesto1','gesto2','gesto3'];
 const SIN_DATO_GESTO = /^(no|no aplica|desconocido|ambiguo o no notorio)$/i;
 // Valores que significan «sin dato» en cualquier campo: no entran en tops ni cruces.
 const SIN_DATO = /^(no|no aplica|ninguno|ninguna|desconocido|ambiguo o no notorio|sin definir|sin dato|sin información)$/i;
-const VIOLETA = '#5b3fa0', VIOLETA_CLARO = '#b9a9dc';
+let VIOLETA = '#5b3fa0', VIOLETA_CLARO = '#b9a9dc';
 const GX = {sels:null, base:null, basePerm:undefined, baseCampos:null, tR:0, tL:0, tA:0, tC:0, tG:0, sim:null};
 const sinTildes = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const fmtVeces = v => `${new Intl.NumberFormat('es-CO',{maximumFractionDigits:1}).format(v)}×`;
@@ -3979,9 +4007,52 @@ function cerrarDetalle(){
    la abre ya configurada con sus propios campos. */
 // Las series usan los primeros tonos de CATEG (orden fijo; se acompañan de trazos
 // distintos para que se lea también impresa en grises).
-const SERIES = CATEG.slice(0, 7);
+let SERIES = CATEG.slice(0, 7);
 const TRAZOS = ['', '7 4', '2 3', '10 3 2 3', '4 4', '1 2', '12 4'];
-const RAMPA_EX = d3.interpolateRgb('#e0f2f3', '#0e4a58');
+const RAMPA_EX_ARCA = d3.interpolateRgb('#e0f2f3', '#0e4a58');
+let RAMPA_EX = RAMPA_EX_ARCA;
+
+/* ---------- Paletas de color (accesibilidad) ----------
+   El selector «Colores de las gráficas» cambia los tonos de todas las gráficas: la paleta
+   original de ARCA, escala de grises, una apta para daltonismo (Okabe-Ito) y una de alto
+   contraste. La elección se guarda en localStorage ('arca.paleta'). Las rampas de magnitud
+   van siempre de claro (pocas obras) a oscuro (muchas). */
+const PALETAS = {
+  arca: {nombre:'ARCA', acentos:['#e4572e','#c43b6a'], categ:CATEG.slice(), otros:CATEG_OTROS, violeta:[VIOLETA, VIOLETA_CLARO],
+         mapa:RAMPA_MAPA, temas:RAMPA_TEMAS, tecnicas:RAMPA_TECNICAS, ex:RAMPA_EX_ARCA},
+  grises: {nombre:'Escala de grises', acentos:['#3d3d3d','#5a5a5a'],
+         categ:['#141414','#9a9a9a','#4a4a4a','#c9c9c9','#2e2e2e','#7a7a7a','#e2e2e2','#5f5f5f'], otros:'#b3b3b3',
+         violeta:['#262626','#a8a8a8'],
+         mapa:t => d3.interpolateRgb('#eeeeee', '#111111')(0.1 + 0.9*t)},
+  daltonismo: {nombre:'Apta para daltonismo', acentos:['#d55e00','#cc79a7'],
+         categ:['#0072b2','#e69f00','#009e73','#cc79a7','#56b4e9','#d55e00','#f0e442','#000000'], otros:'#a39686',
+         violeta:['#6a3d9a','#cab2d6'],
+         mapa:t => d3.interpolateCividis(0.97 - 0.92*t)},
+  contraste: {nombre:'Alto contraste', acentos:['#e60000','#0033cc'],
+         categ:['#0033cc','#e60000','#008a00','#ff8800','#8800cc','#00a3cc','#000000','#d6007a'], otros:'#8c8c8c',
+         violeta:['#5a00a8','#c9a3ff'],
+         mapa:t => d3.interpolateInferno(0.97 - 0.88*t)},
+};
+['grises','daltonismo','contraste'].forEach(k => { const p = PALETAS[k]; p.temas = p.tecnicas = p.ex = p.mapa; });
+function leerPaleta(){ try { const p = new URLSearchParams(location.search).get('paleta') || localStorage.getItem('arca.paleta'); return PALETAS[p] ? p : 'arca'; } catch(e){ return 'arca'; } }
+function aplicarPaleta(clave, redibujar){
+  const p = PALETAS[clave] || PALETAS.arca;
+  CATEG = p.categ.slice(); CATEG_OTROS = p.otros; SERIES = CATEG.slice(0, 7);
+  [VIOLETA, VIOLETA_CLARO] = p.violeta; [ACENTO_TIEMPO, ACENTO_LISTA] = p.acentos;
+  RAMPA_MAPA = p.mapa; RAMPA_TEMAS = p.temas; RAMPA_TECNICAS = p.tecnicas; RAMPA_EX = p.ex;
+  document.documentElement.dataset.paleta = clave in PALETAS ? clave : 'arca';
+  try { localStorage.setItem('arca.paleta', document.documentElement.dataset.paleta); } catch(e){}
+  document.querySelectorAll('#selectorPaleta button').forEach(b => b.setAttribute('aria-pressed', b.dataset.paleta === document.documentElement.dataset.paleta));
+  if (redibujar && S.obras && S.obras.length) aplicarFiltros();
+}
+(function iniciarSelectorPaleta(){
+  const cont = $('selectorPaleta'); if (!cont) return;
+  cont.querySelector('.opciones').innerHTML = Object.entries(PALETAS).map(([k, p]) =>
+    `<button type="button" data-paleta="${k}" aria-pressed="false" title="Ver las gráficas en: ${p.nombre}">`
+    + `<span class="muestras" aria-hidden="true">${p.categ.slice(0, 4).map(c => `<i style="background:${c}"></i>`).join('')}</span>${p.nombre}</button>`).join('');
+  cont.addEventListener('click', e => { const b = e.target.closest('button[data-paleta]'); if (b) aplicarPaleta(b.dataset.paleta, true); });
+  aplicarPaleta(leerPaleta(), false);
+})();
 const EX = {a:'categoria1', b:'decada', selA:[], selB:[], top:12, medida:'col', vista:'lineas',
             filtros:true, termMapa:null, R:null, turno:0, bloque:null,
             dentroCampo:'', dentroK:'', dentroNombre:''};   // «Acotar a»: un término de un tercer campo
