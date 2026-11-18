@@ -427,7 +427,7 @@ const hitos = [
   margin: 0;
   font-family: var(--fuenteSerif);
   font-style: italic;
-  font-size: clamp(30px, 4.2vw, 50px);
+  font-size: clamp(24px, 3vw, 38px);
   line-height: 0.93;
   color: var(--oro);
 }
@@ -436,7 +436,7 @@ const hitos = [
   margin: 0;
   font-family: var(--fuenteSerif);
   font-weight: 400;
-  font-size: clamp(64px, 9vw, 112px);
+  font-size: clamp(52px, 6.5vw, 84px);
   line-height: 0.93;
   color: var(--texto);
 }
@@ -445,7 +445,7 @@ const hitos = [
   margin: 0;
   max-width: 700px;
   font-family: var(--fuenteSerif);
-  font-size: clamp(19px, 1.8vw, 25px);
+  font-size: clamp(16px, 1.4vw, 20px);
   line-height: 1.5;
   color: var(--texto);
 }
@@ -475,7 +475,7 @@ const hitos = [
 
   .valor {
     font-family: var(--fuenteSerif);
-    font-size: clamp(32px, 3.1vw, 44px);
+    font-size: clamp(26px, 2.4vw, 34px);
     line-height: 1.05;
     color: var(--texto);
   }
@@ -531,11 +531,11 @@ const hitos = [
   margin: 0;
   font-family: var(--fuenteSerif);
   font-weight: 400;
-  font-size: clamp(32px, 3.1vw, 44px);
+  font-size: clamp(26px, 2.4vw, 34px);
   color: var(--oro);
 
   &.pequeno {
-    font-size: clamp(28px, 2.4vw, 34px);
+    font-size: clamp(22px, 2vw, 28px);
   }
 }
 
@@ -702,7 +702,7 @@ const hitos = [
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(38px, 3.6vw, 52px);
+    font-size: clamp(32px, 2.9vw, 42px);
     line-height: 1;
     color: var(--tinta);
   }
@@ -927,7 +927,7 @@ const hitos = [
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(36px, 3.4vw, 48px);
+    font-size: clamp(28px, 2.6vw, 38px);
     line-height: 1.05;
     color: var(--texto);
   }

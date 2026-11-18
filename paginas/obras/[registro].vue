@@ -627,7 +627,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 0 auto;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.4;
 }
 
@@ -653,7 +653,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
   h1 {
     margin-bottom: 0;
-    font-size: clamp(24px, 2.2vw, 30px);
+    font-size: clamp(21px, 1.8vw, 25px);
     line-height: 1.1;
     margin-bottom: 0.25em;
   }

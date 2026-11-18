@@ -376,7 +376,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   margin: 0;
   font-family: var(--fuenteSerif);
   font-weight: 400;
-  font-size: clamp(24px, 2.2vw, 32px);
+  font-size: clamp(21px, 1.9vw, 27px);
   line-height: 1.05;
 
   a:link,
@@ -421,7 +421,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   }
 
   .numeroConteo {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--ocre);
   }
@@ -435,7 +435,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 .tarjetaTema .descripcion,
 .tarjetaTema .descripcion p {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.65;
   color: var(--textoCuerpo);
 }

@@ -83,7 +83,7 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(28px, 2.6vw, 36px);
+    font-size: clamp(24px, 2.2vw, 30px);
     line-height: 1.05;
     color: var(--tinta);
   }

@@ -247,7 +247,7 @@ main {
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(30px, 3vw, 44px);
+    font-size: clamp(24px, 2.3vw, 34px);
     line-height: 1.05;
     color: var(--oro);
   }
@@ -256,12 +256,12 @@ main {
     margin: 0 0 22px;
     max-width: 940px;
     font-family: var(--fuenteSerif);
-    font-size: clamp(17px, 1.4vw, 19px);
+    font-size: clamp(15px, 1.2vw, 17px);
     line-height: 1.55;
     color: #d8c9b2;
 
     &.grande {
-      font-size: clamp(18px, 1.6vw, 21px);
+      font-size: clamp(16px, 1.35vw, 18px);
       line-height: 1.5;
     }
   }
@@ -269,7 +269,7 @@ main {
   .textoSuave {
     margin: 0;
     max-width: 940px;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.65;
     color: #d8c9b2;
   }
@@ -278,13 +278,13 @@ main {
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(26px, 2.4vw, 32px);
+    font-size: clamp(22px, 2vw, 27px);
     color: var(--oro);
   }
 
   .nota {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--sobreOscuroSuave);
   }
 
@@ -297,7 +297,7 @@ main {
 
     p {
       margin: 0;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.65;
       color: var(--textoCuerpo);
     }
@@ -322,7 +322,7 @@ main {
     padding: 0 24px;
     border-radius: 10px;
     font-family: var(--fuenteSans);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     box-sizing: border-box;
     transition:
