@@ -100,15 +100,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a,
-a:link {
+// Enlaces generales. :where() les quita peso: los estilos propios de botones y etiquetas siempre ganan
+// (antes «a:link:hover» les cambiaba el color del texto al pasar el mouse).
+:where(a),
+:where(a:link) {
   text-decoration: none;
   color: var(--dolor);
   transition: color 0.2s ease-out;
+}
 
-  &:hover {
-    color: var(--rojoOxido);
-  }
+:where(a:link):hover {
+  color: var(--rojoOxido);
 }
 
 ::selection {

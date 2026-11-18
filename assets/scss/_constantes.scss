@@ -124,7 +124,10 @@ $verdeEsmeralda: $tinta;
     color: var(--etiqueta);
   }
 
+  // :link:hover y :visited:hover le ganan a la regla general de enlaces (a:link:hover) del sitio.
   &:hover,
+  &:link:hover,
+  &:visited:hover,
   &:focus-visible {
     background-color: var(--etiqueta);
     border-color: var(--etiqueta);

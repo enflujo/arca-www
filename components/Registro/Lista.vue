@@ -67,7 +67,9 @@ const url = (elemento) => {
       color: var(--ocreOscuro);
     }
 
-    &:hover {
+    &:hover,
+    &:link:hover,
+    &:visited:hover {
       background-color: var(--ocre);
       color: var(--papel);
     }
