@@ -17,10 +17,17 @@ defineProps<Props>();
       <p class="contenido singular">{{ datos }}</p>
     </template>
 
-    <template v-else-if="datos">
-      <NuxtLink :to="`/${ruta}/${datos.slug}`" class="contenido singular">
+    <!-- Valor enlazado: etiqueta, igual que en los campos de lista. -->
+    <div v-else-if="datos" class="contenido">
+      <NuxtLink :to="`/${ruta}/${datos.slug}`" class="etiqueta">
         {{ datos.nombre }}
       </NuxtLink>
-    </template>
+    </div>
   </section>
 </template>
+
+<style lang="scss" scoped>
+.etiqueta {
+  @include etiquetaMeta;
+}
+</style>

@@ -102,7 +102,7 @@ const repositorios = [
   .descripcion {
     grid-column: 1 / -1;
     font-size: 15.5px;
-    color: #8a6a45;
+    color: #64492b;
   }
 
   .repo {

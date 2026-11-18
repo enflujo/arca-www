@@ -78,6 +78,7 @@ onUnmounted(() => {
     </nav>
 
     <BuscadorBoton />
+    <BotonContraste />
 
     <button
       type="button"

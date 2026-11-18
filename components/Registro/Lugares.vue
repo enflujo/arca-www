@@ -13,19 +13,30 @@ defineProps<Props>();
 <template>
   <section v-if="datos && datos.procesado.length" class="seccion">
     <h3>{{ titulo }}</h3>
-    <p class="singular">
-      <span v-for="(lugar, i) in datos.procesado" :key="`ubicacion${lugar.url}`">
-        <span v-if="i > 0" class="separador">|</span>
-
-        <NuxtLink :to="lugar.url"> {{ lugar.nombre }} </NuxtLink>
-      </span>
+    <!-- Lugar › ciudad › país, cada uno como etiqueta enlazada. -->
+    <p class="contenido lugares">
+      <template v-for="(lugar, i) in datos.procesado" :key="`ubicacion${lugar.url}`">
+        <span v-if="i > 0" class="separador" aria-hidden="true">›</span>
+        <NuxtLink :to="lugar.url" class="etiqueta">{{ lugar.nombre }}</NuxtLink>
+      </template>
     </p>
-    <!-- El mapa de la obra va ahora debajo de la imagen (components/Registro/MapaObra.vue). -->
+    <!-- El mapa de la obra va debajo de la imagen (components/Registro/MapaObra.vue). -->
   </section>
 </template>
 
 <style lang="scss" scoped>
+.lugares {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 5px;
+}
+
 .separador {
-  padding: 0 0.3em;
+  color: var(--carmin);
+}
+
+.etiqueta {
+  @include etiquetaMeta;
 }
 </style>

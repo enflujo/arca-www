@@ -201,7 +201,7 @@ const coincidencias = computed(() => filtradas.value.reduce((suma, s) => suma + 
     font-family: var(--fuenteSans);
     font-size: 13px;
     font-weight: 600;
-    color: #8a6a45;
+    color: #64492b;
     vertical-align: middle;
   }
 }
@@ -209,7 +209,7 @@ const coincidencias = computed(() => filtradas.value.reduce((suma, s) => suma + 
 .sinResultados {
   padding: 16px 0;
   font-size: 14px !important;
-  color: #8a6a45 !important;
+  color: #64492b !important;
 }
 
 .soloLectores {

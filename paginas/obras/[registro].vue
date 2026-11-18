@@ -518,21 +518,21 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
             <div v-if="obra.gesto1" class="subSeccion">
               <h4>Personaje principal</h4>
-              <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="contenido singular">
+              <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="etiquetaGesto">
                 {{ obra.gesto1.nombre }}
               </NuxtLink>
             </div>
 
             <div v-if="obra.gesto2" class="subSeccion">
               <h4>Personaje secundario</h4>
-              <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="contenido singular">
+              <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="etiquetaGesto">
                 {{ obra.gesto2.nombre }}
               </NuxtLink>
             </div>
 
             <div v-if="obra.gesto3" class="subSeccion">
               <h4>Otros personajes</h4>
-              <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="contenido singular">
+              <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="etiquetaGesto">
                 {{ obra.gesto3.nombre }}
               </NuxtLink>
             </div>
@@ -706,6 +706,11 @@ h2 {
   & ~ .subSeccion {
     padding-left: 1em;
   }
+}
+
+.etiquetaGesto {
+  @include etiquetaMeta;
+  margin-top: 4px;
 }
 
 .subSeccion {

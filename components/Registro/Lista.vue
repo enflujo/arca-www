@@ -48,30 +48,9 @@ const url = (elemento) => {
   }
 }
 
+// Etiqueta roja enlazada (mixin etiquetaMeta en assets/scss/_constantes.scss).
 .pildora {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 1px 10px;
-  border: 1px solid var(--borde);
-  border-radius: 999px;
-  background-color: var(--papel);
-  font-size: 0.9em;
-  line-height: 1.2;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
-
-  &:link,
-  &:visited {
-    color: var(--tinta);
-  }
-
-  &:hover {
-    border-color: var(--ocre);
-    color: var(--ocre);
-  }
+  @include etiquetaMeta;
 }
 
 // Clasificación: la ruta tema › subtema resaltada.

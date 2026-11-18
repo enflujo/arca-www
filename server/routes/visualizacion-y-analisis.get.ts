@@ -62,6 +62,17 @@ const estilos = `
 @media (min-width:992px){#arcaEncabezado{padding:0 2.5em}#arcaEncabezado nav{display:flex}#arcaEncabezado .nombreProyecto{margin-right:0}#arcaEncabezado .botonMenuMovil,#arcaMenuMovil{display:none!important}#arcaEncabezado .buscarSitio{width:230px;padding:0 16px 0 18px}#arcaEncabezado .buscarSitio span{display:block}}
 @media (min-width:1200px){#arcaEncabezado{padding:0 3.5em;gap:1.75em}#arcaEncabezado .lema{display:block}#arcaEncabezado nav{justify-content:center;gap:2em}}
 html,body{font-size:14px!important}
+#arcaEncabezado .botonContraste{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;width:40px;padding:0;border:1px solid rgba(243,233,216,.28);border-radius:999px;background:transparent;color:#f3e9d8;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:.85em;cursor:pointer}
+#arcaEncabezado .botonContraste:hover{border-color:#d9ac4f}
+#arcaEncabezado .botonContraste[aria-pressed="true"]{background:#d9ac4f;border-color:#d9ac4f;color:#1c1512}
+#arcaEncabezado .botonContraste svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+#arcaEncabezado .botonContraste svg path{fill:currentColor;stroke:none}
+#arcaEncabezado .botonContraste span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (min-width:1200px){#arcaEncabezado .botonContraste{width:auto;padding:0 12px}#arcaEncabezado .botonContraste span{position:static;width:auto;height:auto;clip:auto}}
+/* Alto contraste: textos y bordes más oscuros en los paneles claros, y gráficas más contrastadas y saturadas */
+html.altoContraste{--panel:#ffffff;--panel2:#efe3c9;--linea:#6f5d47;--texto:#14100c;--tenue:#2f2419;--oro:#5e3f06;--carmin:#8a1530;--azurita:#1f4a8a;--verdigris:#145a48}
+html.altoContraste section.bloque svg,html.altoContraste .explorador svg,html.altoContraste .detalle svg{filter:contrast(1.35) saturate(1.3)}
+html.altoContraste .bloque .lectura,html.altoContraste .bloque .nota{color:var(--texto)}
 .bloque h2{font-size:1.4rem!important}
 .pestanas button{font-size:1.05rem!important;padding:8px 18px!important}
 .panel-filtros h3{font-size:1.2rem!important}
@@ -91,6 +102,8 @@ body.cargando{overflow:auto!important}
 // Las consultas GraphQL de la visualización pasan por la copia del servidor (/datos-viz/graphql), que
 // responde al instante cuando ya tiene los datos. Si algo falla, se repite directo contra el API.
 const copiaServidor = `<script>
+try{var q=new URLSearchParams(location.search).get('contraste');if(q==='alto'||q==='normal')localStorage.setItem('arca.contraste',q);if((q||localStorage.getItem('arca.contraste'))==='alto')document.documentElement.classList.add('altoContraste')}catch(e){}
+document.addEventListener('DOMContentLoaded',function(){var b=document.querySelector('#arcaEncabezado .botonContraste');if(b)b.setAttribute('aria-pressed',document.documentElement.classList.contains('altoContraste'))});
 (function(){
   var API='https://apiarca.uniandes.edu.co/graphql', COPIA='/datos-viz/graphql', original=window.fetch.bind(window);
   window.fetch=function(recurso, opciones){
@@ -111,7 +124,7 @@ const menu = `<header id="arcaEncabezado"><a class="nombreProyecto" href="/" ari
   }
 ).join(
   ''
-)}</nav><a class="buscarSitio" href="/?buscar=" aria-label="Buscar obras, autores, temas…"><span>Buscar obras, autores…</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a><button type="button" class="botonMenuMovil" aria-expanded="false" aria-controls="arcaMenuMovil" aria-label="Abrir menú" onclick="var m=document.getElementById('arcaMenuMovil'),a=m.hidden;m.hidden=!a;this.classList.toggle('abierto',a);this.setAttribute('aria-expanded',a);this.setAttribute('aria-label',a?'Cerrar menú':'Abrir menú')"><span></span><span></span><span></span></button></header><nav id="arcaMenuMovil" hidden aria-label="Menú del sitio">${MENU_PRINCIPAL.map((e) => `<a href="${e.ruta}"${e.seccion === 'visualizacion' ? ' class="activo" aria-current="page"' : ''}>${escapar(e.titulo)}</a>`).join('')}</nav>`;
+)}</nav><a class="buscarSitio" href="/?buscar=" aria-label="Buscar obras, autores, temas…"><span>Buscar obras, autores…</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a><button type="button" class="botonContraste" aria-pressed="false" title="Alto contraste" onclick="var a=!document.documentElement.classList.contains('altoContraste');document.documentElement.classList.toggle('altoContraste',a);this.setAttribute('aria-pressed',a);try{localStorage.setItem('arca.contraste',a?'alto':'normal')}catch(e){}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z"/></svg><span>Contraste</span></button><button type="button" class="botonMenuMovil" aria-expanded="false" aria-controls="arcaMenuMovil" aria-label="Abrir menú" onclick="var m=document.getElementById('arcaMenuMovil'),a=m.hidden;m.hidden=!a;this.classList.toggle('abierto',a);this.setAttribute('aria-expanded',a);this.setAttribute('aria-label',a?'Cerrar menú':'Abrir menú')"><span></span><span></span><span></span></button></header><nav id="arcaMenuMovil" hidden aria-label="Menú del sitio">${MENU_PRINCIPAL.map((e) => `<a href="${e.ruta}"${e.seccion === 'visualizacion' ? ' class="activo" aria-current="page"' : ''}>${escapar(e.titulo)}</a>`).join('')}</nav>`;
 
 // Enlace directo a una pestaña: /visualizacion-y-analisis?pestana=gestos (general | analisis | gestos).
 // Espera a que el tablero termine de cargar las obras y abre la pestaña pedida.

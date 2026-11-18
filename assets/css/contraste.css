@@ -1,0 +1,36 @@
+/*
+ * Modo de alto contraste (botón «◐ Contraste» del encabezado).
+ * Se activa con la clase `altoContraste` en <html> y se recuerda en localStorage ('arca.contraste').
+ * Oscurece textos y bordes sobre fondos claros, aclara textos sobre fondos oscuros y subraya los enlaces de
+ * los párrafos. La paleta normal ya cumple WCAG AA; este modo apunta a AAA (7:1) para quien lo necesite.
+ */
+html.altoContraste {
+  --pergamino: #fffdf8;
+  --papel: #ffffff;
+  --arena: #efe3c9;
+  --borde: #8c7a60;
+  --bordeFuerte: #4a3b30;
+  --textoSuave: #241a13;
+  --textoCuerpo: #1c1512;
+  --ocre: #4f3408;
+  --ocreOscuro: #3b2706;
+  --oro: #f2cd75;
+  --sobreOscuro: #fffaf0;
+  --sobreOscuroSuave: #efe4d0;
+  --carmin: #6e1a10;
+  --carminFondo: #fff4f0;
+  --carminBorde: #6e1a10;
+}
+
+html.altoContraste p a:not([class]),
+html.altoContraste .textoCMS a,
+html.altoContraste .referencia a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+html.altoContraste :focus-visible {
+  outline: 3px solid #f2cd75 !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #1c1512;
+}

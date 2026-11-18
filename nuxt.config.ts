@@ -30,9 +30,17 @@ export default defineNuxtConfig({
           'data-website-id': 'bc6c51bf-8938-47db-9a3a-228fa9d14ff3',
           'data-domains': 'arca.uniandes.edu.co',
         },
+        {
+          // Aplica el modo de alto contraste antes de pintar la página, para que no parpadee.
+          innerHTML:
+            "try{var q=new URLSearchParams(location.search).get('contraste');if(q==='alto'||q==='normal')localStorage.setItem('arca.contraste',q);if((q||localStorage.getItem('arca.contraste'))==='alto')document.documentElement.classList.add('altoContraste')}catch(e){}",
+        },
       ],
     },
   },
+
+  // Modo de alto contraste (botón «◐ Contraste» del encabezado).
+  css: ['~/assets/css/contraste.css'],
 
   dir: {
     pages: 'paginas',

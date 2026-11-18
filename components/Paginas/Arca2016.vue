@@ -131,7 +131,7 @@ const cifras = [
 
   .textoCifra {
     font-size: 14px;
-    color: #8a6a45;
+    color: #64492b;
   }
 }
 

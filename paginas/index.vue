@@ -338,7 +338,7 @@ const hitos = [
   --linea: #3a2e27;
   --lineaFuerte: #5a4a3e;
   --panelTexto: var(--tinta);
-  --panelTenue: #8a6a45;
+  --panelTenue: #64492b;
   --panelLinea: #e0d3b8;
   --chipLinea: #d6c3a0;
   --margen: clamp(20px, 4vw, 56px);

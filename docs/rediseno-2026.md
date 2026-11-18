@@ -208,3 +208,18 @@ existían antes del rediseño.
 - **Sitio más compacto:** letra base de 15 px, encabezado de 64 px, títulos, paneles, menú lateral (270 px),
   ficha de obra (14 px) y pie de página más pequeños.
 - **Pie de página:** nuevo aviso bajo el correo sobre el origen de la información de los registros.
+
+## 8. Accesibilidad (noviembre de 2026)
+
+- **Paleta con más contraste:** los textos secundarios y el ocre sobre fondos claros se oscurecieron
+  (`--textoSuave` #4a382b, `--textoCuerpo` #3b2d24, `--ocre` #74500f). Todas las combinaciones de texto
+  pequeño sobre pergamino, papel y arena cumplen WCAG AA (4,5:1) o más.
+- **Modo de alto contraste:** botón «◐ Contraste» en el encabezado de todas las páginas, también en
+  «Visualización y análisis». Pone fondo blanco, oscurece textos y bordes, subraya enlaces de los
+  párrafos y, en la visualización, aumenta el contraste y la saturación de las gráficas. La preferencia
+  se guarda en `localStorage` (`arca.contraste`) y se puede activar con `?contraste=alto` en la URL.
+  Estilos en `assets/css/contraste.css`; botón en `components/BotonContraste.vue`.
+- **Etiquetas de metadatos:** en la ficha de obra todos los valores enlazados (lugares, campos de una
+  sola opción, listas y gestos) se muestran como etiquetas rojas (`--carmin` #8e2a1e, 7,8:1 sobre papel),
+  para que se note que se puede hacer clic. El estilo es el mixin `etiquetaMeta`
+  (`assets/scss/_constantes.scss`). La ruta de clasificación conserva su estilo propio.

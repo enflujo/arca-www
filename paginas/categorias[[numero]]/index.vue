@@ -343,7 +343,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 
 .tarjetaTema {
   transition: all 0.3s ease-in-out;
-  padding: clamp(16px, 2vw, 24px);
+  padding: clamp(14px, 1.6vw, 20px);
   display: flex;
   flex-direction: column;
   gap: 16px 26px;
@@ -428,7 +428,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 
   .textoConteo {
     font-size: 14px;
-    color: #8a6a45;
+    color: #64492b;
   }
 }
 
@@ -445,14 +445,14 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 44px;
-  padding: 0 18px 0 14px;
+  min-height: 36px;
+  padding: 0 16px 0 12px;
   border: 1px solid #d6c3a0;
   border-radius: 999px;
   background: transparent;
   color: var(--tinta);
   font-family: var(--fuenteSans);
-  font-size: 14.5px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
 
@@ -461,7 +461,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   }
 
   svg {
-    width: 14px;
+    width: 13px;
     height: 14px;
     fill: none;
     stroke: var(--ocre);
@@ -555,11 +555,11 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   }
 
   .imagenTema {
-    width: clamp(170px, 17vw, 220px);
+    width: clamp(140px, 13vw, 180px);
   }
 
   .infoTema {
-    padding: 12px 8px 12px 0;
+    padding: 6px 8px 6px 0;
   }
 }
 </style>
