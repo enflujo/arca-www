@@ -33,7 +33,7 @@ defineProps<Props>();
 }
 
 .separador {
-  color: var(--carmin);
+  color: var(--etiqueta);
 }
 
 .etiqueta {

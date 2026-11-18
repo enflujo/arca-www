@@ -220,6 +220,6 @@ existían antes del rediseño.
   se guarda en `localStorage` (`arca.contraste`) y se puede activar con `?contraste=alto` en la URL.
   Estilos en `assets/css/contraste.css`; botón en `components/BotonContraste.vue`.
 - **Etiquetas de metadatos:** en la ficha de obra todos los valores enlazados (lugares, campos de una
-  sola opción, listas y gestos) se muestran como etiquetas rojas (`--carmin` #8e2a1e, 7,8:1 sobre papel),
+  sola opción, listas y gestos) se muestran como etiquetas azul azurita (`--etiqueta` #2f5288, 7,3:1 sobre papel; el azul de «Datos de análisis» en la visualización),
   para que se note que se puede hacer clic. El estilo es el mixin `etiquetaMeta`
   (`assets/scss/_constantes.scss`). La ruta de clasificación conserva su estilo propio.

@@ -17,9 +17,9 @@ html.altoContraste {
   --oro: #f2cd75;
   --sobreOscuro: #fffaf0;
   --sobreOscuroSuave: #efe4d0;
-  --carmin: #6e1a10;
-  --carminFondo: #fff4f0;
-  --carminBorde: #6e1a10;
+  --etiqueta: #1d3a66;
+  --etiquetaFondo: #f2f6fb;
+  --etiquetaBorde: #1d3a66;
 }
 
 html.altoContraste p a:not([class]),
