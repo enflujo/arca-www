@@ -33,13 +33,13 @@ const metadatos = [
 const estilos = `
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style id="arca-menu">
-#arcaEncabezado{height:${ALTO}px;position:fixed;top:0;left:0;width:100%;box-sizing:border-box;padding:0 1em;background-color:#1c1512;border-bottom:1px solid rgba(243,233,216,.16);color:#f3e9d8;z-index:44;display:flex;align-items:center;gap:1.5em;font-size:16px;line-height:1.5}
+#arcaEncabezado{height:${ALTO}px;position:fixed;top:0;left:0;width:100%;box-sizing:border-box;padding:0 1em;background-color:#1c1512;border-bottom:1px solid rgba(243,233,216,.16);color:#f3e9d8;z-index:44;display:flex;align-items:center;gap:1.5em;font-size:14px;line-height:1.5}
 #arcaEncabezado a{text-decoration:none}
 #arcaEncabezado .nombreProyecto{display:flex;align-items:baseline;gap:.6em;flex-shrink:0;line-height:1;color:#f3e9d8}
 #arcaEncabezado .nombreProyecto:hover{opacity:.85}
-#arcaEncabezado .marca{font-family:'IM Fell English',Georgia,serif;font-size:2em;letter-spacing:.04em}
-#arcaEncabezado .lema{display:none;font-family:'IM Fell English',Georgia,serif;font-style:italic;font-size:1.05em;color:#d9ac4f}
-#arcaEncabezado nav{display:flex;align-items:center;gap:1.6em;flex:1 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:.92em;font-weight:500}
+#arcaEncabezado .marca{font-family:'IM Fell English',Georgia,serif;font-size:1.8em;letter-spacing:.04em}
+#arcaEncabezado .lema{display:none;font-family:'IM Fell English',Georgia,serif;font-style:italic;font-size:1em;color:#d9ac4f}
+#arcaEncabezado nav{display:none;align-items:center;gap:1.6em;flex:1 1 auto;min-width:0;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:.88em;font-weight:500}
 #arcaEncabezado nav::-webkit-scrollbar{display:none}
 #arcaEncabezado nav a{color:#f3e9d8;white-space:nowrap;padding:.35em 0}
 #arcaEncabezado nav a:hover,#arcaEncabezado nav a.activo{color:#d9ac4f}
@@ -47,9 +47,26 @@ const estilos = `
 #arcaEncabezado .buscarSitio:hover{border-color:#d9ac4f;color:#f3e9d8}
 #arcaEncabezado .buscarSitio span{display:none;white-space:nowrap}
 #arcaEncabezado .buscarSitio svg{width:16px;height:16px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-@media (max-width:767px){#arcaEncabezado{gap:1em}#arcaEncabezado .marca{font-size:1.7em}}
-@media (min-width:992px){#arcaEncabezado{padding:0 2.5em}#arcaEncabezado .buscarSitio{width:230px;padding:0 16px 0 18px}#arcaEncabezado .buscarSitio span{display:block}}
+#arcaEncabezado .botonMenuMovil{flex-shrink:0;width:40px;height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid rgba(243,233,216,.28);border-radius:999px;background:transparent;cursor:pointer;padding:0}
+#arcaEncabezado .botonMenuMovil span{display:block;width:16px;height:2px;border-radius:2px;background:#f3e9d8;transition:transform .2s,opacity .2s}
+#arcaEncabezado .botonMenuMovil.abierto{border-color:#d9ac4f}
+#arcaEncabezado .botonMenuMovil.abierto span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#arcaEncabezado .botonMenuMovil.abierto span:nth-child(2){opacity:0}
+#arcaEncabezado .botonMenuMovil.abierto span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#arcaMenuMovil{position:fixed;top:${ALTO}px;left:0;right:0;bottom:0;z-index:60;overflow-y:auto;padding:12px 20px 40px;background:#1c1512;font-family:'Manrope','Helvetica Neue',Arial,sans-serif}
+#arcaMenuMovil[hidden]{display:none}
+#arcaMenuMovil a{display:block;padding:14px 4px;border-bottom:1px solid #3a2e27;font-family:'IM Fell English',Georgia,serif;font-size:22px;color:#f3e9d8;text-decoration:none}
+#arcaMenuMovil a.activo{color:#d9ac4f}
+#arcaEncabezado .nombreProyecto{margin-right:auto}
+@media (max-width:767px){#arcaEncabezado{gap:.7em}#arcaEncabezado .marca{font-size:1.6em}}
+@media (min-width:992px){#arcaEncabezado{padding:0 2.5em}#arcaEncabezado nav{display:flex}#arcaEncabezado .nombreProyecto{margin-right:0}#arcaEncabezado .botonMenuMovil,#arcaMenuMovil{display:none!important}#arcaEncabezado .buscarSitio{width:230px;padding:0 16px 0 18px}#arcaEncabezado .buscarSitio span{display:block}}
 @media (min-width:1200px){#arcaEncabezado{padding:0 3.5em;gap:1.75em}#arcaEncabezado .lema{display:block}#arcaEncabezado nav{justify-content:center;gap:2em}}
+html,body{font-size:14px!important}
+.bloque h2{font-size:1.4rem!important}
+.pestanas button{font-size:1.05rem!important;padding:8px 18px!important}
+.panel-filtros h3{font-size:1.2rem!important}
+.pf-toggle .titulo{font-size:1.05rem!important}
+.metrica .valor{font-size:clamp(1.6rem,3vw,2.3rem)!important}
 body{padding-top:${ALTO}px}
 header.cabeza{top:${ALTO}px}
 /* «ARCA Arte Colonial Americano» ya está en la barra del sitio: se oculta a la vista, no a los lectores de pantalla */
@@ -94,7 +111,7 @@ const menu = `<header id="arcaEncabezado"><a class="nombreProyecto" href="/" ari
   }
 ).join(
   ''
-)}</nav><a class="buscarSitio" href="/?buscar=" aria-label="Buscar obras, autores, temas…"><span>Buscar obras, autores…</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a></header>`;
+)}</nav><a class="buscarSitio" href="/?buscar=" aria-label="Buscar obras, autores, temas…"><span>Buscar obras, autores…</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a><button type="button" class="botonMenuMovil" aria-expanded="false" aria-controls="arcaMenuMovil" aria-label="Abrir menú" onclick="var m=document.getElementById('arcaMenuMovil'),a=m.hidden;m.hidden=!a;this.classList.toggle('abierto',a);this.setAttribute('aria-expanded',a);this.setAttribute('aria-label',a?'Cerrar menú':'Abrir menú')"><span></span><span></span><span></span></button></header><nav id="arcaMenuMovil" hidden aria-label="Menú del sitio">${MENU_PRINCIPAL.map((e) => `<a href="${e.ruta}"${e.seccion === 'visualizacion' ? ' class="activo" aria-current="page"' : ''}>${escapar(e.titulo)}</a>`).join('')}</nav>`;
 
 // Enlace directo a una pestaña: /visualizacion-y-analisis?pestana=gestos (general | analisis | gestos).
 // Espera a que el tablero termine de cargar las obras y abre la pestaña pedida.
