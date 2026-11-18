@@ -309,7 +309,7 @@ main {
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #64492b;
+    color: #2b2018;
   }
 
   .botonOcre,
@@ -416,7 +416,7 @@ main {
     background-color: var(--arena);
     font-size: 13px;
     font-weight: 600;
-    color: #64492b;
+    color: #2b2018;
   }
 
   .creditoImagen {

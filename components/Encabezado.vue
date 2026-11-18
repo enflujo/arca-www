@@ -188,8 +188,8 @@ onUnmounted(() => {
   flex: 1 1 auto;
   min-width: 0;
   font-family: var(--fuenteSans);
-  font-size: 0.88em;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
 
   a,
   a:link {
@@ -373,12 +373,29 @@ onUnmounted(() => {
     gap: 1.75em;
   }
 
+  #menuPrincipal {
+    justify-content: center;
+  }
+}
+
+// Entre 992 y 1439 px el menú (15 px) va más junto; el lema aparece desde 1440 px.
+@media (min-width: $minPantalla) and (max-width: 1439px) {
+  #encabezado {
+    gap: 1.2em;
+  }
+
+  #menuPrincipal {
+    gap: 1.1em;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1440px) {
   .lema {
     display: block;
   }
 
   #menuPrincipal {
-    justify-content: center;
     gap: 2em;
   }
 }

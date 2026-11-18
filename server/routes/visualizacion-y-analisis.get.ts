@@ -39,11 +39,11 @@ const estilos = `
 #arcaEncabezado .nombreProyecto:hover{opacity:.85}
 #arcaEncabezado .marca{font-family:'IM Fell English',Georgia,serif;font-size:1.8em;letter-spacing:.04em}
 #arcaEncabezado .lema{display:none;font-family:'IM Fell English',Georgia,serif;font-style:italic;font-size:1em;color:#d9ac4f}
-#arcaEncabezado nav{display:none;align-items:center;gap:1.6em;flex:1 1 auto;min-width:0;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:.88em;font-weight:500}
+#arcaEncabezado nav{display:none;align-items:center;gap:1.6em;flex:1 1 auto;min-width:0;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:600}
 #arcaEncabezado nav::-webkit-scrollbar{display:none}
 #arcaEncabezado nav a{color:#f3e9d8;white-space:nowrap;padding:.35em 0}
 #arcaEncabezado nav a:hover,#arcaEncabezado nav a.activo{color:#d9ac4f}
-#arcaEncabezado .buscarSitio{margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:.8em;height:40px;width:40px;padding:0 12px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(243,233,216,.28);background:rgba(28,21,18,.55);color:#bfae96;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:.85em;transition:border-color .2s ease,color .2s ease}
+#arcaEncabezado .buscarSitio{margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:.8em;height:40px;width:40px;padding:0 12px;box-sizing:border-box;border-radius:999px;border:1px solid rgba(243,233,216,.28);background:rgba(28,21,18,.55);color:#bfae96;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:13.5px;transition:border-color .2s ease,color .2s ease}
 #arcaEncabezado .buscarSitio:hover{border-color:#d9ac4f;color:#f3e9d8}
 #arcaEncabezado .buscarSitio span{display:none;white-space:nowrap}
 #arcaEncabezado .buscarSitio svg{width:16px;height:16px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
@@ -59,16 +59,18 @@ const estilos = `
 #arcaMenuMovil a.activo{color:#d9ac4f}
 #arcaEncabezado .nombreProyecto{margin-right:auto}
 @media (max-width:767px){#arcaEncabezado{gap:.7em}#arcaEncabezado .marca{font-size:1.6em}}
-@media (min-width:992px){#arcaEncabezado{padding:0 2.5em}#arcaEncabezado nav{display:flex}#arcaEncabezado .nombreProyecto{margin-right:0}#arcaEncabezado .botonMenuMovil,#arcaMenuMovil{display:none!important}#arcaEncabezado .buscarSitio{width:230px;padding:0 16px 0 18px}#arcaEncabezado .buscarSitio span{display:block}}
-@media (min-width:1200px){#arcaEncabezado{padding:0 3.5em;gap:1.75em}#arcaEncabezado .lema{display:block}#arcaEncabezado nav{justify-content:center;gap:2em}}
+@media (min-width:992px){#arcaEncabezado{padding:0 2.5em}#arcaEncabezado nav{display:flex}#arcaEncabezado .nombreProyecto{margin-right:0}#arcaEncabezado .botonMenuMovil,#arcaMenuMovil{display:none!important}}
+@media (min-width:992px) and (max-width:1439px){#arcaEncabezado{gap:1.2em}#arcaEncabezado nav{gap:1.1em;font-size:14px}}
+@media (min-width:1200px){#arcaEncabezado{padding:0 3.5em}#arcaEncabezado nav{justify-content:center}#arcaEncabezado .buscarSitio{width:200px;padding:0 16px 0 18px}#arcaEncabezado .buscarSitio span{display:block}}
+@media (min-width:1440px){#arcaEncabezado{gap:1.75em}#arcaEncabezado .lema{display:block}#arcaEncabezado nav{gap:2em}#arcaEncabezado .buscarSitio{width:230px}}
 html,body{font-size:14px!important}
-#arcaEncabezado .botonContraste{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;width:40px;padding:0;border:1px solid rgba(243,233,216,.28);border-radius:999px;background:transparent;color:#f3e9d8;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:.85em;cursor:pointer}
+#arcaEncabezado .botonContraste{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;width:40px;padding:0;border:1px solid rgba(243,233,216,.28);border-radius:999px;background:transparent;color:#f3e9d8;font-family:'Manrope','Helvetica Neue',Arial,sans-serif;font-size:13.5px;cursor:pointer}
 #arcaEncabezado .botonContraste:hover{border-color:#d9ac4f}
 #arcaEncabezado .botonContraste[aria-pressed="true"]{background:#d9ac4f;border-color:#d9ac4f;color:#1c1512}
 #arcaEncabezado .botonContraste svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
 #arcaEncabezado .botonContraste svg path{fill:currentColor;stroke:none}
 #arcaEncabezado .botonContraste span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-@media (min-width:1200px){#arcaEncabezado .botonContraste{width:auto;padding:0 12px}#arcaEncabezado .botonContraste span{position:static;width:auto;height:auto;clip:auto}}
+@media (min-width:1440px){#arcaEncabezado .botonContraste{width:auto;padding:0 12px}#arcaEncabezado .botonContraste span{position:static;width:auto;height:auto;clip:auto}}
 /* Alto contraste: textos y bordes más oscuros en los paneles claros, y gráficas más contrastadas y saturadas */
 html.altoContraste{--panel:#ffffff;--panel2:#efe3c9;--linea:#6f5d47;--texto:#14100c;--tenue:#2f2419;--oro:#5e3f06;--carmin:#8a1530;--azurita:#1f4a8a;--verdigris:#145a48}
 html.altoContraste section.bloque svg,html.altoContraste .explorador svg,html.altoContraste .detalle svg{filter:contrast(1.35) saturate(1.3)}

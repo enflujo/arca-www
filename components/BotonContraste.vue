@@ -46,7 +46,7 @@ function alternar() {
   background: transparent;
   color: var(--sobreOscuro);
   font-family: var(--fuenteSans);
-  font-size: 0.85em;
+  font-size: 13.5px;
   cursor: pointer;
 
   &:hover {
@@ -74,7 +74,7 @@ function alternar() {
 }
 
 // En pantallas pequeñas, solo el ícono.
-@media (max-width: #{$minPantallaGrande - 1px}) {
+@media (max-width: 1439px) {
   .botonContraste {
     width: 40px;
     padding: 0;

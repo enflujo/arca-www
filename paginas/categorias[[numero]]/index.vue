@@ -428,7 +428,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 
   .textoConteo {
     font-size: 14px;
-    color: #64492b;
+    color: #2b2018;
   }
 }
 

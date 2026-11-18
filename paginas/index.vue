@@ -338,7 +338,7 @@ const hitos = [
   --linea: #3a2e27;
   --lineaFuerte: #5a4a3e;
   --panelTexto: var(--tinta);
-  --panelTenue: #64492b;
+  --panelTenue: #2b2018;
   --panelLinea: #e0d3b8;
   --chipLinea: #d6c3a0;
   --margen: clamp(20px, 4vw, 56px);
@@ -541,7 +541,7 @@ const hitos = [
 
 .nota {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--tenue);
 }
 
@@ -568,7 +568,7 @@ const hitos = [
 
   p {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.65;
     color: var(--textoCuerpo);
   }
@@ -617,7 +617,7 @@ const hitos = [
 
   .textoCMS :deep(p) {
     margin: 0 0 1em;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.7;
     color: var(--textoCuerpo);
   }
@@ -709,7 +709,7 @@ const hitos = [
 
   p {
     margin: 0;
-    font-size: 17px;
+    font-size: 14px;
     line-height: 1.6;
     color: var(--panelTenue);
   }
@@ -819,7 +819,7 @@ const hitos = [
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   transition: background-color 0.2s ease;
 
@@ -933,7 +933,7 @@ const hitos = [
   }
 
   .nota {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.6;
     color: var(--suave);
   }
@@ -949,7 +949,7 @@ const hitos = [
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
 
   &:link,
@@ -1008,7 +1008,7 @@ const hitos = [
 }
 
 .hitoTexto {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--tenue);
 }

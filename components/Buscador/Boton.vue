@@ -45,7 +45,7 @@ onMounted(async () => {
   background-color: rgba(28, 21, 18, 0.55);
   color: var(--sobreOscuroSuave);
   font-family: var(--fuenteSans);
-  font-size: 0.85em;
+  font-size: 13.5px;
   cursor: pointer;
   transition:
     border-color 0.2s ease,
@@ -72,14 +72,20 @@ onMounted(async () => {
   stroke-linecap: round;
 }
 
-@media (min-width: $minPantalla) {
+@media (min-width: $minPantallaGrande) {
   #botonBuscar {
-    width: 230px;
+    width: 200px;
     padding: 0 16px 0 18px;
   }
 
   .indicacion {
     display: block;
+  }
+}
+
+@media (min-width: 1440px) {
+  #botonBuscar {
+    width: 230px;
   }
 }
 </style>

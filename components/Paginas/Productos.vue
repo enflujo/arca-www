@@ -98,7 +98,7 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
 
   .autor {
     font-size: 15px;
-    color: #64492b;
+    color: #2b2018;
   }
 
   p {
