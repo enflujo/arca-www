@@ -54,7 +54,10 @@ withDefaults(defineProps<Props>(), { completo: true });
         DOI 10.5281/zenodo.10864546
       </a>
       <p><a href="mailto:jborja@uniandes.edu.co">jborja@uniandes.edu.co</a></p>
-      <p class="aviso">Puede haber información que no es precisa. Si tiene comentarios o precisiones, escríbanos.</p>
+      <p class="aviso">
+        La información de los registros visuales se basa en información que provee las fuentes de las imágenes. Es
+        posible que algunos datos no sean precisos. Si tiene comentarios, escríbanos.
+      </p>
     </div>
 
     <p class="legal">
@@ -72,15 +75,15 @@ withDefaults(defineProps<Props>(), { completo: true });
   background-color: var(--papel);
   color: var(--textoSuave);
   border-top: 1px solid var(--borde);
-  padding: 3em 1.5em 1.5em;
+  padding: 2em 1.5em 1em;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.2em;
-  font-size: 0.9em;
-  line-height: 1.6;
+  gap: 1.4em;
+  font-size: 12.5px;
+  line-height: 1.5;
 
   p {
-    margin: 0 0 0.8em;
+    margin: 0 0 0.6em;
   }
 
   a,
@@ -95,24 +98,24 @@ withDefaults(defineProps<Props>(), { completo: true });
   .marca {
     display: block;
     font-family: var(--fuenteSerif);
-    font-size: 2.4em;
+    font-size: 2.1em;
     line-height: 1;
     color: var(--tinta);
   }
 
   .lema {
     display: block;
-    margin: 0.35em 0 1em;
+    margin: 0.3em 0 0.7em;
     font-family: var(--fuenteSerif);
     font-style: italic;
-    font-size: 1.3em;
+    font-size: 1.15em;
     color: var(--ocre);
   }
 
   .etiqueta {
-    margin: 0 0 1.2em;
+    margin: 0 0 0.8em;
     font-family: var(--fuenteSans);
-    font-size: 0.78em;
+    font-size: 0.8em;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -121,8 +124,8 @@ withDefaults(defineProps<Props>(), { completo: true });
 
   .doi {
     display: inline-block;
-    margin-bottom: 1em;
-    padding: 0.6em 1.1em;
+    margin-bottom: 0.8em;
+    padding: 0.4em 0.9em;
     border: 1px solid var(--borde);
     border-radius: 999px;
     font-weight: 500;
@@ -134,7 +137,7 @@ withDefaults(defineProps<Props>(), { completo: true });
 
   // Un espacio claro entre cada contribución.
   .creditos p {
-    margin: 0 0 1.1em;
+    margin: 0 0 0.8em;
 
     &:last-child {
       margin-bottom: 0;
@@ -176,15 +179,15 @@ withDefaults(defineProps<Props>(), { completo: true });
 @media (min-width: $minTablet) {
   #pie {
     grid-template-columns: 1fr 1fr;
-    padding: 3.5em 2.5em 1.8em;
+    padding: 2.2em 2.5em 1.2em;
   }
 }
 
 @media (min-width: $minPantalla) {
   #pie {
     grid-template-columns: 1fr 1.6fr 1fr;
-    gap: 3em;
-    padding: 3.5em 3.5em 1.8em;
+    gap: 2.2em;
+    padding: 2.2em 3.5em 1.2em;
   }
 }
 </style>

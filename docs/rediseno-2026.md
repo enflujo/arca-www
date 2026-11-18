@@ -186,3 +186,25 @@ existían antes del rediseño.
 - El buscador (ventana que se abre desde el encabezado) conserva el estilo anterior.
 - Revisar en el CMS: el texto «veinticinco mil pinturas» de la página `sobre-arca` y el título
   «BIBLIOGRAFIA GENERAL DE LAS F UENTES» (con un espacio de más) de `bibliografia-y-referencias`.
+
+---
+
+## 7. Ajustes tras la revisión del profesor Jaime Borja (noviembre de 2026)
+
+- **Tres grupos en la Colección:** el menú lateral y la ficha de obra se ordenan en «Datos básicos»,
+  «Datos de análisis» y «Datos de gestos», el mismo orden del panel de filtros de «Visualización y
+  análisis». Los grupos están en `GRUPOS_COLECCION` (`utilidades/menu.ts`): `paginas` son los slugs del
+  menú lateral y `campos` los campos de la ficha. Los campos que no pertenecen a ningún grupo (síntesis,
+  comentario, fuente de la imagen) van al final, bajo «Descripción y fuente».
+- **«Países»** sale del menú lateral porque su contenido está en «Geografía, países y ubicaciones»
+  (`PAGINAS_OCULTAS_MENU`, `TITULOS_MENU`). La página `/paises` sigue existiendo.
+- **Menú en celular y tableta (menos de 992 px):** botón ☰ en el encabezado que abre un panel con las 5
+  secciones y las páginas de la sección actual (`components/Encabezado.vue`; las páginas salen de
+  `composables/menuSeccion.ts`, igual que el menú lateral).
+- **Mapa de la ficha:** más alto (340 px) y con botón de pantalla completa.
+- **Selector de vistas destacado:** franja con la explicación «Este índice se puede ver de dos maneras…» y
+  control segmentado (`components/Vista/FiltrosVistas.vue`).
+- **Vínculos visibles** debajo de las imágenes de ARCA 2016–2022 y de Productos relacionados.
+- **Sitio más compacto:** letra base de 15 px, encabezado de 64 px, títulos, paneles, menú lateral (270 px),
+  ficha de obra (14 px) y pie de página más pequeños.
+- **Pie de página:** nuevo aviso bajo el correo sobre el origen de la información de los registros.

@@ -39,7 +39,7 @@ const url = (elemento) => {
   flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
-  gap: 6px;
+  gap: 4px;
 
   li {
     display: inline-flex;
@@ -51,13 +51,13 @@ const url = (elemento) => {
 .pildora {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 2px 12px;
+  min-height: 24px;
+  padding: 1px 10px;
   border: 1px solid var(--borde);
   border-radius: 999px;
   background-color: var(--papel);
-  font-size: 0.92em;
-  line-height: 1.25;
+  font-size: 0.9em;
+  line-height: 1.2;
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
@@ -76,7 +76,7 @@ const url = (elemento) => {
 
 // Clasificación: la ruta tema › subtema resaltada.
 .jerarquia {
-  gap: 8px 6px;
+  gap: 4px 5px;
 
   .pildora {
     border-color: transparent;
@@ -94,11 +94,11 @@ const url = (elemento) => {
     }
 
     &.principal {
-      min-height: 34px;
-      padding: 2px 16px;
+      min-height: 26px;
+      padding: 1px 12px;
       background-color: var(--ocre);
       font-family: var(--fuenteSerif);
-      font-size: 1.12em;
+      font-size: 1.05em;
       font-weight: 400;
 
       &:link,

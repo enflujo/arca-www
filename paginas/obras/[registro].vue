@@ -15,6 +15,7 @@ import type { BaseRegistro } from '~/tipos/bases';
 import { definirDimsImagen, gql, peticion } from '~/utilidades/ayudas';
 import { recortar, textoPlano, urlImagenPublica } from '~/utilidades/seo';
 import { urlBase } from '~/config/general';
+import { GRUPOS_COLECCION } from '~/utilidades/menu';
 
 const cerebroGeneral = usarGeneral();
 
@@ -380,6 +381,31 @@ const tiposCampos: { [coleccion: string]: { tipo: TiposCampos; coleccion: Nombre
   gestos: { tipo: 'gestos', coleccion: '' },
 };
 
+/**
+ * Campos de la ficha en tres grupos (datos básicos, de análisis y de gestos), igual que el menú lateral y
+ * la visualización. Dentro de cada grupo se respeta el orden del CMS. Los campos que no están en ningún
+ * grupo (síntesis, comentario, fuente…) van al final, sin título. Los separadores del CMS se omiten.
+ */
+const camposAgrupados = computed(() => {
+  const campos = cerebroGeneral.campos.filter((c) => c.campo !== 'separador');
+  const usados = new Set<string>();
+  const lista: { campo: string; titulo: string }[] = [];
+
+  GRUPOS_COLECCION.forEach((grupo) => {
+    const delGrupo = campos.filter((c) => grupo.campos.includes(c.campo));
+    if (!delGrupo.length) return;
+    lista.push({ campo: '__grupo', titulo: grupo.titulo });
+    delGrupo.forEach((c) => {
+      usados.add(c.campo);
+      lista.push(c);
+    });
+  });
+
+  const resto = campos.filter((c) => !usados.has(c.campo));
+  if (resto.length) lista.push({ campo: '__grupo', titulo: 'Descripción y fuente' }, ...resto);
+  return lista as { campo: keyof RegistroObra & '__grupo'; titulo: string }[];
+});
+
 const tipoCampo = (llave: keyof RegistroObra) => {
   if (!tiposCampos[llave]) {
     return;
@@ -453,9 +479,9 @@ const rutaCampo = (llave: keyof RegistroObra) => {
         <div id="registro">{{ obra.registro }}</div>
       </section>
 
-      <template v-for="seccion in cerebroGeneral.campos" :key="`campo-ficha-${seccion.campo}`">
-        <template v-if="seccion.campo === 'separador'">
-          <span class="separador"></span>
+      <template v-for="(seccion, i) in camposAgrupados" :key="`campo-ficha-${seccion.campo}-${i}`">
+        <template v-if="seccion.campo === '__grupo'">
+          <h2 class="tituloGrupoFicha">{{ seccion.titulo }}</h2>
         </template>
 
         <template v-else-if="tipoCampo(seccion.campo) === 'lugar'">
@@ -525,7 +551,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 <style lang="scss" scoped>
 #contenedorObra {
   display: flex;
-  margin: 2em auto;
+  margin: 1.5em auto;
   width: 85vw;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -546,6 +572,8 @@ const rutaCampo = (llave: keyof RegistroObra) => {
   &.grande {
     flex-basis: 100%;
   }
+
+  gap: 16px;
 
   // El mapa se alinea con la imagen (a la derecha de los botones de zoom, lupa y descarga).
   .mapaRecorrido {
@@ -572,8 +600,8 @@ const rutaCampo = (llave: keyof RegistroObra) => {
     margin-right: 0.5em;
   }
   .controlImg {
-    width: 30px;
-    margin-bottom: 1em;
+    width: 24px;
+    margin-bottom: 0.9em;
     cursor: pointer;
 
     &:hover {
@@ -593,11 +621,25 @@ const rutaCampo = (llave: keyof RegistroObra) => {
   }
 }
 
+// Ficha compacta: letra base de 14 px y poco espacio entre campos.
 #contenedorDatos {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.tituloGrupoFicha {
+  flex-basis: 100%;
+  margin: 18px 0 2px;
+  padding: 0 0 4px;
+  border-bottom: 2px solid var(--ocre);
+  font-family: var(--fuenteSerif);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ocre);
 }
 
 #contenedorPrimerBloque {
@@ -611,13 +653,14 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
   h1 {
     margin-bottom: 0;
-    line-height: 1;
-    margin-bottom: 0.3em;
+    font-size: clamp(24px, 2.2vw, 30px);
+    line-height: 1.1;
+    margin-bottom: 0.25em;
   }
 
   .autor {
     text-transform: uppercase;
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: bold;
     display: block;
   }
@@ -684,16 +727,20 @@ h2 {
 :deep(.seccion) {
   display: flex;
   flex-basis: 100%;
-  border-top: 1px solid var(--bordeFuerte);
-  padding: 0.9em 0;
+  border-top: 1px solid var(--borde);
+  padding: 7px 0;
   flex-wrap: wrap;
   align-content: flex-start;
 
+  p {
+    margin: 0;
+  }
+
   // Etiquetas de campo: Manrope pequeña en mayúsculas, como en el rediseño.
   h3 {
-    margin: 0.2em 0.5em 0.5em 0;
+    margin: 0.25em 0.5em 0.25em 0;
     font-family: var(--fuenteSans);
-    font-size: 0.72em;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.12em;
     line-height: 1.4;
@@ -708,7 +755,7 @@ h2 {
   // Dispositivos grandes y pantallas medianas
   @media (min-width: $minPantalla) {
     h3 {
-      width: 130px;
+      width: 110px;
     }
 
     .contenido {

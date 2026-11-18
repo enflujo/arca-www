@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { usarGeneral } from '~/cerebros/general';
-import { SUBPAGINAS, seccionDeRuta } from '~/utilidades/menu';
+import { seccionDeRuta } from '~/utilidades/menu';
 
 interface Props {
   visible: boolean;
@@ -10,25 +9,10 @@ interface Props {
 const props = defineProps<Props>();
 const ruta = useRoute();
 const contenedorMenu: Ref<HTMLElement | undefined> = ref();
-const cerebroGeneral = usarGeneral();
 
-// Menú lateral según la sección: las clasificaciones de la Colección, o las subpáginas de Recursos / Sobre ARCA.
-const opciones = computed(() => {
-  const seccion = seccionDeRuta(ruta.path);
-  if (seccion === 'recursos' || seccion === 'sobre') return SUBPAGINAS[seccion];
-  return cerebroGeneral.paginasArchivo.filter((pagina) => pagina.mostrar_en_menu);
-});
-
-const esRutaActual = (slug: string) => {
-  const partes = ruta.path.split('/');
-
-  if (!partes[1]) return false;
-
-  if (partes[1].includes('categorias')) {
-    return slug === 'categorias';
-  }
-  return partes[1] === slug;
-};
+// Grupos y páginas de la sección actual (composables/menuSeccion.ts).
+const grupos = computed(() => gruposDeSeccion(seccionDeRuta(ruta.path)));
+const esRutaActual = (slug: string) => esPaginaActual(ruta.path, slug);
 
 onMounted(() => {
   document.body.addEventListener('click', clicFuera);
@@ -50,43 +34,62 @@ function clicFuera(evento: MouseEvent) {
 <template>
   <aside ref="contenedorMenu" :class="visible ? 'visible' : ''">
     <nav id="opciones" aria-label="Páginas de esta sección">
-      <NuxtLink
-        :to="`/${opcion.slug}`"
-        v-for="opcion in opciones"
-        :key="opcion.slug"
-        class="opcion"
-        :class="esRutaActual(opcion.slug) ? 'activo' : ''"
-        :aria-current="esRutaActual(opcion.slug) ? 'page' : undefined"
-        @click.native="cerrar"
-      >
-        <span class="punto" aria-hidden="true"></span>
-        <span>{{ opcion.titulo }}</span>
-      </NuxtLink>
+      <div v-for="(grupo, i) in grupos" :key="grupo.titulo ?? i" class="grupo">
+        <p v-if="grupo.titulo" class="tituloGrupo">{{ grupo.titulo }}</p>
+        <NuxtLink
+          :to="`/${opcion.slug}`"
+          v-for="opcion in grupo.opciones"
+          :key="opcion.slug"
+          class="opcion"
+          :class="esRutaActual(opcion.slug) ? 'activo' : ''"
+          :aria-current="esRutaActual(opcion.slug) ? 'page' : undefined"
+          @click.native="cerrar"
+        >
+          <span class="punto" aria-hidden="true"></span>
+          <span>{{ opcion.titulo }}</span>
+        </NuxtLink>
+      </div>
     </nav>
   </aside>
 </template>
 
 <style lang="scss" scoped>
-// Medidas del diseño: 320 px de ancho, opciones en mayúsculas de 12,5 px, píldora para la activa.
+// Menú compacto: opciones en mayúsculas de 11 px agrupadas bajo tres títulos.
 #opciones {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 36px 24px 6em 44px;
+  gap: 14px;
+  padding: 24px 18px 5em 28px;
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.tituloGrupo {
+  margin: 0 0 4px;
+  padding: 0 10px 5px;
+  border-bottom: 1px solid var(--borde);
+  font-family: var(--fuenteSerif);
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--ocre);
 }
 
 a,
 a:link {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 6px;
   font-family: var(--fuenteSans);
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  line-height: 1.35;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
   text-transform: uppercase;
   color: var(--textoCuerpo);
 
@@ -95,8 +98,8 @@ a:link {
   }
 
   .punto {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 999px;
     flex-shrink: 0;
     background-color: transparent;
@@ -114,7 +117,7 @@ a:link {
 
 @media (max-width: #{$minPantallaGrande - 1px}) {
   #opciones {
-    padding: 4.5em 24px 6em 24px;
+    padding: 4.5em 20px 6em 20px;
   }
 }
 </style>

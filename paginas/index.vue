@@ -568,8 +568,8 @@ const hitos = [
 
   p {
     margin: 0;
-    font-size: 17px;
-    line-height: 1.7;
+    font-size: 15px;
+    line-height: 1.65;
     color: var(--textoCuerpo);
   }
 
@@ -662,7 +662,7 @@ const hitos = [
   display: flex;
   flex-direction: column;
   gap: 26px;
-  min-height: 508px;
+  min-height: 440px;
 }
 
 .numeracion {
@@ -702,7 +702,7 @@ const hitos = [
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(44px, 4.4vw, 64px);
+    font-size: clamp(38px, 3.6vw, 52px);
     line-height: 1;
     color: var(--tinta);
   }

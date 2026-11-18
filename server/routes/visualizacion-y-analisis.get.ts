@@ -7,7 +7,7 @@ import { MENU_PRINCIPAL } from '~/utilidades/menu';
 // con el mismo menú de components/Encabezado.vue (utilidades/menu.ts).
 
 const SLUG = 'visualizacion-y-analisis';
-const ALTO = 72; // igual a $altoEncabezado
+const ALTO = 64; // igual a $altoEncabezado
 
 const escapar = (texto: string) =>
   texto.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

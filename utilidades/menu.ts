@@ -42,6 +42,70 @@ export const NOMBRE_SECCION: Record<Seccion, string> = {
   sobre: 'Sobre ARCA',
 };
 
+/**
+ * Grupos de la Colección, en el mismo orden que el panel de filtros de «Visualización y análisis»:
+ * datos básicos, datos de análisis y datos de gestos. Los usan el menú lateral (por slug de la página
+ * de archivo) y la ficha de obra (por nombre de campo).
+ */
+export interface GrupoColeccion {
+  titulo: string;
+  /** Slugs de `paginas_archivo` (menú lateral), en orden. */
+  paginas: string[];
+  /** Campos de la ficha de obra (`general.campos` del CMS). */
+  campos: string[];
+}
+
+export const GRUPOS_COLECCION: GrupoColeccion[] = [
+  {
+    titulo: 'Datos básicos',
+    paginas: ['categorias', 'autores', 'tecnicas', 'ubicaciones', 'ciudades'],
+    campos: ['ubicacion', 'ciudad_origen', 'fecha', 'tecnicas', 'categorias'],
+  },
+  {
+    titulo: 'Datos de análisis',
+    paginas: [
+      'personajes',
+      'simbolos',
+      'objetos',
+      'escenarios',
+      'descriptores',
+      'caracteristicas-particulares',
+      'relatos-visuales',
+      'donantes',
+      'cartelas-filacterias',
+    ],
+    campos: [
+      'personajes',
+      'simbolos',
+      'descriptores',
+      'caracteristicas',
+      'relato_visual',
+      'escenarios',
+      'donante',
+      'objetos',
+      'cartela_filacteria',
+      'iconotexto',
+    ],
+  },
+  {
+    titulo: 'Datos de gestos',
+    paginas: ['gestos', 'complejos-gestuales', 'tipos-gestuales', 'fisiognomica', 'fisiognomica-imagen', 'rostros'],
+    campos: ['gestos', 'tipo_gestual', 'complejo_gestual', 'fisiognomica', 'fisiognomica_imagen', 'rostro'],
+  },
+];
+
+/**
+ * Páginas de la Colección que no se muestran en el menú lateral porque su contenido ya está en otra.
+ * «Países» está incluida en «Geografía, países y ubicaciones» (que deja ver ubicaciones, ciudades o países).
+ * La página sigue existiendo en su URL.
+ */
+export const PAGINAS_OCULTAS_MENU = ['paises'];
+
+/** Títulos del menú lateral que cambian respecto al CMS. */
+export const TITULOS_MENU: Record<string, string> = {
+  ubicaciones: 'Geografía, países y ubicaciones',
+};
+
 /** A qué sección pertenece una ruta. Todo lo que no es inicio, recursos, sobre o visualización es la Colección. */
 export function seccionDeRuta(ruta: string): Seccion {
   const primerTramo = ruta.split('?')[0]?.split('/')[1] ?? '';

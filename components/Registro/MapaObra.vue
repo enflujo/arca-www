@@ -79,6 +79,8 @@ onMounted(async () => {
   });
 
   mapa.addControl(new mapbox.NavigationControl({ showCompass: false }), 'top-right');
+  // Botón para ver el mapa en pantalla completa.
+  mapa.addControl(new mapbox.FullscreenControl(), 'top-right');
 
   // Los marcadores no necesitan esperar al estilo.
   if (origen) {
@@ -174,7 +176,7 @@ onMounted(async () => {
 }
 
 .lienzo {
-  height: 260px;
+  height: 340px;
   width: 100%;
   background-color: #eadfd0;
 }

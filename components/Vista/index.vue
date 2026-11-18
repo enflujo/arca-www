@@ -224,6 +224,8 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
 <style lang="scss">
 #filtros {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 1em;
 }
 </style>

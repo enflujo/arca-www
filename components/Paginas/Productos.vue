@@ -44,20 +44,23 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
         Abrir el e-book
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
       </a>
-      <span class="dominio">losingeniosdelpincel.uniandes.edu.co</span>
     </div>
 
-    <a
-      v-if="imagen"
-      href="https://losingeniosdelpincel.uniandes.edu.co/#!/intro/1"
-      target="_blank"
-      rel="noopener"
-      class="portada"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <img :src="imagen.src" :alt="imagen.alt" loading="lazy" />
-    </a>
+    <figure v-if="imagen" class="portada">
+      <a href="https://losingeniosdelpincel.uniandes.edu.co/#!/intro/1" target="_blank" rel="noopener" tabindex="-1">
+        <img :src="imagen.src" :alt="imagen.alt" loading="lazy" />
+      </a>
+      <!-- Vínculo visible debajo de la imagen, además del botón. -->
+      <figcaption>
+        <a
+          class="vinculoVisible"
+          href="https://losingeniosdelpincel.uniandes.edu.co/#!/intro/1"
+          target="_blank"
+          rel="noopener"
+          >https://losingeniosdelpincel.uniandes.edu.co/#!/intro/1</a
+        >
+      </figcaption>
+    </figure>
   </article>
 </template>
 
@@ -80,7 +83,7 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(34px, 3.2vw, 44px);
+    font-size: clamp(28px, 2.6vw, 36px);
     line-height: 1.05;
     color: var(--tinta);
   }
@@ -88,7 +91,7 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
   .subtitulo {
     font-family: var(--fuenteSerif);
     font-style: italic;
-    font-size: clamp(20px, 1.8vw, 24px);
+    font-size: clamp(17px, 1.5vw, 20px);
     line-height: 1.3;
     color: var(--ocre);
   }
@@ -99,7 +102,7 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
   }
 
   p {
-    line-height: 1.7;
+    line-height: 1.6;
   }
 
   .botonOcre {
@@ -126,10 +129,26 @@ defineProps<{ seccion: string; imagen?: ImagenPagina }>();
   padding-top: 4px;
 }
 
-.dominio {
-  font-size: 13.5px;
-  color: #8a6a45;
-  word-break: break-all;
+.portada {
+  margin: 0;
+
+  figcaption {
+    margin-top: 10px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+}
+
+.vinculoVisible {
+  &:link,
+  &:visited {
+    color: var(--ocre);
+    border-bottom: 1px solid var(--bordeFuerte);
+  }
+
+  &:hover {
+    color: var(--ocreOscuro);
+  }
 }
 
 .portada img {

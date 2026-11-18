@@ -201,7 +201,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
       <h1 class="tituloPagina">{{ pagina?.titulo }}</h1>
     </div>
     <div class="ordenar" role="group" aria-label="Ordenar temas">
-      <span class="etiquetaOrdenar">Ordenar</span>
+      <span class="etiquetaOrdenar">Ordenar los temas</span>
       <button
         type="button"
         class="botonOrden"
@@ -294,23 +294,29 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   }
 }
 
+// Selector de orden destacado (control segmentado), como en los demás índices de la Colección.
 .ordenar {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  padding: 4px 4px 4px 14px;
+  border-radius: 999px;
+  background-color: var(--tintaPanel);
+  border: 1px solid #5a4a3e;
 
   .etiquetaOrdenar {
     font-size: 13px;
-    color: var(--sobreOscuroSuave);
+    font-weight: 600;
+    color: var(--sobreOscuro);
   }
 }
 
 .botonOrden {
-  height: 40px;
+  height: 34px;
   padding: 0 16px;
   border-radius: 999px;
-  border: 1px solid #5a4a3e;
+  border: 0;
   background: transparent;
   color: var(--sobreOscuroSuave);
   font-family: var(--fuenteSans);
@@ -319,12 +325,12 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   cursor: pointer;
 
   &:hover {
-    border-color: var(--oro);
+    color: var(--oro);
   }
 
   &.activo {
-    border-color: var(--oro);
-    color: var(--oro);
+    background-color: var(--oro);
+    color: var(--tinta);
     font-weight: 700;
   }
 }
@@ -340,7 +346,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   padding: clamp(16px, 2vw, 24px);
   display: flex;
   flex-direction: column;
-  gap: 20px 32px;
+  gap: 16px 26px;
 }
 
 .imagenTema {
@@ -370,7 +376,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   margin: 0;
   font-family: var(--fuenteSerif);
   font-weight: 400;
-  font-size: clamp(30px, 2.8vw, 40px);
+  font-size: clamp(24px, 2.2vw, 32px);
   line-height: 1.05;
 
   a:link,
@@ -429,7 +435,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
 .tarjetaTema .descripcion,
 .tarjetaTema .descripcion p {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.65;
   color: var(--textoCuerpo);
 }
@@ -549,7 +555,7 @@ async function clicSubCategorias(nivel: number, datosCategoria: Categoria) {
   }
 
   .imagenTema {
-    width: clamp(200px, 22vw, 280px);
+    width: clamp(170px, 17vw, 220px);
   }
 
   .infoTema {

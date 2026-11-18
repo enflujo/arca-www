@@ -87,7 +87,7 @@ function cerrar() {
 }
 
 main {
-  padding: 1em 1em 2em 5em;
+  padding: 1em 1em 2em 1em;
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -104,7 +104,7 @@ main {
     main {
       max-width: 1240px;
       margin: 0;
-      padding: 44px clamp(20px, 4.4vw, 64px) 64px;
+      padding: 32px clamp(18px, 3.6vw, 52px) 48px;
     }
   }
 }
@@ -167,29 +167,33 @@ main {
 @media (min-width: $minTablet) {
   #contenedorMenu {
     &.visible {
-      width: 380px;
+      width: 300px;
     }
   }
 
   .botonMenu {
     &.cerrar {
-      left: 300px;
+      left: 248px;
     }
   }
 }
 
-// Dispositivos grandes y pantallas medianas
-@media (min-width: $minPantalla) {
+// En celular y tableta el menú de la sección está en el botón ☰ del encabezado (components/Encabezado.vue).
+@media (max-width: #{$minPantalla - 1px}) {
+  .botonMenu,
+  #contenedorMenu {
+    display: none;
+  }
 }
 
 // Pantallas grandes - Ahora si el menú y el contenido son visibles al tiempo.
 @media (min-width: $minPantallaGrande) {
   #contenedorMenu {
-    width: 320px;
+    width: 270px;
   }
 
   #contenido {
-    width: calc(100vw - 320px);
+    width: calc(100vw - 270px);
   }
 
   .botonMenu {
@@ -201,10 +205,14 @@ main {
   }
 }
 
-// En pantallas sin menú lateral fijo, el contenido deja espacio al botón del menú.
-@media (max-width: #{$minPantallaGrande - 1px}) {
+// Entre 992 y 1199 px (menú lateral oculto tras su botón), el contenido deja espacio al botón.
+@media (min-width: $minPantalla) and (max-width: #{$minPantallaGrande - 1px}) {
+  main {
+    padding-left: 5em;
+  }
+
   #contenido.oscuro main {
-    padding-top: 72px;
+    padding-top: 64px;
   }
 }
 
@@ -239,21 +247,21 @@ main {
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(34px, 3.6vw, 52px);
+    font-size: clamp(30px, 3vw, 44px);
     line-height: 1.05;
     color: var(--oro);
   }
 
   .entradilla {
-    margin: 0 0 28px;
+    margin: 0 0 22px;
     max-width: 940px;
     font-family: var(--fuenteSerif);
-    font-size: clamp(19px, 1.6vw, 22px);
+    font-size: clamp(17px, 1.4vw, 19px);
     line-height: 1.55;
     color: #d8c9b2;
 
     &.grande {
-      font-size: clamp(20px, 1.8vw, 25px);
+      font-size: clamp(18px, 1.6vw, 21px);
       line-height: 1.5;
     }
   }
@@ -261,8 +269,8 @@ main {
   .textoSuave {
     margin: 0;
     max-width: 940px;
-    font-size: 17px;
-    line-height: 1.75;
+    font-size: 15px;
+    line-height: 1.65;
     color: #d8c9b2;
   }
 
@@ -270,7 +278,7 @@ main {
     margin: 0;
     font-family: var(--fuenteSerif);
     font-weight: 400;
-    font-size: clamp(30px, 2.8vw, 40px);
+    font-size: clamp(26px, 2.4vw, 32px);
     color: var(--oro);
   }
 
@@ -289,8 +297,8 @@ main {
 
     p {
       margin: 0;
-      font-size: 17px;
-      line-height: 1.75;
+      font-size: 15px;
+      line-height: 1.65;
       color: var(--textoCuerpo);
     }
   }

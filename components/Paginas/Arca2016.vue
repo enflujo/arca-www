@@ -87,6 +87,10 @@ const cifras = [
       </a>
     </div>
     <img v-if="imagen" :src="imagen.src" :alt="imagen.alt" class="captura" loading="lazy" />
+    <!-- Vínculo visible debajo de la imagen, además del botón. -->
+    <a class="vinculoVisible" href="https://arcav1.uniandes.edu.co/" target="_blank" rel="noopener"
+      >https://arcav1.uniandes.edu.co/</a
+    >
   </section>
 </template>
 
@@ -148,6 +152,22 @@ const cifras = [
   .nota {
     margin-top: 6px;
     font-size: 16px;
+  }
+}
+
+.vinculoVisible {
+  align-self: flex-start;
+  margin-top: -6px;
+  font-size: 13.5px;
+
+  &:link,
+  &:visited {
+    color: var(--oro);
+    border-bottom: 1px solid #5a4a3e;
+  }
+
+  &:hover {
+    color: var(--sobreOscuro);
   }
 }
 
