@@ -1,24 +1,129 @@
 <script setup lang="ts">
 import { usarGeneral } from '@/cerebros/general';
+import { MENU_PRINCIPAL, seccionDeRuta } from '~/utilidades/menu';
 
 const general = usarGeneral();
+const ruta = useRoute();
+
+// Menú del rediseño (5 entradas). La entrada activa es la de la sección de la página actual.
+const seccionActual = computed(() => seccionDeRuta(ruta.path));
+
+// En el inicio el encabezado va transparente sobre la imagen del hero y se vuelve oscuro al desplazarse.
+const desplazado = ref(false);
+const sobreImagen = computed(() => ruta.path === '/' && !desplazado.value && !menuAbierto.value);
+
+/**
+ * Menú de celular y tableta (menos de 992 px): un botón ☰ abre un panel con las 5 secciones y, debajo de la
+ * sección actual, sus páginas (en la Colección, agrupadas en datos básicos, de análisis y de gestos).
+ */
+const menuAbierto = ref(false);
+const gruposActuales = computed(() => gruposDeSeccion(seccionActual.value));
+
+function alternarMenu() {
+  menuAbierto.value = !menuAbierto.value;
+}
+
+watch(
+  () => ruta.fullPath,
+  () => (menuAbierto.value = false)
+);
+
+watch(menuAbierto, (abierto) => {
+  if (import.meta.client) document.body.style.overflow = abierto ? 'hidden' : '';
+});
+
+function revisarDesplazamiento() {
+  desplazado.value = window.scrollY > 40;
+}
+
+function teclaEscape(evento: KeyboardEvent) {
+  if (evento.key === 'Escape') menuAbierto.value = false;
+}
+
+onMounted(() => {
+  revisarDesplazamiento();
+  window.addEventListener('scroll', revisarDesplazamiento, { passive: true });
+  window.addEventListener('keydown', teclaEscape);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', revisarDesplazamiento);
+  window.removeEventListener('keydown', teclaEscape);
+  if (import.meta.client) document.body.style.overflow = '';
+});
 </script>
 
 <template>
-  <div id="encabezado">
-    <NuxtLink class="nombreProyecto" :to="'/'">
-      <Logo class="logoArca" />
-      <span id="titulo">{{ general.titulo }}</span>
+  <header id="encabezado" :class="{ sobreImagen }">
+    <NuxtLink
+      class="nombreProyecto"
+      :to="'/'"
+      :aria-label="`${general.titulo || 'ARCA'} · Arte Colonial Americano, inicio`"
+    >
+      <span class="marca">ARCA</span>
+      <span class="lema">Arte Colonial Americano</span>
     </NuxtLink>
 
-    <nav id="menuPrincipal">
-      <NuxtLink v-for="pagina in general.paginas" :key="`pagina${pagina.slug}`" :to="`/${pagina.slug}`">
-        {{ pagina.titulo }}
+    <nav id="menuPrincipal" aria-label="Menú principal">
+      <NuxtLink
+        v-for="entrada in MENU_PRINCIPAL"
+        :key="entrada.ruta"
+        :to="entrada.ruta"
+        :external="entrada.externo"
+        :class="{ activo: entrada.seccion === seccionActual }"
+        :aria-current="entrada.seccion === seccionActual ? 'page' : undefined"
+      >
+        {{ entrada.titulo }}
       </NuxtLink>
     </nav>
 
     <BuscadorBoton />
-  </div>
+    <BotonContraste />
+
+    <button
+      type="button"
+      class="botonMenuMovil"
+      :class="{ abierto: menuAbierto }"
+      :aria-expanded="menuAbierto"
+      aria-controls="menuMovil"
+      :aria-label="menuAbierto ? 'Cerrar menú' : 'Abrir menú'"
+      @click="alternarMenu"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Panel del menú en celular y tableta -->
+  <nav v-show="menuAbierto" id="menuMovil" aria-label="Menú del sitio">
+    <ul class="secciones">
+      <li v-for="entrada in MENU_PRINCIPAL" :key="entrada.ruta">
+        <NuxtLink
+          :to="entrada.ruta"
+          :external="entrada.externo"
+          class="seccion"
+          :class="{ activo: entrada.seccion === seccionActual }"
+          :aria-current="entrada.seccion === seccionActual ? 'page' : undefined"
+        >
+          {{ entrada.titulo }}
+        </NuxtLink>
+
+        <div v-if="entrada.seccion === seccionActual && gruposActuales.length" class="subpaginas">
+          <div v-for="(grupo, i) in gruposActuales" :key="grupo.titulo ?? i" class="grupo">
+            <p v-if="grupo.titulo" class="tituloGrupo">{{ grupo.titulo }}</p>
+            <NuxtLink
+              v-for="opcion in grupo.opciones"
+              :key="opcion.slug"
+              :to="`/${opcion.slug}`"
+              class="subpagina"
+              :class="{ activo: esPaginaActual(ruta.path, opcion.slug) }"
+            >
+              {{ opcion.titulo }}
+            </NuxtLink>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <style lang="scss" scoped>
@@ -27,87 +132,271 @@ const general = usarGeneral();
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  background-color: rgba($color: $dolor, $alpha: 0.85);
-  color: $claridad;
-  z-index: 8;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 1em;
+  background-color: var(--tinta);
+  border-bottom: 1px solid rgba(243, 233, 216, 0.16);
+  color: var(--sobreOscuro);
+  z-index: 11;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
-}
+  gap: 1.5em;
+  transition: background-color 0.3s ease;
 
-.logoArca {
-  fill: $claridad;
-  height: 0.72em;
-}
-
-#titulo {
-  display: none;
+  &.sobreImagen {
+    background-color: transparent;
+  }
 }
 
 .nombreProyecto {
   display: flex;
-  align-items: center;
-  font-size: 2em;
-  font-family: var(--fuentePrincipal);
-  font-weight: bold;
-  margin-left: 0.3em;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--mediana);
+  align-items: baseline;
+  gap: 0.6em;
+  flex-shrink: 0;
+  line-height: 1;
 
-  &:link {
-    color: var(--mediana);
+  &:link,
+  &:visited,
+  &:hover {
+    color: var(--sobreOscuro);
   }
 
   &:hover {
     opacity: 0.85;
-    color: var(--mediana); // mantener el color para que no cambie al predeterminado en todos los enlaces.
   }
+}
+
+.marca {
+  font-family: var(--fuenteSerif);
+  font-size: 1.8em;
+  letter-spacing: 0.04em;
+}
+
+.lema {
+  display: none;
+  font-family: var(--fuenteSerif);
+  font-style: italic;
+  font-size: 1em;
+  color: var(--oro);
 }
 
 #menuPrincipal {
-  margin-left: 2em;
-  display: flex;
+  display: none;
+  align-items: center;
+  gap: 1.6em;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--fuenteSans);
+  font-size: 15px;
+  font-weight: 600;
 
   a,
   a:link {
-    border-bottom: 1px solid transparent;
-    margin-right: 1em;
-    font-family: var(--fuenteMenu);
-    color: $claridad;
+    color: var(--sobreOscuro);
+    white-space: nowrap;
+    padding: 0.35em 0;
 
     &:hover {
-      border-bottom: 1px dotted;
+      color: var(--oro);
     }
 
-    &.router-link-active {
-      border-bottom: 1px solid;
+    // Sección actual en dorado, como en el diseño.
+    &.activo {
+      color: var(--oro);
     }
   }
 }
 
-// Pantallas medianas (Tablets)
-@media (min-width: $minTablet) {
-  .logoArca {
-    padding-right: 0.3em;
+/* ---------- Botón ☰ ---------- */
+.botonMenuMovil {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid rgba(243, 233, 216, 0.28);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--sobreOscuro);
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
-  #titulo {
+  &.abierto {
+    border-color: var(--oro);
+
+    span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+}
+
+/* ---------- Panel del menú (celular y tableta) ---------- */
+#menuMovil {
+  position: fixed;
+  top: $altoEncabezado;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  overflow-y: auto;
+  padding: 12px 20px 40px;
+  background-color: var(--tinta);
+  font-family: var(--fuenteSans);
+}
+
+.secciones {
+  display: flex;
+  flex-direction: column;
+
+  > li {
+    border-bottom: 1px solid #3a2e27;
+  }
+}
+
+.seccion {
+  display: block;
+  padding: 14px 4px;
+  font-family: var(--fuenteSerif);
+  font-size: 22px;
+
+  &:link,
+  &:visited {
+    color: var(--sobreOscuro);
+  }
+
+  &.activo {
+    color: var(--oro);
+  }
+}
+
+.subpaginas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 4px 16px 14px;
+  border-left: 1px solid #5a4a3e;
+  margin: 0 0 4px 6px;
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+.tituloGrupo {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--oro);
+}
+
+.subpagina {
+  padding: 6px 0;
+  font-size: 14px;
+
+  &:link,
+  &:visited {
+    color: #d8c9b2;
+  }
+
+  &.activo {
+    color: var(--oro);
+    font-weight: 700;
+  }
+}
+
+/* ---------- Tamaños ---------- */
+@media (max-width: #{$minTablet - 1px}) {
+  #encabezado {
+    gap: 0.7em;
+  }
+
+  .marca {
+    font-size: 1.6em;
+  }
+
+  // El buscador se empuja a la derecha junto al botón ☰.
+  .nombreProyecto {
+    margin-right: auto;
+  }
+}
+
+@media (max-width: #{$minPantalla - 1px}) {
+  .nombreProyecto {
+    margin-right: auto;
+  }
+}
+
+// Desde 992 px el menú va completo en el encabezado y el botón ☰ desaparece.
+@media (min-width: $minPantalla) {
+  #encabezado {
+    padding: 0 2.5em;
+  }
+
+  #menuPrincipal {
+    display: flex;
+  }
+
+  .botonMenuMovil,
+  #menuMovil {
+    display: none !important;
+  }
+}
+
+// En pantallas anchas: lema visible, menú centrado y espaciado como en el diseño.
+@media (min-width: $minPantallaGrande) {
+  #encabezado {
+    padding: 0 3.5em;
+    gap: 1.75em;
+  }
+
+  #menuPrincipal {
+    justify-content: center;
+  }
+}
+
+// Entre 992 y 1439 px el menú (15 px) va más junto; el lema aparece desde 1440 px.
+@media (min-width: $minPantalla) and (max-width: 1439px) {
+  #encabezado {
+    gap: 1.2em;
+  }
+
+  #menuPrincipal {
+    gap: 1.1em;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .lema {
     display: block;
   }
-}
 
-// Dispositivos grandes y pantallas medianas
-@media (min-width: $minPantalla) {
-}
-
-// Pantallas grandes
-@media (min-width: $minPantallaGrande) {
-}
-
-//Pantallas gigantes
-@media (min-width: $minPantallaGigante) {
+  #menuPrincipal {
+    gap: 2em;
+  }
 }
 </style>

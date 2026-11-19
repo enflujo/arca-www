@@ -13,6 +13,8 @@ interface Props {
   desbordar?: boolean;
   activado?: boolean;
   tactoPos?: { x: number; y: number };
+  /** URL de la imagen. Si se da, la imagen viene en el HTML desde el servidor (visible para buscadores). */
+  src?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -107,7 +109,7 @@ onMounted(() => {
       if (!img.value) return;
       img.value.src = imagen.src;
     };
-    imagen.src = urlImagen(props.datos.id, 'obra');
+    imagen.src = props.src || urlImagen(props.datos.id, 'obra');
 
     window.addEventListener('resize', calcularDimsImgEsperando);
     window.addEventListener('scroll', calcularDimsImgEsperando, true);
@@ -130,8 +132,13 @@ onUnmounted(() => {
   <div :class="`contenedorLupa`" :style="`overflow: ${desbordar ? 'visible' : 'hidden'}`">
     <img
       ref="img"
-      :src="`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 ${datos.ancho} ${datos.alto}'%3E%3C/svg%3E`"
+      :src="
+        src ||
+        `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 ${datos.ancho} ${datos.alto}'%3E%3C/svg%3E`
+      "
       :alt="alt"
+      :width="src ? datos.width : undefined"
+      :height="src ? datos.height : undefined"
       class="imagen"
       :style="`cursor:${activado ? 'none' : 'initial'}`"
       @click="calcularDimsImgEsperando"

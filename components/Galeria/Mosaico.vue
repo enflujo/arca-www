@@ -81,63 +81,69 @@ watch(
   background-color: var(--amarilloPetalo);
 }
 
+// Tarjeta de obra: papel con borde, como las tarjetas del rediseño.
 .obra {
   min-width: 250px;
   margin: 0 1em 1em 0;
-  padding: 7px;
+  padding: 8px;
   position: relative;
-  background-color: var(--amarilloBase);
+  background-color: var(--papel);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   .registro {
     position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5em 1em;
-    font-size: 0.8em;
-    color: black;
-    background-color: var(--amarilloBase);
+    top: 14px;
+    right: 14px;
+    padding: 0.2em 0.7em;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: var(--ocre);
+    background-color: var(--papel);
+    border: 1px solid var(--borde);
+    border-radius: 999px;
   }
 
   .infoImagen {
-    color: black;
+    color: var(--tinta);
     text-align: left;
     padding: 0.8em;
     font-size: 0.85em;
 
     a,
     a:link {
-      color: var(--profundidad);
+      color: var(--tinta);
     }
 
     .titulo {
-      font-size: 1em;
+      font-family: var(--fuenteSerif);
+      font-size: 1.2em;
       font-weight: normal;
+      line-height: 1.2;
       max-width: 250px;
     }
     .autor {
-      margin-top: 1.2em;
+      margin-top: 0.6em;
       font-size: 0.85em;
-      font-weight: bold;
+      font-weight: 600;
+
+      a,
+      a:link {
+        color: var(--ocre);
+      }
 
       &:hover {
-        color: var(--amarilloBase);
+        color: var(--ocreClaro);
       }
     }
   }
 
   &:hover {
-    background-color: var(--verdeEsmeralda3);
-
-    .registro {
-      background-color: var(--verdeEsmeralda2);
-      color: var(--claridad);
-    }
-
-    .infoImagen {
-      a {
-        color: var(--claridad);
-      }
-    }
+    border-color: var(--ocre);
+    box-shadow: 0 6px 18px rgba(60, 44, 28, 0.14);
   }
 }
 

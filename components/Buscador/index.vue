@@ -66,6 +66,21 @@ function cerrar(evento: MouseEvent) {
   }
 }
 
+// Escape cierra el buscador.
+function teclaEscape(evento: KeyboardEvent) {
+  if (evento.key === 'Escape') cerebroGeneral.buscadorVisible = false;
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', teclaEscape);
+  document.body.style.overflow = 'hidden';
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', teclaEscape);
+  document.body.style.overflow = '';
+});
+
 function salir() {
   cerebroGeneral.buscadorVisible = false;
 }
@@ -89,7 +104,9 @@ function tieneDatos(valor: string | undefined): boolean {
 </script>
 
 <template>
-  <div id="botonCerrar" @click="cerrar">x</div>
+  <button id="botonCerrar" type="button" aria-label="Cerrar el buscador" @click="salir">
+    <span aria-hidden="true">✕</span> Cerrar
+  </button>
   <ClientOnly>
     <ais-instant-search
       id="buscador"
@@ -101,7 +118,7 @@ function tieneDatos(valor: string | undefined): boolean {
       <ais-configure :attributesToSnippet="['sintesis:20']" :snippetEllipsisText="'...'" :hits-per-page.camel="11" />
 
       <ais-search-box
-        placeholder="Buscar..."
+        placeholder="Buscar obras, autores, temas, lugares, registro…"
         reset-title="Borrar"
         :value="cerebroGeneral.busquedaActual"
         @input="entradaBuscador"
@@ -196,14 +213,15 @@ function tieneDatos(valor: string | undefined): boolean {
 </template>
 
 <style lang="scss" scoped>
+// El buscador va por encima del encabezado fijo (z-index 11), para que la caja de texto no quede tapada.
 #buscador {
   position: fixed;
-  z-index: 10;
+  z-index: 50;
   width: 100vw;
   height: 100vh;
   top: 0;
   left: 0;
-  background-color: rgba($dolor, 0.75);
+  background-color: rgba(28, 21, 18, 0.92);
 
   .contadorRespuestas {
     text-align: center;
@@ -223,8 +241,8 @@ function tieneDatos(valor: string | undefined): boolean {
   }
 
   :deep(.buscadorContenedor) {
-    width: 80vw;
-    margin: 2em auto 1em auto;
+    width: min(80vw, 1100px);
+    margin: 72px auto 1em auto;
   }
 
   :deep(.buscadorFormulario) {
@@ -233,13 +251,17 @@ function tieneDatos(valor: string | undefined): boolean {
   }
 
   :deep(.buscadorElemento) {
-    border: 3px solid transparent;
-    border-radius: 10px;
+    border: 2px solid var(--oro);
+    border-radius: 999px;
     width: 100%;
-    height: 50px;
+    height: 54px;
+    box-sizing: border-box;
     justify-content: center;
-    background-color: #e9dede;
-    padding-left: 30px;
+    background-color: var(--papel);
+    color: var(--tinta);
+    font-family: var(--fuenteSans);
+    font-size: 16px;
+    padding-left: 44px;
     transition: all 0.3s ease-in-out;
 
     &:focus {
@@ -250,8 +272,8 @@ function tieneDatos(valor: string | undefined): boolean {
 
   :deep(.buscadorEnviar) {
     position: absolute;
-    left: 10px;
-    top: 15px;
+    left: 18px;
+    top: 17px;
     .buscadorIcono {
       width: auto;
       height: 18px;
@@ -265,8 +287,8 @@ function tieneDatos(valor: string | undefined): boolean {
 }
 
 #resultados {
-  width: 80vw;
-  height: calc(100vh - 180px);
+  width: min(80vw, 1100px);
+  height: calc(100vh - 230px);
   overflow: auto;
   margin: 0 auto;
   background-color: var(--claridad);
@@ -314,7 +336,7 @@ mark {
 }
 
 :deep(.contenedorPaginas) {
-  width: 80vw;
+  width: min(80vw, 1100px);
   margin: 0 auto;
   background-color: var(--claridad);
   padding: 1em 0;
@@ -350,18 +372,28 @@ mark {
 }
 
 #botonCerrar {
-  font-family: var(--fuenteMenu);
-  color: $claridad;
-  z-index: 99;
+  z-index: 51;
   position: fixed;
-  font-size: 2em;
-  right: 1vw;
-  top: 0.8em;
+  right: 16px;
+  top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--oro);
+  border-radius: 999px;
+  background-color: var(--tinta);
+  color: var(--sobreOscuro);
+  font-family: var(--fuenteSans);
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.25s ease-in-out;
 
-  &:hover {
-    opacity: 0.7;
+  &:hover,
+  &:focus-visible {
+    background-color: var(--oro);
+    color: var(--tinta);
   }
 }
 
@@ -371,7 +403,7 @@ mark {
 // Pantallas medianas (Tablets)
 @media (min-width: $minTablet) {
   #botonCerrar {
-    right: 5vw;
+    right: 3vw;
   }
 }
 // Dispositivos grandes y pantallas medianas

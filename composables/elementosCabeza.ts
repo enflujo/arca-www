@@ -1,6 +1,7 @@
 import { usarGeneral } from '~/cerebros/general';
 import { urlBase } from '~/config/general';
 import { urlImagen } from '~/utilidades/ayudas';
+import { recortar, textoPlano } from '~/utilidades/seo';
 
 export type ImagenDirectus = {
   id?: number;
@@ -34,8 +35,9 @@ export type DatosPagina = {
 export default function (datosPagina: DatosPagina, ruta: string) {
   const cerebroGeneral = usarGeneral();
 
-  const cabeza = `: ${cerebroGeneral.titulo} :`;
-  const subtitulo = datosPagina.nombre || datosPagina.titulo;
+  // Títulos para buscadores: «Ángel de la guarda | ARCA · Arte Colonial Americano».
+  const cabeza = 'ARCA · Arte Colonial Americano';
+  const subtitulo = textoPlano(datosPagina.nombre || datosPagina.titulo);
   const title = subtitulo ? `${subtitulo} | ${cabeza}` : cabeza;
   const url = urlBase + ruta;
   let img;
@@ -50,7 +52,8 @@ export default function (datosPagina: DatosPagina, ruta: string) {
     datosPagina.banner = { title: cerebroGeneral.titulo };
   }
 
-  const descripcion = datosPagina.descripcion ? datosPagina.descripcion : cerebroGeneral.descripcion;
+  // Las descripciones del CMS pueden traer HTML (<p>, &oacute;…): a los buscadores va texto limpio y corto.
+  const descripcion = recortar(textoPlano(datosPagina.descripcion || cerebroGeneral.descripcion), 160);
 
   return {
     title,

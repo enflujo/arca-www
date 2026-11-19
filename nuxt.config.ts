@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Nunito:wght@700;800&family=Unbounded:wght@500&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap',
           crossorigin: '',
         },
       ],
@@ -30,9 +30,17 @@ export default defineNuxtConfig({
           'data-website-id': 'bc6c51bf-8938-47db-9a3a-228fa9d14ff3',
           'data-domains': 'arca.uniandes.edu.co',
         },
+        {
+          // Aplica el modo de alto contraste antes de pintar la página, para que no parpadee.
+          innerHTML:
+            "try{var q=new URLSearchParams(location.search).get('contraste');if(q==='alto'||q==='normal')localStorage.setItem('arca.contraste',q);if((q||localStorage.getItem('arca.contraste'))==='alto')document.documentElement.classList.add('altoContraste')}catch(e){}",
+        },
       ],
     },
   },
+
+  // Modo de alto contraste (botón «◐ Contraste» del encabezado).
+  css: ['~/assets/css/contraste.css'],
 
   dir: {
     pages: 'paginas',
@@ -54,6 +62,15 @@ export default defineNuxtConfig({
 
   build: {
     transpile: ['@enflujo/alquimia'],
+  },
+
+  // Cachés del servidor en disco (sobreviven a reinicios): sitemap, imágenes por registro y la copia de
+  // datos de «Visualización y análisis» (server/utils/copiaViz.ts).
+  nitro: {
+    storage: {
+      cache: { driver: 'fs', base: './.data/cache' },
+      data: { driver: 'fs', base: './.data/kv' },
+    },
   },
 
   compatibilityDate: '2024-09-06',

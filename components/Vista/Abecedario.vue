@@ -11,7 +11,8 @@ const props = defineProps<Props>();
 const abc: Ref<Abecedario> = ref([]);
 
 watch(() => props.datos, procesarDatos);
-onMounted(procesarDatos);
+// Se procesa de inmediato (no en onMounted) para que la lista venga en el HTML del servidor (SEO).
+procesarDatos();
 
 function procesarDatos() {
   let llave: 'slug' | 'nombre' | 'apellido' = 'slug';
@@ -84,22 +85,25 @@ function procesarDatos() {
   margin: 0 0 1.5em 0;
 }
 
+// Etiquetas en píldora, como en el rediseño.
 .elemento {
-  border: 1px solid $profundidad;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
   margin: 0.2em;
-  background-color: transparent;
+  background-color: var(--papel);
   transition: all 0.2s ease-in;
 
   a {
-    padding: 0.4em;
+    padding: 0.35em 0.9em;
     display: block;
   }
 
   &:hover {
-    background-color: $rojoCerezo;
+    border-color: var(--ocre);
+    background-color: var(--ocre);
     a,
     a:link {
-      color: $claridad;
+      color: var(--papel);
     }
   }
 }

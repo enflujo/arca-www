@@ -13,13 +13,18 @@ defineProps<Props>();
 
 <style lang="scss" scoped>
 .contador {
-  padding: 0.7em;
-  border: 2px solid $profundidad;
+  padding: 0.5em 1.1em;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background-color: var(--papel);
   display: inline-block;
   margin: 0.3em 0 1em 0;
+  color: var(--textoSuave);
 }
 
 .conteo {
-  font-weight: bold;
+  font-family: var(--fuenteSerif);
+  font-size: 1.25em;
+  color: var(--ocre);
 }
 </style>

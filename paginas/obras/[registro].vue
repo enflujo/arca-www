@@ -13,6 +13,9 @@ import type {
 } from '~/tipos';
 import type { BaseRegistro } from '~/tipos/bases';
 import { definirDimsImagen, gql, peticion } from '~/utilidades/ayudas';
+import { recortar, textoPlano, urlImagenPublica } from '~/utilidades/seo';
+import { urlBase } from '~/config/general';
+import { GRUPOS_COLECCION } from '~/utilidades/menu';
 
 const cerebroGeneral = usarGeneral();
 
@@ -24,6 +27,12 @@ if (!cerebroGeneral.campos.length) {
  * Operaciones en el servidor
  */
 const ruta = useRoute();
+
+// El registro va dentro de la consulta: solo se aceptan números (evita errores 500 e inyecciones).
+if (!/^\d+$/.test(String(ruta.params.registro))) {
+  throw createError({ statusCode: 404, statusMessage: 'Obra no encontrada', fatal: true });
+}
+
 const ObraGeneral = gql`
 query {
   obras(filter: { registro: { _eq: ${ruta.params.registro} } }, limit: 1) {
@@ -35,15 +44,22 @@ query {
 
 const { obras: datosGenerales } = await obtenerDatos<BaseRegistro>(`obraGeneral${ruta.params.registro}`, ObraGeneral);
 
-if (datosGenerales && datosGenerales.length && datosGenerales[0]?.imagen) {
+if (!datosGenerales || !datosGenerales.length) {
+  throw createError({ statusCode: 404, statusMessage: 'Obra no encontrada', fatal: true });
+}
+
+if (datosGenerales[0]?.imagen) {
   // Definir dims imagen
   datosGenerales[0].imagen.ancho = Math.round((datosGenerales[0].imagen.width / datosGenerales[0].imagen.height) * 300);
   datosGenerales[0].imagen.alto = 300;
-
-  useHead(elementosCabeza({ titulo: datosGenerales[0].titulo, banner: datosGenerales[0].imagen }, ruta.path));
 }
 
-// En el cliente
+/** Imagen principal servida desde el dominio de ARCA, con nombre descriptivo (ver utilidades/seo.ts). */
+const srcImagen = computed(() => {
+  const imagen = datosGenerales[0]?.imagen;
+  return imagen ? urlImagenPublica(imagen.id, datosGenerales[0]?.titulo ?? '') : undefined;
+});
+
 const obra: Ref<RegistroObra | null> = ref(null);
 const relacionadas: Ref<ObraGaleria[] | null> = ref(null);
 const ubicacionMapa: Ref<{ id: number; nombre: string; geometry: Point } | null> = ref(null);
@@ -95,9 +111,12 @@ const PeticionObra = gql`
   }
 `;
 
-const { data } = obtenerDatosAsinc<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
+// Se pide en el servidor para que toda la ficha (autor, fecha, lugar, síntesis…) venga en el HTML
+// y la lean los buscadores. Antes se pedía solo en el navegador.
+const datosObra = await obtenerDatos<{ obras: RegistroObra[] }>(`obra${ruta.params.registro}`, PeticionObra);
+procesarObra(datosObra);
 
-watch(data, (res) => {
+function procesarObra(res: { obras: RegistroObra[] } | null) {
   if (!res) return;
   const _obra = res.obras[0];
 
@@ -185,8 +204,112 @@ watch(data, (res) => {
   }
 
   obra.value = _obra;
+}
 
-  buscarRelacionadas(categorias[categorias.length - 1]);
+// Las obras relacionadas se siguen cargando en el navegador.
+onMounted(() => {
+  const ultimaCategoria = obra.value?.categorias?.[obra.value.categorias.length - 1];
+  if (!relacionadas.value && ultimaCategoria) buscarRelacionadas(ultimaCategoria);
+});
+
+/**
+ * SEO de la ficha: título, descripción propia, imagen y datos estructurados (schema.org VisualArtwork).
+ */
+const autoresObra = computed(() => (obra.value?.autores ?? []).map((a) => a.autores_id.nombreCompleto).filter(Boolean));
+
+const lugarObra = computed(() => {
+  const o = obra.value;
+  const lugares = o?.ciudad_origen?.procesado ?? o?.ubicacion?.procesado ?? [];
+  return lugares.map((l) => l.nombre).join(', ');
+});
+
+const altImagen = computed(() => {
+  const partes = [datosGenerales[0]?.titulo];
+  if (autoresObra.value.length) partes.push(autoresObra.value.join(', '));
+  if (obra.value?.fecha && obra.value.fecha !== '?') partes.push(obra.value.fecha);
+  return partes.filter(Boolean).join(' · ');
+});
+
+const descripcionObra = computed(() => {
+  const o = obra.value;
+  const titulo = datosGenerales[0]?.titulo ?? '';
+  const autoria = autoresObra.value.length ? `de ${autoresObra.value.join(', ')}` : '';
+  const fecha = o?.fecha && o.fecha !== '?' ? `(${o.fecha})` : '';
+  const lugar = lugarObra.value ? `— ${lugarObra.value}` : '';
+  const inicio = [`${titulo},`, 'pintura colonial', autoria, fecha, lugar].filter(Boolean).join(' ');
+  const sintesis = textoPlano(o?.sintesis);
+  return recortar(sintesis ? `${inicio}. ${sintesis}` : `${inicio}. Ficha en ARCA, Arte Colonial Americano.`, 160);
+});
+
+const imagenSEO = datosGenerales[0]?.imagen;
+
+// Los datos ya están completos aquí (se pidieron con await arriba), así que la cabecera se arma una sola vez.
+// elementosCabeza usa la tienda de Pinia y debe llamarse durante el setup, no dentro de useHead.
+const cabeza = elementosCabeza(
+  { titulo: datosGenerales[0]?.titulo, banner: imagenSEO, descripcion: descripcionObra.value },
+  ruta.path
+);
+
+useHead(() => {
+  const urlImagenAbs = imagenSEO
+    ? urlImagenPublica(imagenSEO.id, datosGenerales[0]?.titulo ?? '', 'obra', true)
+    : undefined;
+  const o = obra.value;
+
+  const datosEstructurados: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'VisualArtwork',
+    name: datosGenerales[0]?.titulo,
+    url: `${urlBase}${ruta.path}`,
+    identifier: String(ruta.params.registro),
+    description: textoPlano(o?.sintesis) || descripcionObra.value,
+    artform: 'Pintura',
+    isPartOf: { '@type': 'Collection', name: 'ARCA · Arte Colonial Americano', url: urlBase },
+  };
+
+  if (urlImagenAbs) {
+    datosEstructurados.image = {
+      '@type': 'ImageObject',
+      contentUrl: urlImagenAbs,
+      caption: altImagen.value,
+      creditText: textoPlano(o?.fuente?.descripcion) || undefined,
+      acquireLicensePage: `${urlBase}/bibliografia-y-referencias`,
+    };
+  }
+  // «Anónimo» no es una persona: no se declara como creador.
+  const conNombre = autoresObra.value.filter((nombre) => !/^an[oó]nim[oa]s?$/i.test(nombre?.trim() ?? ''));
+  if (conNombre.length) {
+    datosEstructurados.creator = conNombre.map((nombre) => ({ '@type': 'Person', name: nombre }));
+  }
+  if (o?.fecha_inicial) {
+    datosEstructurados.dateCreated = o.fecha_final ? `${o.fecha_inicial}/${o.fecha_final}` : String(o.fecha_inicial);
+  }
+  // El tipo declara `tecnicas` como objeto, pero el API devuelve una lista.
+  const tecnicas = (Array.isArray(o?.tecnicas) ? o.tecnicas : []) as { tecnicas_id?: { nombre?: string } }[];
+  if (tecnicas.length) {
+    datosEstructurados.artMedium = tecnicas
+      .map((t) => t.tecnicas_id?.nombre)
+      .filter(Boolean)
+      .join(', ');
+  }
+  // Solo la ciudad de origen es lugar de creación; la ubicación actual (museo, convento) va en la descripción.
+  const origen = (o?.ciudad_origen?.procesado ?? []).map((l) => l.nombre).join(', ');
+  if (origen) {
+    datosEstructurados.locationCreated = { '@type': 'Place', name: origen };
+  }
+
+  return {
+    ...cabeza,
+    meta: [
+      ...cabeza.meta.map((m) =>
+        (m.property === 'og:image' || m.property === 'twitter:image') && urlImagenAbs
+          ? { ...m, content: urlImagenAbs }
+          : m
+      ),
+      { property: 'og:image:alt', content: altImagen.value },
+    ],
+    script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(datosEstructurados) }],
+  };
 });
 
 async function buscarRelacionadas(ultimaCategoria: { campo: string; slug: string }) {
@@ -258,6 +381,31 @@ const tiposCampos: { [coleccion: string]: { tipo: TiposCampos; coleccion: Nombre
   gestos: { tipo: 'gestos', coleccion: '' },
 };
 
+/**
+ * Campos de la ficha en tres grupos (datos básicos, de análisis y de gestos), igual que el menú lateral y
+ * la visualización. Dentro de cada grupo se respeta el orden del CMS. Los campos que no están en ningún
+ * grupo (síntesis, comentario, fuente…) van al final, sin título. Los separadores del CMS se omiten.
+ */
+const camposAgrupados = computed(() => {
+  const campos = cerebroGeneral.campos.filter((c) => c.campo !== 'separador');
+  const usados = new Set<string>();
+  const lista: { campo: string; titulo: string }[] = [];
+
+  GRUPOS_COLECCION.forEach((grupo) => {
+    const delGrupo = campos.filter((c) => grupo.campos.includes(c.campo));
+    if (!delGrupo.length) return;
+    lista.push({ campo: '__grupo', titulo: grupo.titulo });
+    delGrupo.forEach((c) => {
+      usados.add(c.campo);
+      lista.push(c);
+    });
+  });
+
+  const resto = campos.filter((c) => !usados.has(c.campo));
+  if (resto.length) lista.push({ campo: '__grupo', titulo: 'Descripción y fuente' }, ...resto);
+  return lista as { campo: keyof RegistroObra & '__grupo'; titulo: string }[];
+});
+
 const tipoCampo = (llave: keyof RegistroObra) => {
   if (!tiposCampos[llave]) {
     return;
@@ -276,26 +424,38 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
 <template>
   <div id="contenedorObra">
-    <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
-      <div class="opciones">
-        <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
-        <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
+    <!-- Columna de la imagen: la obra y, debajo, el mapa de su recorrido -->
+    <div id="columnaImagen" :class="vistaCompleta ? 'grande' : ''">
+      <div id="contenedorImagen" :class="vistaCompleta ? 'grande' : ''">
+        <div class="opciones">
+          <IconoZoom class="controlImg zoom" :vistaCompleta="vistaCompleta" @click="cambiarVistaImagen" />
+          <IconoLupa class="controlImg lupa" @click="cambiarVistaLupa" :class="verLupa ? 'activo' : ''" />
 
-        <a
+          <a
+            v-if="datosGenerales[0].imagen"
+            class="controlImg"
+            :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
+            target="_blank"
+            :download="datosGenerales[0].imagen.filename_download"
+          >
+            <IconoDescarga class="controlImg descarga" />
+          </a>
+        </div>
+        <Lupa
           v-if="datosGenerales[0].imagen"
-          class="controlImg"
-          :href="`${apiBase}/assets/${datosGenerales[0].imagen.id}?download`"
-          target="_blank"
-          :download="datosGenerales[0].imagen.filename_download"
-        >
-          <IconoDescarga class="controlImg descarga" />
-        </a>
+          :datos="datosGenerales[0].imagen"
+          :src="srcImagen"
+          :alt="altImagen"
+          :activado="verLupa"
+          @click="cambiarVistaImagen"
+        />
       </div>
-      <Lupa
-        :datos="datosGenerales[0].imagen"
-        :alt="datosGenerales[0].titulo"
-        :activado="verLupa"
-        @click="cambiarVistaImagen"
+
+      <RegistroMapaObra
+        v-if="obra && !vistaCompleta"
+        class="mapaRecorrido"
+        :origen="obra.ciudad_origen"
+        :actual="obra.ubicacion"
       />
     </div>
 
@@ -316,12 +476,15 @@ const rutaCampo = (llave: keyof RegistroObra) => {
           </div>
         </div>
 
-        <div id="registro">{{ obra.registro }}</div>
+        <div id="registro" :aria-label="`Número de registro ${obra.registro}`">
+          <span class="rotuloRegistro">Registro</span>
+          <span class="numeroRegistro">Nº {{ obra.registro }}</span>
+        </div>
       </section>
 
-      <template v-for="seccion in cerebroGeneral.campos" :key="`campo-ficha-${seccion.campo}`">
-        <template v-if="seccion.campo === 'separador'">
-          <span class="separador"></span>
+      <template v-for="(seccion, i) in camposAgrupados" :key="`campo-ficha-${seccion.campo}-${i}`">
+        <template v-if="seccion.campo === '__grupo'">
+          <h2 class="tituloGrupoFicha">{{ seccion.titulo }}</h2>
         </template>
 
         <template v-else-if="tipoCampo(seccion.campo) === 'lugar'">
@@ -344,6 +507,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
             :datos="obra[seccion.campo]"
             :ruta="rutaCampo(seccion.campo)"
             :relacion="seccion.campo === 'categorias' ? undefined : `${seccion.campo}_id`"
+            :jerarquia="seccion.campo === 'categorias'"
           />
         </template>
 
@@ -357,21 +521,21 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
             <div v-if="obra.gesto1" class="subSeccion">
               <h4>Personaje principal</h4>
-              <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="contenido singular">
+              <NuxtLink :to="`/gestos/${obra.gesto1.slug}`" class="etiquetaGesto">
                 {{ obra.gesto1.nombre }}
               </NuxtLink>
             </div>
 
             <div v-if="obra.gesto2" class="subSeccion">
               <h4>Personaje secundario</h4>
-              <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="contenido singular">
+              <NuxtLink :to="`/gestos/${obra.gesto2.slug}`" class="etiquetaGesto">
                 {{ obra.gesto2.nombre }}
               </NuxtLink>
             </div>
 
             <div v-if="obra.gesto3" class="subSeccion">
               <h4>Otros personajes</h4>
-              <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="contenido singular">
+              <NuxtLink :to="`/gestos/${obra.gesto3.slug}`" class="etiquetaGesto">
                 {{ obra.gesto3.nombre }}
               </NuxtLink>
             </div>
@@ -390,7 +554,7 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 <style lang="scss" scoped>
 #contenedorObra {
   display: flex;
-  margin: 2em auto;
+  margin: 1.5em auto;
   width: 85vw;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -400,6 +564,24 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
 #contenedorTituloAutor {
   max-width: 80%;
+}
+
+#columnaImagen {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+
+  &.grande {
+    flex-basis: 100%;
+  }
+
+  gap: 16px;
+
+  // El mapa se alinea con la imagen (a la derecha de los botones de zoom, lupa y descarga).
+  .mapaRecorrido {
+    margin-left: calc(30px + 0.5em);
+  }
 }
 
 #contenedorImagen {
@@ -421,8 +603,8 @@ const rutaCampo = (llave: keyof RegistroObra) => {
     margin-right: 0.5em;
   }
   .controlImg {
-    width: 30px;
-    margin-bottom: 1em;
+    width: 24px;
+    margin-bottom: 0.9em;
     cursor: pointer;
 
     &:hover {
@@ -442,11 +624,25 @@ const rutaCampo = (llave: keyof RegistroObra) => {
   }
 }
 
+// Ficha compacta: letra base de 14 px y poco espacio entre campos.
 #contenedorDatos {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 0 auto;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.tituloGrupoFicha {
+  flex-basis: 100%;
+  margin: 18px 0 2px;
+  padding: 0 0 4px;
+  border-bottom: 2px solid var(--ocre);
+  font-family: var(--fuenteSerif);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ocre);
 }
 
 #contenedorPrimerBloque {
@@ -460,28 +656,51 @@ const rutaCampo = (llave: keyof RegistroObra) => {
 
   h1 {
     margin-bottom: 0;
-    line-height: 1;
-    margin-bottom: 0.3em;
+    font-size: clamp(21px, 1.8vw, 25px);
+    line-height: 1.1;
+    margin-bottom: 0.25em;
   }
 
   .autor {
     text-transform: uppercase;
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: bold;
     display: block;
   }
 }
 
+// Número de registro bien visible (cifras de Manrope: las del serif antiguo se leen pequeñas).
 #registro {
-  padding: 0.5em;
-  font-family: var(--fuentePrincipal);
-  border: 1px solid var(--profundidad);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0.45em 1.1em;
+  font-family: var(--fuenteSans);
+  color: var(--sobreOscuro);
+  background-color: var(--ocreOscuro);
+  border-radius: 12px;
   height: fit-content;
+  line-height: 1.1;
+
+  .rotuloRegistro {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oro);
+  }
+
+  .numeroRegistro {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
 }
 
 h2 {
   margin: 1em 0;
-  border-bottom: 2px solid $rojoCerezo;
+  border-bottom: 1px solid var(--bordeFuerte);
   padding-bottom: 0.3em;
 }
 
@@ -496,18 +715,23 @@ h2 {
   display: block;
   width: 100%;
   height: 0;
-  margin-bottom: -2px;
-  border-bottom: 4px solid $dolor;
+  margin-bottom: -1px;
+  border-bottom: 2px solid var(--ocre);
 }
 
 .gestos > .subSeccion {
-  border-right: 2px solid $rojoCerezo;
+  border-right: 1px solid var(--borde);
   padding-right: 1em;
   padding-left: 0;
 
   & ~ .subSeccion {
     padding-left: 1em;
   }
+}
+
+.etiquetaGesto {
+  @include etiquetaMeta;
+  margin-top: 4px;
 }
 
 .subSeccion {
@@ -529,15 +753,25 @@ h2 {
 :deep(.seccion) {
   display: flex;
   flex-basis: 100%;
-  border-top: 2px solid var(--rojoCerezo);
-  padding: 0.8em 0;
+  border-top: 1px solid var(--borde);
+  padding: 7px 0;
   flex-wrap: wrap;
   align-content: flex-start;
 
+  p {
+    margin: 0;
+  }
+
+  // Etiquetas de campo: Manrope pequeña en mayúsculas, como en el rediseño.
   h3 {
-    font-weight: bold;
-    margin: 0 0.5em 0.5em 0;
-    font-size: 1em;
+    margin: 0.25em 0.5em 0.25em 0;
+    font-family: var(--fuenteSans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--textoSuave);
   }
 
   &.medio {
@@ -547,7 +781,7 @@ h2 {
   // Dispositivos grandes y pantallas medianas
   @media (min-width: $minPantalla) {
     h3 {
-      width: 130px;
+      width: 110px;
     }
 
     .contenido {
@@ -570,9 +804,12 @@ h2 {
 
 // Pantallas grandes
 @media (min-width: $minPantallaGrande) {
-  #contenedorImagen {
-    flex-basis: 48%;
+  #columnaImagen {
+    width: auto;
+    flex-basis: 46%;
+  }
 
+  #contenedorImagen {
     .zoom {
       display: block;
     }

@@ -34,7 +34,7 @@ const datosLugares: { ubicaciones: Ubicacion[]; ciudades: Ciudad[]; paises: Pais
   ciudades: [],
   paises: [],
 });
-const { data, pending } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
+const { data, pending, listo } = obtenerDatosAsinc(`indice-${props.coleccion}`, indiceColeccion(props.coleccion));
 const coleccionActual: Ref<string> = ref(props.coleccion);
 const cargando: Ref<boolean> = ref(false);
 
@@ -48,6 +48,12 @@ watch(data, (respuesta) => {
     datos.value = procesarDatos(respuesta as DatosIndices);
   }
 });
+
+// En el servidor se esperan los datos para que el índice (con sus enlaces) venga en el HTML (SEO).
+if (import.meta.server && !datos.value) {
+  const respuesta = await listo;
+  if (respuesta) datos.value = procesarDatos(respuesta as DatosIndices);
+}
 
 onMounted(() => {
   if (props.coleccion === 'ubicaciones') {
@@ -181,7 +187,8 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
 </script>
 
 <template>
-  <Cargador v-if="pending || cargando || !datos" />
+  <!-- Se muestra el índice en cuanto hay datos (también los que vienen del servidor). -->
+  <Cargador v-if="cargando || !datos" />
 
   <template v-else>
     <div id="filtros">
@@ -217,6 +224,8 @@ async function cambiarDatosUbicacion(tipoLugar: TiposLugares) {
 <style lang="scss">
 #filtros {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 1em;
 }
 </style>

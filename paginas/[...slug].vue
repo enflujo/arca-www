@@ -2,6 +2,7 @@
 import type { PaginaArchivo } from '~/tipos';
 import { usarGeneral } from '~/cerebros/general';
 import { gql, procesarTextoHTML } from '~/utilidades/ayudas';
+import { seccionDeRuta } from '~/utilidades/menu';
 
 interface EsquemaPaginaArchivo {
   paginas_archivo: PaginaArchivo[];
@@ -130,8 +131,9 @@ if (indice.value) {
 
 // Layout calculado dinámicamente
 const layoutActual = computed(() => {
-  // /sobre-arca usa layout archivo (con sidebar)
-  if (esPaginaGeneral && indice.value === 'sobre-arca') return 'archivo';
+  // Las páginas de Recursos y Sobre ARCA usan el layout con menú lateral de su sección (rediseño 2026).
+  const seccion = seccionDeRuta(`/${indice.value}`);
+  if (esPaginaGeneral && (seccion === 'recursos' || seccion === 'sobre')) return 'archivo';
   // Otras páginas generales usan layout paginas (sin sidebar)
   if (esPaginaGeneral) return 'paginas';
   // Archivos usan layout archivo
@@ -145,10 +147,16 @@ const layoutActual = computed(() => {
   <NuxtLayout :name="layoutActual">
     <PaginaGeneral v-if="tipoPagina === 'general'" :slug="indice" />
 
-    <div v-else-if="datos && tipoPagina === 'archivoIndice'">
-      <h1>{{ datos.titulo }}</h1>
-      <GaleriaInformacion coleccion="pagina" :datos="datos" />
-      <Vista :coleccion="datos.coleccion" :slug="datos.slug" />
+    <!-- Índices de la Colección (autores, técnicas, países…): misma apariencia que «Clasificación por temas». -->
+    <div v-else-if="datos && tipoPagina === 'archivoIndice'" class="indiceColeccion">
+      <div class="encabezadoPagina">
+        <p class="ceja">Colección de ARCA</p>
+        <h1 class="tituloPagina">{{ datos.titulo }}</h1>
+      </div>
+      <div v-if="datos.contenido" class="panelClaro panelDescripcion" v-html="datos.contenido"></div>
+      <div class="panelClaro panelIndice">
+        <Vista :coleccion="datos.coleccion" :slug="datos.slug" />
+      </div>
     </div>
 
     <Galeria
@@ -163,6 +171,36 @@ const layoutActual = computed(() => {
 </template>
 
 <style lang="scss">
+.indiceColeccion {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .encabezadoPagina {
+    margin-bottom: 12px !important;
+  }
+
+  .panelDescripcion {
+    padding: clamp(20px, 2.6vw, 28px) clamp(20px, 3vw, 32px);
+
+    p {
+      margin: 0 0 0.8em;
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--textoCuerpo);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .panelIndice {
+    padding: clamp(18px, 2.6vw, 28px) clamp(16px, 3vw, 32px);
+    min-height: 200px;
+  }
+}
+
 .contenidoPagina {
   h1,
   h2,
