@@ -37,9 +37,13 @@
   --oro: #d9ac4f; // acento sobre oscuro
   --textoSuave: #2b2018;
   --textoCuerpo: #1c1512;
-  --etiqueta: #2f5288; // etiquetas de metadatos en la ficha: azul azurita (7,3:1 sobre papel)
-  --etiquetaFondo: #eaf0f8;
-  --etiquetaBorde: #b4c6e0;
+  // Etiquetas de metadatos en la ficha: azul índigo oscuro relleno con texto crema (≈10:1),
+  // complementario del ocre de «Clasificación».
+  --etiqueta: #1f3a66;
+  --etiquetaFondo: #1f3a66;
+  --etiquetaBorde: #1f3a66;
+  --etiquetaTexto: #f3e9d8;
+  --etiquetaHover: #3a5f99;
   --sobreOscuro: #f3e9d8; // texto sobre fondo oscuro
   --sobreOscuroSuave: #bfae96;
 
@@ -119,9 +123,11 @@ $verdeEsmeralda: $tinta;
     border-color 0.2s ease,
     color 0.2s ease;
 
+  color: var(--etiquetaTexto);
+
   &:link,
   &:visited {
-    color: var(--etiqueta);
+    color: var(--etiquetaTexto);
   }
 
   // :link:hover y :visited:hover le ganan a la regla general de enlaces (a:link:hover) del sitio.
@@ -129,8 +135,8 @@ $verdeEsmeralda: $tinta;
   &:link:hover,
   &:visited:hover,
   &:focus-visible {
-    background-color: var(--etiqueta);
-    border-color: var(--etiqueta);
-    color: var(--papel);
+    background-color: var(--etiquetaHover);
+    border-color: var(--etiquetaHover);
+    color: #ffffff;
   }
 }

@@ -17,9 +17,11 @@ html.altoContraste {
   --oro: #f2cd75;
   --sobreOscuro: #fffaf0;
   --sobreOscuroSuave: #efe4d0;
-  --etiqueta: #1d3a66;
-  --etiquetaFondo: #f2f6fb;
-  --etiquetaBorde: #1d3a66;
+  --etiqueta: #0f2347;
+  --etiquetaFondo: #0f2347;
+  --etiquetaBorde: #0f2347;
+  --etiquetaTexto: #ffffff;
+  --etiquetaHover: #2a4f8a;
 }
 
 html.altoContraste p a:not([class]),
