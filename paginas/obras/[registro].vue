@@ -476,7 +476,10 @@ const rutaCampo = (llave: keyof RegistroObra) => {
           </div>
         </div>
 
-        <div id="registro">{{ obra.registro }}</div>
+        <div id="registro" :aria-label="`Número de registro ${obra.registro}`">
+          <span class="rotuloRegistro">Registro</span>
+          <span class="numeroRegistro">Nº {{ obra.registro }}</span>
+        </div>
       </section>
 
       <template v-for="(seccion, i) in camposAgrupados" :key="`campo-ficha-${seccion.campo}-${i}`">
@@ -666,15 +669,33 @@ const rutaCampo = (llave: keyof RegistroObra) => {
   }
 }
 
+// Número de registro bien visible (cifras de Manrope: las del serif antiguo se leen pequeñas).
 #registro {
-  padding: 0.35em 0.9em;
-  font-family: var(--fuenteSerif);
-  font-size: 1.1em;
-  color: var(--ocre);
-  background-color: var(--papel);
-  border: 1px solid var(--borde);
-  border-radius: 999px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0.45em 1.1em;
+  font-family: var(--fuenteSans);
+  color: var(--sobreOscuro);
+  background-color: var(--ocreOscuro);
+  border-radius: 12px;
   height: fit-content;
+  line-height: 1.1;
+
+  .rotuloRegistro {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oro);
+  }
+
+  .numeroRegistro {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
 }
 
 h2 {
